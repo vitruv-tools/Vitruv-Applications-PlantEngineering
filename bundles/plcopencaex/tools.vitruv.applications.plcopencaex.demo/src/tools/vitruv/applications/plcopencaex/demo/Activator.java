@@ -1,4 +1,4 @@
-package tools.vitruv.applications.pcmjava.pojotransformations.demo;
+package tools.vitruv.applications.plcopencaex.demo;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

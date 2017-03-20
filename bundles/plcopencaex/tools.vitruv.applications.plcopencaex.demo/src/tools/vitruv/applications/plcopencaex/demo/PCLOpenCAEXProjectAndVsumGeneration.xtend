@@ -1,4 +1,4 @@
-package tools.vitruv.applications.pcmjava.pojotransformations.demo
+package tools.vitruv.applications.plcopencaex.demo
 
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.core.resources.IFolder
