@@ -31,7 +31,7 @@ import tools.vitruv.domains.java.builder.VitruviusJavaBuilder
 import tools.vitruv.framework.monitorededitor.ProjectBuildUtils
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil
 
-class JavaPcmProjectAndVsumGeneration {
+class PLCOpenCAEXProjectAndVsumGeneration {
 	
 	public def void createProjectAndVsum() {
 		TuidManager.instance.reinitialize();

@@ -4,10 +4,10 @@ import org.eclipse.core.commands.AbstractHandler
 import org.eclipse.core.commands.ExecutionEvent
 import org.eclipse.core.commands.ExecutionException
 
-class JavaPcmProjectAndVsumGenerationHandler extends AbstractHandler {
+class PLCOpenCAEXProjectAndVsumGenerationHandler extends AbstractHandler {
 	
 	override execute(ExecutionEvent event) throws ExecutionException {
-		new JavaPcmProjectAndVsumGeneration().createProjectAndVsum();
+		new PLCOpenCAEXProjectAndVsumGeneration().createProjectAndVsum();
 		return null;
 	}
 	
