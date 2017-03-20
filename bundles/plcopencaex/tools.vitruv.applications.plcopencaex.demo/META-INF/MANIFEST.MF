@@ -19,12 +19,10 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.metamodel,
  tools.vitruv.framework.change.processing,
- tools.vitruv.applications.pcmjava.pojotransformations.java2pcm,
- tools.vitruv.applications.pcmjava.pojotransformations.pcm2java,
- tools.vitruv.domains.java.builder,
+ tools.vitruv.applications.plcopencaex.plcopen2caex,
  tools.vitruv.framework.vsum,
- tools.vitruv.domains.pcm,
- tools.vitruv.domains.emf,
  tools.vitruv.framework.util,
- tools.vitruv.framework.monitorededitor,
- tools.vitruv.applications.pcmjava.util
+ tools.vitruv.framework.monitorededitor
+Comment: tools.vitruv.domains.java.builder,
+Comment: tools.vitruv.domains.pcm,
+Comment: tools.vitruv.domains.emf
