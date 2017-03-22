@@ -12,4 +12,27 @@ reaction A {
 	}
 }
 
+reaction CreatedRoot {
+	after element plcopen::DocumentRoot created and inserted as root
+	call {
+		val plcopenRoot = newValue;
+		createCaexRoot(plcopenRoot);
+	}
+}
+
+routine createCaexRoot(plcopen::DocumentRoot plcopenRoot) {
+	match {
+		check plcopenRoot.project != null
+	}
+	action {
+		val caexFile = create caex::CAEXFile
+		add correspondence between plcopenRoot.project and caexFile
+		val caexRoot = create caex::DocumentRoot and initialize {
+			caexRoot.CAEXFile = caexFile;
+			persistProjectRelative(plcopenRoot, caexRoot, "caexModel.caex");
+		}
+		add correspondence between caexRoot and plcopenRoot
+	}
+}
+
 // FIXME MK write PLCOpen2CAEX reaction
