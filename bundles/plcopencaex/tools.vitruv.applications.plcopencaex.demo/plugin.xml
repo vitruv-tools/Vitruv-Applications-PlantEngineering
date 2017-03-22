@@ -12,9 +12,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            description="Creates a project for PCM models and Java code and a Vitruv VSUM that keeps the models consistent"
+            description="Creates a project for CAEX and PCLOpen models and a Vitruv VSUM that keeps the models consistent"
             id="tools.vitruv.applications.plcopencaex.demo.PLCOpenCAEXProjectAndVsumGeneration"
-            name="Create PCM-Java Vitruv Demo">
+            name="Create AutomationML Vitruv Demo">
       </command>
    </extension>
 
@@ -22,7 +22,7 @@
 		<menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
 			<command
          commandId="tools.vitruv.applications.plcopencaex.demo.PLCOpenCAEXProjectAndVsumGeneration"
-         label="Create PCM-Java Vitruv Demo"
+         label="Create AutomationML Vitruv Demo"
          style="push">
 				<visibleWhen
 				      checkEnabled="false">
