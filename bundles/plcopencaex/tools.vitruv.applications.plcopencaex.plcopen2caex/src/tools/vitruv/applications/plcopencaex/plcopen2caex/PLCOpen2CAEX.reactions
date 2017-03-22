@@ -8,7 +8,7 @@ execute actions in caex
 reaction A {
 	after any change
 	call {
-		System.out.println("DELETETHISOUTPUT")
+		System.out.println("reacting to a change ...")
 	}
 }
 
@@ -35,4 +35,36 @@ routine createCaexRoot(plcopen::DocumentRoot plcopenRoot) {
 	}
 }
 
+reaction CreatedFileHeaderType {
+	after element plcopen::FileHeaderType created and inserted in plcopen::ProjectType[fileHeader]
+	call {
+		val fileHeaderType = newValue;
+		createVersion(fileHeaderType);
+	}
+}
+
+routine createVersion(plcopen::FileHeaderType fileHeaderType) {
+	action {
+		val version = create caex::Version 
+		add correspondence between fileHeaderType and version
+	}
+}
+
+reaction RenameProductVersion {
+	after attribute replaced at plcopen::FileHeaderType[productVersion]
+	call {
+		renameVersionForProductVersion(affectedEObject);
+	}
+}
+
+routine renameVersionForProductVersion(plcopen::FileHeaderType fileHeaderType) {
+	match {
+		val version = retrieve caex::Version corresponding to fileHeaderType
+	}	
+	action {
+		update version {
+			version.value = fileHeaderType.productVersion
+		}
+	}
+}
 // FIXME MK write PLCOpen2CAEX reaction
