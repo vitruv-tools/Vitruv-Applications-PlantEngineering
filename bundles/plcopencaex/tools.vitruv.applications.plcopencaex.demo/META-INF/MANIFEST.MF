@@ -22,7 +22,7 @@ Require-Bundle: com.google.guava,
  tools.vitruv.applications.plcopencaex.plcopen2caex,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.util,
- tools.vitruv.framework.monitorededitor
-Comment: tools.vitruv.domains.java.builder,
-Comment: tools.vitruv.domains.pcm,
-Comment: tools.vitruv.domains.emf
+ tools.vitruv.framework.monitorededitor,
+ tools.vitruv.domains.plcopen,
+ tools.vitruv.domains.caex,
+ tools.vitruv.domains.emf

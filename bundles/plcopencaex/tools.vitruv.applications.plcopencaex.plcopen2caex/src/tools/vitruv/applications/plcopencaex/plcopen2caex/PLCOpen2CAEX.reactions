@@ -1,5 +1,5 @@
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
-import "http://caex" as caex
+import "http://org.automationml.caex" as caex
 
 reactions: plcopen2caex
 in reaction to changes in plcopen
@@ -8,7 +8,8 @@ execute actions in caex
 reaction A {
 	after any change
 	call {
-		
+		System.out.println("DELETETHISOUTPUT")
 	}
 }
 
+// FIXME MK write PLCOpen2CAEX reaction
