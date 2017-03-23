@@ -10,15 +10,15 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class AReaction extends AbstractReactionRealization {
-  public AReaction(final UserInteracting userInteracting) {
+class AnyReactionTrackingReaction extends AbstractReactionRealization {
+  public AnyReactionTrackingReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
   public void executeReaction(final EChange change) {
     EChange typedChange = (EChange)change;
     mir.routines.plcopen2caex.RoutinesFacade routinesFacade = new mir.routines.plcopen2caex.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AReaction.ActionUserExecution userExecution = new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AReaction.ActionUserExecution(this.executionState, this);
+    mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AnyReactionTrackingReaction.ActionUserExecution userExecution = new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AnyReactionTrackingReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(routinesFacade);
   }
   
@@ -50,7 +50,7 @@ class AReaction extends AbstractReactionRealization {
     }
     
     public void callRoutine1(@Extension final RoutinesFacade _routinesFacade) {
-      System.out.println("DELETETHISOUTPUT");
+      System.out.println("reacting to a change ...");
     }
   }
 }

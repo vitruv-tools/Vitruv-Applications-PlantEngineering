@@ -11,7 +11,9 @@ public class ExecutorTc6_0201ToCaex extends AbstractReactionsExecutor {
   
   protected void setup() {
     tools.vitruv.framework.userinteraction.UserInteracting userInteracting = getUserInteracting();
-    this.addReaction(mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AReaction.getExpectedChangeType(), new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AReaction(userInteracting));
+    this.addReaction(mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AnyReactionTrackingReaction.getExpectedChangeType(), new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.AnyReactionTrackingReaction(userInteracting));
     this.addReaction(mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.CreatedRootReaction.getExpectedChangeType(), new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.CreatedRootReaction(userInteracting));
+    this.addReaction(mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.CreatedFileHeaderTypeReaction.getExpectedChangeType(), new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.CreatedFileHeaderTypeReaction(userInteracting));
+    this.addReaction(mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.RenameProductVersionReaction.getExpectedChangeType(), new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.RenameProductVersionReaction(userInteracting));
   }
 }
