@@ -1,4 +1,4 @@
-package mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex;
+package mir.reactions.reactionsTc60201ToCAEX.plcopen2caex;
 
 import mir.routines.plcopen2caex.RoutinesFacade;
 import org.eclipse.emf.ecore.EAttribute;
@@ -25,7 +25,7 @@ class RenameProductVersionReaction extends AbstractReactionRealization {
     String oldValue = typedChange.getOldValue();
     String newValue = typedChange.getNewValue();
     mir.routines.plcopen2caex.RoutinesFacade routinesFacade = new mir.routines.plcopen2caex.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.RenameProductVersionReaction.ActionUserExecution userExecution = new mir.reactions.reactionsTc6_0201ToCaex.plcopen2caex.RenameProductVersionReaction.ActionUserExecution(this.executionState, this);
+    mir.reactions.reactionsTc60201ToCAEX.plcopen2caex.RenameProductVersionReaction.ActionUserExecution userExecution = new mir.reactions.reactionsTc60201ToCAEX.plcopen2caex.RenameProductVersionReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
   }
   

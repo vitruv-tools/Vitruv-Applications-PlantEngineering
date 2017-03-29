@@ -1,7 +1,7 @@
 package tools.vitruv.applications.plcopencaex.plcopen2caex
 
-import mir.reactions.AbstractChangePropagationSpecificationTc6_0201ToCaex
+import mir.reactions.AbstractChangePropagationSpecificationTc60201ToCAEX
 
-class PLCOpen2CAEXChangePropagationSpecification extends AbstractChangePropagationSpecificationTc6_0201ToCaex {
+class PLCOpen2CAEXChangePropagationSpecification extends AbstractChangePropagationSpecificationTc60201ToCAEX {
 	
 }
