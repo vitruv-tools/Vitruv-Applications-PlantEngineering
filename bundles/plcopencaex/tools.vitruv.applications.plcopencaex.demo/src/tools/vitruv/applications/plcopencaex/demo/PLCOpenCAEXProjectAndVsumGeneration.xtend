@@ -44,7 +44,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 	
 	private def InternalVirtualModel createVirtualModel() {
 		val metamodels = this.createMetamodels();
-		val virtualModel = TestUtil.createVSUM("testProjectVsum", metamodels, createChangePropagationSpecifications());
+		val virtualModel = TestUtil.createVirtualModel("testProjectVsum", metamodels, createChangePropagationSpecifications());
 		return virtualModel;
 	}
 	
