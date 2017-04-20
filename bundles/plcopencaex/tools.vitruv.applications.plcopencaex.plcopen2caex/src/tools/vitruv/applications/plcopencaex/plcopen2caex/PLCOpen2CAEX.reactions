@@ -2,8 +2,8 @@ import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://org.automationml.caex" as caex
 
 reactions: plcopen2caex
-in reaction to changes in plcopen
-execute actions in caex
+in reaction to changes in PLCOpen
+execute actions in CAEX
 
 reaction AnyReactionTracking {
 	after any change
