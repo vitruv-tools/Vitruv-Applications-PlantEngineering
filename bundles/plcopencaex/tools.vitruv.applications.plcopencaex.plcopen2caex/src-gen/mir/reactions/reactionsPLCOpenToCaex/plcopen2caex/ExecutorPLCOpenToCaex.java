@@ -3,13 +3,11 @@ package mir.reactions.reactionsPLCOpenToCaex.plcopen2caex;
 import tools.vitruv.domains.caex.CAEXDomainProvider;
 import tools.vitruv.domains.plcopen.PLCOpenDomainProvider;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
-import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 public class ExecutorPLCOpenToCaex extends AbstractReactionsExecutor {
-  public ExecutorPLCOpenToCaex(final UserInteracting userInteracting) {
-    super(userInteracting,
-    	new PLCOpenDomainProvider().getDomain(), 
+  public ExecutorPLCOpenToCaex() {
+    super(new PLCOpenDomainProvider().getDomain(), 
     	new CAEXDomainProvider().getDomain());
   }
   

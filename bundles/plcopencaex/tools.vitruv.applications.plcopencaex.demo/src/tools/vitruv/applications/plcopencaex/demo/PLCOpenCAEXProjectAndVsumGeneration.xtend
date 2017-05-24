@@ -36,7 +36,9 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 		val project = ResourcesPlugin.workspace.root.getProject(vsumName);
 		project.create(null);
     	project.open(null);
-		val virtualModel = TestUtil.createVirtualModel(project.location.toFile, false, metamodels, createChangePropagationSpecifications());
+		val virtualModel = TestUtil.createVirtualModel(project.location.toFile, false, metamodels, createChangePropagationSpecifications(),
+			new UserInteractor()
+		);
 		return virtualModel;
 	}
 	
@@ -51,7 +53,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 	protected def IProject createTestProject(String projectName) throws CoreException {
         var project = TestUtil.getProjectByName(projectName);
         if (!project.exists()) {
-            project = TestUtil.createProject(projectName, false);
+            project = TestUtil.createPlatformProject(projectName, false);
         }
    		return project;
 	}
