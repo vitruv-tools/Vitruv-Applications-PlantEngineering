@@ -1,0 +1,64 @@
+import CAEX.CAEXObject
+import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools
+import tools.vitruv.framework.tuid.Tuid
+
+import "http://org.automationml.caex" as CAEX
+
+reactions: caexintra
+in reaction to changes in CAEX
+execute actions in CAEX
+
+
+reaction CloneRefAdded {
+	after attribute replaced at CAEX::InternalElement[refBaseSystemUnitPath]
+	call {
+		newCorrespondenceCloneProto(affectedEObject,newValue)
+	}
+}
+
+routine newCorrespondenceCloneProto(CAEX::InternalElement ie, String sucStr) {
+	action {		
+		call{
+			println("addingCorrespondance")
+			var affectedTuid = CAEXIntraConsistencyTools.GenTuidFromPath(correspondenceModel,ie,sucStr);			
+			var suc = correspondenceModel.resolveEObjectFromTuid(Tuid.getInstance(affectedTuid)) as CAEXObject;
+			if(suc != null)
+				addCAEXCorrespondence(ie,suc);
+		}
+	}
+}
+
+routine addCAEXCorrespondence(CAEX::CAEXObject a,CAEX::CAEXObject b){
+	action{
+		add correspondence between a and b
+	}
+}
+
+reaction PrototypeChanged {
+	after attribute replaced at CAEX::SystemUnitClass[name] 
+	call  {
+		correctCloneName(affectedEObject,newValue); 
+	}
+}
+
+routine correctCloneName(CAEX::SystemUnitClass change, String newValue){
+	match {
+		val clon = retrieve CAEX::InternalElement corresponding to change
+		}
+	action {		
+		update clon {
+			clon.refBaseSystemUnitPath = newValue;
+			System.out.println(clon.refBaseSystemUnitPath)
+		}  				
+	}
+}
+
+reaction DisplayFileNameChange {
+	after attribute replaced at CAEX::CAEXFile[fileName]
+	call {
+		System.out.println("FileNameChanged from '" + oldValue + "' to  '" + newValue + "'");
+	}
+}
+
+
+	
