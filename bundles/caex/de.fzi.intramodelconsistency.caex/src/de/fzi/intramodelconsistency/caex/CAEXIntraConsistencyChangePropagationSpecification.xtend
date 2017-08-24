@@ -1,7 +1,6 @@
 package de.fzi.intramodelconsistency.caex
 
-import mir.reactions.AbstractChangePropagationSpecificationCaexToCaex
+import mir.reactions.CaexToCaexChangePropagationSpecification
 
-class CAEXIntraConsistencyChangePropagationSpecification extends AbstractChangePropagationSpecificationCaexToCaex {
-	
+class CAEXIntraConsistencyChangePropagationSpecification extends CaexToCaexChangePropagationSpecification {
 }

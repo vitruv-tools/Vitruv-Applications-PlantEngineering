@@ -2,13 +2,11 @@ package mir.routines.caexintra;
 
 import CAEX.CAEXObject;
 import CAEX.InternalElement;
-import com.google.common.base.Objects;
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools;
 import java.io.IOException;
 import mir.routines.caexintra.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
@@ -26,13 +24,13 @@ public class NewCorrespondenceCloneProtoRoutine extends AbstractRepairRoutineRea
     }
     
     public void callRoutine1(final InternalElement ie, final String sucStr, @Extension final RoutinesFacade _routinesFacade) {
-      InputOutput.<String>println("addingCorrespondance");
-      String affectedTuid = CAEXIntraConsistencyTools.GenTuidFromPath(this.correspondenceModel, ie, sucStr);
-      Tuid _instance = Tuid.getInstance(affectedTuid);
-      EObject _resolveEObjectFromTuid = this.correspondenceModel.resolveEObjectFromTuid(_instance);
+      if (((sucStr == null) || (sucStr == ""))) {
+        return;
+      }
+      String affectedTuid = CAEXIntraConsistencyTools.generateTuidFromPath(this.correspondenceModel, ie, sucStr);
+      EObject _resolveEObjectFromTuid = this.correspondenceModel.resolveEObjectFromTuid(Tuid.getInstance(affectedTuid));
       CAEXObject suc = ((CAEXObject) _resolveEObjectFromTuid);
-      boolean _notEquals = (!Objects.equal(suc, null));
-      if (_notEquals) {
+      if ((suc != null)) {
         _routinesFacade.addCAEXCorrespondence(ie, suc);
       }
     }
@@ -51,8 +49,8 @@ public class NewCorrespondenceCloneProtoRoutine extends AbstractRepairRoutineRea
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine NewCorrespondenceCloneProtoRoutine with input:");
-    getLogger().debug("   InternalElement: " + this.ie);
-    getLogger().debug("   String: " + this.sucStr);
+    getLogger().debug("   ie: " + this.ie);
+    getLogger().debug("   sucStr: " + this.sucStr);
     
     userExecution.callRoutine1(ie, sucStr, actionsFacade);
     

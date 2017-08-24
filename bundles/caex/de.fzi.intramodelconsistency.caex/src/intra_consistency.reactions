@@ -19,10 +19,11 @@ reaction CloneRefAdded {
 routine newCorrespondenceCloneProto(CAEX::InternalElement ie, String sucStr) {
 	action {		
 		call{
-			println("addingCorrespondance")
-			var affectedTuid = CAEXIntraConsistencyTools.GenTuidFromPath(correspondenceModel,ie,sucStr);			
+			if(sucStr === null || sucStr === "") return;
+			//Add correspondence
+			var affectedTuid = CAEXIntraConsistencyTools.generateTuidFromPath(correspondenceModel,ie,sucStr);			
 			var suc = correspondenceModel.resolveEObjectFromTuid(Tuid.getInstance(affectedTuid)) as CAEXObject;
-			if(suc != null)
+			if(suc !== null)
 				addCAEXCorrespondence(ie,suc);
 		}
 	}

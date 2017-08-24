@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CAEXFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://org.automationml.caex" FileName="model.caex">
+  <InstanceHierarchy Name="InstanceHierarchy_1">
+    <InternalElement Name="InternalElement_1" RefBaseSystemUnitPath=""/>
+  </InstanceHierarchy>
+  <SystemUnitClassLib Name="SysUCL">
+    <AdditionalInformation xsi:type="SystemUnitClassType" Name="SysUClass_1"/>
+    <SystemUnitClass Name="SysUClass_3"/>
+  </SystemUnitClassLib>
+</CAEXFile>

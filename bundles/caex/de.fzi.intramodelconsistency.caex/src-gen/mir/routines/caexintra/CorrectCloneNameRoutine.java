@@ -30,8 +30,7 @@ public class CorrectCloneNameRoutine extends AbstractRepairRoutineRealization {
     
     public void update0Element(final SystemUnitClass change, final String newValue, final InternalElement clon) {
       clon.setRefBaseSystemUnitPath(newValue);
-      String _refBaseSystemUnitPath = clon.getRefBaseSystemUnitPath();
-      System.out.println(_refBaseSystemUnitPath);
+      System.out.println(clon.getRefBaseSystemUnitPath());
     }
   }
   
@@ -48,13 +47,13 @@ public class CorrectCloneNameRoutine extends AbstractRepairRoutineRealization {
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CorrectCloneNameRoutine with input:");
-    getLogger().debug("   SystemUnitClass: " + this.change);
-    getLogger().debug("   String: " + this.newValue);
+    getLogger().debug("   change: " + this.change);
+    getLogger().debug("   newValue: " + this.newValue);
     
-    InternalElement clon = getCorrespondingElement(
+    CAEX.InternalElement clon = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceClon(change, newValue), // correspondence source supplier
-    	InternalElement.class,
-    	(InternalElement _element) -> true, // correspondence precondition checker
+    	CAEX.InternalElement.class,
+    	(CAEX.InternalElement _element) -> true, // correspondence precondition checker
     	null);
     if (clon == null) {
     	return;

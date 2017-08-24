@@ -10,20 +10,15 @@ import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 class DisplayFileNameChangeReaction extends AbstractReactionRealization {
-  public DisplayFileNameChangeReaction(final UserInteracting userInteracting) {
-    super(userInteracting);
-  }
-  
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<CAEXFile, String> typedChange = (ReplaceSingleValuedEAttribute<CAEXFile, String>)change;
-    CAEXFile affectedEObject = typedChange.getAffectedEObject();
+    ReplaceSingleValuedEAttribute<CAEX.CAEXFile, java.lang.String> typedChange = (ReplaceSingleValuedEAttribute<CAEX.CAEXFile, java.lang.String>)change;
+    CAEX.CAEXFile affectedEObject = typedChange.getAffectedEObject();
     EAttribute affectedFeature = typedChange.getAffectedFeature();
-    String oldValue = typedChange.getOldValue();
-    String newValue = typedChange.getNewValue();
+    java.lang.String oldValue = typedChange.getOldValue();
+    java.lang.String newValue = typedChange.getNewValue();
     mir.routines.caexintra.RoutinesFacade routinesFacade = new mir.routines.caexintra.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsCaexToCaex.caexintra.DisplayFileNameChangeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.caexintra.DisplayFileNameChangeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
@@ -34,17 +29,17 @@ class DisplayFileNameChangeReaction extends AbstractReactionRealization {
   }
   
   private boolean checkChangeProperties(final EChange change) {
-    ReplaceSingleValuedEAttribute<CAEXFile, String> relevantChange = (ReplaceSingleValuedEAttribute<CAEXFile, String>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof CAEXFile)) {
+    ReplaceSingleValuedEAttribute<CAEX.CAEXFile, java.lang.String> relevantChange = (ReplaceSingleValuedEAttribute<CAEX.CAEXFile, java.lang.String>)change;
+    if (!(relevantChange.getAffectedEObject() instanceof CAEX.CAEXFile)) {
     	return false;
     }
     if (!relevantChange.getAffectedFeature().getName().equals("fileName")) {
     	return false;
     }
-    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof String)) {
+    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof java.lang.String)) {
     	return false;
     }
-    if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof String)) {
+    if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof java.lang.String)) {
     	return false;
     }
     return true;

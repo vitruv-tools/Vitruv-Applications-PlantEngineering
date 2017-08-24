@@ -41,8 +41,8 @@ public class AddCAEXCorrespondenceRoutine extends AbstractRepairRoutineRealizati
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine AddCAEXCorrespondenceRoutine with input:");
-    getLogger().debug("   CAEXObject: " + this.a);
-    getLogger().debug("   CAEXObject: " + this.b);
+    getLogger().debug("   a: " + this.a);
+    getLogger().debug("   b: " + this.b);
     
     addCorrespondenceBetween(userExecution.getElement1(a, b), userExecution.getElement2(a, b), "");
     
