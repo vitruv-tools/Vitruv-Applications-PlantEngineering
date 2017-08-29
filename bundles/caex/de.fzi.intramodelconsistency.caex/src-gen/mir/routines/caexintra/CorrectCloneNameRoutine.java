@@ -2,6 +2,7 @@ package mir.routines.caexintra;
 
 import CAEX.InternalElement;
 import CAEX.SystemUnitClass;
+import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools;
 import java.io.IOException;
 import mir.routines.caexintra.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -29,8 +30,7 @@ public class CorrectCloneNameRoutine extends AbstractRepairRoutineRealization {
     }
     
     public void update0Element(final SystemUnitClass change, final String newValue, final InternalElement clon) {
-      clon.setRefBaseSystemUnitPath(newValue);
-      System.out.println(clon.getRefBaseSystemUnitPath());
+      clon.setRefBaseSystemUnitPath(CAEXIntraConsistencyTools.generatePathFromTuid(this.correspondenceModel, change, this.correspondenceModel.calculateTuidFromEObject(change)));
     }
   }
   

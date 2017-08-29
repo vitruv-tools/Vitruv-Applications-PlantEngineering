@@ -48,9 +48,8 @@ routine correctCloneName(CAEX::SystemUnitClass change, String newValue){
 		}
 	action {		
 		update clon {
-			clon.refBaseSystemUnitPath = newValue;
-			System.out.println(clon.refBaseSystemUnitPath)
-		}  				
+			clon.refBaseSystemUnitPath = CAEXIntraConsistencyTools.generatePathFromTuid(correspondenceModel,change,correspondenceModel.calculateTuidFromEObject(change))
+		}
 	}
 }
 

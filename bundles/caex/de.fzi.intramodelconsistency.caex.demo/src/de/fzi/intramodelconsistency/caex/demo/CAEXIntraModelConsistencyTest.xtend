@@ -45,8 +45,8 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 		rootElement.saveAndSynchronizeChanges
 		
 		val correspondences = correspondenceModel.allCorrespondences
-		var equ1 = correspondences.get(0).ATuids.get(0).equals(correspondenceModel.calculateTuidFromEObject(intElem))
-		var equ2 = correspondences.get(0).BTuids.get(0).equals(correspondenceModel.calculateTuidFromEObject(sysClass))
+		val equ1 = correspondences.get(0).ATuids.get(0).equals(correspondenceModel.calculateTuidFromEObject(intElem))
+		val equ2 = correspondences.get(0).BTuids.get(0).equals(correspondenceModel.calculateTuidFromEObject(sysClass))
 		
 		assertEquals(1,correspondences.length)
 		assertTrue(equ1 && equ2)
@@ -57,16 +57,16 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 		
 		var targetElem = rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
 									.internalElement.findFirst[it.name=="InternalElement_1"]
-		targetElem.refBaseSystemUnitPath = "SysUCL/SysUClass_3"
+		targetElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
 		rootElement.saveAndSynchronizeChanges
 		
 		rootElement.systemUnitClassLib.findFirst[name=="SysUCL"]
-					.systemUnitClass.findFirst[name=="SysUClass_3"].name = "SysUClassNameChanged"
+					.systemUnitClass.findFirst[name=="SysUClass_1"].name = "SysUClassNameChanged"
 		rootElement.saveAndSynchronizeChanges			
 		
-		rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
-									.internalElement.findFirst[it.name=="InternalElement_1"].refBaseSystemUnitPath = "SysUClassNameChanged"
-		
-		assertEquals("SysUClassNameChanged", targetElem.refBaseSystemUnitPath)
+		targetElem = rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
+									.internalElement.findFirst[it.name=="InternalElement_1"]
+									
+		assertEquals("SysUCL/SysUClass_1", targetElem.refBaseSystemUnitPath)
 	}
 }

@@ -4,7 +4,7 @@
     <InternalElement Name="InternalElement_1" RefBaseSystemUnitPath=""/>
   </InstanceHierarchy>
   <SystemUnitClassLib Name="SysUCL">
-    <AdditionalInformation xsi:type="SystemUnitClassType" Name="SysUClass_1"/>
+    <SystemUnitClass Name="SysUClass_1"/>
     <SystemUnitClass Name="SysUClass_3"/>
   </SystemUnitClassLib>
 </CAEXFile>
