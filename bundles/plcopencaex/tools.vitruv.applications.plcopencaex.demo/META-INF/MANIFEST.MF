@@ -25,4 +25,4 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.monitorededitor,
  tools.vitruv.domains.plcopen,
  tools.vitruv.domains.caex,
- tools.vitruv.domains.emf
+ tools.vitruv.extensions.emf;bundle-version="0.2.0"

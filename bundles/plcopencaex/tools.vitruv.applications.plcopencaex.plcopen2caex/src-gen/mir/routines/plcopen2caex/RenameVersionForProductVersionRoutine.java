@@ -25,8 +25,7 @@ public class RenameVersionForProductVersionRoutine extends AbstractRepairRoutine
     }
     
     public void update0Element(final FileHeaderType fileHeaderType, final Version version) {
-      String _productVersion = fileHeaderType.getProductVersion();
-      version.setValue(_productVersion);
+      version.setValue(fileHeaderType.getProductVersion());
     }
     
     public EObject getCorrepondenceSourceVersion(final FileHeaderType fileHeaderType) {
@@ -43,22 +42,26 @@ public class RenameVersionForProductVersionRoutine extends AbstractRepairRoutine
   
   private FileHeaderType fileHeaderType;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameVersionForProductVersionRoutine with input:");
-    getLogger().debug("   FileHeaderType: " + this.fileHeaderType);
+    getLogger().debug("   fileHeaderType: " + this.fileHeaderType);
     
-    Version version = getCorrespondingElement(
+    CAEX.Version version = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceVersion(fileHeaderType), // correspondence source supplier
-    	Version.class,
-    	(Version _element) -> true, // correspondence precondition checker
-    	null);
+    	CAEX.Version.class,
+    	(CAEX.Version _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (version == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(version);
     // val updatedElement userExecution.getElement1(fileHeaderType, version);
     userExecution.update0Element(fileHeaderType, version);
     
     postprocessElements();
+    
+    return true;
   }
 }
