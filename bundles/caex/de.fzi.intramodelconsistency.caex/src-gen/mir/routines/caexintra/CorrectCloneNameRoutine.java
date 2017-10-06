@@ -45,7 +45,7 @@ public class CorrectCloneNameRoutine extends AbstractRepairRoutineRealization {
   
   private String newValue;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CorrectCloneNameRoutine with input:");
     getLogger().debug("   change: " + this.change);
     getLogger().debug("   newValue: " + this.newValue);
@@ -54,14 +54,18 @@ public class CorrectCloneNameRoutine extends AbstractRepairRoutineRealization {
     	userExecution.getCorrepondenceSourceClon(change, newValue), // correspondence source supplier
     	CAEX.InternalElement.class,
     	(CAEX.InternalElement _element) -> true, // correspondence precondition checker
-    	null);
+    	null, 
+    	false // asserted
+    	);
     if (clon == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(clon);
     // val updatedElement userExecution.getElement1(change, newValue, clon);
     userExecution.update0Element(change, newValue, clon);
     
     postprocessElements();
+    
+    return true;
   }
 }

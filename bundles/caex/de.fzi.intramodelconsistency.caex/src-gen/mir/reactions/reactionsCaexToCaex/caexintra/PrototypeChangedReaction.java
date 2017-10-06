@@ -13,49 +13,66 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 
 @SuppressWarnings("all")
 class PrototypeChangedReaction extends AbstractReactionRealization {
+  private ReplaceSingleValuedEAttribute<SystemUnitClass, String> replaceChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, java.lang.String> typedChange = (ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, java.lang.String>)change;
-    CAEX.SystemUnitClass affectedEObject = typedChange.getAffectedEObject();
-    EAttribute affectedFeature = typedChange.getAffectedFeature();
-    java.lang.String oldValue = typedChange.getOldValue();
-    java.lang.String newValue = typedChange.getNewValue();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    CAEX.SystemUnitClass affectedEObject = replaceChange.getAffectedEObject();
+    EAttribute affectedFeature = replaceChange.getAffectedFeature();
+    java.lang.String oldValue = replaceChange.getOldValue();
+    java.lang.String newValue = replaceChange.getNewValue();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.caexintra.RoutinesFacade routinesFacade = new mir.routines.caexintra.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return ReplaceSingleValuedEAttribute.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, java.lang.String> relevantChange = (ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, java.lang.String>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof CAEX.SystemUnitClass)) {
-    	return false;
-    }
-    if (!relevantChange.getAffectedFeature().getName().equals("name")) {
-    	return false;
-    }
-    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof java.lang.String)) {
-    	return false;
-    }
-    if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof java.lang.String)) {
-    	return false;
-    }
-    return true;
+  private void resetChanges() {
+    replaceChange = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof ReplaceSingleValuedEAttribute)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchReplaceChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
+  }
+  
+  private boolean matchReplaceChange(final EChange change) {
+    if (change instanceof ReplaceSingleValuedEAttribute<?, ?>) {
+    	ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, java.lang.String> _localTypedChange = (ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, java.lang.String>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof CAEX.SystemUnitClass)) {
+    		return false;
+    	}
+    	if (!_localTypedChange.getAffectedFeature().getName().equals("name")) {
+    		return false;
+    	}
+    	if (_localTypedChange.isFromNonDefaultValue() && !(_localTypedChange.getOldValue() instanceof java.lang.String)) {
+    		return false;
+    	}
+    	if (_localTypedChange.isToNonDefaultValue() && !(_localTypedChange.getNewValue() instanceof java.lang.String)) {
+    		return false;
+    	}
+    	this.replaceChange = (ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, java.lang.String>) change;
+    	return true;
+    }
+    
+    return false;
   }
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {

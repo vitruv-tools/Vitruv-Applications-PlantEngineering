@@ -10,8 +10,8 @@ public class ExecutorCaexToCaex extends AbstractReactionsExecutor {
   }
   
   protected void setup() {
-    this.addReaction(mir.reactions.reactionsCaexToCaex.caexintra.CloneRefAddedReaction.getExpectedChangeType(), new mir.reactions.reactionsCaexToCaex.caexintra.CloneRefAddedReaction());
-    this.addReaction(mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction.getExpectedChangeType(), new mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction());
-    this.addReaction(mir.reactions.reactionsCaexToCaex.caexintra.DisplayFileNameChangeReaction.getExpectedChangeType(), new mir.reactions.reactionsCaexToCaex.caexintra.DisplayFileNameChangeReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.caexintra.CloneRefAddedReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.caexintra.DisplayFileNameChangeReaction());
   }
 }

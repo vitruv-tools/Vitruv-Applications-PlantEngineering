@@ -13,18 +13,18 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     super(reactionExecutionState, calledBy);
   }
   
-  public void newCorrespondenceCloneProto(final InternalElement ie, final String sucStr) {
+  public boolean newCorrespondenceCloneProto(final InternalElement ie, final String sucStr) {
     mir.routines.caexintra.NewCorrespondenceCloneProtoRoutine effect = new mir.routines.caexintra.NewCorrespondenceCloneProtoRoutine(this.executionState, calledBy, ie, sucStr);
-    effect.applyRoutine();
+    return effect.applyRoutine();
   }
   
-  public void addCAEXCorrespondence(final CAEXObject a, final CAEXObject b) {
+  public boolean addCAEXCorrespondence(final CAEXObject a, final CAEXObject b) {
     mir.routines.caexintra.AddCAEXCorrespondenceRoutine effect = new mir.routines.caexintra.AddCAEXCorrespondenceRoutine(this.executionState, calledBy, a, b);
-    effect.applyRoutine();
+    return effect.applyRoutine();
   }
   
-  public void correctCloneName(final SystemUnitClass change, final String newValue) {
+  public boolean correctCloneName(final SystemUnitClass change, final String newValue) {
     mir.routines.caexintra.CorrectCloneNameRoutine effect = new mir.routines.caexintra.CorrectCloneNameRoutine(this.executionState, calledBy, change, newValue);
-    effect.applyRoutine();
+    return effect.applyRoutine();
   }
 }

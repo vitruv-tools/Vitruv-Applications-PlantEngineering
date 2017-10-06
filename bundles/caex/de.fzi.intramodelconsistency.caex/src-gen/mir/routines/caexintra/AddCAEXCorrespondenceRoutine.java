@@ -39,7 +39,7 @@ public class AddCAEXCorrespondenceRoutine extends AbstractRepairRoutineRealizati
   
   private CAEXObject b;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine AddCAEXCorrespondenceRoutine with input:");
     getLogger().debug("   a: " + this.a);
     getLogger().debug("   b: " + this.b);
@@ -47,5 +47,7 @@ public class AddCAEXCorrespondenceRoutine extends AbstractRepairRoutineRealizati
     addCorrespondenceBetween(userExecution.getElement1(a, b), userExecution.getElement2(a, b), "");
     
     postprocessElements();
+    
+    return true;
   }
 }

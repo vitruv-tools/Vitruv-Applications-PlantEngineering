@@ -47,7 +47,7 @@ public class NewCorrespondenceCloneProtoRoutine extends AbstractRepairRoutineRea
   
   private String sucStr;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine NewCorrespondenceCloneProtoRoutine with input:");
     getLogger().debug("   ie: " + this.ie);
     getLogger().debug("   sucStr: " + this.sucStr);
@@ -55,5 +55,7 @@ public class NewCorrespondenceCloneProtoRoutine extends AbstractRepairRoutineRea
     userExecution.callRoutine1(ie, sucStr, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

@@ -13,9 +13,9 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	private static val MODEL_FILE_EXTENSION = "caex";
 	private static val MODEL_NAME = "model";
 
-	override protected boolean unresolveChanges() {
-		return false;
-	}
+//	override protected boolean unresolveChanges() { //TODO Sofia: evtl. nicht mehr relevant, muss getestet werden
+//		return false;
+//	}
 
 	private def String getProjectModelPath(String modelName) {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
