@@ -14,13 +14,14 @@ import tools.vitruv.domains.caex.CAEXDomainProvider
 import tools.vitruv.domains.caex.CAEXDomain
 import tools.vitruv.framework.domains.VitruvDomain
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyChangePropagationSpecification
+import org.eclipse.core.resources.ResourcesPlugin
 
 class CAEXProjectGeneration{
 	
 	def createProjectAndVsum() {
 		TuidManager.instance.reinitialize();
-        val project = createTestProject("caexProject");
-        val virtualModel = createVirtualModel("caexProjectVsum");
+        val project = createTestProject("testProject");
+        val virtualModel = createVirtualModel("testProjectVsum");
         virtualModel.userInteractor = new UserInteractor();
 		val VitruviusEmfBuilderApplicator emfBuilder = new VitruviusEmfBuilderApplicator();
 		emfBuilder.addToProject(project , virtualModel.folder, #[CAEXDomain.FILE_EXTENSION]);
@@ -30,7 +31,10 @@ class CAEXProjectGeneration{
 		
 	private def InternalVirtualModel createVirtualModel(String vsumName) {
 		val metamodels = this.getDomains();
-		val virtualModel = TestUtil.createVirtualModel(vsumName, false, metamodels, createChangePropagationSpecifications(), new UserInteractor());
+		val project = ResourcesPlugin.workspace.root.getProject(vsumName);
+		project.create(null);
+    	project.open(null);
+		val virtualModel = TestUtil.createVirtualModel(project.location.toFile, false, metamodels, createChangePropagationSpecifications(), new UserInteractor());
 		return virtualModel;
 	}
 	
