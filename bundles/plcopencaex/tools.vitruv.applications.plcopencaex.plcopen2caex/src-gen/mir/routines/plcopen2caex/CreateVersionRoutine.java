@@ -1,7 +1,6 @@
 package mir.routines.plcopen2caex;
 
 import CAEX.Version;
-import CAEX.impl.CAEXFactoryImpl;
 import java.io.IOException;
 import mir.routines.plcopen2caex.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -39,14 +38,17 @@ public class CreateVersionRoutine extends AbstractRepairRoutineRealization {
   
   private FileHeaderType fileHeaderType;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateVersionRoutine with input:");
-    getLogger().debug("   FileHeaderType: " + this.fileHeaderType);
+    getLogger().debug("   fileHeaderType: " + this.fileHeaderType);
     
-    Version version = CAEXFactoryImpl.eINSTANCE.createVersion();
+    CAEX.Version version = CAEX.impl.CAEXFactoryImpl.eINSTANCE.createVersion();
+    notifyObjectCreated(version);
     
     addCorrespondenceBetween(userExecution.getElement1(fileHeaderType, version), userExecution.getElement2(fileHeaderType, version), "");
     
     postprocessElements();
+    
+    return true;
   }
 }

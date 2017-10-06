@@ -10,8 +10,7 @@ import tools.vitruv.domains.plcopen.PLCOpenDomainProvider;
  */
 public abstract class AbstractChangePropagationSpecificationPLCOpenToCaex extends CompositeChangePropagationSpecification {
 	public AbstractChangePropagationSpecificationPLCOpenToCaex() {
-		super(new tools.vitruv.framework.userinteraction.impl.UserInteractor(),
-			new PLCOpenDomainProvider().getDomain(), 
+		super(new PLCOpenDomainProvider().getDomain(), 
 			new CAEXDomainProvider().getDomain());
 		setup();
 	}
@@ -21,7 +20,7 @@ public abstract class AbstractChangePropagationSpecificationPLCOpenToCaex extend
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {
-		this.addChangeMainprocessor(new mir.reactions.reactionsPLCOpenToCaex.plcopen2caex.ExecutorPLCOpenToCaex(getUserInteracting()));
+		this.addChangeMainprocessor(new mir.reactions.reactionsPLCOpenToCaex.plcopen2caex.ExecutorPLCOpenToCaex());
 	}
 	
 }

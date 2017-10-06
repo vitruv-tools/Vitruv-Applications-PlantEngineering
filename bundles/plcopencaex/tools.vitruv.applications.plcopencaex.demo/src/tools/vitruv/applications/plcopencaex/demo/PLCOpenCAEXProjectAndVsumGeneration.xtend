@@ -16,6 +16,7 @@ import tools.vitruv.domains.plcopen.PLCOpenDomain
 import tools.vitruv.domains.caex.CAEXDomainProvider
 import tools.vitruv.domains.caex.CAEXDomain
 import tools.vitruv.framework.domains.VitruvDomain
+import org.eclipse.core.resources.ResourcesPlugin
 
 class PLCOpenCAEXProjectAndVsumGeneration {
 	
@@ -25,14 +26,19 @@ class PLCOpenCAEXProjectAndVsumGeneration {
         val virtualModel = createVirtualModel("testProjectVsum");
         virtualModel.userInteractor = new UserInteractor();
 		val VitruviusEmfBuilderApplicator emfBuilder = new VitruviusEmfBuilderApplicator();
-		emfBuilder.addToProject(project , virtualModel.getName(), #[PLCOpenDomain.FILE_EXTENSION, CAEXDomain.FILE_EXTENSION]);
+		emfBuilder.addToProject(project , virtualModel.folder, #[PLCOpenDomain.FILE_EXTENSION, CAEXDomain.FILE_EXTENSION]);
 		// build the project
 		ProjectBuildUtils.issueIncrementalBuild(project, VitruviusEmfBuilder.BUILDER_ID);
 	}
 	
 	private def InternalVirtualModel createVirtualModel(String vsumName) {
 		val metamodels = this.getDomains();
-		val virtualModel = TestUtil.createVirtualModel(vsumName, false, metamodels, createChangePropagationSpecifications());
+		val project = ResourcesPlugin.workspace.root.getProject(vsumName);
+		project.create(null);
+    	project.open(null);
+		val virtualModel = TestUtil.createVirtualModel(project.location.toFile, false, metamodels, createChangePropagationSpecifications(),
+			new UserInteractor()
+		);
 		return virtualModel;
 	}
 	
@@ -47,7 +53,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 	protected def IProject createTestProject(String projectName) throws CoreException {
         var project = TestUtil.getProjectByName(projectName);
         if (!project.exists()) {
-            project = TestUtil.createProject(projectName, false);
+            project = TestUtil.createPlatformProject(projectName, false);
         }
    		return project;
 	}

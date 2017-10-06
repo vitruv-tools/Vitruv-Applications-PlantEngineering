@@ -12,21 +12,18 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     super(reactionExecutionState, calledBy);
   }
   
-  public void createCaexRoot(final DocumentRoot plcopenRoot) {
-    mir.routines.plcopen2caex.CreateCaexRootRoutine effect = new mir.routines.plcopen2caex.CreateCaexRootRoutine(this.executionState, calledBy,
-    	plcopenRoot);
-    effect.applyRoutine();
+  public boolean createCaexRoot(final DocumentRoot plcopenRoot) {
+    mir.routines.plcopen2caex.CreateCaexRootRoutine effect = new mir.routines.plcopen2caex.CreateCaexRootRoutine(this.executionState, calledBy, plcopenRoot);
+    return effect.applyRoutine();
   }
   
-  public void createVersion(final FileHeaderType fileHeaderType) {
-    mir.routines.plcopen2caex.CreateVersionRoutine effect = new mir.routines.plcopen2caex.CreateVersionRoutine(this.executionState, calledBy,
-    	fileHeaderType);
-    effect.applyRoutine();
+  public boolean createVersion(final FileHeaderType fileHeaderType) {
+    mir.routines.plcopen2caex.CreateVersionRoutine effect = new mir.routines.plcopen2caex.CreateVersionRoutine(this.executionState, calledBy, fileHeaderType);
+    return effect.applyRoutine();
   }
   
-  public void renameVersionForProductVersion(final FileHeaderType fileHeaderType) {
-    mir.routines.plcopen2caex.RenameVersionForProductVersionRoutine effect = new mir.routines.plcopen2caex.RenameVersionForProductVersionRoutine(this.executionState, calledBy,
-    	fileHeaderType);
-    effect.applyRoutine();
+  public boolean renameVersionForProductVersion(final FileHeaderType fileHeaderType) {
+    mir.routines.plcopen2caex.RenameVersionForProductVersionRoutine effect = new mir.routines.plcopen2caex.RenameVersionForProductVersionRoutine(this.executionState, calledBy, fileHeaderType);
+    return effect.applyRoutine();
   }
 }

@@ -1,7 +1,6 @@
 package mir.routines.plcopen2caex;
 
 import CAEX.CAEXFile;
-import CAEX.impl.CAEXFactoryImpl;
 import com.google.common.base.Objects;
 import java.io.IOException;
 import mir.routines.plcopen2caex.RoutinesFacade;
@@ -61,22 +60,26 @@ public class CreateCaexRootRoutine extends AbstractRepairRoutineRealization {
   
   private DocumentRoot plcopenRoot;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateCaexRootRoutine with input:");
-    getLogger().debug("   DocumentRoot: " + this.plcopenRoot);
+    getLogger().debug("   plcopenRoot: " + this.plcopenRoot);
     
     if (!userExecution.checkMatcherPrecondition1(plcopenRoot)) {
-    	return;
+    	return false;
     }
-    CAEXFile caexFile = CAEXFactoryImpl.eINSTANCE.createCAEXFile();
+    CAEX.CAEXFile caexFile = CAEX.impl.CAEXFactoryImpl.eINSTANCE.createCAEXFile();
+    notifyObjectCreated(caexFile);
     
     addCorrespondenceBetween(userExecution.getElement1(plcopenRoot, caexFile), userExecution.getElement2(plcopenRoot, caexFile), "");
     
-    CAEX.DocumentRoot caexRoot = CAEXFactoryImpl.eINSTANCE.createDocumentRoot();
+    CAEX.DocumentRoot caexRoot = CAEX.impl.CAEXFactoryImpl.eINSTANCE.createDocumentRoot();
+    notifyObjectCreated(caexRoot);
     userExecution.updateCaexRootElement(plcopenRoot, caexFile, caexRoot);
     
     addCorrespondenceBetween(userExecution.getElement3(plcopenRoot, caexFile, caexRoot), userExecution.getElement4(plcopenRoot, caexFile, caexRoot), "");
     
     postprocessElements();
+    
+    return true;
   }
 }
