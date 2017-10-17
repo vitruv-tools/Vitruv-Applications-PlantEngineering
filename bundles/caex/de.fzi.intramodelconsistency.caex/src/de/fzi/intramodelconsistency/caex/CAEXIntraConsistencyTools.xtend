@@ -1,6 +1,5 @@
 package de.fzi.intramodelconsistency.caex
 
-import CAEX.DocumentRoot
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.correspondence.CorrespondenceModel
@@ -8,6 +7,7 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.tuid.Tuid
 import CAEX.CAEXObject
+import CAEX.CAEXFile
 
 class CAEXIntraConsistencyTools {	
 
@@ -18,8 +18,8 @@ class CAEXIntraConsistencyTools {
 
 		
 		if(path === null || path == "") return null		
-		var root = EcoreUtil.getRootContainer(anyElem) as DocumentRoot
-		var fileTuid = cm.calculateTuidFromEObject(root.CAEXFile)
+		var root = EcoreUtil.getRootContainer(anyElem) as CAEXFile
+		var fileTuid = cm.calculateTuidFromEObject(root)
 		
 		var split = path.split("/")
 		
@@ -34,7 +34,7 @@ class CAEXIntraConsistencyTools {
 	}
 	
 	static def String generatePathFromTuid(CorrespondenceModel cm, EObject anyElem, String tuid) {		 
-		 var root = cm.calculateTuidFromEObject((EcoreUtil.getRootContainer(anyElem) as DocumentRoot).CAEXFile).toString
+		 var root = cm.calculateTuidFromEObject(EcoreUtil.getRootContainer(anyElem) as CAEXFile).toString
 		 if(tuid === null || !tuid.startsWith(root)) return null
 		 var splitPath = tuid.substring(root.length).split(TUID_SEGMENT_SEPARATOR)
 		 var path = ""

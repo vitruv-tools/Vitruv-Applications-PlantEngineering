@@ -26,7 +26,7 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	}
 
 	protected def CAEXFile getRootElement() {
-		return (MODEL_NAME.projectModelPath.firstRootElement as DocumentRoot).CAEXFile
+		return (MODEL_NAME.projectModelPath.firstRootElement as CAEXFile)
 	}
 
 	protected def DocumentRoot getRoot() {
@@ -45,7 +45,7 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	override protected setup() {
 		//val rootObject = createInitialModel
 		val docRoot = preloadExistingModel("resources/My.caex")		
-		createAndSynchronizeModel(MODEL_NAME.projectModelPath,docRoot)
+		createAndSynchronizeModel(MODEL_NAME.projectModelPath,docRoot.CAEXFile)
 	}
 	
 	private def CAEXFile createInitialModel() {
