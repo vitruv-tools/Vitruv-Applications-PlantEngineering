@@ -31,8 +31,8 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 		
 		sysLib.name="SUCL"
 		sysClass.name = "SUC"
-		instHier.name = "instanceHierarchy#1"
-		intElem.name = "internalElem#1"
+		instHier.name = "instanceHierarchy1"
+		intElem.name = "internalElem1"
 		
 		sysLib.systemUnitClass.add(sysClass)
 		instHier.internalElement.add(intElem)
@@ -67,6 +67,27 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 		targetElem = rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
 									.internalElement.findFirst[it.name=="InternalElement_1"]
 									
-		assertEquals("SysUCL/SysUClass_1", targetElem.refBaseSystemUnitPath)
+		assertEquals("SysUCL/SysUClassNameChanged", targetElem.refBaseSystemUnitPath)
+	}
+	
+	@Test
+	public def testOneToNCorrespondence() {
+		//Add additional InternalElement
+		var intElem = factory.createInternalElement
+		intElem.name = "internalElement_2"
+		rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"].internalElement.add(intElem)
+		
+		//Create correspondences
+		rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"].internalElement.forEach[it.refBaseSystemUnitPath = "SysUCL/SysUClass_1"]
+		rootElement.saveAndSynchronizeChanges
+		
+		//Change Name of SystemUnitClass
+		rootElement.systemUnitClassLib.findFirst[true].systemUnitClass.findFirst[true].name="TestChange"
+		rootElement.saveAndSynchronizeChanges
+		
+		//Check if Reactions were executed correctly
+		rootElement.instanceHierarchy.findFirst[true].internalElement
+									.forEach[assertEquals("SysUCL/TestChange",it.refBaseSystemUnitPath)]
+
 	}
 }

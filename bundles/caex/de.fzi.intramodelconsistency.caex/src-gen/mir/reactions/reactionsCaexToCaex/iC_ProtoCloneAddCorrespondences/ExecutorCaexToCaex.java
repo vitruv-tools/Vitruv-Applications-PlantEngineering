@@ -1,4 +1,4 @@
-package mir.reactions.reactionsCaexToCaex.caexintra;
+package mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences;
 
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
 
@@ -10,8 +10,7 @@ public class ExecutorCaexToCaex extends AbstractReactionsExecutor {
   }
   
   protected void setup() {
-    this.addReaction(new mir.reactions.reactionsCaexToCaex.caexintra.CloneRefAddedReaction());
-    this.addReaction(new mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction());
-    this.addReaction(new mir.reactions.reactionsCaexToCaex.caexintra.DisplayFileNameChangeReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.CloneRefAddedReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.DisplayFileNameChangeReaction());
   }
 }

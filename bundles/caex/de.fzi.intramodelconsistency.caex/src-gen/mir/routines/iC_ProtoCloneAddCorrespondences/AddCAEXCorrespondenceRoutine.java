@@ -1,8 +1,8 @@
-package mir.routines.caexintra;
+package mir.routines.iC_ProtoCloneAddCorrespondences;
 
 import CAEX.CAEXObject;
 import java.io.IOException;
-import mir.routines.caexintra.RoutinesFacade;
+import mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
@@ -30,8 +30,8 @@ public class AddCAEXCorrespondenceRoutine extends AbstractRepairRoutineRealizati
   
   public AddCAEXCorrespondenceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final CAEXObject a, final CAEXObject b) {
     super(reactionExecutionState, calledBy);
-    this.userExecution = new mir.routines.caexintra.AddCAEXCorrespondenceRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.caexintra.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.iC_ProtoCloneAddCorrespondences.AddCAEXCorrespondenceRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade(getExecutionState(), this);
     this.a = a;this.b = b;
   }
   

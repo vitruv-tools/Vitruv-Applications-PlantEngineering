@@ -1,10 +1,10 @@
-package mir.routines.caexintra;
+package mir.routines.iC_ProtoCloneAddCorrespondences;
 
 import CAEX.CAEXObject;
 import CAEX.InternalElement;
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools;
 import java.io.IOException;
-import mir.routines.caexintra.RoutinesFacade;
+import mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -38,8 +38,8 @@ public class NewCorrespondenceCloneProtoRoutine extends AbstractRepairRoutineRea
   
   public NewCorrespondenceCloneProtoRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final InternalElement ie, final String sucStr) {
     super(reactionExecutionState, calledBy);
-    this.userExecution = new mir.routines.caexintra.NewCorrespondenceCloneProtoRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.caexintra.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.iC_ProtoCloneAddCorrespondences.NewCorrespondenceCloneProtoRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade(getExecutionState(), this);
     this.ie = ie;this.sucStr = sucStr;
   }
   

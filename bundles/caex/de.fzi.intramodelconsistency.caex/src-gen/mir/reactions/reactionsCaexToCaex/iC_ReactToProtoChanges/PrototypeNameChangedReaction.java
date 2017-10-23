@@ -1,8 +1,12 @@
-package mir.reactions.reactionsCaexToCaex.caexintra;
+package mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges;
 
+import CAEX.CAEXFactory;
+import CAEX.InternalElement;
 import CAEX.SystemUnitClass;
-import mir.routines.caexintra.RoutinesFacade;
+import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools;
+import mir.routines.iC_ReactToProtoChanges.RoutinesFacade;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -12,7 +16,7 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
-class PrototypeChangedReaction extends AbstractReactionRealization {
+class PrototypeNameChangedReaction extends AbstractReactionRealization {
   private ReplaceSingleValuedEAttribute<SystemUnitClass, String> replaceChange;
   
   private int currentlyMatchedChange;
@@ -28,8 +32,8 @@ class PrototypeChangedReaction extends AbstractReactionRealization {
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.caexintra.RoutinesFacade routinesFacade = new mir.routines.caexintra.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.caexintra.PrototypeChangedReaction.ActionUserExecution(this.executionState, this);
+    mir.routines.iC_ReactToProtoChanges.RoutinesFacade routinesFacade = new mir.routines.iC_ReactToProtoChanges.RoutinesFacade(this.executionState, this);
+    mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeNameChangedReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeNameChangedReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
     
     resetChanges();
@@ -81,7 +85,12 @@ class PrototypeChangedReaction extends AbstractReactionRealization {
     }
     
     public void callRoutine1(final SystemUnitClass affectedEObject, final EAttribute affectedFeature, final String oldValue, final String newValue, @Extension final RoutinesFacade _routinesFacade) {
-      _routinesFacade.correctCloneName(affectedEObject, newValue);
+      if ((affectedEObject instanceof InternalElement)) {
+        return;
+      }
+      final String newRefBasePath = CAEXIntraConsistencyTools.generatePathFromTuid(this.correspondenceModel, affectedEObject, this.correspondenceModel.calculateTuidFromEObject(affectedEObject));
+      final EStructuralFeature feature = CAEXFactory.eINSTANCE.createInternalElement().eClass().getEStructuralFeature("refBaseSystemUnitPath");
+      _routinesFacade.correctSystemUnitClassClones(affectedEObject, feature, newRefBasePath);
     }
   }
 }

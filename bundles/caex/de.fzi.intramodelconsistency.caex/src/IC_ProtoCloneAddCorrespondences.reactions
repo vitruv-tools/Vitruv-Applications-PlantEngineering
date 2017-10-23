@@ -4,7 +4,7 @@ import tools.vitruv.framework.tuid.Tuid
 
 import "http://org.automationml.caex" as CAEX
 
-reactions: caexintra
+reactions: IC_ProtoCloneAddCorrespondences
 in reaction to changes in CAEX
 execute actions in CAEX
 
@@ -35,29 +35,11 @@ routine addCAEXCorrespondence(CAEX::CAEXObject a,CAEX::CAEXObject b){
 	}
 }
 
-reaction PrototypeChanged {
-	after attribute replaced at CAEX::SystemUnitClass[name] 
-	call  {
-		correctCloneName(affectedEObject,newValue); 
-	}
-}
-
-routine correctCloneName(CAEX::SystemUnitClass change, String newValue){
-	match {
-		val clon = retrieve CAEX::InternalElement corresponding to change
-		}
-	action {		
-		update clon {
-			clon.refBaseSystemUnitPath = CAEXIntraConsistencyTools.generatePathFromTuid(correspondenceModel,change,correspondenceModel.calculateTuidFromEObject(change))
-		}
-	}
-}
-
 reaction DisplayFileNameChange {
 	after attribute replaced at CAEX::CAEXFile[fileName]
 	call {
 		System.out.println("FileNameChanged from '" + oldValue + "' to  '" + newValue + "'");
-	}
+	} 
 }
 
 

@@ -1,0 +1,55 @@
+import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools
+import org.eclipse.emf.ecore.EStructuralFeature
+import CAEX.CAEXFactory
+import CAEX.InternalElement
+
+import "http://org.automationml.caex" as CAEX
+
+reactions: IC_ReactToProtoChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+
+reaction PrototypeNameChanged {
+	after attribute replaced at CAEX::SystemUnitClass[name]
+	call  {
+		if((affectedEObject instanceof InternalElement)) return;
+		val newRefBasePath = CAEXIntraConsistencyTools.generatePathFromTuid(correspondenceModel,affectedEObject,correspondenceModel.calculateTuidFromEObject(affectedEObject))		
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("refBaseSystemUnitPath")
+		
+		correctSystemUnitClassClones(affectedEObject, feature, newRefBasePath); 
+	}
+}
+
+reaction PrototypeChangeModeChanged {
+	after attribute replaced at CAEX::SystemUnitClass[changeMode]
+	call {
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("changeMode")
+		
+		correctSystemUnitClassClones(affectedEObject, feature, newValue)
+	}
+}
+
+
+routine correctSystemUnitClassClones(CAEX::SystemUnitClass changedPrototype, plain EStructuralFeature as feature, plain Object as newValue){
+	match {
+		val clones = retrieve many CAEX::InternalElement corresponding to changedPrototype
+		}
+	action {	
+		call {
+			for(clon : clones){
+				updateFeature(clon, feature, newValue)				
+				clon.eResource.modified = true
+				}
+		}
+	}
+}
+
+routine updateFeature(EObject obj, plain EStructuralFeature as feature, plain Object as newValue){
+	action {
+		update obj {
+			if (obj.eIsSet(feature))
+				obj.eSet(feature, newValue)	
+		}
+	}
+}
