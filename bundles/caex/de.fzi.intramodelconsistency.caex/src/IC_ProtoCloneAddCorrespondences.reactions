@@ -38,8 +38,8 @@ routine addCAEXCorrespondence(CAEX::CAEXObject a,CAEX::CAEXObject b){
 reaction DisplayFileNameChange {
 	after attribute replaced at CAEX::CAEXFile[fileName]
 	call {
-		System.out.println("FileNameChanged from '" + oldValue + "' to  '" + newValue + "'");
-	} 
+		System.out.println("FileNameChanged from '" + oldValue + "' to  '" + newValue + "'");		
+	}
 }
 
 

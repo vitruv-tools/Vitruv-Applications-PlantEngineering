@@ -49,7 +49,7 @@ routine updateFeature(EObject obj, plain EStructuralFeature as feature, plain Ob
 	action {
 		update obj {
 			if (obj.eIsSet(feature))
-				obj.eSet(feature, newValue)	
+				obj.eSet(feature, newValue)
 		}
 	}
 }

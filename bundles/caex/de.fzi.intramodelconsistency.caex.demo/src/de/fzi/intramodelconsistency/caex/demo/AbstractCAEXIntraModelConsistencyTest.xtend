@@ -13,10 +13,6 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	private static val MODEL_FILE_EXTENSION = "caex";
 	private static val MODEL_NAME = "model";
 
-//	override protected boolean unresolveChanges() { //TODO Sofia: evtl. nicht mehr relevant, muss getestet werden
-//		return false;
-//	}
-
 	private def String getProjectModelPath(String modelName) {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
 	}
@@ -26,12 +22,16 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	}
 
 	protected def CAEXFile getRootElement() {
-		return (MODEL_NAME.projectModelPath.firstRootElement as CAEXFile)
+		return MODEL_NAME.projectModelPath.firstRootElement as CAEXFile
 	}
 
 	protected def DocumentRoot getRoot() {
 		val res = getModelResource(MODEL_NAME.projectModelPath)
 		return res.contents.get(0) as DocumentRoot 
+	}
+	
+	protected def CAEXFile getRootElementVirtualModel() {
+		virtualModel.getModelInstance(MODEL_NAME.projectModelPath.modelVuri).firstRootEObject as CAEXFile
 	}
 
 	override protected createChangePropagationSpecifications() {
@@ -43,18 +43,18 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	}
 	
 	override protected setup() {
-		//val rootObject = createInitialModel
-		val docRoot = preloadExistingModel("resources/My.caex")		
+		val docRoot = preloadExistingModel("resources/My.caex")	
 		createAndSynchronizeModel(MODEL_NAME.projectModelPath,docRoot.CAEXFile)
 	}
 	
-	private def CAEXFile createInitialModel() {
+	@Deprecated
+	private def DocumentRoot createInitialModel() {
 		val caexModel = CAEXFactory.eINSTANCE.createDocumentRoot;
         val caexFile = CAEXFactory.eINSTANCE.createCAEXFile;
         caexFile.fileName = "model"
         caexModel.CAEXFile = caexFile;
 	
-		return caexFile;
+		return caexModel;
 	}
 	
 	protected def CAEXFactory factory() {

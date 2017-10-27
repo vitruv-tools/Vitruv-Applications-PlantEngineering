@@ -14,12 +14,12 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 	
 	@Test
 	public def testChangingFileNameTwice() {
-		rootElement.fileName="Change1"
+		rootElement.fileName="1st Change"
 		rootElement.saveAndSynchronizeChanges
-		rootElement.fileName="Change2"
+		rootElement.fileName="2nd Change"
 		rootElement.saveAndSynchronizeChanges
 		
-		assertEquals(rootElement.fileName,"Change2")
+		assertEquals("2nd Change",rootElementVirtualModel.fileName)
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 					.systemUnitClass.findFirst[name=="SysUClass_1"].name = "SysUClassNameChanged"
 		rootElement.saveAndSynchronizeChanges			
 		
-		targetElem = rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
+		targetElem = rootElementVirtualModel.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
 									.internalElement.findFirst[it.name=="InternalElement_1"]
 									
 		assertEquals("SysUCL/SysUClassNameChanged", targetElem.refBaseSystemUnitPath)
@@ -86,7 +86,7 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 		rootElement.saveAndSynchronizeChanges
 		
 		//Check if Reactions were executed correctly
-		rootElement.instanceHierarchy.findFirst[true].internalElement
+		rootElementVirtualModel.instanceHierarchy.findFirst[true].internalElement
 									.forEach[assertEquals("SysUCL/TestChange",it.refBaseSystemUnitPath)]
 
 	}
