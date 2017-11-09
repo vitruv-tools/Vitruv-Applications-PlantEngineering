@@ -16,9 +16,9 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.correspondence,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.extensions.dslsruntime.reactions,
- tools.vitruv.extensions.dslsruntime.mapping,
  org.plcopen.xml.tc60201,
  org.automationml.caex,
  tools.vitruv.domains.plcopen,
- tools.vitruv.domains.caex
+ tools.vitruv.domains.caex,
+ tools.vitruv.extensions.dslsruntime.mappings;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
