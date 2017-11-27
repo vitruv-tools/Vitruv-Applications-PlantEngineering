@@ -1,9 +1,9 @@
-package mir.routines.iC_ReactToProtoChanges;
+package mir.routines.iC_ReactOnAttributeChanges;
 
 import CAEX.CAEXObject;
 import java.io.IOException;
 import java.util.Collection;
-import mir.routines.iC_ReactToProtoChanges.RoutinesFacade;
+import mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -43,8 +43,8 @@ public class UpdateFeatureRoutine extends AbstractRepairRoutineRealization {
   
   public UpdateFeatureRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final EObject obj, final EStructuralFeature feature, final Object newValue) {
     super(reactionExecutionState, calledBy);
-    this.userExecution = new mir.routines.iC_ReactToProtoChanges.UpdateFeatureRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.iC_ReactToProtoChanges.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.iC_ReactOnAttributeChanges.UpdateFeatureRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade(getExecutionState(), this);
     this.obj = obj;this.feature = feature;this.newValue = newValue;
   }
   

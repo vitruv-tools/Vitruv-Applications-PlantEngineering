@@ -1,8 +1,10 @@
-package mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences;
+package mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges;
 
-import CAEX.InternalElement;
-import mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade;
+import CAEX.Attribute;
+import CAEX.CAEXFactory;
+import mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -11,12 +13,9 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
-/**
- * * If a refBaseSystemunitPath is edited in InternalElement then remove old correspondences and create new 
- */
 @SuppressWarnings("all")
-class CloneRefAddedReaction extends AbstractReactionRealization {
-  private ReplaceSingleValuedEAttribute<InternalElement, String> replaceChange;
+class AttributeIDChangeReaction extends AbstractReactionRealization {
+  private ReplaceSingleValuedEAttribute<Attribute, String> replaceChange;
   
   private int currentlyMatchedChange;
   
@@ -24,15 +23,15 @@ class CloneRefAddedReaction extends AbstractReactionRealization {
     if (!checkPrecondition(change)) {
     	return;
     }
-    CAEX.InternalElement affectedEObject = replaceChange.getAffectedEObject();
+    CAEX.Attribute affectedEObject = replaceChange.getAffectedEObject();
     EAttribute affectedFeature = replaceChange.getAffectedFeature();
     java.lang.String oldValue = replaceChange.getOldValue();
     java.lang.String newValue = replaceChange.getNewValue();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade routinesFacade = new mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.CloneRefAddedReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.CloneRefAddedReaction.ActionUserExecution(this.executionState, this);
+    mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade routinesFacade = new mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade(this.executionState, this);
+    mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges.AttributeIDChangeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges.AttributeIDChangeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
     
     resetChanges();
@@ -58,11 +57,11 @@ class CloneRefAddedReaction extends AbstractReactionRealization {
   
   private boolean matchReplaceChange(final EChange change) {
     if (change instanceof ReplaceSingleValuedEAttribute<?, ?>) {
-    	ReplaceSingleValuedEAttribute<CAEX.InternalElement, java.lang.String> _localTypedChange = (ReplaceSingleValuedEAttribute<CAEX.InternalElement, java.lang.String>) change;
-    	if (!(_localTypedChange.getAffectedEObject() instanceof CAEX.InternalElement)) {
+    	ReplaceSingleValuedEAttribute<CAEX.Attribute, java.lang.String> _localTypedChange = (ReplaceSingleValuedEAttribute<CAEX.Attribute, java.lang.String>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof CAEX.Attribute)) {
     		return false;
     	}
-    	if (!_localTypedChange.getAffectedFeature().getName().equals("refBaseSystemUnitPath")) {
+    	if (!_localTypedChange.getAffectedFeature().getName().equals("iD")) {
     		return false;
     	}
     	if (_localTypedChange.isFromNonDefaultValue() && !(_localTypedChange.getOldValue() instanceof java.lang.String)) {
@@ -71,7 +70,7 @@ class CloneRefAddedReaction extends AbstractReactionRealization {
     	if (_localTypedChange.isToNonDefaultValue() && !(_localTypedChange.getNewValue() instanceof java.lang.String)) {
     		return false;
     	}
-    	this.replaceChange = (ReplaceSingleValuedEAttribute<CAEX.InternalElement, java.lang.String>) change;
+    	this.replaceChange = (ReplaceSingleValuedEAttribute<CAEX.Attribute, java.lang.String>) change;
     	return true;
     }
     
@@ -83,9 +82,9 @@ class CloneRefAddedReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final InternalElement affectedEObject, final EAttribute affectedFeature, final String oldValue, final String newValue, @Extension final RoutinesFacade _routinesFacade) {
-      _routinesFacade.removeCorrespondencesofSystemUnitClasses(affectedEObject);
-      _routinesFacade.newCorrespondenceCloneProto(affectedEObject, newValue);
+    public void callRoutine1(final Attribute affectedEObject, final EAttribute affectedFeature, final String oldValue, final String newValue, @Extension final RoutinesFacade _routinesFacade) {
+      final EStructuralFeature feature = CAEXFactory.eINSTANCE.createAttribute().eClass().getEStructuralFeature("iD");
+      _routinesFacade.correctAttributeCloneFeatures(affectedEObject, feature, newValue);
     }
   }
 }

@@ -19,6 +19,8 @@ public class CaexToCaexChangePropagationSpecification extends CompositeDecomposi
 	
 	private final List<Supplier<? extends ChangePropagationSpecification>> executors = Arrays.asList(
 		// begin generated executor list
+		mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges.ExecutorCaexToCaex::new,
+		
 		mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.ExecutorCaexToCaex::new,
 		
 		mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.ExecutorCaexToCaex::new

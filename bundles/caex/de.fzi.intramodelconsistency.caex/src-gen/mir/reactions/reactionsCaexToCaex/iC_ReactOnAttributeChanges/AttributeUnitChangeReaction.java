@@ -1,8 +1,10 @@
-package mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences;
+package mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges;
 
-import CAEX.CAEXFile;
-import mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade;
+import CAEX.Attribute;
+import CAEX.CAEXFactory;
+import mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -12,8 +14,8 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
-class DisplayFileNameChangeReaction extends AbstractReactionRealization {
-  private ReplaceSingleValuedEAttribute<CAEXFile, String> replaceChange;
+class AttributeUnitChangeReaction extends AbstractReactionRealization {
+  private ReplaceSingleValuedEAttribute<Attribute, String> replaceChange;
   
   private int currentlyMatchedChange;
   
@@ -21,15 +23,15 @@ class DisplayFileNameChangeReaction extends AbstractReactionRealization {
     if (!checkPrecondition(change)) {
     	return;
     }
-    CAEX.CAEXFile affectedEObject = replaceChange.getAffectedEObject();
+    CAEX.Attribute affectedEObject = replaceChange.getAffectedEObject();
     EAttribute affectedFeature = replaceChange.getAffectedFeature();
     java.lang.String oldValue = replaceChange.getOldValue();
     java.lang.String newValue = replaceChange.getNewValue();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade routinesFacade = new mir.routines.iC_ProtoCloneAddCorrespondences.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.DisplayFileNameChangeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.DisplayFileNameChangeReaction.ActionUserExecution(this.executionState, this);
+    mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade routinesFacade = new mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade(this.executionState, this);
+    mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges.AttributeUnitChangeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges.AttributeUnitChangeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
     
     resetChanges();
@@ -55,11 +57,11 @@ class DisplayFileNameChangeReaction extends AbstractReactionRealization {
   
   private boolean matchReplaceChange(final EChange change) {
     if (change instanceof ReplaceSingleValuedEAttribute<?, ?>) {
-    	ReplaceSingleValuedEAttribute<CAEX.CAEXFile, java.lang.String> _localTypedChange = (ReplaceSingleValuedEAttribute<CAEX.CAEXFile, java.lang.String>) change;
-    	if (!(_localTypedChange.getAffectedEObject() instanceof CAEX.CAEXFile)) {
+    	ReplaceSingleValuedEAttribute<CAEX.Attribute, java.lang.String> _localTypedChange = (ReplaceSingleValuedEAttribute<CAEX.Attribute, java.lang.String>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof CAEX.Attribute)) {
     		return false;
     	}
-    	if (!_localTypedChange.getAffectedFeature().getName().equals("fileName")) {
+    	if (!_localTypedChange.getAffectedFeature().getName().equals("unit")) {
     		return false;
     	}
     	if (_localTypedChange.isFromNonDefaultValue() && !(_localTypedChange.getOldValue() instanceof java.lang.String)) {
@@ -68,7 +70,7 @@ class DisplayFileNameChangeReaction extends AbstractReactionRealization {
     	if (_localTypedChange.isToNonDefaultValue() && !(_localTypedChange.getNewValue() instanceof java.lang.String)) {
     		return false;
     	}
-    	this.replaceChange = (ReplaceSingleValuedEAttribute<CAEX.CAEXFile, java.lang.String>) change;
+    	this.replaceChange = (ReplaceSingleValuedEAttribute<CAEX.Attribute, java.lang.String>) change;
     	return true;
     }
     
@@ -80,8 +82,9 @@ class DisplayFileNameChangeReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final CAEXFile affectedEObject, final EAttribute affectedFeature, final String oldValue, final String newValue, @Extension final RoutinesFacade _routinesFacade) {
-      System.out.println((((("FileNameChanged from \'" + oldValue) + "\' to  \'") + newValue) + "\'"));
+    public void callRoutine1(final Attribute affectedEObject, final EAttribute affectedFeature, final String oldValue, final String newValue, @Extension final RoutinesFacade _routinesFacade) {
+      final EStructuralFeature feature = CAEXFactory.eINSTANCE.createAttribute().eClass().getEStructuralFeature("unit");
+      _routinesFacade.correctAttributeCloneFeatures(affectedEObject, feature, newValue);
     }
   }
 }

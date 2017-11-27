@@ -1,9 +1,9 @@
-package mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges;
+package mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges;
 
+import CAEX.Attribute;
 import CAEX.CAEXFactory;
 import CAEX.ChangeMode;
-import CAEX.SystemUnitClass;
-import mir.routines.iC_ReactToProtoChanges.RoutinesFacade;
+import mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -14,12 +14,9 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
-/**
- * * On Prototype changeMode change also adjust correspondents 
- */
 @SuppressWarnings("all")
-class PrototypeChangeModeChangedReaction extends AbstractReactionRealization {
-  private ReplaceSingleValuedEAttribute<SystemUnitClass, ChangeMode> replaceChange;
+class AttributeChangeModeChangeReaction extends AbstractReactionRealization {
+  private ReplaceSingleValuedEAttribute<Attribute, ChangeMode> replaceChange;
   
   private int currentlyMatchedChange;
   
@@ -27,15 +24,15 @@ class PrototypeChangeModeChangedReaction extends AbstractReactionRealization {
     if (!checkPrecondition(change)) {
     	return;
     }
-    CAEX.SystemUnitClass affectedEObject = replaceChange.getAffectedEObject();
+    CAEX.Attribute affectedEObject = replaceChange.getAffectedEObject();
     EAttribute affectedFeature = replaceChange.getAffectedFeature();
     CAEX.ChangeMode oldValue = replaceChange.getOldValue();
     CAEX.ChangeMode newValue = replaceChange.getNewValue();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.iC_ReactToProtoChanges.RoutinesFacade routinesFacade = new mir.routines.iC_ReactToProtoChanges.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeChangeModeChangedReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeChangeModeChangedReaction.ActionUserExecution(this.executionState, this);
+    mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade routinesFacade = new mir.routines.iC_ReactOnAttributeChanges.RoutinesFacade(this.executionState, this);
+    mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges.AttributeChangeModeChangeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsCaexToCaex.iC_ReactOnAttributeChanges.AttributeChangeModeChangeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
     
     resetChanges();
@@ -61,8 +58,8 @@ class PrototypeChangeModeChangedReaction extends AbstractReactionRealization {
   
   private boolean matchReplaceChange(final EChange change) {
     if (change instanceof ReplaceSingleValuedEAttribute<?, ?>) {
-    	ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, CAEX.ChangeMode> _localTypedChange = (ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, CAEX.ChangeMode>) change;
-    	if (!(_localTypedChange.getAffectedEObject() instanceof CAEX.SystemUnitClass)) {
+    	ReplaceSingleValuedEAttribute<CAEX.Attribute, CAEX.ChangeMode> _localTypedChange = (ReplaceSingleValuedEAttribute<CAEX.Attribute, CAEX.ChangeMode>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof CAEX.Attribute)) {
     		return false;
     	}
     	if (!_localTypedChange.getAffectedFeature().getName().equals("changeMode")) {
@@ -74,7 +71,7 @@ class PrototypeChangeModeChangedReaction extends AbstractReactionRealization {
     	if (_localTypedChange.isToNonDefaultValue() && !(_localTypedChange.getNewValue() instanceof CAEX.ChangeMode)) {
     		return false;
     	}
-    	this.replaceChange = (ReplaceSingleValuedEAttribute<CAEX.SystemUnitClass, CAEX.ChangeMode>) change;
+    	this.replaceChange = (ReplaceSingleValuedEAttribute<CAEX.Attribute, CAEX.ChangeMode>) change;
     	return true;
     }
     
@@ -86,9 +83,9 @@ class PrototypeChangeModeChangedReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final SystemUnitClass affectedEObject, final EAttribute affectedFeature, final ChangeMode oldValue, final ChangeMode newValue, @Extension final RoutinesFacade _routinesFacade) {
-      final EStructuralFeature feature = CAEXFactory.eINSTANCE.createInternalElement().eClass().getEStructuralFeature("changeMode");
-      _routinesFacade.correctSystemUnitClassClones(affectedEObject, feature, newValue);
+    public void callRoutine1(final Attribute affectedEObject, final EAttribute affectedFeature, final ChangeMode oldValue, final ChangeMode newValue, @Extension final RoutinesFacade _routinesFacade) {
+      final EStructuralFeature feature = CAEXFactory.eINSTANCE.createAttribute().eClass().getEStructuralFeature("changeMode");
+      _routinesFacade.correctAttributeCloneFeatures(affectedEObject, feature, newValue);
     }
   }
 }

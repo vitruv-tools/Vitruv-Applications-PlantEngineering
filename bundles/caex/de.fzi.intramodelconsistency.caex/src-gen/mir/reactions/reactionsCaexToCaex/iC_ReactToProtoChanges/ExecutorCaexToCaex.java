@@ -12,5 +12,7 @@ public class ExecutorCaexToCaex extends AbstractReactionsExecutor {
   protected void setup() {
     this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeNameChangedReaction());
     this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeChangeModeChangedReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeAttributeAddedReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges.PrototypeAdditionalInformationAddedReaction());
   }
 }

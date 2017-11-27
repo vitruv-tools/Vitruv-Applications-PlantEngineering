@@ -11,6 +11,6 @@ public class ExecutorCaexToCaex extends AbstractReactionsExecutor {
   
   protected void setup() {
     this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.CloneRefAddedReaction());
-    this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.DisplayFileNameChangeReaction());
+    this.addReaction(new mir.reactions.reactionsCaexToCaex.iC_ProtoCloneAddCorrespondences.ProtoDeletedReaction());
   }
 }

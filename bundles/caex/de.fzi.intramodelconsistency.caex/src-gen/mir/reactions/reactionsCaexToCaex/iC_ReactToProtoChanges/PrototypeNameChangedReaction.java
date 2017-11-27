@@ -1,12 +1,9 @@
 package mir.reactions.reactionsCaexToCaex.iC_ReactToProtoChanges;
 
-import CAEX.CAEXFactory;
 import CAEX.InternalElement;
 import CAEX.SystemUnitClass;
-import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools;
 import mir.routines.iC_ReactToProtoChanges.RoutinesFacade;
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -15,6 +12,9 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
+/**
+ * * On Prototype name change also adjust refBaseSystemUnitClassPath of all correspondents
+ */
 @SuppressWarnings("all")
 class PrototypeNameChangedReaction extends AbstractReactionRealization {
   private ReplaceSingleValuedEAttribute<SystemUnitClass, String> replaceChange;
@@ -88,9 +88,7 @@ class PrototypeNameChangedReaction extends AbstractReactionRealization {
       if ((affectedEObject instanceof InternalElement)) {
         return;
       }
-      final String newRefBasePath = CAEXIntraConsistencyTools.generatePathFromTuid(this.correspondenceModel, affectedEObject, this.correspondenceModel.calculateTuidFromEObject(affectedEObject));
-      final EStructuralFeature feature = CAEXFactory.eINSTANCE.createInternalElement().eClass().getEStructuralFeature("refBaseSystemUnitPath");
-      _routinesFacade.correctSystemUnitClassClones(affectedEObject, feature, newRefBasePath);
+      _routinesFacade.correctPathsSystemUnitClassClones(affectedEObject);
     }
   }
 }

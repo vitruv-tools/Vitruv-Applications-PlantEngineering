@@ -8,11 +8,21 @@ reactions: IC_ProtoCloneAddCorrespondences
 in reaction to changes in CAEX
 execute actions in CAEX
 
-
+/** If a refBaseSystemunitPath is edited in InternalElement then remove old correspondences and create new */
 reaction CloneRefAdded {
 	after attribute replaced at CAEX::InternalElement[refBaseSystemUnitPath]
 	call {
+		removeCorrespondencesofSystemUnitClasses(affectedEObject)
 		newCorrespondenceCloneProto(affectedEObject,newValue)
+	}
+}
+
+/** On deletion of the prototype also remove all clones */
+reaction ProtoDeleted {
+	after element removed from CAEX::SystemUnitClassLib[systemUnitClass]
+	call {
+		
+		removeAllClonesAndCorrespondences(oldValue)
 	}
 }
 
@@ -29,16 +39,44 @@ routine newCorrespondenceCloneProto(CAEX::InternalElement ie, String sucStr) {
 	}
 }
 
+routine removeCorrespondencesofSystemUnitClasses(CAEX::InternalElement affectedElement) {
+	match {
+		val corres = retrieve many CAEX::SystemUnitClass corresponding to affectedElement
+	}
+	action {
+		call {
+			corres.forEach[removeCAEXCorrespondence(affectedElement)]
+		}
+	}
+}
+
+routine removeAllClonesAndCorrespondences(CAEX::SystemUnitClass affectedClass) {
+	match {
+		val clones = retrieve many CAEX::InternalElement corresponding to affectedClass
+	}
+	action  {
+		call {
+			clones.forEach[removeCAEXCorrespondence(affectedClass)]
+			clones.forEach[deleteElement]
+		}
+	}
+}
+
+routine removeCAEXCorrespondence(CAEX::CAEXObject a,CAEX::CAEXObject b){
+	action{
+		remove correspondence between a and b
+	}
+}
+
 routine addCAEXCorrespondence(CAEX::CAEXObject a,CAEX::CAEXObject b){
 	action{
 		add correspondence between a and b
 	}
 }
 
-reaction DisplayFileNameChange {
-	after attribute replaced at CAEX::CAEXFile[fileName]
-	call {
-		System.out.println("FileNameChanged from '" + oldValue + "' to  '" + newValue + "'");		
+routine deleteElement(CAEX::CAEXObject o) {
+	action {
+		delete o
 	}
 }
 
