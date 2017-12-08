@@ -1,0 +1,168 @@
+import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools
+import org.eclipse.emf.ecore.EStructuralFeature
+import CAEX.CAEXFactory
+import CAEX.InternalElement
+import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.ecore.EObject
+import CAEX.CAEXObject
+import org.eclipse.emf.common.util.BasicEList
+
+import "http://org.automationml.caex" as CAEX
+
+reactions: IC_ReactToSystemUnitClassChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+/** On Prototype name change also adjust refBaseSystemUnitClassPath of all correspondents*/
+reaction NameChanged {
+	after attribute replaced at CAEX::SystemUnitClass[name]
+	call  {
+		if((affectedEObject instanceof InternalElement)) return;
+		correctPathsSystemUnitClassClones(affectedEObject)
+	}
+}
+
+/** On Prototype changeMode change also adjust correspondents */
+reaction ChangeModeChanged {
+	after attribute replaced at CAEX::SystemUnitClass[changeMode]
+	call {
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("changeMode")
+		
+		correctSystemUnitClassClones(affectedEObject, feature, newValue)
+	}
+}
+
+/** On new attribute in Prototype, also add the same attribute to clones */
+reaction AttributeAdded {
+	after element inserted in CAEX::SystemUnitClass[^attribute]
+	call {
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("attribute")		
+		correctSystemUnitClassClones(affectedEObject, feature, newValue)
+	}
+}
+
+reaction InternalElementAdded {
+	after element inserted in CAEX::SystemUnitClass[internalElement]
+	call {
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("internalElement")
+		correctSystemUnitClassClones(affectedEObject, feature, newValue)
+	}
+}
+
+/** On deletion of the prototype also remove all clones */
+reaction SystemUnitClassDeleted {
+	after element removed from CAEX::SystemUnitClassLib[systemUnitClass]
+	call {		
+		removeAllClonesAndCorrespondences(oldValue)
+	}
+}
+
+/*
+  	On new additionalInformation in Prototype, add same object to clones 
+	===== Not working due to the AdditionalInformation Tuid bug ===== 
+*/
+reaction AdditionalInformationAdded {
+ after element inserted in CAEX::SystemUnitClass[additionalInformation]
+ call {
+ 	val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("additionalInformation")		
+ 	correctSystemUnitClassClones(affectedEObject, feature, newValue)
+	}
+}
+
+ 
+ 
+
+/**
+ * Routine that recursively corrects the references in refBaseClassPaths of a SystemUnitClass and all it's children SystemUnitClasses
+ */
+routine correctPathsSystemUnitClassClones(CAEX::SystemUnitClass affectedEObject) {
+	action {
+		call {
+			//TODO: Modify to only start correction for Elements with correspondences 			
+			val newRefBasePath = CAEXIntraConsistencyTools.generatePathFromTuid(correspondenceModel,affectedEObject,correspondenceModel.calculateTuidFromEObject(affectedEObject))		
+			val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("refBaseSystemUnitPath")
+			correctSystemUnitClassClones(affectedEObject, feature, newRefBasePath)
+			
+			//Recursively correct the paths of all children elements 
+			if(!affectedEObject.systemUnitClass.empty)
+				affectedEObject.systemUnitClass.forEach[correctPathsSystemUnitClassClones]
+		}
+	}
+}
+
+routine correctSystemUnitClassClones(CAEX::SystemUnitClass changedPrototype, plain EStructuralFeature as feature, plain Object as newValue){
+	match {
+		val clones = retrieve many CAEX::InternalElement corresponding to changedPrototype
+		}
+	action {	
+		call {
+			for(clon : clones){
+				updateFeature(clon, feature, newValue)				
+				clon.eResource.modified = true
+				}
+		}
+	}
+}
+
+routine removeAllClonesAndCorrespondences(CAEX::SystemUnitClass affectedClass) {
+	match {
+		val clones = retrieve many CAEX::InternalElement corresponding to affectedClass
+	}
+	action  {
+		call {
+			clones.forEach[removeCAEXCorrespondence(affectedClass)]
+			clones.forEach[deleteElement]
+		}
+	}
+}
+
+/* 
+ * =======================================================================
+ * All routines below this point are helper routines for all caex reactions
+ * =======================================================================
+ */
+
+routine addCAEXCorrespondence(CAEX::CAEXObject a,CAEX::CAEXObject b){
+	action{
+		add correspondence between a and b
+	}
+}
+
+routine removeCAEXCorrespondence(CAEX::CAEXObject a,CAEX::CAEXObject b){
+	action{
+		remove correspondence between a and b
+	}
+}
+
+routine deleteElement(CAEX::CAEXObject o) {
+	action {
+		delete o
+	}
+}
+
+routine updateFeature(EObject obj, plain EStructuralFeature as feature, plain Object as newValue){
+	action {
+		call {
+			val featureValue = obj.eGet(feature)
+			if (featureValue instanceof EList){
+				val clone = EcoreUtil.copy(newValue as EObject)
+				featureValue.add(clone);				
+				obj.setFeatureValue(feature,new BasicEList(featureValue.clone))
+				addCAEXCorrespondence(clone as CAEXObject ,newValue as CAEXObject)
+			}				
+			else{
+				obj.setFeatureValue(feature, newValue)
+			}	
+		}
+	}
+}
+
+routine setFeatureValue(EObject e, plain EStructuralFeature as f, plain Object as o) {
+	action{
+		update e {
+			e.eSet(f,o)
+			e.eResource.modified=true
+		}
+	}
+}
