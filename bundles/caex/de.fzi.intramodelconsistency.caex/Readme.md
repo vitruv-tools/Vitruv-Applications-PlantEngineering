@@ -17,7 +17,7 @@ Currently we support the following use cases that are structured as follows:
 | Deletion of Prototype	| Deletion of clone | SystemUnitClassDeleted | :heavy_minus_sign: |
 
 #### File IC_ReactToAttributeChanges.reaction
-|Original Change of InternalElement|Consequential Change of Clone|Method|State|
+|Original Change of Attribute|Consequential Change of Clone|Method|State|
 |------|----|----|--|
 | Change of _name_ | Update of _name_ | AttributeNameChange | :heavy_check_mark: |
 | Change of _attributeDataType_ | Update of _attributeDataType_ | AttributeDataTypeChange | :heavy_check_mark: |

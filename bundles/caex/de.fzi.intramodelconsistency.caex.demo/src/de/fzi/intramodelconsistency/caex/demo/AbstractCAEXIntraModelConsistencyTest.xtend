@@ -1,8 +1,8 @@
 package de.fzi.intramodelconsistency.caex.demo
 
-import CAEX.CAEXFactory
-import CAEX.CAEXFile
-import CAEX.DocumentRoot
+import org.automationml.caex.caex.CaexFactory
+import org.automationml.caex.caex.CAEXFile
+import org.automationml.caex.caex.DocumentRoot
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyChangePropagationSpecification
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.domains.caex.CAEXDomainProvider
@@ -49,16 +49,16 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	
 	@Deprecated
 	private def DocumentRoot createInitialModel() {
-		val caexModel = CAEXFactory.eINSTANCE.createDocumentRoot;
-        val caexFile = CAEXFactory.eINSTANCE.createCAEXFile;
+		val caexModel = CaexFactory.eINSTANCE.createDocumentRoot;
+        val caexFile = CaexFactory.eINSTANCE.createCAEXFile;
         caexFile.fileName = "model"
         caexModel.CAEXFile = caexFile;
 	
 		return caexModel;
 	}
 	
-	protected def CAEXFactory factory() {
-		return CAEXFactory.eINSTANCE
+	protected def CaexFactory factory() {
+		return CaexFactory.eINSTANCE
 	}
 	
 	protected def DocumentRoot preloadExistingModel(String path) {

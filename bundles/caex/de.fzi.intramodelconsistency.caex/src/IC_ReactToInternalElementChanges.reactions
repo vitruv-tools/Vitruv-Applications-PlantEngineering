@@ -1,5 +1,5 @@
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools
-import CAEX.CAEXObject
+import org.automationml.caex.caex.CAEXObject
 import tools.vitruv.framework.tuid.Tuid
 
 import "http://org.automationml.caex" as CAEX

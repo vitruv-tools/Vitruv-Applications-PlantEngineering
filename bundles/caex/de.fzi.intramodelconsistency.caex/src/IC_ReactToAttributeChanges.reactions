@@ -3,8 +3,8 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.ecore.EObject
-import CAEX.CAEXFactory
-import CAEX.CAEXObject
+import org.automationml.caex.caex.CAEXObject
+import org.automationml.caex.caex.CaexFactory
 
 import "http://org.automationml.caex" as CAEX
 
@@ -15,7 +15,7 @@ execute actions in CAEX
 reaction AttributeNameChange {
 	after attribute replaced at CAEX::Attribute[name]
 	call {
-		val feature = CAEXFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("name")
+		val feature = CaexFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("name")
 		correctAttributeCloneFeatures(affectedEObject, feature, newValue);
 	}
 }
@@ -23,7 +23,7 @@ reaction AttributeNameChange {
 reaction AttributeDataTypeChange {
 	after attribute replaced at CAEX::Attribute[attributeDataType]
 	call {
-		val feature = CAEXFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("attributeDataType")
+		val feature = CaexFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("attributeDataType")
 		correctAttributeCloneFeatures(affectedEObject, feature, newValue);
 	}
 }
@@ -31,7 +31,7 @@ reaction AttributeDataTypeChange {
 reaction AttributeChangeModeChange {
 	after attribute replaced at CAEX::Attribute[changeMode]
 	call {
-		val feature = CAEXFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("changeMode")
+		val feature = CaexFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("changeMode")
 		correctAttributeCloneFeatures(affectedEObject, feature, newValue);
 	}
 }
@@ -39,7 +39,7 @@ reaction AttributeChangeModeChange {
 reaction AttributeDefaultValueChange {
 	after attribute replaced at CAEX::Attribute[defaultValue]
 	call {
-		val feature = CAEXFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("defaultValue")
+		val feature = CaexFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("defaultValue")
 		correctAttributeCloneFeatures(affectedEObject, feature, newValue);
 	}
 }
@@ -47,7 +47,7 @@ reaction AttributeDefaultValueChange {
 reaction AttributeIDChange {
 	after attribute replaced at CAEX::Attribute[iD]
 	call {
-		val feature = CAEXFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("iD")
+		val feature = CaexFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("iD")
 		correctAttributeCloneFeatures(affectedEObject, feature, newValue);
 	}
 }
@@ -55,7 +55,7 @@ reaction AttributeIDChange {
 reaction AttributeUnitChange {
 	after attribute replaced at CAEX::Attribute[unit]
 	call {
-		val feature = CAEXFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("unit")
+		val feature = CaexFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("unit")
 		correctAttributeCloneFeatures(affectedEObject, feature, newValue);
 	}
 }
@@ -63,7 +63,7 @@ reaction AttributeUnitChange {
 reaction AttributeValueChange {
 	after attribute replaced at CAEX::Attribute[value]
 	call {
-		val feature = CAEXFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("value")
+		val feature = CaexFactory.eINSTANCE.createAttribute.eClass.getEStructuralFeature("value")
 		correctAttributeCloneFeatures(affectedEObject, feature, newValue);
 	}
 }

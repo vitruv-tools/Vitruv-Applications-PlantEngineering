@@ -6,9 +6,9 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.tuid.Tuid
-import CAEX.CAEXObject
-import CAEX.CAEXFile
-import CAEX.DocumentRoot
+import org.automationml.caex.caex.CAEXObject
+import org.automationml.caex.caex.CAEXFile
+import org.automationml.caex.caex.DocumentRoot
 
 class CAEXIntraConsistencyTools {	
 
