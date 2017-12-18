@@ -42,6 +42,13 @@ reaction AttributeAdded {
 	}
 }
 
+reaction AttributeRemoved {
+	after element removed from CAEX::SystemUnitClass[^attribute]
+	call {
+		removeAllClonesAndCorrespondencesAttribute(oldValue)
+	}
+}
+
 reaction InternalElementAdded {
 	after element inserted in CAEX::SystemUnitClass[internalElement]
 	call {
@@ -54,7 +61,7 @@ reaction InternalElementAdded {
 reaction SystemUnitClassDeleted {
 	after element removed from CAEX::SystemUnitClassLib[systemUnitClass]
 	call {		
-		removeAllClonesAndCorrespondences(oldValue)
+		removeAllClonesAndCorrespondencesSysUnitClass(oldValue)
 	}
 }
 
@@ -105,13 +112,29 @@ routine correctSystemUnitClassClones(CAEX::SystemUnitClass changedPrototype, pla
 	}
 }
 
-routine removeAllClonesAndCorrespondences(CAEX::SystemUnitClass affectedClass) {
+routine removeAllClonesAndCorrespondencesSysUnitClass(CAEX::SystemUnitClass affectedClass) {
 	match {
 		val clones = retrieve many CAEX::InternalElement corresponding to affectedClass
 	}
 	action  {
-		call {
+		call {		
+			//Set refresh Resource before deleting from Resource
+			if(!clones.empty) clones.get(0).eResource.modified=true;		
 			clones.forEach[removeCAEXCorrespondence(affectedClass)]
+			clones.forEach[deleteElement]					
+		}
+	}
+}
+
+routine removeAllClonesAndCorrespondencesAttribute(CAEX::Attribute affectedAttribute) {
+	match {
+		val clones = retrieve many CAEX::Attribute corresponding to affectedAttribute
+	}
+	action  {
+		call{
+			//Set refresh Resource before deleting from Resource
+			if(!clones.empty) clones.get(0).eResource.modified=true;		
+			clones.forEach[removeCAEXCorrespondence(affectedAttribute)]
 			clones.forEach[deleteElement]
 		}
 	}
