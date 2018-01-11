@@ -6,7 +6,7 @@ import org.automationml.caex.caex.DocumentRoot
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyChangePropagationSpecification
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.domains.caex.CAEXDomainProvider
-import tools.vitruv.framework.tests.VitruviusApplicationTest
+import tools.vitruv.testutils.VitruviusApplicationTest
 
 class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 

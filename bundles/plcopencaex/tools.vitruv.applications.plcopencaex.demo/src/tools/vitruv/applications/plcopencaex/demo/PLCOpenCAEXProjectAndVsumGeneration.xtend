@@ -6,8 +6,7 @@ import tools.vitruv.applications.plcopencaex.plcopen2caex.PLCOpen2CAEXChangeProp
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
-import tools.vitruv.framework.monitorededitor.ProjectBuildUtils
-import tools.vitruv.framework.tests.util.TestUtil
+import tools.vitruv.testutils.util.TestUtil
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.vsum.InternalVirtualModel
@@ -16,7 +15,9 @@ import tools.vitruv.domains.plcopen.PLCOpenDomain
 import tools.vitruv.domains.caex.CAEXDomainProvider
 import tools.vitruv.domains.caex.CAEXDomain
 import tools.vitruv.framework.domains.VitruvDomain
+import tools.vitruv.framework.ui.monitorededitor.ProjectBuildUtils
 import org.eclipse.core.resources.ResourcesPlugin
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*;
 
 class PLCOpenCAEXProjectAndVsumGeneration {
 	
@@ -51,7 +52,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 	}
 	
 	protected def IProject createTestProject(String projectName) throws CoreException {
-        var project = TestUtil.getProjectByName(projectName);
+        var project = getWorkspaceProject(projectName);
         if (!project.exists()) {
             project = TestUtil.createPlatformProject(projectName, false);
         }

@@ -28,12 +28,13 @@ class CreatedFileHeaderTypeReaction extends AbstractReactionRealization {
     org.plcopen.xml.tc60201.ProjectType affectedEObject = insertChange.getAffectedEObject();
     EReference affectedFeature = insertChange.getAffectedFeature();
     org.plcopen.xml.tc60201.FileHeaderType newValue = insertChange.getNewValue();
+    int index = insertChange.getIndex();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
     mir.routines.plcopen2caex.RoutinesFacade routinesFacade = new mir.routines.plcopen2caex.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPLCOpenToCaex.plcopen2caex.CreatedFileHeaderTypeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPLCOpenToCaex.plcopen2caex.CreatedFileHeaderTypeReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(affectedEObject, affectedFeature, newValue, routinesFacade);
+    userExecution.callRoutine1(insertChange, affectedEObject, affectedFeature, newValue, index, routinesFacade);
     
     resetChanges();
   }
@@ -104,7 +105,7 @@ class CreatedFileHeaderTypeReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final ProjectType affectedEObject, final EReference affectedFeature, final FileHeaderType newValue, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final InsertEReference insertChange, final ProjectType affectedEObject, final EReference affectedFeature, final FileHeaderType newValue, final int index, @Extension final RoutinesFacade _routinesFacade) {
       final FileHeaderType fileHeaderType = newValue;
       _routinesFacade.createVersion(fileHeaderType);
     }

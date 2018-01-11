@@ -1,9 +1,9 @@
 package mir.routines.plcopen2caex;
 
-import CAEX.CAEXFile;
 import com.google.common.base.Objects;
 import java.io.IOException;
 import mir.routines.plcopen2caex.RoutinesFacade;
+import org.automationml.caex.caex.CAEXFile;
 import org.eclipse.emf.ecore.EObject;
 import org.plcopen.xml.tc60201.DocumentRoot;
 import org.plcopen.xml.tc60201.ProjectType;
@@ -27,7 +27,7 @@ public class CreateCaexRootRoutine extends AbstractRepairRoutineRealization {
       return _project;
     }
     
-    public EObject getElement4(final DocumentRoot plcopenRoot, final CAEXFile caexFile, final CAEX.DocumentRoot caexRoot) {
+    public EObject getElement4(final DocumentRoot plcopenRoot, final CAEXFile caexFile, final org.automationml.caex.caex.DocumentRoot caexRoot) {
       return plcopenRoot;
     }
     
@@ -35,12 +35,12 @@ public class CreateCaexRootRoutine extends AbstractRepairRoutineRealization {
       return caexFile;
     }
     
-    public void updateCaexRootElement(final DocumentRoot plcopenRoot, final CAEXFile caexFile, final CAEX.DocumentRoot caexRoot) {
+    public void updateCaexRootElement(final DocumentRoot plcopenRoot, final CAEXFile caexFile, final org.automationml.caex.caex.DocumentRoot caexRoot) {
       caexRoot.setCAEXFile(caexFile);
       this.persistProjectRelative(plcopenRoot, caexRoot, "caexModel.caex");
     }
     
-    public EObject getElement3(final DocumentRoot plcopenRoot, final CAEXFile caexFile, final CAEX.DocumentRoot caexRoot) {
+    public EObject getElement3(final DocumentRoot plcopenRoot, final CAEXFile caexFile, final org.automationml.caex.caex.DocumentRoot caexRoot) {
       return caexRoot;
     }
     
@@ -67,12 +67,12 @@ public class CreateCaexRootRoutine extends AbstractRepairRoutineRealization {
     if (!userExecution.checkMatcherPrecondition1(plcopenRoot)) {
     	return false;
     }
-    CAEX.CAEXFile caexFile = CAEX.impl.CAEXFactoryImpl.eINSTANCE.createCAEXFile();
+    org.automationml.caex.caex.CAEXFile caexFile = org.automationml.caex.caex.impl.CaexFactoryImpl.eINSTANCE.createCAEXFile();
     notifyObjectCreated(caexFile);
     
     addCorrespondenceBetween(userExecution.getElement1(plcopenRoot, caexFile), userExecution.getElement2(plcopenRoot, caexFile), "");
     
-    CAEX.DocumentRoot caexRoot = CAEX.impl.CAEXFactoryImpl.eINSTANCE.createDocumentRoot();
+    org.automationml.caex.caex.DocumentRoot caexRoot = org.automationml.caex.caex.impl.CaexFactoryImpl.eINSTANCE.createDocumentRoot();
     notifyObjectCreated(caexRoot);
     userExecution.updateCaexRootElement(plcopenRoot, caexFile, caexRoot);
     
