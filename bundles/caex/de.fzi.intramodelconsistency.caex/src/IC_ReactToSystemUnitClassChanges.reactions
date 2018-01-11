@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.EObject
 import org.automationml.caex.caex.CAEXObject
 import org.eclipse.emf.common.util.BasicEList
+import tools.vitruv.framework.userinteraction.UserInteractionType
 
 import "http://org.automationml.caex" as CAEX
 
@@ -121,7 +122,11 @@ routine removeAllClonesAndCorrespondencesSysUnitClass(CAEX::SystemUnitClass affe
 			//Set refresh Resource before deleting from Resource
 			if(!clones.empty) clones.get(0).eResource.modified=true;		
 			clones.forEach[removeCAEXCorrespondence(affectedClass)]
-			clones.forEach[deleteElement]					
+			//Ask user before deleting clones
+			val result = userInteracting.selectFromMessage(UserInteractionType.MODAL,
+						"Should all InternalElements that correspond to the deleted SystemUnitClass also be removed?",
+						"Yes","No")
+			if(result == 0)	clones.forEach[deleteElement]					
 		}
 	}
 }
