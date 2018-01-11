@@ -24,12 +24,13 @@ class CreatedRootReaction extends AbstractReactionRealization {
     	return;
     }
     org.plcopen.xml.tc60201.DocumentRoot newValue = insertChange.getNewValue();
+    int index = insertChange.getIndex();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
     mir.routines.plcopen2caex.RoutinesFacade routinesFacade = new mir.routines.plcopen2caex.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPLCOpenToCaex.plcopen2caex.CreatedRootReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPLCOpenToCaex.plcopen2caex.CreatedRootReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(newValue, routinesFacade);
+    userExecution.callRoutine1(insertChange, newValue, index, routinesFacade);
     
     resetChanges();
   }
@@ -94,7 +95,7 @@ class CreatedRootReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final DocumentRoot newValue, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final InsertRootEObject insertChange, final DocumentRoot newValue, final int index, @Extension final RoutinesFacade _routinesFacade) {
       final DocumentRoot plcopenRoot = newValue;
       _routinesFacade.createCaexRoot(plcopenRoot);
     }

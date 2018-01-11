@@ -1,8 +1,8 @@
 package mir.routines.plcopen2caex;
 
-import CAEX.Version;
 import java.io.IOException;
 import mir.routines.plcopen2caex.RoutinesFacade;
+import org.automationml.caex.caex.Version;
 import org.eclipse.emf.ecore.EObject;
 import org.plcopen.xml.tc60201.FileHeaderType;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -46,10 +46,10 @@ public class RenameVersionForProductVersionRoutine extends AbstractRepairRoutine
     getLogger().debug("Called routine RenameVersionForProductVersionRoutine with input:");
     getLogger().debug("   fileHeaderType: " + this.fileHeaderType);
     
-    CAEX.Version version = getCorrespondingElement(
+    org.automationml.caex.caex.Version version = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceVersion(fileHeaderType), // correspondence source supplier
-    	CAEX.Version.class,
-    	(CAEX.Version _element) -> true, // correspondence precondition checker
+    	org.automationml.caex.caex.Version.class,
+    	(org.automationml.caex.caex.Version _element) -> true, // correspondence precondition checker
     	null, 
     	false // asserted
     	);

@@ -1,8 +1,8 @@
 package mir.routines.plcopen2caex;
 
-import CAEX.Version;
 import java.io.IOException;
 import mir.routines.plcopen2caex.RoutinesFacade;
+import org.automationml.caex.caex.Version;
 import org.eclipse.emf.ecore.EObject;
 import org.plcopen.xml.tc60201.FileHeaderType;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -42,7 +42,7 @@ public class CreateVersionRoutine extends AbstractRepairRoutineRealization {
     getLogger().debug("Called routine CreateVersionRoutine with input:");
     getLogger().debug("   fileHeaderType: " + this.fileHeaderType);
     
-    CAEX.Version version = CAEX.impl.CAEXFactoryImpl.eINSTANCE.createVersion();
+    org.automationml.caex.caex.Version version = org.automationml.caex.caex.impl.CaexFactoryImpl.eINSTANCE.createVersion();
     notifyObjectCreated(version);
     
     addCorrespondenceBetween(userExecution.getElement1(fileHeaderType, version), userExecution.getElement2(fileHeaderType, version), "");

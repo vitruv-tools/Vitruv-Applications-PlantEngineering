@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Plcopen2caex
-Bundle-SymbolicName: tools.vitruv.applications.plcopencaex.plcopen2caex
+Bundle-Name: IntraModelConsistencyCAEX
+Bundle-SymbolicName: de.fzi.intramodelconsistency.caex
 Bundle-Version: 1.0.0.qualifier
-Export-Package: tools.vitruv.applications.plcopencaex.plcopen2caex
+Export-Package: de.fzi.intramodelconsistency.caex
 Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.emf.ecore,
@@ -16,9 +16,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.correspondence,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.extensions.dslsruntime.reactions,
- org.plcopen.xml.tc60201,
- org.automationml.caex,
- tools.vitruv.domains.plcopen,
  tools.vitruv.domains.caex,
- tools.vitruv.dsls.mappings;bundle-version="0.2.0"
+ org.automationml.caex,
+ tools.vitruv.extensions.dslsruntime.mappings
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
