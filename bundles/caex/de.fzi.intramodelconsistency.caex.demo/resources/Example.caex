@@ -1,55 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<CAEXFile FileName="ExampleTopology" SchemaVersion="3.0">
-  <SuperiorStandardVersion>AutomationML 3.0</SuperiorStandardVersion>
-  <SourceDocumentInformation LastWritingDateTime="2017-08-16" OriginID="AutomationML e.V." OriginName="AutomationML e.V." OriginVersion="1.0"/>
-  <ExternalReference Alias="BaseRoleClassLib" Path="Libs/RoleClass Libraries/AutomationMLBaseRoleClassLib.aml"/>
-  <ExternalReference Alias="BaseInterfaceClassLib" Path="Libs/InterfaceClass Libraries/AutomationMLInterfaceClassLib.aml"/>
-  <InstanceHierarchy Name="ManufacturingSystem">
-    <InternalElement ID="788eb291-f103-4fdc-aba0-4893b599f556&quot;" Name="firstScrewdriver" RefBaseSystemUnitPath="LibOfCommonTools/ElectricScrewdriver">
-      <ExternalInterface ID="5f535d4c-dd46-4c1c-898c-4e58419048b6" Name="EnergySupply" RefBaseClassPath="MyInterfaces/Energy"/>
-      <SupportedRoleClass RefRoleClassPath="ManufacturingRoleClasses/Tool"/>
-    </InternalElement>
-    <InternalElement ID="" Name="secondScrewdriver" RefBaseSystemUnitPath="LibOfCommonTools/ElectricScrewdriver">
-      <ExternalInterface ID="d4b47ae5-388c-4a6c-aa45-a543b3016f20" Name="EnergySupply" RefBaseClassPath="MyInterfaces/Energy"/>
-      <SupportedRoleClass RefRoleClassPath="ManufacturingRoleClasses/Tool"/>
-    </InternalElement>
+<?xml version="1.0" encoding="UTF-8"?>
+<CAEXFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://org.automationml.caex" FileName="model.caex">
+  <InstanceHierarchy Name="InstanceHierarchy_1">
+    <InternalElement Name="InternalElement_1" RefBaseSystemUnitPath=""/>
   </InstanceHierarchy>
-  <InterfaceClassLib Name="MyInterfaces">
-    <InterfaceClass Name="Energy" RefBaseClassPath="BaseInterfaceClassLib@AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
-  </InterfaceClassLib>
-  <RoleClassLib Name="ManufacturingRoleClasses">
-    <RoleClass Name="Tool" RefBaseClassPath="BaseRoleClassLib@AutomationMLBaseRoleClassLib/AutomationMLBaseRole"/>
-  </RoleClassLib>
-  <SystemUnitClassLib Name="LibOfCommonTools">
-    <SystemUnitClass Name="ElectricScrewdriver">
-      <Attribute ID="" Name="Torque" AttributeDataType="int" Unit="">
-        <DefaultValue></DefaultValue>
-        <Value>50</Value>
-      </Attribute>
-      <Attribute ID="" Name="Rotational speed" AttributeDataType="int">
-        <Value>1900</Value>
-      </Attribute>
-      <Attribute Name="Mass" AttributeDataType="int" RefAttributeType="">
-        <Value>1.3</Value>
-      </Attribute>
-      <ExternalInterface ID="dd0e0dfe-10f8-4068-845b-9c29699ac79" Name="EnergySupply" RefBaseClassPath="MyInterfaces/Energy"/>
-      <SupportedRoleClass RefRoleClassPath="ManufacturingRoleClasses/Tool"/>
-    </SystemUnitClass>
-    <SystemUnitClass Name="PneumaticScrewdriver">
-      <Attribute Name="Torque" AttributeDataType="int">
-        <Value>3</Value>
-      </Attribute>
-      <Attribute Name="Rotational speed" AttributeDataType="int">
-        <Value>1900</Value>
-      </Attribute>
-      <Attribute Name="Air consumption" AttributeDataType="int">
-        <Value>5</Value>
-      </Attribute>
-      <Attribute ID="" Name="Mass" AttributeDataType="int">
-        <Value>0.7</Value>
-      </Attribute>
-      <ExternalInterface ID="22824fcc-1d5d-41ba-8b88-50754632899f" Name="EnergySupply" RefBaseClassPath="MyInterfaces/Energy"/>
-      <SupportedRoleClass RefRoleClassPath="ManufacturingRoleClasses/Tool"/>
-    </SystemUnitClass>
+  <SystemUnitClassLib Name="ClassLib">
+    <SystemUnitClass Name="Class_1"/>
+    <SystemUnitClass Name="Class_3"/>
   </SystemUnitClassLib>
 </CAEXFile>
