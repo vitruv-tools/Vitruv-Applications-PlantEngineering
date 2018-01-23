@@ -7,7 +7,7 @@ Vitruv applications repository for plant engineering
   * Vitruv Consistency Specification DSLs
   * Vitruv Core Framework
   * Vitruv Extension: DSLs Runtime
-3. Clone the [https://github.com/kit-sdq/CAEXMetamodel.git CAEX metamodel repository] and import all projects (Right click in the Eclipse ''Package Explorer'' view: ''Import -> Git -> Projects from Git'')
+3. Clone the [https://github.com/kit-sdq/CAEXMetamodel3.0.git CAEX metamodel repository] and import all projects (Right click in the Eclipse ''Package Explorer'' view: ''Import -> Git -> Projects from Git'')
 4. Clone the [https://github.com/kit-sdq/PLCOpenMetamodel.git PLCOpen metamodel repository] and import all projects
 5. Clone the [https://github.com/vitruv-tools/Vitruv-Domains.git Vitruv-Domains repository] and import only all projects in the following subfolder of the "bundles" folder
   * caex
