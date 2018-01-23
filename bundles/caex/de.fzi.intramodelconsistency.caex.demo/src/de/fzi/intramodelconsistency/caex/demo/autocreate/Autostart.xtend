@@ -18,12 +18,14 @@ class Autostart implements IStartup {
 		var projectPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(project.fullPath)
 		//add caex example to demo
 		copyDefaultFile(projectPath.append("src/Example.caex").toFile)
+	//	copyDefaultFile(projectPath.append("src/ExampleScrewdriver.caex").toFile)
 		project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
 	}
 
 	private def copyDefaultFile(File destFile) throws IOException{
 		var bundle = Platform.getBundle("de.fzi.intramodelconsistency.caex.demo")
 		var fileURL = bundle.getEntry("resources/Example.caex")
+//		var fileURL = bundle.getEntry("resources/ExampleScrewdriver.caex")
 		
 		FileUtils.copyURLToFile(fileURL,destFile)
 	}
