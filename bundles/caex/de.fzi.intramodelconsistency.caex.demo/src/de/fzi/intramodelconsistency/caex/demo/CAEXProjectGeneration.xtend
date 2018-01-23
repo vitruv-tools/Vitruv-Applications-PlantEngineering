@@ -29,6 +29,7 @@ class CAEXProjectGeneration{
 		emfBuilder.addToProject(project , virtualModel.folder, #[CAEXDomain.FILE_EXTENSION]);
 		// build the project
 		ProjectBuildUtils.issueIncrementalBuild(project, VitruviusEmfBuilder.BUILDER_ID);
+		return project
 	}	
 		
 	private def InternalVirtualModel createVirtualModel(String vsumName) {
