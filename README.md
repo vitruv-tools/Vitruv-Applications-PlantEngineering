@@ -13,4 +13,5 @@ Vitruv applications repository for plant engineering
   * caex
   * plcopen
 6. Run a new Eclipse Application (Run - Run Configurations), all plug-ins are automatically deployed in this instance
-7. Right-Click in the empty workspace and choose "Generate AML Demo" (or similar :-)
+7. Open the Package-Explorer View
+8. Right-Click in the empty workspace and choose "Generate AML Demo" (or similar :-)
