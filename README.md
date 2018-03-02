@@ -20,7 +20,7 @@ The application repository shall cover the following consistency-preservations:
 7. Clone the current Github repository and import all projects
 8. Again, run a new Eclipse Application where you can create your AutomationML models with the EMF tree-based editor and to which consistency-preserving rules are automatically applied if particular changes occur. 
 
-# Creation of a CAEX model with the 
+# Creation of a CAEX model  
 
 Currently, an exemplary CAEX model is created automatically. You can either change the model or delete the automatically created folders and create a newly CAEX model. Therefore, you need to first create an empty project (File > New > Project... > General/Project). Within this project, you can create a new CAEX model by selecting File > New > Other... >  CAEX/CAEX 3.0 Model. The newly created CAEX model will be immediately opened in the tree-based editor. It will contain already the root element CAEX File. Use the context menu New Child to add further elements to your CAEX model as well as the Properties view to set attributes for the elements.
 
