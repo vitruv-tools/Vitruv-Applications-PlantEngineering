@@ -1,4 +1,4 @@
-package de.fzi.intramodelconsistency.caex.demo
+package de.fzi.intramodelconsistency.caex.demo.tests
 
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyChangePropagationSpecification
 import java.util.NoSuchElementException
