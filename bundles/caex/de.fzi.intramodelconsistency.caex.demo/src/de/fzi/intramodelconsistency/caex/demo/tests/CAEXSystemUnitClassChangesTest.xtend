@@ -14,7 +14,7 @@ import caex.caex30.caex.SystemUnitClassLib
 import caex.caex30.caex.ChangeMode
 import java.util.NoSuchElementException
 import org.junit.rules.ExpectedException
-
+import org.junit.Ignore
 
 class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 	
@@ -67,6 +67,21 @@ class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTe
 	}
 	
 	@Test
+	public def testSystemUnitClassLibNameChanged() {
+		
+		var targetElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
+		targetElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
+		rootElement.saveAndSynchronizeChanges
+		var sysClassLib = rootElement.findByPath("SysUCL") as SystemUnitClassLib
+		sysClassLib.name = "SysUClassLibNameChange"
+		rootElement.saveAndSynchronizeChanges			
+		
+		targetElem = rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
+									
+		assertEquals("SysUClassLibNameChange/SysUClass_1", targetElem.refBaseSystemUnitPath)
+	}
+	
+	@Test
 	public def void testRemovePrototypeSystemUnitClass() {
 		//Create correspondence
 		var intElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
@@ -106,5 +121,29 @@ class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTe
 		//Check if Reactions were executed correctly
 		rootElementVirtualModel.instanceHierarchy.findFirst[true].internalElement
 									.forEach[assertEquals("SysUCL/TestChange",it.refBaseSystemUnitPath)]
+	}
+	
+	@Test
+	public def testRemoveAttributeFromPrototypeSystemUnitClass() {
+		//Create correspondence
+		var intElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
+		intElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
+		rootElement.saveAndSynchronizeChanges
+		
+		//Create & insert attribute
+		var attr = factory.createAttribute		
+		var sysCl = rootElement.findByPath("SysUCL/SysUClass_1") as SystemUnitClass
+		sysCl.attribute.add(attr)
+		rootElement.saveAndSynchronizeChanges
+		attr.name="NewAttribute"
+		rootElement.saveAndSynchronizeChanges
+		
+		//Remove Attribute from SystemUnitClass
+		sysCl.attribute.remove(attr)
+		rootElement.saveAndSynchronizeChanges
+		
+		expected.expect(NoSuchElementException)
+		rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1/NewAttribute")
+		fail("InstanceHierarchy_1/InternalElement_1/NewAttribute should be deleted after removal of the prototype attribute!")
 	}
 }
