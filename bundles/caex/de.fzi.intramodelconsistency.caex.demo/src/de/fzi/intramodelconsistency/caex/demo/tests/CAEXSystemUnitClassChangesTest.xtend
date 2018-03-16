@@ -1,26 +1,25 @@
-package de.fzi.intramodelconsistency.caex.demo
+package de.fzi.intramodelconsistency.caex.demo.tests
 
 import org.junit.Test
+import org.junit.Rule
 
+import static org.junit.Assert.fail
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
+import static org.junit.Assert.assertNotNull
 
-class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTest {
+import org.automationml.caex.caex.InternalElement
+import org.automationml.caex.caex.SystemUnitClass
+import org.automationml.caex.caex.SystemUnitClassLib
+import org.automationml.caex.caex.ChangeMode
+import java.util.NoSuchElementException
+import org.junit.rules.ExpectedException
+
+
+class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 	
-	@Test 
-	public def testTrue() {
-		assertTrue(true)
-	}
-	
-	@Test
-	public def testChangingFileNameTwice() {
-		rootElement.fileName="1st Change"
-		rootElement.saveAndSynchronizeChanges
-		rootElement.fileName="2nd Change"
-		rootElement.saveAndSynchronizeChanges
-		
-		assertEquals("2nd Change",rootElementVirtualModel.fileName)
-	}
+	@Rule
+	public ExpectedException expected = ExpectedException.none
 	
 	@Test
 	public def testCreateCorrespondences() {
@@ -53,32 +52,51 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 	}
 	
 	@Test
-	public def testExistingModel() {
+	public def testPrototypeSystemUnitClassNameChanged() {
 		
-		var targetElem = rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
-									.internalElement.findFirst[it.name=="InternalElement_1"]
+		var targetElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
 		targetElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
 		rootElement.saveAndSynchronizeChanges
-		
-		rootElement.systemUnitClassLib.findFirst[name=="SysUCL"]
-					.systemUnitClass.findFirst[name=="SysUClass_1"].name = "SysUClassNameChanged"
+		var sysClass = rootElement.findByPath("SysUCL/SysUClass_1") as SystemUnitClass
+		sysClass.name = "SysUClassNameChanged"
 		rootElement.saveAndSynchronizeChanges			
 		
-		targetElem = rootElementVirtualModel.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"]
-									.internalElement.findFirst[it.name=="InternalElement_1"]
+		targetElem = rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
 									
 		assertEquals("SysUCL/SysUClassNameChanged", targetElem.refBaseSystemUnitPath)
 	}
 	
 	@Test
-	public def testOneToNCorrespondence() {
+	public def void testRemovePrototypeSystemUnitClass() {
+		//Create correspondence
+		var intElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
+		intElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
+		(rootElement.findByPath("SysUCL") as SystemUnitClassLib).changeMode = ChangeMode.DELETE
+		rootElement.saveAndSynchronizeChanges
+		
+		testUserInteractor.addNextSelections(0)
+		
+		//Delete Prototype
+		var sysUCL = rootElement.findByPath("SysUCL") as SystemUnitClassLib
+		sysUCL.systemUnitClass.remove(sysUCL.findByPath("SysUClass_1"))
+		rootElement.saveAndSynchronizeChanges
+		
+		//Assert that Clone has been deleted
+		expected.expect(NoSuchElementException)
+		rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1")
+		//Else fail
+		fail("InternalElement_1 should be deleted after Prototype removal!")		
+	}
+	
+	@Test
+	public def testOnePrototypeToNClonesCorrespondence() {
 		//Add additional InternalElement
 		var intElem = factory.createInternalElement
 		intElem.name = "internalElement_2"
 		rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"].internalElement.add(intElem)
 		
 		//Create correspondences
-		rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"].internalElement.forEach[it.refBaseSystemUnitPath = "SysUCL/SysUClass_1"]
+		rootElement.instanceHierarchy.findFirst[it.name=="InstanceHierarchy_1"].internalElement.forEach[refBaseSystemUnitPath = "SysUCL/SysUClass_1"]
 		rootElement.saveAndSynchronizeChanges
 		
 		//Change Name of SystemUnitClass
@@ -88,6 +106,5 @@ class CAEXIntraModelConsistencyTest extends AbstractCAEXIntraModelConsistencyTes
 		//Check if Reactions were executed correctly
 		rootElementVirtualModel.instanceHierarchy.findFirst[true].internalElement
 									.forEach[assertEquals("SysUCL/TestChange",it.refBaseSystemUnitPath)]
-
 	}
 }
