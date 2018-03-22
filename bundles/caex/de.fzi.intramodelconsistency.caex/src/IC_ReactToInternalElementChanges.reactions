@@ -1,8 +1,8 @@
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools
-import org.automationml.caex.caex.CAEXObject
+import caex.caex30.caex.CAEXObject
 import tools.vitruv.framework.tuid.Tuid
 
-import "http://org.automationml.caex" as CAEX
+import "http://www.dke.de/CAEX/300" as CAEX
 
 reactions: iC_ReactToInternalElementChanges
 in reaction to changes in CAEX

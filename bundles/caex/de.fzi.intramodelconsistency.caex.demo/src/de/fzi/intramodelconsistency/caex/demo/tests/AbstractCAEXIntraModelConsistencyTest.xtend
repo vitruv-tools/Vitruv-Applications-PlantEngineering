@@ -2,9 +2,9 @@ package de.fzi.intramodelconsistency.caex.demo.tests
 
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyChangePropagationSpecification
 import java.util.NoSuchElementException
-import org.automationml.caex.caex.CAEXFile
-import org.automationml.caex.caex.CaexFactory
-import org.automationml.caex.caex.DocumentRoot
+import caex.caex30.caex.CAEXFile
+import caex.caex30.caex.CAEXFactory
+import caex.caex30.caex.DocumentRoot
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.domains.caex.CAEXDomainProvider
@@ -50,8 +50,8 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 		createAndSynchronizeModel(MODEL_NAME.projectModelPath,docRoot.CAEXFile)
 	}
 	
-	protected def CaexFactory factory() {
-		return CaexFactory.eINSTANCE
+	protected def CAEXFactory factory() {
+		return CAEXFactory.eINSTANCE
 	}
 	
 	protected def DocumentRoot preloadExistingModel(String path) {

@@ -1,4 +1,4 @@
-import "http://org.automationml.caex" as CAEX
+import "http://www.dke.de/CAEX/300" as CAEX
 
 reactions: caex_import
 in reaction to changes in CAEX

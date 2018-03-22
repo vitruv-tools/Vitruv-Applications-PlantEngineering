@@ -3,9 +3,9 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.BasicEList
-import org.automationml.caex.caex.CAEXObject
+import caex.caex30.caex.CAEXObject
 
-import "http://org.automationml.caex" as CAEX
+import "http://www.dke.de/CAEX/300" as CAEX
 
 reactions: iC_Utilities
 in reaction to changes in CAEX

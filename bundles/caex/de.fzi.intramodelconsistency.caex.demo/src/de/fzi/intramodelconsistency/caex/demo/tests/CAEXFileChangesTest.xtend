@@ -1,7 +1,7 @@
 package de.fzi.intramodelconsistency.caex.demo.tests
 
-import org.automationml.caex.caex.InternalElement
-import org.automationml.caex.caex.SystemUnitClass
+import caex.caex30.caex.InternalElement
+import caex.caex30.caex.SystemUnitClass
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals

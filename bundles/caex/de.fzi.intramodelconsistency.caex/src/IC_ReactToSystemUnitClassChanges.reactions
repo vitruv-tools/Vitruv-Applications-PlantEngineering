@@ -1,10 +1,10 @@
 import de.fzi.intramodelconsistency.caex.CAEXIntraConsistencyTools
-import org.automationml.caex.caex.CaexFactory
-import org.automationml.caex.caex.InternalElement
+import caex.caex30.caex.CAEXFactory
+import caex.caex30.caex.InternalElement
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.framework.userinteraction.UserInteractionType
 
-import "http://org.automationml.caex" as CAEX
+import "http://www.dke.de/CAEX/300" as CAEX
 
 reactions: iC_ReactToSystemUnitClassChanges
 in reaction to changes in CAEX
@@ -25,7 +25,7 @@ reaction NameChanged {
 reaction ChangeModeChanged {
 	after attribute replaced at CAEX::SystemUnitClass[changeMode]
 	call {
-		val feature = CaexFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("changeMode")
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("changeMode")
 		
 		correctSystemUnitClassClones(affectedEObject, feature, newValue)
 	}
@@ -35,7 +35,7 @@ reaction ChangeModeChanged {
 reaction AttributeAdded {
 	after element inserted in CAEX::SystemUnitClass[^attribute]
 	call {
-		val feature = CaexFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("attribute")		
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("attribute")		
 		correctSystemUnitClassClones(affectedEObject, feature, newValue)
 	}
 }
@@ -50,7 +50,7 @@ reaction AttributeRemoved {
 reaction InternalElementAdded {
 	after element inserted in CAEX::SystemUnitClass[internalElement]
 	call {
-		val feature = CaexFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("internalElement")
+		val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("internalElement")
 		correctSystemUnitClassClones(affectedEObject, feature, newValue)
 	}
 }
@@ -70,7 +70,7 @@ reaction SystemUnitClassDeleted {
 reaction AdditionalInformationAdded {
  after element inserted in CAEX::SystemUnitClass[additionalInformation]
  call {
- 	val feature = CaexFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("additionalInformation")		
+ 	val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("additionalInformation")		
  	correctSystemUnitClassClones(affectedEObject, feature, newValue)
 	}
 }
@@ -86,7 +86,7 @@ routine correctPathsSystemUnitClassClones(CAEX::SystemUnitClass affectedEObject)
 		call {
 			//TODO: Modify to only start correction for Elements with correspondences 			
 			val newRefBasePath = CAEXIntraConsistencyTools.generatePathFromTuid(correspondenceModel,affectedEObject,correspondenceModel.calculateTuidFromEObject(affectedEObject))		
-			val feature = CaexFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("refBaseSystemUnitPath")
+			val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("refBaseSystemUnitPath")
 			correctSystemUnitClassClones(affectedEObject, feature, newRefBasePath)
 			
 			//Recursively correct the paths of all children elements 

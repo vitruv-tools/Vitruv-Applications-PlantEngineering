@@ -8,10 +8,10 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
-import org.automationml.caex.caex.InternalElement
-import org.automationml.caex.caex.SystemUnitClass
-import org.automationml.caex.caex.SystemUnitClassLib
-import org.automationml.caex.caex.ChangeMode
+import caex.caex30.caex.InternalElement
+import caex.caex30.caex.SystemUnitClass
+import caex.caex30.caex.SystemUnitClassLib
+import caex.caex30.caex.ChangeMode
 import java.util.NoSuchElementException
 import org.junit.rules.ExpectedException
 
