@@ -1,11 +1,11 @@
 package de.fzi.intramodelconsistency.caex.demo.tests
 
 import org.junit.Test
-import org.automationml.caex.caex.InternalElement
-import org.automationml.caex.caex.SystemUnitClass
+import caex.caex30.caex.InternalElement
+import caex.caex30.caex.SystemUnitClass
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
-import org.automationml.caex.caex.Attribute
+import caex.caex30.caex.Attribute
 
 class CAEXInternalElementChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 	

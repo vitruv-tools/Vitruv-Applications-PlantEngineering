@@ -1,4 +1,4 @@
-import "http://org.automationml.caex" as CAEX
+import "http://www.dke.de/CAEX/300" as CAEX
 
 reactions: iC_ReactToSystemUnitClassLibChanges
 in reaction to changes in CAEX
