@@ -8,3 +8,4 @@ import iC_ReactToAttributeChanges using qualified names
 import iC_ReactToInternalElementChanges using qualified names
 import iC_ReactToSystemUnitClassChanges using qualified names
 import iC_ReactToSystemUnitClassLibChanges using qualified names
+import iC_ReactToConstraintChanges using qualified names

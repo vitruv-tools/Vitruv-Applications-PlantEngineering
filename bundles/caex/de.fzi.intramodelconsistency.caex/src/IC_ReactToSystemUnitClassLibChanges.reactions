@@ -9,9 +9,6 @@ import routines iC_ReactToSystemUnitClassChanges
 reaction NameOfSystemUnitClassLibChanged {
 	after attribute replaced at CAEX::SystemUnitClassLib[name]
 	call {
-		println(correspondenceModel.calculateTuidFromEObject(affectedEObject))
 		affectedEObject.systemUnitClass.forEach[correctPathsSystemUnitClassClones]
-		println(correspondenceModel.calculateTuidFromEObject(affectedEObject))
-		println(correspondenceModel.allCorrespondences)
 	}
 }

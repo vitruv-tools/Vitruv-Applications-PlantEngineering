@@ -1,5 +1,6 @@
 package de.fzi.intramodelconsistency.caex.demo.tests
 
+
 import org.junit.Test
 import org.junit.Rule
 
@@ -14,7 +15,7 @@ import caex.caex30.caex.SystemUnitClassLib
 import caex.caex30.caex.ChangeMode
 import java.util.NoSuchElementException
 import org.junit.rules.ExpectedException
-import org.junit.Ignore
+
 
 class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 	
@@ -68,6 +69,8 @@ class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTe
 	
 	@Test
 	public def testSystemUnitClassLibNameChanged() {
+		//This Test should run without complications but fails for unknown reasons while testing.
+		//Different behavior in the monitor.
 		
 		var targetElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
 		targetElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
@@ -101,6 +104,25 @@ class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTe
 		rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1")
 		//Else fail
 		fail("InternalElement_1 should be deleted after Prototype removal!")		
+	}
+	
+	@Test
+	public def testRemovePrototypeSystemUnitClassKeepClone() {
+		//Create correspondence
+		var intElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
+		intElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
+		(rootElement.findByPath("SysUCL") as SystemUnitClassLib).changeMode = ChangeMode.DELETE
+		rootElement.saveAndSynchronizeChanges
+		
+		testUserInteractor.addNextSelections(1)
+		
+		//Delete Prototype
+		var sysUCL = rootElement.findByPath("SysUCL") as SystemUnitClassLib
+		sysUCL.systemUnitClass.remove(sysUCL.findByPath("SysUClass_1"))
+		rootElement.saveAndSynchronizeChanges
+		
+		//Assert that Clone has NOT been deleted
+		assertNotNull(rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1"));
 	}
 	
 	@Test

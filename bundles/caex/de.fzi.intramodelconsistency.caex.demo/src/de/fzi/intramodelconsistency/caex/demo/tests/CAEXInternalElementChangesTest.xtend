@@ -6,7 +6,6 @@ import org.automationml.caex.caex.SystemUnitClass
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
 import org.automationml.caex.caex.Attribute
-import org.junit.Ignore
 
 class CAEXInternalElementChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 	

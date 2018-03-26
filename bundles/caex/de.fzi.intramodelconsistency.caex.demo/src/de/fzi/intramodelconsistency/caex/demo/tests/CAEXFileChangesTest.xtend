@@ -5,6 +5,7 @@ import caex.caex30.caex.SystemUnitClass
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
 class CAEXFileChangesTest extends AbstractCAEXIntraModelConsistencyTest {
@@ -22,7 +23,7 @@ class CAEXFileChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 	}
 	
 	@Test
-	public def void testCreateAttributeInSystemUnitClass() {
+	public def void testCreateAttributesInSystemUnitClass() {
 		//Create correspondence
 		var intElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
 		intElem.refBaseSystemUnitPath = "SysUCL/SysUClass_1"
@@ -47,5 +48,19 @@ class CAEXFileChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 		//Assert that attributes have been copied to InternalElement
 		assertNotNull(rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1/NewAttribute"))
 		assertNotNull(rootElementVirtualModel.findByPath("InstanceHierarchy_1/InternalElement_1/NewAttribute2"))
+	}
+	
+	@Test
+	public def void removeSourceDocumentInformation() {
+		var sourceDocumentation = factory.createSourceDocumentInformation()
+		sourceDocumentation.originID = "tests"
+		rootElement.sourceDocumentInformation.add(sourceDocumentation)
+		rootElement.saveAndSynchronizeChanges
+				
+		rootElement.sourceDocumentInformation.remove(sourceDocumentation)
+		rootElement.saveAndSynchronizeChanges
+		
+		assertNotNull(rootElementVirtualModel.sourceDocumentInformation.get(0))
+		assertEquals("tests",rootElementVirtualModel.sourceDocumentInformation.get(0).originID)
 	}
 }
