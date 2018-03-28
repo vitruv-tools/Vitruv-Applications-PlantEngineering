@@ -46,17 +46,17 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	}
 	
 	override protected setup() {
-		val docRoot = preloadExistingModel("resources/My.caex")	
-		createAndSynchronizeModel(MODEL_NAME.projectModelPath,docRoot.CAEXFile)
+		val docRoot = preloadExistingModel("resources/Test.caex")	
+		createAndSynchronizeModel(MODEL_NAME.projectModelPath,docRoot)
 	}
 	
 	protected def CAEXFactory factory() {
 		return CAEXFactory.eINSTANCE
 	}
 	
-	protected def DocumentRoot preloadExistingModel(String path) {
+	protected def CAEXFile preloadExistingModel(String path) {
 		var targetModel = getModelResource(URI.createURI(path))
-		return targetModel.contents.get(0) as DocumentRoot
+		return targetModel.contents.get(0) as CAEXFile
 	}
 	
 	protected def TestUserInteractor getTestUserInteractor() {
