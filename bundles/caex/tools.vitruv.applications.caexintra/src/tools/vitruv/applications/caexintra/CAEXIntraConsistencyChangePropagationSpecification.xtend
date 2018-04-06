@@ -1,0 +1,7 @@
+package tools.vitruv.applications.caexintra
+
+import mir.reactions.caex_import.Caex_importChangePropagationSpecification
+
+class CAEXIntraConsistencyChangePropagationSpecification extends Caex_importChangePropagationSpecification{
+	
+}
