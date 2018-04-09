@@ -31,23 +31,22 @@
 		<repository>
 			<id>Eclipse Oxygen</id>
 			<layout>p2</layout>
-			<!--<url>http://download.eclipse.org/releases/oxygen</url>-->
 			<url>https://sdqbuild.ipd.kit.edu/nexus/content/groups/eclipse-oxygen-complete/</url>
 		</repository>
-		<!--<repository>
-			<id>Eclipse Oxygen Updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/eclipse/updates/4.7</url>
-		</repository>-->
 		<repository>
 			<id>Vitruv Framework</id>
 			<layout>p2</layout>
 			<url>https://vitruv-tools.github.io/updatesite/nightly/framework/</url>
 		</repository>
 		<repository>
-			<id>SDQ Commons</id>
+			<id>Vitruv Domains</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/nightly/commons/</url>
+			<url>https://vitruv-tools.github.io/updatesite/nightly/domains/</url>
+		</repository>
+		<repository>
+			<id>SDQ Metamodels</id>
+			<layout>p2</layout>
+			<url>https://kit-sdq.github.io/updatesite/nightly/metamodels/</url>
 		</repository>
 	</repositories>
 

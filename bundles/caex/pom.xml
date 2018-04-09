@@ -14,8 +14,8 @@
 	<name>CAEX Modules</name>
 
 	<modules>
-		<module>de.fzi.intramodelconsistency.caex</module>
-		<module>de.fzi.intramodelconsistency.caex.demo</module>
+		<module>tools.vitruv.applications.caexintra</module>
+		<module>tools.vitruv.applications.caexintra.demo</module>
 	</modules>
 
 </project>
