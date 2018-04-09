@@ -33,8 +33,4 @@
          </command>
       </menuContribution>
    </extension>
-   
-   <extension point="org.eclipse.ui.startup">
-      <startup class="tools.vitruv.applications.caexintra.demo.autocreate.Autostart" />
-   </extension>
 </plugin>
