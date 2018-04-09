@@ -1,4 +1,4 @@
-package tools.vitruv.applications.caexintra.demo.tests
+package tools.vitruv.applications.caexintra.tests
 
 import tools.vitruv.applications.caexintra.CAEXIntraConsistencyChangePropagationSpecification
 import java.util.NoSuchElementException

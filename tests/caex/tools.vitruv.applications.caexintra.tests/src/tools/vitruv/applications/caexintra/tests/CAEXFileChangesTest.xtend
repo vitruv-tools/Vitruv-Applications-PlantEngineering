@@ -1,4 +1,4 @@
-package tools.vitruv.applications.caexintra.demo.tests
+package tools.vitruv.applications.caexintra.tests
 
 import caex.caex30.caex.InternalElement
 import caex.caex30.caex.SystemUnitClass
@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
-class CAEXFileChangesTest extends tools.vitruv.applications.caexintra.demo.tests.AbstractCAEXIntraModelConsistencyTest {
+class CAEXFileChangesTest extends tools.vitruv.applications.caexintra.tests.AbstractCAEXIntraModelConsistencyTest {
 	
 
 	

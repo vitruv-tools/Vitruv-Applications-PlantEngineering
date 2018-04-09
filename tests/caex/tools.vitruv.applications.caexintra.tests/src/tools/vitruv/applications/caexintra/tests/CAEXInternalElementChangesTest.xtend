@@ -1,4 +1,4 @@
-package tools.vitruv.applications.caexintra.demo.tests
+package tools.vitruv.applications.caexintra.tests
 
 import org.junit.Test
 import caex.caex30.caex.InternalElement
@@ -6,10 +6,12 @@ import caex.caex30.caex.SystemUnitClass
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
 import caex.caex30.caex.Attribute
+import org.junit.Ignore
 
-class CAEXInternalElementChangesTest extends tools.vitruv.applications.caexintra.demo.tests.AbstractCAEXIntraModelConsistencyTest {
+class CAEXInternalElementChangesTest extends tools.vitruv.applications.caexintra.tests.AbstractCAEXIntraModelConsistencyTest {
 	
 	@Test
+	@Ignore
 	public def testRemoveAttributeFromCloneInternalElement() {
 		//Create correspondence
 		var intElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
