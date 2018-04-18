@@ -47,16 +47,18 @@ class CAEXIntraConsistencyTools {
 	 * Given the tuid of the target object a string path of the form 'CAEXFile.fileName/someObj.name/../../targetObj.name' 
 	 * is generated, originating from the root CAEXFile object and pointing to the target object 
 	 */
-	static def String generatePathFromTuid(CorrespondenceModel cm, EObject anyElem, String tuid) {		 
+	static def String generatePathFromTuid(CorrespondenceModel cm, EObject anyElem, String tuid) throws NullPointerException{		 
 		 var root = cm.calculateTuidFromEObject(anyElem.rootCAEXFile).toString
 		 if(tuid === null || !tuid.startsWith(root)) return null
 		 var splitPath = tuid.substring(root.length).split(TUID_SEGMENT_SEPARATOR)
 		 var path = ""
 		 var temp_tuid = root
 		 for(item : splitPath.filter[it!=""]){
-		 	//get said element
-		 	temp_tuid += '''«TUID_SEGMENT_SEPARATOR»«item»'''
-		 	path += (cm.resolveEObjectFromTuid(Tuid.getInstance(temp_tuid)) as	CAEXObject).name + "/"	 	
+		 	try {
+		 		//get said element
+		 		temp_tuid += '''«TUID_SEGMENT_SEPARATOR»«item»'''
+		 		path += (cm.resolveEObjectFromTuid(Tuid.getInstance(temp_tuid)) as	CAEXObject).name + "/"		 		
+		 	} catch (NullPointerException e) return null;	 	
 		 }		 
 		 path.substring(0,path.length-1)
 	}
