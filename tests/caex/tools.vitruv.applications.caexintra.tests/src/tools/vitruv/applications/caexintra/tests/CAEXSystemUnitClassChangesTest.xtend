@@ -28,17 +28,22 @@ class CAEXSystemUnitClassChangesTest extends tools.vitruv.applications.caexintra
 		var sysClass = factory.createSystemUnitClass
 		var instHier = factory.createInstanceHierarchy
 		var intElem = factory.createInternalElement
+
+
+		rootElement.systemUnitClassLib.add(sysLib)
+		rootElement.instanceHierarchy.add(instHier)		
+		rootElement.saveAndSynchronizeChanges
 		
 		sysLib.name="SUCL"
-		sysClass.name = "SUC"
-		instHier.name = "instanceHierarchy1"
-		intElem.name = "internalElem1"
+		sysClass.name = "SUC"		
+		rootElement.saveAndSynchronizeChanges
 		
 		sysLib.systemUnitClass.add(sysClass)
-		instHier.internalElement.add(intElem)
+		instHier.internalElement.add(intElem)		
+		rootElement.saveAndSynchronizeChanges
 		
-		rootElement.systemUnitClassLib.add(sysLib)
-		rootElement.instanceHierarchy.add(instHier)
+		instHier.name = "instanceHierarchy1"
+		intElem.name = "internalElem1"
 		
 		rootElement.saveAndSynchronizeChanges
 		instHier.internalElement.get(0).refBaseSystemUnitPath = "SUCL/SUC"
@@ -70,7 +75,7 @@ class CAEXSystemUnitClassChangesTest extends tools.vitruv.applications.caexintra
 	@Ignore
 	@Test
 	public def testSystemUnitClassLibNameChanged() {
-		//This Test should run without complications but fails for unknown reasons while testing.
+		//TODO: This Test should run without complications but fails for unknown reasons while testing.
 		//Different behavior in the monitor.
 		
 		var targetElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement
