@@ -29,11 +29,11 @@ public class RemoveAllClonesAndCorrespondencesSysUnitClassRoutine extends Abstra
     
     public void callRoutine1(final SystemUnitClass affectedClass, final List<InternalElement> clones, @Extension final RoutinesFacade _routinesFacade) {
       boolean _isEmpty = clones.isEmpty();
-      boolean _not = (!_isEmpty);
-      if (_not) {
-        Resource _eResource = clones.get(0).eResource();
-        _eResource.setModified(true);
+      if (_isEmpty) {
+        return;
       }
+      Resource _eResource = clones.get(0).eResource();
+      _eResource.setModified(true);
       final Consumer<InternalElement> _function = (InternalElement it) -> {
         _routinesFacade.removeCAEXCorrespondence(it, affectedClass);
       };
@@ -46,6 +46,11 @@ public class RemoveAllClonesAndCorrespondencesSysUnitClassRoutine extends Abstra
           _routinesFacade.deleteElement(it);
         };
         clones.forEach(_function_1);
+      } else {
+        final Consumer<InternalElement> _function_2 = (InternalElement it) -> {
+          it.setRefBaseSystemUnitPath("");
+        };
+        clones.forEach(_function_2);
       }
     }
   }

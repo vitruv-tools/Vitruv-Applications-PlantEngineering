@@ -117,15 +117,17 @@ routine removeAllClonesAndCorrespondencesSysUnitClass(CAEX::SystemUnitClass affe
 		val clones = retrieve many CAEX::InternalElement corresponding to affectedClass
 	}
 	action  {
-		call {		
+		call {
+			if(clones.empty) return;
 			//Set refresh Resource before deleting from Resource
-			if(!clones.empty) clones.get(0).eResource.modified=true;		
+			clones.get(0).eResource.modified=true;		
 			clones.forEach[removeCAEXCorrespondence(affectedClass)]
 			//Ask user before deleting clones
 			val result = userInteracting.selectFromMessage(UserInteractionType.MODAL,
 						"Should all InternalElements that correspond to the deleted SystemUnitClass also be removed?",
 						"Yes","No")
-			if(result == 0)	clones.forEach[deleteElement]					
+			if(result == 0)	clones.forEach[deleteElement]
+			else clones.forEach[refBaseSystemUnitPath = ""]					
 		}
 	}
 }
