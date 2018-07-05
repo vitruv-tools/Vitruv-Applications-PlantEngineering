@@ -1,6 +1,5 @@
 package mir.routines.plcopen2caex;
 
-import com.google.common.base.Objects;
 import java.io.IOException;
 import mir.routines.plcopen2caex.RoutinesFacade;
 import org.automationml.caex.caex.CAEXFile;
@@ -13,8 +12,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class CreateCaexRootRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private CreateCaexRootRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -46,15 +43,14 @@ public class CreateCaexRootRoutine extends AbstractRepairRoutineRealization {
     
     public boolean checkMatcherPrecondition1(final DocumentRoot plcopenRoot) {
       ProjectType _project = plcopenRoot.getProject();
-      boolean _notEquals = (!Objects.equal(_project, null));
-      return _notEquals;
+      boolean _tripleNotEquals = (_project != null);
+      return _tripleNotEquals;
     }
   }
   
-  public CreateCaexRootRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final DocumentRoot plcopenRoot) {
-    super(reactionExecutionState, calledBy);
+  public CreateCaexRootRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final DocumentRoot plcopenRoot) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.plcopen2caex.CreateCaexRootRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.plcopen2caex.RoutinesFacade(getExecutionState(), this);
     this.plcopenRoot = plcopenRoot;
   }
   

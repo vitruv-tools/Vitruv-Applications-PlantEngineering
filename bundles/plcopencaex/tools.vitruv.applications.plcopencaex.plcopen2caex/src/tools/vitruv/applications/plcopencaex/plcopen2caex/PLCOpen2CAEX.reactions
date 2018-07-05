@@ -22,7 +22,7 @@ reaction CreatedRoot {
 
 routine createCaexRoot(plcopen::DocumentRoot plcopenRoot) {
 	match {
-		check plcopenRoot.project != null
+		check plcopenRoot.project !== null
 	}
 	action {
 		val caexFile = create caex::CAEXFile
