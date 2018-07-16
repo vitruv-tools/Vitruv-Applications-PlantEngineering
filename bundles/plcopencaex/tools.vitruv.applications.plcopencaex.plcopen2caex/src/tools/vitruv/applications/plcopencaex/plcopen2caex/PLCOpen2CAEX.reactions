@@ -5,12 +5,18 @@ reactions: plcopen2caex
 in reaction to changes in PLCOpen
 execute actions in CAEX
 
+
+// ***** Jede Änderung -> Logging
+
 reaction AnyReactionTracking {
 	after any change
 	call {
 		System.out.println("reacting to a change ...")
 	}
 }
+
+
+// ***** PLCopen Datei anlegen -> CAEX Datei anlegen // Sinnvoll??
 
 reaction CreatedRoot {
 	after element plcopen::DocumentRoot created and inserted as root
@@ -35,20 +41,8 @@ routine createCaexRoot(plcopen::DocumentRoot plcopenRoot) {
 	}
 }
 
-reaction CreatedFileHeaderType {
-	after element plcopen::FileHeaderType created and inserted in plcopen::ProjectType[fileHeader]
-	call {
-		val fileHeaderType = newValue;
-		createVersion(fileHeaderType);
-	}
-}
 
-routine createVersion(plcopen::FileHeaderType fileHeaderType) {
-	action {
-		val version = create caex::Version 
-		add correspondence between fileHeaderType and version
-	}
-}
+// ***** Produktversion abändern -> korrespondierende Versionsobjekte abändern
 
 reaction RenameProductVersion {
 	after attribute replaced at plcopen::FileHeaderType[productVersion]
@@ -67,4 +61,47 @@ routine renameVersionForProductVersion(plcopen::FileHeaderType fileHeaderType) {
 		}
 	}
 }
+
+
+// ***** PLCopen header angelegt -> Versionsobjekt angelegt
+
+reaction CreatedFileHeaderType {
+	after element plcopen::FileHeaderType created and inserted in plcopen::ProjectType[fileHeader]
+	call {
+		val fileHeaderType = newValue;
+		createVersion(fileHeaderType);
+	}
+}
+
+routine createVersion(plcopen::FileHeaderType fileHeaderType) {
+	action {
+		val version = create caex::Version 
+		add correspondence between fileHeaderType and version
+	}
+}
+
+
+// ***** globale ID abändern -> alle Vorkommen in CAEX auch abändern
+
+reaction ChangeGlobalID {
+	after attribute replaced at plcopen::PouType1[globalId]
+	call {
+		changeIDInCAEX(affectedEObject)
+	}
+}
+
+routine changeIDInCAEX (plcopen::PouType1 pouType) {
+	match {
+		val reference = retrieve caex::ExternalReference corresponding to pouType
+	}
+	action {
+		update reference {
+			val newId = pouType.globalId
+			val oldPath = reference.path
+			val newPath = oldPath.substring(0, oldPath.lastIndexOf('#')) + "ISID_" + newId
+			reference.path = newPath
+		}
+	}
+}
+
 // FIXME MK write PLCOpen2CAEX reaction
