@@ -1,0 +1,63 @@
+//import org.eclipse.xtext.EcoreUtil2
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://org.automationml.caex" as caex
+
+reactions: caex2plcopen
+in reaction to changes in CAEX
+execute actions in PLCOpen
+
+// ***** Pfadangabe in CAEX zu PLCopen Datei geändert -> Korrespondenz auflösen (und neue setzen)
+
+reaction ChangeExternalInterfacePath {
+	after attribute replaced at caex::ExternalReference[path]
+	call {
+		val reference = affectedEObject
+	//	val caexFile = EcoreUtil2.getRootContainer(reference)
+		changeIdCorrespondence(reference)
+	}
+}
+
+routine changeIdCorrespondence (caex::ExternalReference reference) { //*caex::CAEXFile file
+	match {
+		val pouTypeOld = retrieve plcopen::PouType1 corresponding to reference
+	}
+	action {
+		remove correspondence between reference and pouTypeOld
+		//add correspondence between reference and pouTypeNew
+	}
+}
+
+
+// ***** Anlegen einer SystemUnitClass -> Anlegen einer PLCopen Datei mit Grundstruktur
+
+reaction SystemUnitClassAdded {
+	after element caex::SystemUnitClass created
+	call {
+		//val newClass =
+		//val caexRoot =  
+		//addPLCopenFileWithStructure(newClass, caexRoot)*/
+	}
+}
+
+routine addPLCopenFileWithStructure(caex::SystemUnitClass newClass, caex::DocumentRoot caexRoot) {
+	action {
+		val newPouType = create plcopen::PouType1 and initialize {
+			newPouType.name = newClass.name
+		}
+		val newPousType = create plcopen::PousType and initialize {
+			newPousType.pou.add(newPouType)
+		}
+		val newTypesType = create plcopen::TypesType and initialize {
+			newTypesType.pous = newPousType
+		}
+		val newProjectType = create plcopen::ProjectType and initialize {
+			newProjectType.types = newTypesType
+		}
+		val newDocumentRoot = create plcopen::DocumentRoot and initialize {
+			newDocumentRoot.project = newProjectType
+			persistProjectRelative(caexRoot, newDocumentRoot, newClass.name + "plcopen.xml");
+		}
+		add correspondence between newPouType and newClass
+	}
+}
