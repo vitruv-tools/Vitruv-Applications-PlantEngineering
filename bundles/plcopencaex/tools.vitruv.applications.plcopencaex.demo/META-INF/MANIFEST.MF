@@ -18,11 +18,11 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.metamodel,
  tools.vitruv.framework.change.processing,
- tools.vitruv.applications.plcopencaex.plcopen2caex,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.util,
  tools.vitruv.domains.plcopen,
  tools.vitruv.domains.caex,
  tools.vitruv.extensions.emf;bundle-version="0.2.0",
  tools.vitruv.testutils;bundle-version="0.2.0",
- tools.vitruv.extensions.emf.monitorededitor;bundle-version="0.2.0"
+ tools.vitruv.extensions.emf.monitorededitor;bundle-version="0.2.0",
+ tools.vitruv.applications.plcopencaex.plcopen2caex;bundle-version="1.0.0"

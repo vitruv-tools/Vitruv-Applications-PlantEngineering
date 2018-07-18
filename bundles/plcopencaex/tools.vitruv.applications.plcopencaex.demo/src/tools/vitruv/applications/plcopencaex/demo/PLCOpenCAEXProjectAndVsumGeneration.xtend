@@ -3,6 +3,7 @@ package tools.vitruv.applications.plcopencaex.demo
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.runtime.CoreException
 import tools.vitruv.applications.plcopencaex.plcopen2caex.PLCOpen2CAEXChangePropagationSpecification
+//import tools.vitruv.applications.plcopencaex.caex2plcopen.CAEX2PLCopenChangePropagationSpecification
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
