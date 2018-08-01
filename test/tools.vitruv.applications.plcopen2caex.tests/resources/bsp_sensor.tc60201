@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tc60201:project xmlns:tc60201="http://www.plcopen.org/xml/tc6_0201">
+  <tc60201:contentHeader/>
+  <tc60201:types>
+    <tc60201:dataTypes/>
+    <tc60201:pous>
+      <tc60201:pou globalId="bsp123" name="Sensor">
+        <tc60201:interface/>
+        <tc60201:body>
+          <tc60201:SFC>
+            <tc60201:step initialStep="true" localId="0" name="Sensor bereit"/>
+            <tc60201:inVariable localId="1"/>
+            <tc60201:transition localId="2"/>
+            <tc60201:step localId="3" name="Signalweitergabe"/>
+            <tc60201:inVariable localId="4"/>
+            <tc60201:transition localId="5"/>
+            <tc60201:jumpStep localId="6" targetName="Init"/>
+          </tc60201:SFC>
+        </tc60201:body>
+      </tc60201:pou>
+    </tc60201:pous>
+  </tc60201:types>
+</tc60201:project>

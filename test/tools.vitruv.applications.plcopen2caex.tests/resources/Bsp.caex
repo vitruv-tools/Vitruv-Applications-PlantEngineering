@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CAEXFile>
+  <SystemUnitClassLib ID="" Name="IAF_ModelSystemUnitClassLib">
+    <SystemUnitClass Name="inductive_sensor" refBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor">
+      <Attribute Name="weight" AttributeDataType="xs:integer" Unit="g">
+        <Value>54</Value>
+      </Attribute>
+      <ExternalInterface ID="eca566ds-d604-4c26-bae1-bfd13f2dd2a8" Name="inductive_sensor_PLCopen_LogicInterface" RefBaseClassPath="IAF_ModelInterfaceClassLib/LogicInterface">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI">
+          <Value>File:///sequence/sensor_proximity.xml#ISID_20131218-800</Value>
+        </Attribute>
+      </ExternalInterface>
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+</CAEXFile>
