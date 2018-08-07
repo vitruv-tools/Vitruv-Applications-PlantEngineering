@@ -8,7 +8,7 @@ import caex.caex30.caex.DocumentRoot
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.domains.caex.CAEXDomainProvider
-import tools.vitruv.testutils.TestUserInteractor
+import tools.vitruv.testutils.TestUserInteraction
 import tools.vitruv.testutils.VitruviusApplicationTest
 
 class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
@@ -59,7 +59,7 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 		return targetModel.contents.get(0) as CAEXFile
 	}
 	
-	protected def TestUserInteractor getTestUserInteractor() {
+	protected def TestUserInteraction getTestUserInteractor() {
 		super.userInteractor
 	}
 	

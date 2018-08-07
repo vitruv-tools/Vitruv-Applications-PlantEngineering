@@ -98,7 +98,8 @@ class CAEXSystemUnitClassChangesTest extends tools.vitruv.applications.caexintra
 		(rootElement.findByPath("SysUCL") as SystemUnitClassLib).changeMode = ChangeMode.DELETE
 		rootElement.saveAndSynchronizeChanges
 		
-		testUserInteractor.addNextSelections(0)
+		//remove corresponding elements
+		testUserInteractor.addNextConfirmationInput(true)
 		
 		//Delete Prototype
 		var sysUCL = rootElement.findByPath("SysUCL") as SystemUnitClassLib
@@ -120,7 +121,8 @@ class CAEXSystemUnitClassChangesTest extends tools.vitruv.applications.caexintra
 		(rootElement.findByPath("SysUCL") as SystemUnitClassLib).changeMode = ChangeMode.DELETE
 		rootElement.saveAndSynchronizeChanges
 		
-		testUserInteractor.addNextSelections(1)
+		//Don't remove corresponding elements
+		testUserInteractor.addNextConfirmationInput(false)
 		
 		//Delete Prototype
 		var sysUCL = rootElement.findByPath("SysUCL") as SystemUnitClassLib

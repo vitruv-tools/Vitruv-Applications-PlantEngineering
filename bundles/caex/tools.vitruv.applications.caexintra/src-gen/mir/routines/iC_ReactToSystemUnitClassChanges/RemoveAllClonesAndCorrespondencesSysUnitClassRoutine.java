@@ -12,7 +12,6 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
-import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class RemoveAllClonesAndCorrespondencesSysUnitClassRoutine extends AbstractRepairRoutineRealization {
@@ -38,10 +37,8 @@ public class RemoveAllClonesAndCorrespondencesSysUnitClassRoutine extends Abstra
         _routinesFacade.removeCAEXCorrespondence(it, affectedClass);
       };
       clones.forEach(_function);
-      final int result = this.userInteracting.selectFromMessage(UserInteractionType.MODAL, 
-        "Should all InternalElements that correspond to the deleted SystemUnitClass also be removed?", 
-        "Yes", "No");
-      if ((result == 0)) {
+      final Boolean result = this.userInteractor.getConfirmationDialogBuilder().message("Should all InternalElements that correspond to the deleted SystemUnitClass also be removed?").title("Remove corresponding elements?").positiveButtonText("Yes").cancelButtonText("No").startInteraction();
+      if ((result).booleanValue()) {
         final Consumer<InternalElement> _function_1 = (InternalElement it) -> {
           _routinesFacade.deleteElement(it);
         };

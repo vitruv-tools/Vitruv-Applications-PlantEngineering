@@ -2,7 +2,6 @@ import tools.vitruv.applications.caexintra.CAEXIntraConsistencyTools
 import caex.caex30.caex.CAEXFactory
 import caex.caex30.caex.InternalElement
 import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.framework.userinteraction.UserInteractionType
 
 import "http://www.dke.de/CAEX/300" as CAEX
 
@@ -123,10 +122,13 @@ routine removeAllClonesAndCorrespondencesSysUnitClass(CAEX::SystemUnitClass affe
 			clones.get(0).eResource.modified=true;		
 			clones.forEach[removeCAEXCorrespondence(affectedClass)]
 			//Ask user before deleting clones
-			val result = userInteracting.selectFromMessage(UserInteractionType.MODAL,
-						"Should all InternalElements that correspond to the deleted SystemUnitClass also be removed?",
-						"Yes","No")
-			if(result == 0)	clones.forEach[deleteElement]
+			val result = userInteractor.confirmationDialogBuilder				
+				.message("Should all InternalElements that correspond to the deleted SystemUnitClass also be removed?")
+				.title("Remove corresponding elements?")
+				.positiveButtonText("Yes")
+				.cancelButtonText("No")
+				.startInteraction			
+			if(result) clones.forEach[deleteElement]
 			else clones.forEach[refBaseSystemUnitPath = ""]					
 		}
 	}
