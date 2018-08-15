@@ -16,6 +16,10 @@ class ReactionsExecutor extends AbstractReactionsExecutor {
   }
   
   protected void setup() {
+    this.addReaction(new mir.reactions.caex2plcopen.AddExternalInterfaceReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("caex2plcopen"))));
+    this.addReaction(new mir.reactions.caex2plcopen.AddExternalInterfaceTypeReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("caex2plcopen"))));
+    this.addReaction(new mir.reactions.caex2plcopen.ChangeExternalInterfaceTypeReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("caex2plcopen"))));
+    this.addReaction(new mir.reactions.caex2plcopen.RemoveExternalInterfaceTypeReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("caex2plcopen"))));
     this.addReaction(new mir.reactions.caex2plcopen.ChangeExternalInterfacePathReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("caex2plcopen"))));
     this.addReaction(new mir.reactions.caex2plcopen.SystemUnitClassAddedReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("caex2plcopen"))));
   }

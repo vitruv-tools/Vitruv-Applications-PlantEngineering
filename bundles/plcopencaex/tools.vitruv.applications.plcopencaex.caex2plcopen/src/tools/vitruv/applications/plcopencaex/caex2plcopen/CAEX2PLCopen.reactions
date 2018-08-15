@@ -1,4 +1,5 @@
-//import org.eclipse.xtext.EcoreUtil2
+import org.automationml.caex.caex.CAEXFile
+import org.eclipse.xtext.EcoreUtil2
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://org.automationml.caex" as caex
@@ -7,13 +8,77 @@ reactions: caex2plcopen
 in reaction to changes in CAEX
 execute actions in PLCOpen
 
+// wie erste Verknüpfung zwischen Dokumenten???
+
+// ***** ExternalInterface hinzufügen, Interface Typ setzen/ändern/löschen
+
+reaction AddExternalInterface {
+	after element caex::ExternalInterface inserted in caex::SystemUnitClass[externalInterface]
+	call {
+		if(newValue.refBaseClassPath.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
+			val caexFile = EcoreUtil2.getContainerOfType(newValue, CAEXFile)
+			addCorrespondenceToPLCopen(newValue, caexFile)
+		}
+	} 
+}
+
+reaction AddExternalInterfaceType {
+	after attribute insert in caex::ExternalInterface[refBaseClassPath]
+	call {
+		if(newValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
+			
+		}
+	}
+}
+
+reaction ChangeExternalInterfaceType {
+	after attribute replaced at caex::ExternalInterface[refBaseClassPath]
+	call {
+		if(newValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
+			
+		} else if(oldValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
+			
+		}
+	}
+}
+
+reaction RemoveExternalInterfaceType {
+	after attribute remove from caex::ExternalInterface[refBaseClassPath]
+	call {
+		if(oldValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
+			
+		}
+	}
+}
+
+routine addCorrespondenceToPLCopen (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile) {
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to caexFile //with Pfadabgleich??	Und dann evtl neues Dokument anlegen?? Pfad überhaupt schon vorhanden?? selber anlegen??
+	}
+	action {
+		add correspondence between externalInterface and plcProject
+	}
+}
+
+routine removeCorrespondenceFromPLCopen (caex::ExternalInterface externalInterface){
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to externalInterface
+	}
+	action {
+		remove correspondence between externalInterface and plcProject
+	}
+}
+
 // ***** Pfadangabe in CAEX zu PLCopen Datei geändert -> Korrespondenz auflösen (und neue setzen)
 
 reaction ChangeExternalInterfacePath {
 	after attribute replaced at caex::ExternalReference[path]
 	call {
 		val reference = affectedEObject
-	//	val caexFile = EcoreUtil2.getRootContainer(reference)
+		val currRoot = reference
+		while(currRoot !== null){
+			//currRoot = reference
+		}
 		changeIdCorrespondence(reference)
 	}
 }
@@ -30,6 +95,7 @@ routine changeIdCorrespondence (caex::ExternalReference reference) { //*caex::CA
 
 
 // ***** Anlegen einer SystemUnitClass -> Anlegen einer PLCopen Datei mit Grundstruktur
+// sinnlos??
 
 reaction SystemUnitClassAdded {
 	after element caex::SystemUnitClass created
