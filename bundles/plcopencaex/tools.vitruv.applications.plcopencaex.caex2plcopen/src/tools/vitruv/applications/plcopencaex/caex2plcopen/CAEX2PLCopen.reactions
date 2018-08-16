@@ -1,5 +1,9 @@
 import org.automationml.caex.caex.CAEXFile
 import org.eclipse.xtext.EcoreUtil2
+import org.plcopen.xml.tc60201.PouType1
+import org.automationml.caex.caex.ExternalInterface
+import org.automationml.caex.caex.DocumentRoot
+import org.apache.log4j.Level
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://org.automationml.caex" as caex
@@ -8,13 +12,28 @@ reactions: caex2plcopen
 in reaction to changes in CAEX
 execute actions in PLCOpen
 
+reaction LogEachChange {
+	after any change
+	call {
+		logger.debug("Debug Output")
+		logger.warn("Warn Output")
+		logger.error("Error Output")
+		logger.fatal("Fatal Output")
+		logger.info("Info Output")
+		logger.trace("Trace Output")
+	}
+}
+
 // wie erste Verknüpfung zwischen Dokumenten???
 
-// ***** ExternalInterface hinzufügen, Interface Typ setzen/ändern/löschen
+// ***** ExternalInterface hinzufügen
+// löschen: notwendig, correspondencen aufzulösen??
 
 reaction AddExternalInterface {
 	after element caex::ExternalInterface inserted in caex::SystemUnitClass[externalInterface]
 	call {
+		// Vererbung?? Problem: RefBaseClassPath String
+		// Sonderbare Interface Klasse in Fischertechnik, die sonst nirgends vorkommt???
 		if(newValue.refBaseClassPath.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
 			val caexFile = EcoreUtil2.getContainerOfType(newValue, CAEXFile)
 			addCorrespondenceToPLCopen(newValue, caexFile)
@@ -22,11 +41,14 @@ reaction AddExternalInterface {
 	} 
 }
 
+// ***** Interface Typ setzen/ändern/löschen
+
 reaction AddExternalInterfaceType {
 	after attribute insert in caex::ExternalInterface[refBaseClassPath]
 	call {
 		if(newValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
-			
+			val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+			addCorrespondenceToPLCopen(affectedEObject, caexFile)
 		}
 	}
 }
@@ -34,11 +56,13 @@ reaction AddExternalInterfaceType {
 reaction ChangeExternalInterfaceType {
 	after attribute replaced at caex::ExternalInterface[refBaseClassPath]
 	call {
-		if(newValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
-			
-		} else if(oldValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
-			
+		if(oldValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
+			removeCorrespondenceFromPLCopen(affectedEObject)
 		}
+		if(newValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
+			val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+			addCorrespondenceToPLCopen(affectedEObject, caexFile)
+		} 
 	}
 }
 
@@ -46,63 +70,59 @@ reaction RemoveExternalInterfaceType {
 	after attribute remove from caex::ExternalInterface[refBaseClassPath]
 	call {
 		if(oldValue.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")){
-			
+			removeCorrespondenceFromPLCopen(affectedEObject)
 		}
 	}
 }
 
+// ***** Pfadangabe in CAEX zu PLCopen Datei geändert
+
+reaction ChangeExternalInterfacePath {
+	after attribute replaced at caex::Attribute[value] // Hier schon Einschränkung möglich? -> Attributname
+	call {
+		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
+		if(attributeParent !== null){
+			if(attributeParent.refBaseClassPath.equals("AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")) {
+				if(affectedEObject.name.equals("refURI")){
+					val caexFile = EcoreUtil2.getContainerOfType(attributeParent, CAEXFile)
+					removeCorrespondenceFromPLCopen(attributeParent)
+					addCorrespondenceToPLCopen(attributeParent, caexFile)
+				}
+			}
+		}
+	}
+}
+
+// ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu setzen
+
 routine addCorrespondenceToPLCopen (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to caexFile //with Pfadabgleich??	Und dann evtl neues Dokument anlegen?? Pfad überhaupt schon vorhanden?? selber anlegen??
+		val plcProject = retrieve plcopen::ProjectType corresponding to caexFile //mit Pfadabgleich??	Und dann evtl neues Dokument anlegen?? Pfad überhaupt schon vorhanden?? selber anlegen??
+		//val pouTypes = EcoreUtil2.getAllContentsOfType(plcProject, PouType1)
 	}
 	action {
+		//add correspondence between externalInterface and pouType
 		add correspondence between externalInterface and plcProject
 	}
 }
 
 routine removeCorrespondenceFromPLCopen (caex::ExternalInterface externalInterface){
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to externalInterface
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface
 	}
 	action {
-		remove correspondence between externalInterface and plcProject
+		remove correspondence between externalInterface and plcPouType
 	}
 }
-
-// ***** Pfadangabe in CAEX zu PLCopen Datei geändert -> Korrespondenz auflösen (und neue setzen)
-
-reaction ChangeExternalInterfacePath {
-	after attribute replaced at caex::ExternalReference[path]
-	call {
-		val reference = affectedEObject
-		val currRoot = reference
-		while(currRoot !== null){
-			//currRoot = reference
-		}
-		changeIdCorrespondence(reference)
-	}
-}
-
-routine changeIdCorrespondence (caex::ExternalReference reference) { //*caex::CAEXFile file
-	match {
-		val pouTypeOld = retrieve plcopen::PouType1 corresponding to reference
-	}
-	action {
-		remove correspondence between reference and pouTypeOld
-		//add correspondence between reference and pouTypeNew
-	}
-}
-
 
 // ***** Anlegen einer SystemUnitClass -> Anlegen einer PLCopen Datei mit Grundstruktur
-// sinnlos??
+// sinnlos?? Nutzerinteraktion??
 
 reaction SystemUnitClassAdded {
-	after element caex::SystemUnitClass created
+	after element caex::SystemUnitClass inserted in caex::SystemUnitClassLib[systemUnitClass]
 	call {
-		//val newClass =
-		//val caexRoot =  
-		//addPLCopenFileWithStructure(newClass, caexRoot)*/
+		val caexRoot =  EcoreUtil2.getContainerOfType(affectedEObject, DocumentRoot)
+		addPLCopenFileWithStructure(newValue, caexRoot)
 	}
 }
 
@@ -127,3 +147,22 @@ routine addPLCopenFileWithStructure(caex::SystemUnitClass newClass, caex::Docume
 		add correspondence between newPouType and newClass
 	}
 }
+
+// ***** Anlegen eines internen Elements -> Datei anlegen? Nutzerinteraktion?
+// ***** Rolle anlegen -> Datei anlegen? Nutzerinteraktion?
+// ***** Anlegen eines internen Elements mit Klassenbezug -> Korrespondenz setzen? (Werte aus Klasse direkt klonen?, Nutzerinteraktion?)
+// ***** Anlegen eines internen Elements mit Rollenbezug -> Korrespondenz setzen?
+// ***** Klassenbeschreibung ändern -> Auswirkungen auf Elemente? Nutzerinteraktion? (Prototypbasiert!)
+// ***** Rollenbeschreibung ändern -> Auswirkungen auf Elemente? Nutzerinteraktion?
+// ***** Klasse bzw. Klassenbib löschen (Kaskade beachten) (Enthaltenes in Klon schreiben? Nutzerinteraktion?)
+
+// ***** Interface zu internem Element hinzufügen/ändern/löschen (evtl Überschreibung Klasse/Rolle beachten, Nutzerinteraktion?)
+// ***** internes Element bzw. Instanzhierarchie löschen (Kaskade beachten)
+// ***** Rolle bzw. Rollenbib löschen (Kaskade beachten)
+// ***** Anlegen, Löschen Spiegelobjekt
+// ***** Ändern, Löschen Spiegelvorlage (Nutzerinteraktion?)
+// ***** Interface zu Rolle hinzufügen/ändern/löschen
+
+// ***** AdditionalInformation (Version, Name, Änderungsdatum, etc.) setzen/ändern/löschen -> FileHeader ändern
+
+// ***** Änderung Einheiten -> Welche relevant? Auswirkungen auf? (Scaling?, Position?, ...?)
