@@ -3,7 +3,7 @@ package tools.vitruv.applications.plcopencaex.demo
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.runtime.CoreException
 import tools.vitruv.applications.plcopencaex.plcopen2caex.PLCOpen2CAEXChangePropagationSpecification
-//import tools.vitruv.applications.plcopencaex.caex2plcopen.CAEX2PLCopenChangePropagationSpecification
+import tools.vitruv.applications.plcopencaex.caex2plcopen.CAEX2PLCopenChangePropagationSpecification
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -49,7 +49,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 	}
 	
 	protected def Iterable<ChangePropagationSpecification> createChangePropagationSpecifications() {
-		return #[new PLCOpen2CAEXChangePropagationSpecification()];
+		return #[new PLCOpen2CAEXChangePropagationSpecification, new CAEX2PLCopenChangePropagationSpecification];
 	}
 	
 	protected def IProject createTestProject(String projectName) throws CoreException {
