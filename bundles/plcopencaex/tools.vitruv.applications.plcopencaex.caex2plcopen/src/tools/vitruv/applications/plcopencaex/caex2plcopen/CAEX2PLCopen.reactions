@@ -101,9 +101,8 @@ reaction ChangeExternalInterfacePath {
 	with {
 		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
-		affectedEObject.name.equals("refURI")
-		attributeParent !== null 
-		&& CAEXInheritanceResolver.isInterfaceInstanceOf(CAEXStringResolver.resolveInterfacePath(attributeParent.refBaseClassPath, caexFile), "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")
+		affectedEObject.name.equals("refURI") && attributeParent !== null 
+			&& CAEXInheritanceResolver.isInterfaceInstanceOf(CAEXStringResolver.resolveInterfacePath(attributeParent.refBaseClassPath, caexFile), "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")
 	}
 	call {
 		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
