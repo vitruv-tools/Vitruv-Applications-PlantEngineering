@@ -9,7 +9,6 @@ import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.testutils.util.TestUtil
 import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.domains.plcopen.PLCOpenDomainProvider
 import tools.vitruv.domains.plcopen.PLCOpenDomain
@@ -19,6 +18,7 @@ import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.ui.monitorededitor.ProjectBuildUtils
 import org.eclipse.core.resources.ResourcesPlugin
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
 
 class PLCOpenCAEXProjectAndVsumGeneration {
 	
@@ -26,7 +26,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 		TuidManager.instance.reinitialize();
         val project = createTestProject("testProject");
         val virtualModel = createVirtualModel("testProjectVsum");
-        virtualModel.userInteractor = new UserInteractor();
+        virtualModel.userInteractor = UserInteractionFactory.instance.createDialogUserInteractor();
 		val VitruviusEmfBuilderApplicator emfBuilder = new VitruviusEmfBuilderApplicator();
 		emfBuilder.addToProject(project , virtualModel.folder, #[PLCOpenDomain.FILE_EXTENSION, CAEXDomain.FILE_EXTENSION]);
 		// build the project
@@ -39,7 +39,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 		project.create(null);
     	project.open(null);
 		val virtualModel = TestUtil.createVirtualModel(project.location.toFile, false, metamodels, createChangePropagationSpecifications(),
-			new UserInteractor()
+			UserInteractionFactory.instance.createDialogUserInteractor()
 		);
 		return virtualModel;
 	}

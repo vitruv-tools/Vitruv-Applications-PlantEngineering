@@ -6,13 +6,13 @@ import java.util.NoSuchElementException
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.domains.caex.CAEXDomainProvider
-import tools.vitruv.testutils.TestUserInteractor
 import tools.vitruv.testutils.VitruviusApplicationTest
 import org.plcopen.xml.tc60201.ProjectType
 import org.automationml.caex.caex.CAEXFile
 import org.automationml.caex.caex.CaexFactory
 import org.plcopen.xml.tc60201.Tc60201Factory
 import tools.vitruv.domains.plcopen.PLCOpenDomainProvider
+import tools.vitruv.testutils.TestUserInteraction
 
 class AbstractPLCopen2CAEXTest extends VitruviusApplicationTest {
 	private static val CAEX_MODEL_FILE_EXTENSION = "caex";
@@ -91,7 +91,7 @@ class AbstractPLCopen2CAEXTest extends VitruviusApplicationTest {
 		return targetModel.contents.get(0) as ProjectType
 	}
 	
-	protected def TestUserInteractor getTestUserInteractor() {
+	protected def TestUserInteraction getTestUserInteractor() {
 		super.userInteractor
 	}
 	
