@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="tools.vitruv.applications.plcopencaex.demo.PLCOpenCAEXProjectAndVsumGenerationHandler"
+            class="tools.vitruv.applications.automationml.caexplcopen.demo.PLCOpenCAEXProjectAndVsumGenerationHandler"
             commandId="tools.vitruv.applications.plcopencaex.demo.PLCOpenCAEXProjectAndVsumGeneration">
       </handler>
    </extension>

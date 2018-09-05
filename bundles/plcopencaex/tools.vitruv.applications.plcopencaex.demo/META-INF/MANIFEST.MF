@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CreateVsumTest
-Bundle-SymbolicName: tools.vitruv.applications.plcopencaex.demo;singleton:=true
+Bundle-SymbolicName: tools.vitruv.applications.automationml.caexplcopen.demo;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Bundle-Activator: tools.vitruv.applications.plcopencaex.demo.Activator
+Bundle-Activator: tools.vitruv.applications.automationml.caexplcopen.demo.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: com.google.guava,
@@ -25,5 +25,4 @@ Require-Bundle: com.google.guava,
  tools.vitruv.extensions.emf;bundle-version="0.2.0",
  tools.vitruv.testutils;bundle-version="0.2.0",
  tools.vitruv.extensions.emf.monitorededitor;bundle-version="0.2.0",
- tools.vitruv.applications.plcopencaex.plcopen2caex;bundle-version="1.0.0",
- tools.vitruv.applications.plcopencaex.caex2plcopen;bundle-version="1.0.0"
+ tools.vitruv.applications.automationml.caexplcopen;bundle-version="1.0.0"

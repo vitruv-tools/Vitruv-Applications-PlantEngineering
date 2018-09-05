@@ -1,0 +1,196 @@
+import org.automationml.caex.caex.CAEXFile
+import org.eclipse.xtext.EcoreUtil2
+import org.automationml.caex.caex.InternalElement
+import org.automationml.caex.caex.SystemUnitClass
+import org.automationml.caex.caex.RoleClass
+import org.automationml.caex.caex.ExternalInterface
+import java.util.LinkedList
+import org.eclipse.emf.ecore.EObject
+import org.plcopen.xml.tc60201.PouType1
+import org.automationml.caex.caex.Attribute
+import org.automationml.caex.caex.InterfaceClass
+import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
+import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://org.automationml.caex" as caex
+
+reactions: caexplcopenexternalinterface
+in reaction to changes in CAEX
+execute actions in PLCOpen
+
+// ***** Interface Typ einfügen/entfernen (ändern dadurch abgehandelt)
+
+reaction AddExternalInterfaceType {
+	after attribute insert in caex::ExternalInterface[refBaseClassPath]
+	call {
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		if(CAEXInheritanceResolver.isInterfaceInstanceOf(CAEXStringResolver.resolveInterfacePath(newValue ,caexFile), "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")) {
+			addCorrespondenceBetweenInterfaceAndPLCopen(affectedEObject, caexFile)
+			addPathAttributeForPLCopenInterface(affectedEObject)
+		}
+		
+		val container = affectedEObject.eContainer
+		if(container instanceof InternalElement) {
+			// Spiegelelement?? Vorüberprüfung notwendig??
+		} else if(container instanceof RoleClass) {
+			//TODO
+		} else if(container instanceof SystemUnitClass) {
+			val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(userInput) {
+				changeExternalInterfaceTypeInInternalElement(affectedEObject, container)
+			}
+		}
+	}
+}
+
+reaction RemoveExternalInterfaceType {
+	after attribute remove from caex::ExternalInterface[refBaseClassPath]
+	call {
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		if(CAEXInheritanceResolver.isInterfaceInstanceOf(CAEXStringResolver.resolveInterfacePath(oldValue, caexFile), "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")) {
+			removeCorrespondenceBetweenInterfaceAndPLCopen(affectedEObject)
+			removePathAttributeFromPLCopenInterface(affectedEObject)
+		}
+		
+		val container = affectedEObject.eContainer
+		if(container instanceof InternalElement) {
+			// Spiegelelement?? Vorüberprüfung notwendig
+		} else if(container instanceof RoleClass) {
+			//TODO
+		} else if(container instanceof SystemUnitClass) {
+			val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(userInput) {
+				changeExternalInterfaceTypeInInternalElement(affectedEObject, container)
+			}
+		}
+	}
+}
+
+// ***** Pfadangabe in CAEX zu PLCopen Datei geändert
+
+reaction ChangeExternalInterfacePath {
+	after attribute replaced at caex::Attribute[value] 
+	with {
+		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		affectedEObject.name.equals("refURI") && attributeParent !== null 
+			&& CAEXInheritanceResolver.isInterfaceInstanceOf(CAEXStringResolver.resolveInterfacePath(attributeParent.refBaseClassPath, caexFile), "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")
+	}
+	call {
+		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
+		val caexFile = EcoreUtil2.getContainerOfType(attributeParent, CAEXFile)
+		removeCorrespondenceBetweenInterfaceAndPLCopen(attributeParent)
+		addCorrespondenceBetweenInterfaceAndPLCopen(attributeParent, caexFile)
+		
+		val parentContainer = attributeParent.eContainer
+		if(parentContainer instanceof InternalElement) {
+			// Spiegelelement?? Vorüberprüfung notwendig
+		} else if(parentContainer instanceof RoleClass) {
+			//TODO
+		} else if(parentContainer instanceof SystemUnitClass) {
+			val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(userInput) {
+				changePathForExternalInterfaceInInternalElement(attributeParent, parentContainer, newValue)
+			}
+		}
+	}
+}
+
+// ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu setzen bzw. zu entfernen
+
+routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile) {
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to caexFile
+	}
+	action {
+		execute {
+			val pouTypes = EcoreUtil2.getAllContentsOfType(plcProject, PouType1)
+			val first = new LinkedList<EObject>
+			first.add(pouTypes.get(1))
+			val second = new LinkedList<EObject>
+			second.add(externalInterface)
+			correspondenceModel.createAndAddCorrespondence(first, second)
+		}
+		add correspondence between externalInterface and plcProject
+	}
+}
+
+routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
+	match {
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface
+	}
+	action {
+		remove correspondence between externalInterface and plcPouType
+	}
+}
+
+// ***** Routine, um ein Pfadattribut einem ExternalInterface hinzuzufügen bzw. zu entfernen
+
+routine addPathAttributeForPLCopenInterface(caex::ExternalInterface externalInterface){
+	action {
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = "refUri"
+			newAttribute.attributeDataType = "xs:anyURI"
+			newAttribute.value = ""
+		}
+		update externalInterface {
+			externalInterface.^attribute.add(newAttribute)
+		}
+	}
+}
+
+routine removePathAttributeFromPLCopenInterface(caex::ExternalInterface externalInterface){
+	action {
+		update externalInterface {
+			for(Attribute currAttribute : externalInterface.^attribute) {
+				if(currAttribute.name.equals("refUri")) {
+					// kann das klappen??
+					externalInterface.^attribute.remove(currAttribute)
+				}
+			}
+		}
+	}
+}
+
+// ***** Routinen, um interne Elemente abzuändern, analog zur Änderung der Klasse
+
+routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
+	match {
+		// vorherige Überschreibung beachten!
+		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass
+	}
+	action {
+		update internalElement {
+			for (InterfaceClass currExternalInterface : internalElement.externalInterface){
+				if(currExternalInterface instanceof ExternalInterface) {
+					if(currExternalInterface.name.equals(externalInterface.name)){
+						currExternalInterface.refBaseClassPath = externalInterface.refBaseClassPath
+					}
+				}
+			}
+		}
+	}
+}
+
+routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, String path) {
+	match {
+		// vorherige Überschreibung beachten!
+		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass
+	}
+	action {
+		update internalElement {
+			for (InterfaceClass currExternalInterface : internalElement.externalInterface){
+				if(currExternalInterface instanceof ExternalInterface) {
+					if(currExternalInterface.name.equals(externalInterface.name)){
+						for(Attribute currAttribute : currExternalInterface.^attribute) {
+							if(currAttribute.name.equals("refUri")){
+								currAttribute.value = path
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

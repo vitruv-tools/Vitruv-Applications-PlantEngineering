@@ -1,0 +1,89 @@
+import org.automationml.caex.caex.CAEXFile
+import org.eclipse.xtext.EcoreUtil2
+import org.automationml.caex.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
+import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://org.automationml.caex" as caex
+
+reactions: caexplcopeninternalelement
+in reaction to changes in CAEX
+execute actions in PLCOpen
+
+// ***** Klasse zu Internem Element hinzufügen bzw. entfernen
+
+reaction AddSystemClassToInternalElement {
+	after attribute insert in caex::InternalElement[refBaseSystemUnitPath]
+	call {
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		val systemUnitClass = CAEXStringResolver.resolveSystemClassPath(newValue, caexFile)
+		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
+		if(userInput) {
+			copyValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
+		} else {
+			addCorrespondenceBetweenClassAndInstance(affectedEObject, systemUnitClass)
+		}
+	}
+}
+
+reaction RemoveSystemClassFromInternalElement {
+	after attribute remove from caex::InternalElement[refBaseSystemUnitPath]
+	call {
+		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
+		
+	}
+}
+
+// ***** ExternalInterface zu Internem Element entfernen (hinzufügen nicht notwendig!)
+
+reaction RemoveExternalInterfaceFromInternalElement {
+	after element removed from caex::InternalElement[externalInterface]
+	with {
+		oldValue instanceof ExternalInterface
+	}
+	call {
+		val caexFile = EcoreUtil2.getContainerOfType(oldValue, CAEXFile)
+		if(CAEXInheritanceResolver.isInterfaceInstanceOf(CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath ,caexFile), "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")) {
+			removeCorrespondenceBetweenInterfaceInInternalAndPLCopen(oldValue as ExternalInterface)
+		}
+	}
+}
+
+// ***** Routine, um Correspondenz aufzulösen beim Entfernen einer Klassenangabe
+
+routine removeCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement) {
+	match {
+		val systemUnitClass = retrieve caex::SystemUnitClass corresponding to internalElement
+	}
+	action {
+		remove correspondence between internalElement and systemUnitClass
+	}
+}
+
+// ***** Routinen, um Klone beim Hinzufügen einer Klassenangabe abzuändern
+
+routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
+	action {
+		add correspondence between internalElement and systemUnitClass
+	}
+}
+
+routine copyValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
+	action {
+		// Kopieren
+		
+		add correspondence between internalElement and systemUnitClass
+	}
+}
+
+// ***** Routine, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu entfernen
+
+routine removeCorrespondenceBetweenInterfaceInInternalAndPLCopen (caex::ExternalInterface externalInterface){
+	match {
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface
+	}
+	action {
+		remove correspondence between externalInterface and plcPouType
+	}
+}
