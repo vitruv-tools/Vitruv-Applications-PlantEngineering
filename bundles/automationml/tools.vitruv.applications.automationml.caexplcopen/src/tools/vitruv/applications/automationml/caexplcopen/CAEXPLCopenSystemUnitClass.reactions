@@ -4,6 +4,8 @@ import org.automationml.caex.caex.ExternalInterface
 import org.automationml.caex.caex.InterfaceClass
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
+import tools.vitruv.applications.automationml.utils.externalInterfaceIncluded.SystemUnitClassForInterfaceChecker
+import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://org.automationml.caex" as caex
@@ -103,23 +105,37 @@ routine removeClone(caex::SystemUnitClass systemUnitClass) {
 
 routine addExternalInterfaceToInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
 	match {
-		//vorherige Überschreibung beachten!
 		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass
+		check {
+			SystemUnitClassForInterfaceChecker.checkForExternalPLCInterface(systemUnitClass)
+		}
+		check {
+			InternalElementChecker.checkInternalElementForChanges(internalElement, systemUnitClass)
+		}
 	}
 	action {
-		val newExternalInterface = create caex::ExternalInterface and initialize {
-			newExternalInterface.additionalInformation.addAll(externalInterface.additionalInformation)
-			newExternalInterface.^attribute.addAll(externalInterface.^attribute)
-			// oder anders klonen?? oder Objekt direkt einhängen?? oder Beschränkung auf Pfadangabe? -> Routine beschränkt sich eigentlich nicht auf Interfaces mit Pfadangabe
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = "refUri"
+			newAttribute.attributeDataType = "xs:anyURI"
+			newAttribute.value = SystemUnitClassForInterfaceChecker.getExternalPLCInterface(systemUnitClass).^attribute.get(0).value
+		}
+		val newInterface = create caex::ExternalInterface and initialize {
+			newInterface.name = externalInterface.name
+			newInterface.^attribute.add(newAttribute)
+			newInterface.refBaseClassPath = externalInterface.refBaseClassPath
+		}
+		update internalElement {
+			internalElement.externalInterface.add(newInterface)
 		}
 	}
 }
 
 routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass){
 	match {
-		// vorherige Überschreibung beachten!
 		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass 
-		//check InternalElementChecker.checkInternalElementForChanges(internalElment, systemUnitClass)
+		check {
+			InternalElementChecker.checkInternalElementForChanges(internalElement, systemUnitClass)
+		}
 	} action {
 		update internalElement {
 			for (InterfaceClass currExternalInterface : internalElement.externalInterface){

@@ -158,6 +158,7 @@ routine removePathAttributeFromPLCopenInterface(caex::ExternalInterface external
 routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
 	match {
 		// vorherige Überschreibung beachten!
+		// retrieve many
 		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass
 	}
 	action {

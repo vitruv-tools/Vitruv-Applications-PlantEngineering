@@ -3,6 +3,7 @@ import org.eclipse.xtext.EcoreUtil2
 import org.automationml.caex.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
+import tools.vitruv.applications.automationml.utils.externalInterfaceIncluded.SystemUnitClassForInterfaceChecker
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://org.automationml.caex" as caex
@@ -21,9 +22,8 @@ reaction AddSystemClassToInternalElement {
 		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
 		if(userInput) {
 			copyValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
-		} else {
-			addCorrespondenceBetweenClassAndInstance(affectedEObject, systemUnitClass)
 		}
+		addCorrespondenceBetweenClassAndInstance(affectedEObject, systemUnitClass)
 	}
 }
 
@@ -70,9 +70,26 @@ routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalE
 }
 
 routine copyValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
+	match {
+		check {
+			SystemUnitClassForInterfaceChecker.checkForExternalPLCInterface(systemUnitClass)
+		}
+	}
 	action {
-		// Kopieren
-		
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = "refUri"
+			newAttribute.attributeDataType = "xs:anyURI"
+			newAttribute.value = SystemUnitClassForInterfaceChecker.getExternalPLCInterface(systemUnitClass).^attribute.get(0).value
+		}
+		val newInterface = create caex::ExternalInterface and initialize {
+			val systemClassInterface = SystemUnitClassForInterfaceChecker.getExternalPLCInterface(systemUnitClass)
+			newInterface.name = systemClassInterface.name
+			newInterface.^attribute.add(newAttribute)
+			newInterface.refBaseClassPath = systemClassInterface.refBaseClassPath
+		}
+		update internalElement {
+			internalElement.externalInterface.add(newInterface)
+		}
 		add correspondence between internalElement and systemUnitClass
 	}
 }
