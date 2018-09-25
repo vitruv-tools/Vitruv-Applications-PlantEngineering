@@ -1,7 +1,7 @@
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
-import "http://org.automationml.caex" as caex
-//import "" as aml
-//import "" as collada
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
 
 reactions: plcopenUnitChanges
 in reaction to changes in PLCopen

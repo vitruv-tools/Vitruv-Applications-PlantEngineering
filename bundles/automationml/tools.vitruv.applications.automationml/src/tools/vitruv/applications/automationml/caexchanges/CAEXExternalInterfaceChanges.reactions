@@ -1,21 +1,21 @@
-import org.automationml.caex.caex.CAEXFile
 import org.eclipse.xtext.EcoreUtil2
-import org.automationml.caex.caex.InternalElement
-import org.automationml.caex.caex.SystemUnitClass
-import org.automationml.caex.caex.RoleClass
-import org.automationml.caex.caex.ExternalInterface
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import org.plcopen.xml.tc60201.PouType1
-import org.automationml.caex.caex.Attribute
-import org.automationml.caex.caex.InterfaceClass
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
+import caex.caex30.caex.CAEXFile
+import caex.caex30.caex.InternalElement
+import caex.caex30.caex.RoleClass
+import caex.caex30.caex.SystemUnitClass
+import caex.caex30.caex.ExternalInterface
+import caex.caex30.caex.Attribute
+import caex.caex30.caex.InterfaceClass
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
-import "http://org.automationml.caex" as caex
-//import "" as aml
-//import "" as collada
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
 
 reactions: caexExternalInterfaceChanges
 in reaction to changes in CAEX

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: CAEXPLCopen
+Bundle-Name: AutomationMLReactions
 Bundle-SymbolicName: tools.vitruv.applications.automationml
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.apache.log4j,
@@ -16,13 +16,17 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.extensions.dslsruntime.reactions,
  org.plcopen.xml.tc60201,
- org.automationml.caex,
  tools.vitruv.domains.plcopen,
  tools.vitruv.domains.caex,
  tools.vitruv.dsls.mappings;bundle-version="0.2.0",
  tools.vitruv.extensions.dslsruntime.mappings,
  org.eclipse.xtext;bundle-version="2.12.0",
- tools.vitruv.applications.automationml.utils;bundle-version="1.0.0"
+ tools.vitruv.applications.automationml.utils;bundle-version="1.0.0",
+ caex.caex30;bundle-version="0.1.0",
+ edu.kit.sdq.aml_aggregator;bundle-version="0.1.0",
+ org.khronos.collada;bundle-version="1.0.0",
+ tools.vitruv.domains.collada;bundle-version="0.3.0",
+ tools.vitruv.domains.aml;bundle-version="0.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.applications.automationml.aggregatorchanges,
  tools.vitruv.applications.automationml.caexchanges,

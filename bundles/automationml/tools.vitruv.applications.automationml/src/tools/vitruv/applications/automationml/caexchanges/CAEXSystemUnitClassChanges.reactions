@@ -1,14 +1,16 @@
-import org.automationml.caex.caex.CAEXFile
 import org.eclipse.xtext.EcoreUtil2
-import org.automationml.caex.caex.ExternalInterface
-import org.automationml.caex.caex.InterfaceClass
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
+import caex.caex30.caex.ExternalInterface
+import caex.caex30.caex.CAEXFile
+import tools.vitruv.applications.automationml.utils.externalInterfaceIncluded.SystemUnitClassForInterfaceChecker
+import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
+import caex.caex30.caex.InterfaceClass
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
-import "http://org.automationml.caex" as caex
-//import "" as aml
-//import "" as collada
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
 
 reactions: caexSystemUnitClassChanges
 in reaction to changes in CAEX
