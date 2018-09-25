@@ -1,0 +1,25 @@
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://org.automationml.caex" as caex
+//import "" as aml
+//import "" as collada
+
+reactions: combinedcaexplcopen
+in reaction to changes in CAEX
+execute actions in CAEX
+
+import caexExternalInterfaceChanges
+import caexInternalElementChanges
+import caexSystemUnitClassChanges
+import caexUnitChanges
+
+// ***** Anlegen eines internen Elements mit Rollenbezug -> Korrespondenz setzen?
+// ***** Rollenbeschreibung ändern -> Auswirkungen auf Elemente? Nutzerinteraktion?
+// ***** internes Element bzw. Instanzhierarchie löschen (Kaskade beachten) überhaupt notwendig?? (abgehandelt durch Interface entfernen?)
+// ***** Rolle bzw. Rollenbib löschen (Kaskade beachten) ( - "" -)
+// ***** Anlegen, Löschen Spiegelobjekt
+// ***** Ändern, Löschen Spiegelvorlage (Nutzerinteraktion?)
+// ***** Interface zu Rolle hinzufügen/ändern/löschen
+
+// ***** AdditionalInformation (Version, Name, Änderungsdatum, etc.) setzen/ändern/löschen -> FileHeader ändern
+
+// ***** Änderung Einheiten -> Welche relevant? Auswirkungen auf? (Scaling?, Position?, ...?)

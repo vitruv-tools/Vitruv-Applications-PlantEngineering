@@ -1,0 +1,7 @@
+package tools.vitruv.applications.automationml.caexchanges
+
+import mir.reactions.combinedcaex.CombinedcaexChangePropagationSpecification
+
+class CombinedCAEXChangePropagationSpecification extends CombinedcaexChangePropagationSpecification {
+	
+}

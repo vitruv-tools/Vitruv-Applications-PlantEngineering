@@ -1,0 +1,7 @@
+package tools.vitruv.applications.automationml.aggregatorchanges
+
+import mir.reactions.combinedaggregator.CombinedaggregatorChangePropagationSpecification
+
+class CombinedAggregatorChangePropagationSpecification extends CombinedaggregatorChangePropagationSpecification {
+	
+}

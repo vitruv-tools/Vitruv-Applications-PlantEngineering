@@ -1,7 +1,0 @@
-package tools.vitruv.applications.automationml.caexplcopen
-
-import mir.reactions.combinedcaexplcopen.CombinedcaexplcopenChangePropagationSpecification
-
-class CombinedCAEXPLCopenChangePropagationSpecification extends CombinedcaexplcopenChangePropagationSpecification {
-	
-}

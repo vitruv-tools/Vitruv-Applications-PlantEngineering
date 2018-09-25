@@ -25,4 +25,4 @@ Require-Bundle: com.google.guava,
  tools.vitruv.extensions.emf;bundle-version="0.2.0",
  tools.vitruv.testutils;bundle-version="0.2.0",
  tools.vitruv.extensions.emf.monitorededitor;bundle-version="0.2.0",
- tools.vitruv.applications.automationml.caexplcopen;bundle-version="1.0.0"
+ tools.vitruv.applications.automationml;bundle-version="1.0.0"

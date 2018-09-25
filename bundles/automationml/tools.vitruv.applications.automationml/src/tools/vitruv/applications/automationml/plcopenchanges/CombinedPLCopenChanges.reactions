@@ -1,0 +1,11 @@
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://org.automationml.caex" as caex
+//import "" as aml
+//import "" as collada
+
+reactions: combinedPLCopenChanges
+in reaction to changes in PLCopen
+execute actions in PLCopen
+
+import plcopenStructureChanges
+import plcopenUnitChanges
