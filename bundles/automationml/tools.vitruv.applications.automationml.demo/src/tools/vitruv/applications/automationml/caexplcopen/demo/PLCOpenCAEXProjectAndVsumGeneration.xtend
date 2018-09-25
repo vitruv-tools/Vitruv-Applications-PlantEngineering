@@ -2,7 +2,7 @@ package tools.vitruv.applications.automationml.caexplcopen.demo
 
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.runtime.CoreException
-import tools.vitruv.applications.automationml.caexplcopen.CombinedCAEXPLCopenChangePropagationSpecification
+import tools.vitruv.applications.automationml.caexchanges.CombinedCAEXChangePropagationSpecification
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -48,7 +48,7 @@ class PLCOpenCAEXProjectAndVsumGeneration {
 	}
 	
 	protected def Iterable<ChangePropagationSpecification> createChangePropagationSpecifications() {
-		return #[new CombinedCAEXPLCopenChangePropagationSpecification];
+		return #[new CombinedCAEXChangePropagationSpecification];
 	}
 	
 	protected def IProject createTestProject(String projectName) throws CoreException {

@@ -1,6 +1,6 @@
-package tools.vitruv.applications.automationml.caexplcopen.tests
+package tools.vitruv.applications.automationml.caexreactions.tests
 
-import tools.vitruv.applications.automationml.caexplcopen.CombinedCAEXPLCopenChangePropagationSpecification
+import tools.vitruv.applications.automationml.caexchanges.CombinedCAEXChangePropagationSpecification
 import java.util.NoSuchElementException
 
 import org.eclipse.emf.common.util.URI
@@ -8,13 +8,14 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.domains.caex.CAEXDomainProvider
 import tools.vitruv.testutils.VitruviusApplicationTest
 import org.plcopen.xml.tc60201.ProjectType
-import org.automationml.caex.caex.CAEXFile
-import org.automationml.caex.caex.CaexFactory
+
 import org.plcopen.xml.tc60201.Tc60201Factory
 import tools.vitruv.domains.plcopen.PLCOpenDomainProvider
 import tools.vitruv.testutils.TestUserInteraction
+import caex.caex30.caex.CAEXFile
+import caex.caex30.caex.CAEXFactory
 
-class AbstractCAEXPLCopenTest extends VitruviusApplicationTest {
+class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	private static val CAEX_MODEL_FILE_EXTENSION = "caex";
 	private static val CAEX_MODEL_NAME = "model";
 	private static val PLCOPEN_MODEL_FILE_EXTENSION = "tc60201"
@@ -40,9 +41,9 @@ class AbstractCAEXPLCopenTest extends VitruviusApplicationTest {
 		return PLCOPEN_MODEL_NAME.projectPLCopenModelPath.firstRootElement as ProjectType
 	}
 
-	protected def org.automationml.caex.caex.DocumentRoot getCAEXRoot() {
+	protected def caex.caex30.caex.DocumentRoot getCAEXRoot() {
 		val res = getModelResource(CAEX_MODEL_NAME.projectCAEXModelPath)
-		return res.contents.get(0) as org.automationml.caex.caex.DocumentRoot 
+		return res.contents.get(0) as caex.caex30.caex.DocumentRoot 
 	}
 	
 	protected def org.plcopen.xml.tc60201.DocumentRoot getPLCopenRoot(){
@@ -59,7 +60,7 @@ class AbstractCAEXPLCopenTest extends VitruviusApplicationTest {
 	}
 
 	override protected createChangePropagationSpecifications() {
-		return #[new CombinedCAEXPLCopenChangePropagationSpecification]
+		return #[new CombinedCAEXChangePropagationSpecification]
 	}
 
 	override protected getVitruvDomains() {
@@ -73,8 +74,8 @@ class AbstractCAEXPLCopenTest extends VitruviusApplicationTest {
 		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)
 	}
 	
-	protected def CaexFactory caexFactory() {
-		return CaexFactory.eINSTANCE
+	protected def CAEXFactory caexFactory() {
+		return CAEXFactory.eINSTANCE
 	}
 	
 	protected def Tc60201Factory plcopenFactory() {
