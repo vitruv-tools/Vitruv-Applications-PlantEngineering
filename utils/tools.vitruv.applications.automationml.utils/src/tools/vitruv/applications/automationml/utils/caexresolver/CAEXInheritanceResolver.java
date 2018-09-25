@@ -1,6 +1,6 @@
 package tools.vitruv.applications.automationml.utils.caexresolver;
 
-import org.automationml.caex.caex.ExternalInterface;
+import caex.caex30.caex.ExternalInterface;
 
 public class CAEXInheritanceResolver {
 	// überprüft, ob ein Interface (currentInterface) im Vererbungsbaum unter einem anderen Interface (interfaceClass) steht

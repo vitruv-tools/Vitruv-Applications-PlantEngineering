@@ -1,5 +1,8 @@
 package tools.vitruv.applications.automationml.utils.externalInterfaceIncluded;
 
+import caex.caex30.caex.ExternalInterface;
+import caex.caex30.caex.SystemUnitClass;
+
 public class SystemUnitClassForInterfaceChecker {
 	public static boolean checkForExternalPLCInterface(SystemUnitClass systemClass) {
 		//TODO

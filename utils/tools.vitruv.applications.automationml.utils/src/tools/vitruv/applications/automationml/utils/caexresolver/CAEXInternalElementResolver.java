@@ -2,15 +2,13 @@ package tools.vitruv.applications.automationml.utils.caexresolver;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import org.automationml.caex.caex.CAEXFile;
-import org.automationml.caex.caex.InternalElement;
-import org.eclipse.xtext.EcoreUtil2;
+import caex.caex30.caex.CAEXFile;
+import caex.caex30.caex.InternalElement;
 
 public class CAEXInternalElementResolver {
 	// liefert alle internen Elemente, die eine SystemUnitClass referenzieren
 	public static List<InternalElement> getInternalElementsForSystemUnitClass(String nameOfSystemUnitClass, CAEXFile caexFile) {
-		List<InternalElement> internalElements = null;//EcoreUtil2.getAllContentsOfType(caexFile, InternalElement)
+		List<InternalElement> internalElements = null;	//TODO EcoreUtil2.getAllContentsOfType(caexFile, InternalElement)
 		LinkedList<InternalElement> relevantElements = new LinkedList<InternalElement>();
 		
 		for(int i = 0; i < internalElements.size(); i++) {

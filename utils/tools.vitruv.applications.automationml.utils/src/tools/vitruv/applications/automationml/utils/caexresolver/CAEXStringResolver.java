@@ -1,12 +1,14 @@
 package tools.vitruv.applications.automationml.utils.caexresolver;
 
 import org.eclipse.emf.common.util.EList;
-import org.automationml.caex.caex.CAEXFile;
-import org.automationml.caex.caex.ExternalInterface;
-import org.automationml.caex.caex.InterfaceClass;
-import org.automationml.caex.caex.InterfaceClassLib;
-import org.automationml.caex.caex.SystemUnitClass;
-import org.automationml.caex.caex.SystemUnitClassLib;
+
+import caex.caex30.caex.CAEXFile;
+import caex.caex30.caex.ExternalInterface;
+import caex.caex30.caex.InterfaceClass;
+import caex.caex30.caex.InterfaceClassLib;
+import caex.caex30.caex.SystemUnitClass;
+import caex.caex30.caex.SystemUnitClassLib;
+
 
 public class CAEXStringResolver {
 	//TODO allgemeiner Resolver
