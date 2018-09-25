@@ -4,8 +4,8 @@ import "http://edu.kit.ipd.sdq.aml" as aml
 import "http://www.collada.org/2005/11/COLLADASchema" as collada
 
 reactions: combinedPLCopenChanges
-in reaction to changes in PLCopen
-execute actions in PLCopen
+in reaction to changes in PLCOpen
+execute actions in PLCOpen
 
 import plcopenStructureChanges
 import plcopenUnitChanges

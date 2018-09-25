@@ -1,7 +1,7 @@
 package tools.vitruv.applications.automationml.colladachanges
 
-import mir.reactions.combinedcollada.CombinedcolladaChangePropagationSpecification
+import mir.reactions.combinedColladaChanges.CombinedColladaChangesChangePropagationSpecification
 
-class CombinedColladaChangePropagationSpecification extends CombinedcolladaChangePropagationSpecification {
+class CombinedColladaChangePropagationSpecification extends CombinedColladaChangesChangePropagationSpecification {
 	
 }
