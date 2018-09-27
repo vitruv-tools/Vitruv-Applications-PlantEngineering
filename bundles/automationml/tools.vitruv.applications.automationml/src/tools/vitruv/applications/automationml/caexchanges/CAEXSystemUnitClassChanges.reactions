@@ -6,6 +6,7 @@ import caex.caex30.caex.CAEXFile
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
 import caex.caex30.caex.InternalElement
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker.InterfaceType
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -116,11 +117,12 @@ routine removeClone(caex::SystemUnitClass systemUnitClass) {
 
 // ***** Routinen, um interne Elemente abzuändern, analog zur Änderung der Klasse
 
+//TODO alle externalInterfaces?? oder nur PLCopen und Collada?? (in anderer Klasse nur plcopen/collada)
 routine addExternalInterfaceToInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
 	match {
 		val internalElement = retrieve many caex::InternalElement corresponding to systemUnitClass
 		check {
-			SystemUnitClassForInterfaceChecker.checkForExternalPLCopenInterface(systemUnitClass)
+			SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.PLCOPEN)
 		}
 		check {
 			InternalElementChecker.checkInternalElementForChanges(internalElement, systemUnitClass)
@@ -130,7 +132,7 @@ routine addExternalInterfaceToInternalElement(caex::ExternalInterface externalIn
 		val newAttribute = create caex::Attribute and initialize {
 			newAttribute.name = "refUri"
 			newAttribute.attributeDataType = "xs:anyURI"
-			newAttribute.value = SystemUnitClassForInterfaceChecker.getExternalPLCopenInterface(systemUnitClass).^attribute.get(0).value
+			newAttribute.value = SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, InterfaceType.PLCOPEN).^attribute.get(0).value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
 			newInterface.name = externalInterface.name

@@ -5,6 +5,7 @@ import caex.caex30.caex.CAEXFile
 import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker.InterfaceType
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -82,17 +83,17 @@ routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalE
 routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
 	match {
 		check {
-			SystemUnitClassForInterfaceChecker.checkForExternalPLCopenInterface(systemUnitClass)
+			SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.PLCOPEN)
 		}
 	}
 	action {
 		val newAttribute = create caex::Attribute and initialize {
 			newAttribute.name = "refUri"
 			newAttribute.attributeDataType = "xs:anyURI"
-			newAttribute.value = InterfaceForAttributeChecker.getAttributeInExternalInterface(SystemUnitClassForInterfaceChecker.getExternalPLCopenInterface(systemUnitClass), "refUri").value
+			newAttribute.value = InterfaceForAttributeChecker.getAttributeInExternalInterface(SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, InterfaceType.PLCOPEN), "refUri").value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
-			val systemClassInterface = SystemUnitClassForInterfaceChecker.getExternalPLCopenInterface(systemUnitClass)
+			val systemClassInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, InterfaceType.PLCOPEN)
 			newInterface.name = systemClassInterface.name
 			newInterface.^attribute.add(newAttribute)
 			newInterface.refBaseClassPath = systemClassInterface.refBaseClassPath
@@ -108,17 +109,17 @@ routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElem
 routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
 	match {
 		check {
-			SystemUnitClassForInterfaceChecker.checkForExternalColladaInterface(systemUnitClass)
+			SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.COLLADA)
 		}
 	}
 	action {
 		val newAttribute = create caex::Attribute and initialize {
 			newAttribute.name = "refUri"
 			newAttribute.attributeDataType = "xs:anyURI"
-			newAttribute.value = InterfaceForAttributeChecker.getAttributeInExternalInterface(SystemUnitClassForInterfaceChecker.getExternalColladaInterface(systemUnitClass), "refUri").value
+			newAttribute.value = InterfaceForAttributeChecker.getAttributeInExternalInterface(SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, InterfaceType.COLLADA), "refUri").value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
-			val systemClassInterface = SystemUnitClassForInterfaceChecker.getExternalColladaInterface(systemUnitClass)
+			val systemClassInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, InterfaceType.COLLADA)
 			newInterface.name = systemClassInterface.name
 			newInterface.^attribute.add(newAttribute)
 			newInterface.refBaseClassPath = systemClassInterface.refBaseClassPath

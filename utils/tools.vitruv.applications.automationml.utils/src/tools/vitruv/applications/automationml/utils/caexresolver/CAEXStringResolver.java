@@ -13,7 +13,7 @@ import caex.caex30.caex.SystemUnitClassLib;
 public class CAEXStringResolver {
 	//TODO allgemeiner Resolver
 	
-	// löst einen Pfad auf, und liefert das zugehörige Interface zurück
+	// löst einen Pfad auf, und liefert das zugehörige Interface (aus den Interfacebibliotheken) zurück
 	public static ExternalInterface resolveInterfacePath(String path, CAEXFile caexFile) {
 		if(path == null || path.isEmpty() || caexFile == null) {
 			return null;
@@ -56,7 +56,7 @@ public class CAEXStringResolver {
 		}
 	}
 	
-	// löst einen Pfad auf, und liefert die zugehörige Klasse zurück
+	// löst einen Pfad auf, und liefert die zugehörige Klasse (aus den Klassenbibliotheken) zurück
 	public static SystemUnitClass resolveSystemClassPath(String path, CAEXFile caexFile) {
 		if(path == null || path.isEmpty() || caexFile == null) {
 			return null;

@@ -7,7 +7,8 @@ import caex.caex30.caex.InternalElement;
 
 public class CAEXInternalElementResolver {
 	// liefert alle internen Elemente, die eine SystemUnitClass referenzieren
-	public static List<InternalElement> getInternalElementsForSystemUnitClass(String nameOfSystemUnitClass, CAEXFile caexFile) {
+	//TODO überhaupt notwendig??
+	/*public static List<InternalElement> getInternalElementsForSystemUnitClass(String nameOfSystemUnitClass, CAEXFile caexFile) {
 		List<InternalElement> internalElements = null;	//TODO EcoreUtil2.getAllContentsOfType(caexFile, InternalElement)
 		LinkedList<InternalElement> relevantElements = new LinkedList<InternalElement>();
 		
@@ -18,5 +19,5 @@ public class CAEXInternalElementResolver {
 		}
 		
 		return relevantElements;
-	}
+	}*/
 }
