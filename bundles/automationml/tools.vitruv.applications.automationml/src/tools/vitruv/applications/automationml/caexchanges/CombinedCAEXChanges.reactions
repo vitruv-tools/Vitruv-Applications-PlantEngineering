@@ -19,6 +19,7 @@ import caexUnitChanges
 // ***** Anlegen, Löschen Spiegelobjekt
 // ***** Ändern, Löschen Spiegelvorlage (Nutzerinteraktion?)
 // ***** Interface zu Rolle hinzufügen/ändern/löschen
+// ***** Interfacedefinition in Lib ändern/löschen
 
 // ***** AdditionalInformation (Version, Name, Änderungsdatum, etc.) setzen/ändern/löschen -> FileHeader ändern
 

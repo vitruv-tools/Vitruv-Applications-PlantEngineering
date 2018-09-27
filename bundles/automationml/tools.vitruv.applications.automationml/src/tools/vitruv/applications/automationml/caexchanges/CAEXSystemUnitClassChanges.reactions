@@ -5,7 +5,6 @@ import caex.caex30.caex.ExternalInterface
 import caex.caex30.caex.CAEXFile
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
-import caex.caex30.caex.InterfaceClass
 import caex.caex30.caex.InternalElement
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
@@ -172,10 +171,10 @@ routine removeCorrespondenceBetweenInterfaceInClassAndPLCopen (caex::ExternalInt
 }
 
 routine removeCorrespondenceBetweenInterfaceInClassAndCollada (caex::ExternalInterface externalInterface){
+	match {
+		val colladaXYZ = retrieve collada::COLLADAType corresponding to externalInterface	//TODO richtigen Datentyp
+	}
 	action {
-		//TODO
-		execute{
-			
-		}
+		remove correspondence between externalInterface and colladaXYZ
 	}
 }

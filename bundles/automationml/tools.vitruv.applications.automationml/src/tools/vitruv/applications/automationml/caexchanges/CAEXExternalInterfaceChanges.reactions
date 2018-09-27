@@ -9,8 +9,6 @@ import caex.caex30.caex.InternalElement
 import caex.caex30.caex.RoleClass
 import caex.caex30.caex.SystemUnitClass
 import caex.caex30.caex.ExternalInterface
-import caex.caex30.caex.Attribute
-import caex.caex30.caex.InterfaceClass
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
@@ -134,6 +132,7 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 
 // ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu setzen bzw. zu entfernen
 
+//TODO
 routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile) {
 	match {
 		val plcProject = retrieve plcopen::ProjectType corresponding to caexFile
@@ -172,11 +171,11 @@ routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface ext
 }
 
 routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
+	match {
+		val colladaXYZ = retrieve collada::COLLADAType corresponding to externalInterface	//TODO richtigen Datentyp
+	}
 	action {
-		//TODO
-		execute {
-			
-		}
+		remove correspondence between externalInterface and colladaXYZ
 	}
 }
 
