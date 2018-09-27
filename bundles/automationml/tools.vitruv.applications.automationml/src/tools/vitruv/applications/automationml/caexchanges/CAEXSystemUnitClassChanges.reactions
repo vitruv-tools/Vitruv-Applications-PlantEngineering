@@ -3,9 +3,10 @@ import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritance
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
 import caex.caex30.caex.ExternalInterface
 import caex.caex30.caex.CAEXFile
-import tools.vitruv.applications.automationml.utils.externalInterfaceIncluded.SystemUnitClassForInterfaceChecker
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
 import caex.caex30.caex.InterfaceClass
+import caex.caex30.caex.InternalElement
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -70,14 +71,15 @@ reaction RemoveExternalInterfaceFromSystemClass {
 		val caexFile = EcoreUtil2.getContainerOfType(oldValue, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath, caexFile)
 		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
-		val colladaInterfacePath = "" //TODO
+		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
+		
 		if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, plcopenInterfacePath)) {
 			removeCorrespondenceBetweenInterfaceInClassAndPLCopen(oldValue as ExternalInterface)
 		} else if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, colladaInterfacePath)) {
 			removeCorrespondenceBetweenInterfaceInClassAndCollada(oldValue as ExternalInterface)
 		}
 		
-		val userInput = userInteractor.confirmationDialogBuilder.message("Soll in allen internen Elementen, die diese Klasse referenzieren, Interfaces entfernt werden?").startInteraction
+		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen in allen internen Elementen, die diese Klasse referenzieren, Interfaces entfernt werden?").startInteraction
 		if(userInput) {
 			removeExternalInterfaceFromInternalElement(oldValue as ExternalInterface, affectedEObject)
 		}
@@ -88,23 +90,28 @@ reaction RemoveExternalInterfaceFromSystemClass {
 
 routine removePrototypeFromInternalElement (caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass
 	}
 	action {
-		update internalElement {
-			internalElement.refBaseSystemUnitPath = ""
+		execute {
+			for(InternalElement currInternalElement : internalElements) {
+				currInternalElement.refBaseSystemUnitPath = ""
+			}
 		}
-		remove correspondence between internalElement and systemUnitClass
+		//remove correspondence between internalElements and systemUnitClass //TODO überhaupt notwendig, wenn Prototypen gelöscht werden?
 	}
 }
 
 routine removeClone(caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass
 	}
 	action {
-		remove correspondence between internalElement and systemUnitClass
-		delete internalElement
+		//remove correspondence between internalElement and systemUnitClass //TODO überhaupt notwendig, wenn Prototypen gelöscht werden?
+		//delete internalElements //TODO wie lösche ich das?
+		execute {
+			
+		}
 	}
 }
 
@@ -112,9 +119,9 @@ routine removeClone(caex::SystemUnitClass systemUnitClass) {
 
 routine addExternalInterfaceToInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass
+		val internalElement = retrieve many caex::InternalElement corresponding to systemUnitClass
 		check {
-			SystemUnitClassForInterfaceChecker.checkForExternalPLCInterface(systemUnitClass)
+			SystemUnitClassForInterfaceChecker.checkForExternalPLCopenInterface(systemUnitClass)
 		}
 		check {
 			InternalElementChecker.checkInternalElementForChanges(internalElement, systemUnitClass)
@@ -124,7 +131,7 @@ routine addExternalInterfaceToInternalElement(caex::ExternalInterface externalIn
 		val newAttribute = create caex::Attribute and initialize {
 			newAttribute.name = "refUri"
 			newAttribute.attributeDataType = "xs:anyURI"
-			newAttribute.value = SystemUnitClassForInterfaceChecker.getExternalPLCInterface(systemUnitClass).^attribute.get(0).value
+			newAttribute.value = SystemUnitClassForInterfaceChecker.getExternalPLCopenInterface(systemUnitClass).^attribute.get(0).value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
 			newInterface.name = externalInterface.name
@@ -139,18 +146,14 @@ routine addExternalInterfaceToInternalElement(caex::ExternalInterface externalIn
 
 routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass){
 	match {
-		val internalElement = retrieve caex::InternalElement corresponding to systemUnitClass 
-		check {
-			InternalElementChecker.checkInternalElementForChanges(internalElement, systemUnitClass)
-		}
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass 
 	} action {
-		update internalElement {
-			for (InterfaceClass currExternalInterface : internalElement.externalInterface){
-				if(currExternalInterface instanceof ExternalInterface) {
-					if(currExternalInterface.name.equals(externalInterface.name)){
-						// kann das klappen??
-						internalElement.externalInterface.remove(currExternalInterface)
-					}
+		execute {
+			val filteredList = InternalElementChecker.filterInternalElementsForChanges(internalElements, systemUnitClass)
+			for(InternalElement currInternalElement : filteredList) {
+				val foundedInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(currInternalElement, externalInterface.name)
+				if(foundedInterface !== null) {
+					currInternalElement.externalInterface.remove(foundedInterface)
 				}
 			}
 		}

@@ -11,4 +11,4 @@ Require-Bundle: org.eclipse.emf.codegen.ecore;bundle-version="2.13.0",
 Import-Package: org.eclipse.emf.common.util
 Export-Package: tools.vitruv.applications.automationml.utils.caexresolver,
  tools.vitruv.applications.automationml.utils.clonechangestests,
- tools.vitruv.applications.automationml.utils.externalInterfaceIncluded
+ tools.vitruv.applications.automationml.utils.externalInterfaceUtils
