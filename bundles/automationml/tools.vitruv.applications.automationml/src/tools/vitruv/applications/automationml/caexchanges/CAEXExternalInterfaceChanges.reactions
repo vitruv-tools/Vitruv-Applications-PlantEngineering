@@ -12,6 +12,9 @@ import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
+import tools.vitruv.applications.automationml.utils.amlutils.AMLAggregatorResolver
+import edu.kit.sdq.aml_aggregator.AMLProject
+import org.plcopen.xml.tc60201.ProjectType
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -100,9 +103,9 @@ reaction ChangeExternalInterfacePath {
 		val parentContainer = attributeParent.eContainer
 				
 		if (CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, plcopenInterfacePath)) {
-			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, oldValue, newValue, false)
+			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, false)
 		} else if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, colladaInterfacePath)) {
-			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, oldValue, newValue, true)
+			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, true)
 		}
 		
 		if(parentContainer instanceof InternalElement) {
@@ -121,32 +124,117 @@ reaction ChangeExternalInterfacePath {
 // ***** Routine, um mit Pfadänderungen umzugehen
 
 //Boolean false: plcopen
-routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile, String oldPath, String newPath, Boolean isCollada ) {
+routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile, String newPath, Boolean isCollada ) {
+	match {
+		val caexContainer = retrieve aml::CAEXContainer corresponding to caexFile
+	}
 	action {
-		//TODO Pfad überprüfen, evtl. Nutzerinteraktion, evtl. PLCopen/Collada Dokument anlegen oder Dateipfad abändern, Aufruf removeCorrespondence und addCorrespondence
 		execute{
+			if(isCollada) {
+				val colladaContainer = AMLAggregatorResolver.getColladaContainer(caexContainer.eContainer as AMLProject, newPath)
+				if(colladaContainer !== null) {
+					removeCorrespondenceBetweenInterfaceAndCollada(externalInterface)
+					addCorrespondenceBetweenInterfaceAndCollada(externalInterface, colladaContainer)
+					return;
+				}
+			} else {
+				val plcopenContainer = AMLAggregatorResolver.getPLCopenContainer(caexContainer.eContainer as AMLProject, newPath)
+				if(plcopenContainer !== null) {
+					removeCorrespondenceBetweenInterfaceAndPLCopen(externalInterface)
+					addCorrespondenceBetweenInterfaceAndPLCopen(externalInterface, plcopenContainer)
+					return;
+				}
+			}
 			
+			val userInput = userInteractor.confirmationDialogBuilder.message("Der angegebene Pfad existiert nicht. Soll ein neues Dokument angelegt werden? Alternativ würden der bisherige Pfad überall in den neuen verwandelt werden.").startInteraction
+			if(userInput) {
+				if(isCollada) {
+					createNewColladaContainer(externalInterface, caexContainer.eContainer as AMLProject, newPath)
+				} else {
+					createNewPLCopenContainer(externalInterface, caexContainer.eContainer as AMLProject, newPath)
+				}
+			} else {
+				if(isCollada) {
+					changeAllCorrespondingColladaPathes(externalInterface, newPath)
+				} else {
+					changeAllCorrespondingPLCopenPathes(externalInterface, newPath)
+				}
+			}
+		}
+	}
+}
+
+// ***** Hilfsroutinen, um auf nicht vorhandene Pfade reagieren zu können
+
+routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
+	action {
+		val newContainer = create aml::PLCopenContainer and initialize {
+			newContainer.path = path
+		}
+		execute {
+			removeCorrespondenceBetweenInterfaceAndPLCopen(externalInterface)
+			addCorrespondenceBetweenInterfaceAndPLCopen(externalInterface, newContainer)
+			
+		}
+	}
+}
+
+routine createNewColladaContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
+	action {
+		val newContainer = create aml::ColladaContainer and initialize {
+			newContainer.path = path
+		}
+		execute {
+			removeCorrespondenceBetweenInterfaceAndCollada(externalInterface)
+			addCorrespondenceBetweenInterfaceAndCollada(externalInterface, newContainer)
+		}
+	}
+}
+
+routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInterface, String newPath) {
+	match {
+		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface
+		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType)
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType
+	}
+	action {
+		update plcopenContainer {
+			plcopenContainer.path = newPath
+		}
+		execute {
+			for(ExternalInterface currExternalInterface : externalInterfaces) {
+				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
+				uriAttribute.value = newPath
+			}
+		}
+	}
+}
+
+routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInterface, String newPath) {
+	action {
+		execute {
+			//TODO
+			// Pfad in Dokument abändern
+			// alle anderen Pfade in CAEX abändern
 		}
 	}
 }
 
 // ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu setzen bzw. zu entfernen
 
-//TODO
-routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile) {
+routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to caexFile
+		val plcProject = retrieve plcopen::ProjectType corresponding to container
 	}
 	action {
 		execute {
 			val pouTypes = EcoreUtil2.getAllContentsOfType(plcProject, PouType1)
 			val first = new LinkedList<EObject>
-			first.add(pouTypes.get(1))
+			first.add(pouTypes.get(0))
 			val second = new LinkedList<EObject>
 			second.add(externalInterface)
 			correspondenceModel.createAndAddCorrespondence(first, second)
 		}
-		add correspondence between externalInterface and plcProject
 	}
 }
 
@@ -161,11 +249,19 @@ routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface 
 
 // ***** Routinen, um Korrespondenzen zwischen Interface und Geometriebeschreibung zu setzen bzw. zu entfernen
 
-routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile) {
+routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
+	match {
+		val colladaProject = retrieve collada::COLLADAType corresponding to container
+	}
 	action {
-		//TODO
 		execute {
-			
+			//TODO
+			// val 
+			val first = new LinkedList<EObject>
+			// first.add()
+			val second = new LinkedList<EObject>
+			second.add(externalInterface)
+			correspondenceModel.createAndAddCorrespondence(first, second)
 		}
 	}
 }
