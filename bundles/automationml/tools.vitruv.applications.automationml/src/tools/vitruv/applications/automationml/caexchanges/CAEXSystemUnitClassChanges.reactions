@@ -7,6 +7,8 @@ import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.Syste
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
 import caex.caex30.caex.InternalElement
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker.InterfaceType
+import caex.caex30.caex.impl.CAEXFactoryImpl
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -117,30 +119,35 @@ routine removeClone(caex::SystemUnitClass systemUnitClass) {
 
 // ***** Routinen, um interne Elemente abzuändern, analog zur Änderung der Klasse
 
-//TODO alle externalInterfaces?? oder nur PLCopen und Collada?? (in anderer Klasse nur plcopen/collada)
 routine addExternalInterfaceToInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElement = retrieve many caex::InternalElement corresponding to systemUnitClass
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass
 		check {
-			SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.PLCOPEN)
-		}
-		check {
-			InternalElementChecker.checkInternalElementForChanges(internalElement, systemUnitClass)
+			if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterface, "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")) {
+				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.PLCOPEN)
+			} else if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterface, "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface")) {
+				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.COLLADA)
+			} else {
+				return false
+			}
 		}
 	}
 	action {
-		val newAttribute = create caex::Attribute and initialize {
-			newAttribute.name = "refUri"
-			newAttribute.attributeDataType = "xs:anyURI"
-			newAttribute.value = SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, InterfaceType.PLCOPEN).^attribute.get(0).value
-		}
-		val newInterface = create caex::ExternalInterface and initialize {
-			newInterface.name = externalInterface.name
-			newInterface.^attribute.add(newAttribute)
-			newInterface.refBaseClassPath = externalInterface.refBaseClassPath
-		}
-		update internalElement {
-			internalElement.externalInterface.add(newInterface)
+		execute {
+			val filteredList = InternalElementChecker.filterInternalElementsForChanges(internalElements, systemUnitClass)
+			val caexFactory = new CAEXFactoryImpl()
+			for(InternalElement currInternalElement : filteredList) {
+				val newAttribute = caexFactory.createAttribute
+				newAttribute.name = "refUri"
+				newAttribute.attributeDataType = "xs:anyURI"
+				newAttribute.value = InterfaceForAttributeChecker.getAttributeInExternalInterface(externalInterface, "refUri").value
+				
+				val newInterface = caexFactory.createExternalInterface
+				newInterface.name = externalInterface.name
+				newInterface.^attribute.add(newAttribute)
+				newInterface.refBaseClassPath = externalInterface.refBaseClassPath
+				currInternalElement.externalInterface.add(newInterface)
+			}
 		}
 	}
 }

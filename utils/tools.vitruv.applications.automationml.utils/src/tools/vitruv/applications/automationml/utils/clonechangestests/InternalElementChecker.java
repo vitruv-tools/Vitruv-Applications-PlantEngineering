@@ -14,6 +14,7 @@ import caex.caex30.caex.SystemUnitClass;
 public class InternalElementChecker {
 	
 	// Filtert aus einer Liste von InternalElements diejenigen heraus, bei denen bereits die Angaben im Prototyp zu ExternalInterfaces überschrieben wurden
+	//TODO Problem: bereits geänderte systemUnitClass wird übergeben!!
 	public static List<InternalElement> filterInternalElementsForChanges(List<InternalElement> internalElements, SystemUnitClass systemUnitClass) {
 		List<InternalElement> filteredList = new LinkedList<InternalElement>();
 		for(InternalElement currInternalElement : internalElements) {
