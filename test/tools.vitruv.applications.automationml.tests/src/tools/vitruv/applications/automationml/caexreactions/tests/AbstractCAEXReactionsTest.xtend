@@ -14,6 +14,8 @@ import tools.vitruv.domains.plcopen.PLCOpenDomainProvider
 import tools.vitruv.testutils.TestUserInteraction
 import caex.caex30.caex.CAEXFile
 import caex.caex30.caex.CAEXFactory
+import tools.vitruv.domains.collada.ColladaDomainProvider
+import tools.vitruv.domains.aml.AMLDomainProvider
 
 class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	private static val CAEX_MODEL_FILE_EXTENSION = "caex";
@@ -64,14 +66,14 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	}
 
 	override protected getVitruvDomains() {
-		return #[new CAEXDomainProvider().domain, new PLCOpenDomainProvider().domain]
+		return #[new CAEXDomainProvider().domain, new PLCOpenDomainProvider().domain, new ColladaDomainProvider().domain, new AMLDomainProvider().domain]
 	}
 	
 	override protected setup() {
-		val docRootCAEX = preloadExistingCAEXModel("resources/Bsp.caex")	
+		val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
 		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)
-		val docRootPLCopen = preloadExistingPLCopenModel(("resources/bsp_sensor.tc60201"))
-		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)
+		//val docRootPLCopen = preloadExistingPLCopenModel(("resources/bsp_plc_empty.tc60201"))
+		//createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)
 	}
 	
 	protected def CAEXFactory caexFactory() {
