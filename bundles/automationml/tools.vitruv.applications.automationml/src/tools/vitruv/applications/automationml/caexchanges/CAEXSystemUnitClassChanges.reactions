@@ -26,7 +26,7 @@ reaction RemoveSystemUnitClass {
 	call {
 		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese Klasse referenzieren, gelöscht werden?").startInteraction
 		if(userInput) {
-			removeClone(oldValue)
+			removeClones(oldValue)
 		} else {
 			removePrototypeFromInternalElement(oldValue)
 		}
@@ -38,7 +38,7 @@ reaction RemoveSystemUnitClassFromBib {
 	call {
 		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese Klasse referenzieren, gelöscht werden?").startInteraction
 		if(userInput) {
-			removeClone(oldValue)
+			removeClones(oldValue)
 		} else {
 			removePrototypeFromInternalElement(oldValue)
 		}
@@ -100,20 +100,25 @@ routine removePrototypeFromInternalElement (caex::SystemUnitClass systemUnitClas
 				currInternalElement.refBaseSystemUnitPath = ""
 			}
 		}
-		//remove correspondence between internalElements and systemUnitClass //TODO überhaupt notwendig, wenn Prototypen gelöscht werden?
 	}
 }
 
-routine removeClone(caex::SystemUnitClass systemUnitClass) {
+routine removeClones(caex::SystemUnitClass systemUnitClass) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass
 	}
 	action {
-		//remove correspondence between internalElement and systemUnitClass //TODO überhaupt notwendig, wenn Prototypen gelöscht werden?
-		//delete internalElements //TODO wie lösche ich das?
 		execute {
-			
+			for(InternalElement currElem : internalElements) {
+				removeClone(currElem)
+			}
 		}
+	}
+}
+
+routine removeClone(caex::InternalElement internalElement) {
+	action {
+		delete internalElement
 	}
 }
 
