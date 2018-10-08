@@ -30,6 +30,8 @@ execute actions in CAEX
 reaction AddExternalInterfaceType {
 	after attribute insert in caex::ExternalInterface[refBaseClassPath]
 	call {
+		System.out.println("Reaction AddExternalInterfaceType")
+		
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(newValue ,caexFile)
 		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
@@ -60,6 +62,8 @@ reaction AddExternalInterfaceType {
 reaction RemoveExternalInterfaceType {
 	after attribute remove from caex::ExternalInterface[refBaseClassPath]
 	call {
+		System.out.println("Reaction RemoveExternalInterfaceType")
+				
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue, caexFile)
 		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
@@ -95,6 +99,8 @@ reaction ChangeExternalInterfacePath {
 		affectedEObject.name.equals("refURI") && EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface) !== null 
 	}
 	call {
+		System.out.println("Reaction ChangeExternalInterfacePath")
+				
 		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
 		val caexFile = EcoreUtil2.getContainerOfType(attributeParent, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(attributeParent.refBaseClassPath, caexFile)

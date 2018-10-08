@@ -24,6 +24,8 @@ execute actions in CAEX
 reaction RemoveSystemUnitClass {
 	after element removed from caex::SystemUnitClass[systemUnitClass]
 	call {
+		System.out.println("Reaction RemoveSystemUnitClass")
+				
 		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese Klasse referenzieren, gelöscht werden?").startInteraction
 		if(userInput) {
 			removeClones(oldValue)
@@ -36,6 +38,8 @@ reaction RemoveSystemUnitClass {
 reaction RemoveSystemUnitClassFromBib {
 	after element removed from caex::SystemUnitClassLib[systemUnitClass]
 	call {
+		System.out.println("Reaction RemoveSystemUnitClassFromBib")
+				
 		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese Klasse referenzieren, gelöscht werden?").startInteraction
 		if(userInput) {
 			removeClones(oldValue)
@@ -48,6 +52,8 @@ reaction RemoveSystemUnitClassFromBib {
 reaction RemoveSystemUnitClassLib {
 	after element removed from caex::CAEXFile[systemUnitClassLib]
 	call {
+		System.out.println("Reaction RemoveSystemUnitClassLib")
+				
 		//TODO evtl gar nichts, kommt auf rekursion beim löschen an...
 	}
 }
@@ -57,6 +63,8 @@ reaction RemoveSystemUnitClassLib {
 reaction AddExternalInterfaceToSystemClass {
 	after element caex::ExternalInterface inserted in caex::SystemUnitClass[externalInterface]
 	call {
+		System.out.println("Reaction RemoveSystemUnitClassLib")
+				
 		val userInput = userInteractor.confirmationDialogBuilder.message("Soll in allen internen Elementen, die diese Klasse referenzieren, das Interface hinzugefügt werden?").startInteraction
 		if(userInput) {
 			addExternalInterfaceToInternalElement(newValue, affectedEObject)
@@ -70,6 +78,8 @@ reaction RemoveExternalInterfaceFromSystemClass {
 		oldValue instanceof ExternalInterface
 	}
 	call {
+		System.out.println("Reaction RemoveExternalInterfaceFromSystemClass")
+				
 		val caexFile = EcoreUtil2.getContainerOfType(oldValue, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath, caexFile)
 		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"

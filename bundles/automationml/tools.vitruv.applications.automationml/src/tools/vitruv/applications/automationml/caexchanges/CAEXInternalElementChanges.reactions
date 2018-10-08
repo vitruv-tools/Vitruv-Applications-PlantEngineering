@@ -21,28 +21,43 @@ execute actions in CAEX
 reaction AddSystemClassToInternalElement {
 	after attribute insert in caex::InternalElement[refBaseSystemUnitPath]
 	call {
-		System.out.println("Reaction aufgerufen")
+		System.out.println("Reaction AddSystemClassToInternalElement")
+		
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val systemUnitClass = CAEXStringResolver.resolveSystemClassPath(newValue, caexFile)
-		System.out.println("Userinteraktion beginnt")
-		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
-		System.out.println("Userinteraktion endet")
+		//val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
+		val userInput = false
 		if(userInput) {
-			System.out.println("Kopiervorgang beginnt")
 			copyPLCopenValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
 			copyColladaValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
-			System.out.println("Kopiervorgang endet")
 		}
-		System.out.println("Korrespondenz setzen beginnt")
 		addCorrespondenceBetweenClassAndInstance(affectedEObject, systemUnitClass)
-		System.out.println("Korrespondenz setzen endet")
-		System.out.println("Reaction endet")
+	}
+}
+
+reaction ChangeSystemClassInInternalElement {
+	after attribute replaced at caex::InternalElement[refBaseSystemUnitPath]
+	call {
+		System.out.println("Reaction ChangeSystemClassInInternalElement")
+		
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		val systemUnitClass = CAEXStringResolver.resolveSystemClassPath(newValue, caexFile)
+		//val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
+		val userInput = false
+		if(userInput) {
+			copyPLCopenValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
+			copyColladaValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
+		}
+		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
+		addCorrespondenceBetweenClassAndInstance(affectedEObject, systemUnitClass)
 	}
 }
 
 reaction RemoveSystemClassFromInternalElement {
 	after attribute remove from caex::InternalElement[refBaseSystemUnitPath]
 	call {
+		System.out.println("Reaction RemoveSystemClassFromInternalElement")
+				
 		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
 	}
 }
@@ -55,6 +70,8 @@ reaction RemoveExternalInterfaceFromInternalElement {
 		oldValue instanceof ExternalInterface
 	}
 	call {
+		System.out.println("Reaction RemoveExternalInterfaceFromInternalElement")
+				
 		val caexFile = EcoreUtil2.getContainerOfType(oldValue, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath ,caexFile)
 		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"

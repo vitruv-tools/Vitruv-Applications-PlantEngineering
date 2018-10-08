@@ -64,6 +64,7 @@ public class CAEXStringResolver {
 		
 		String[] partsOfPath = path.split("/");
 		EList<SystemUnitClassLib> classLibs = caexFile.getSystemUnitClassLib();
+		SystemUnitClass lastClass = null;
 		EList<SystemUnitClass> currClasses = null;
 		EList<SystemUnitClass> nextClasses = null;
 		
@@ -81,6 +82,7 @@ public class CAEXStringResolver {
 			for(int j = 0; j < currClasses.size(); j++) {
 				if(currClasses.get(j).getName().equals(partsOfPath[i])) {
 					nextClasses = currClasses.get(j).getSystemUnitClass();
+					lastClass = currClasses.get(j);
 					break;
 				}
 			}
@@ -92,10 +94,6 @@ public class CAEXStringResolver {
 			}
 		}
 		
-		if(currClasses.size() == 1 && currClasses.get(0) instanceof ExternalInterface) {
-			return (SystemUnitClass)currClasses.get(0);
-		} else {
-			return null;
-		}
+		return lastClass;
 	}
 }
