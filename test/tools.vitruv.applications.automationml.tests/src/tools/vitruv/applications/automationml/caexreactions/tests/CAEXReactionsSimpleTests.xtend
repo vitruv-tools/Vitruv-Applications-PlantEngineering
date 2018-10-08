@@ -13,7 +13,7 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	public def testAddClassToInternalElement() {
-		val caexFactory = new CAEXFactoryImpl
+		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
 		val newHierarchy = caexFactory.createInstanceHierarchy
@@ -25,18 +25,28 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		newInternalElement.name = "BspElem"
 		
 		newSystemClassLib.systemUnitClass.add(newSystemClass)
-		rootElementVirtualCAEXModel.systemUnitClassLib.add(newSystemClassLib)
+		CAEXRootElement.systemUnitClassLib.add(newSystemClassLib)
 		
 		newHierarchy.internalElement.add(newInternalElement)
-		rootElementVirtualCAEXModel.instanceHierarchy.add(newHierarchy)
+		CAEXRootElement.instanceHierarchy.add(newHierarchy)
+		
+		CAEXRootElement.saveAndSynchronizeChanges
 		
 		newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass"
+		
+		CAEXRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
 		
-		assertTrue(second.get(0).get(0) == newSystemClass)
+		if(second.size == 0) {
+			assertTrue(false)
+		} else if (second.get(0).size == 0) {
+			assertTrue(false)
+		} else {
+			assertTrue(second.get(0).get(0) == newSystemClass)
+		}
 	}
 
 }

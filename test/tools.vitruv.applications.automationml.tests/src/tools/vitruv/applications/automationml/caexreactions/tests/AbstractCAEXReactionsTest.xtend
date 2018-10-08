@@ -16,6 +16,7 @@ import caex.caex30.caex.CAEXFile
 import caex.caex30.caex.CAEXFactory
 import tools.vitruv.domains.collada.ColladaDomainProvider
 import tools.vitruv.domains.aml.AMLDomainProvider
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
 class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	private static val CAEX_MODEL_FILE_EXTENSION = "caex";
@@ -23,16 +24,16 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	private static val PLCOPEN_MODEL_FILE_EXTENSION = "tc60201"
 	private static val PLCOPEN_MODEL_NAME = "model"
 
+	override protected cleanup() {
+		// nothing to cleanup
+	}
+
 	private def String getProjectCAEXModelPath(String modelName) {
 		"model/" + modelName + "." + CAEX_MODEL_FILE_EXTENSION;
 	}
 	
 	private def String getProjectPLCopenModelPath(String modelName) {
 		"model/" + modelName + "." + PLCOPEN_MODEL_FILE_EXTENSION;
-	}
-
-	override protected cleanup() {
-		// nothing to cleanup
 	}
 
 	protected def CAEXFile getCAEXRootElement() {
@@ -43,7 +44,7 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 		return PLCOPEN_MODEL_NAME.projectPLCopenModelPath.firstRootElement as ProjectType
 	}
 
-	protected def caex.caex30.caex.DocumentRoot getCAEXRoot() {
+	/*protected def caex.caex30.caex.DocumentRoot getCAEXRoot() {
 		val res = getModelResource(CAEX_MODEL_NAME.projectCAEXModelPath)
 		return res.contents.get(0) as caex.caex30.caex.DocumentRoot 
 	}
@@ -59,7 +60,7 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	
 	protected def ProjectType getRootElementVirtualPLCopenModel(){
 		virtualModel.getModelInstance(PLCOPEN_MODEL_NAME.projectPLCopenModelPath.modelVuri).firstRootEObject as ProjectType
-	}
+	}*/
 
 	override protected createChangePropagationSpecifications() {
 		return #[new CombinedCAEXChangePropagationSpecification]
@@ -85,13 +86,19 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	}
 	
 	protected def CAEXFile preloadExistingCAEXModel(String path) {
-		var targetModel = getModelResource(URI.createURI(path))
-		return targetModel.contents.get(0) as CAEXFile
+		val dslURI = URI.createURI(path)
+        val resourceSet = new ResourceSetImpl()
+        val resource = resourceSet.getResource(dslURI, true)
+        val targetModel = resource.getContents().get(0)
+		return targetModel as CAEXFile
 	}
 	
 	protected def ProjectType preloadExistingPLCopenModel(String path) {
-		var targetModel = getModelResource(URI.createURI(path))
-		return targetModel.contents.get(0) as ProjectType
+		val dslURI = URI.createURI(path)
+        val resourceSet = new ResourceSetImpl()
+        val resource = resourceSet.getResource(dslURI, true)
+        val targetModel = resource.getContents().get(0)
+		return targetModel as ProjectType
 	}
 	
 	protected def TestUserInteraction getTestUserInteractor() {

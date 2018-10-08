@@ -24,3 +24,10 @@ import caexUnitChanges
 // ***** AdditionalInformation (Version, Name, Änderungsdatum, etc.) setzen/ändern/löschen -> FileHeader ändern
 
 // ***** Änderung Einheiten -> Welche relevant? Auswirkungen auf? (Scaling?, Position?, ...?)
+
+reaction ConsoleLogging {
+	after any change 
+	call {
+		System.out.println("Änderung")
+	}
+}

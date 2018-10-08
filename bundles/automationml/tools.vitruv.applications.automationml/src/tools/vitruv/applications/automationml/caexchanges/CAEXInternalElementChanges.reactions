@@ -44,7 +44,6 @@ reaction RemoveSystemClassFromInternalElement {
 	after attribute remove from caex::InternalElement[refBaseSystemUnitPath]
 	call {
 		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
-		
 	}
 }
 
