@@ -40,8 +40,9 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
+		val third = correspondenceModel.getCorrespondences(first)
 		
-		if (second.get(0).size == 0) {
+		if (second.get(0).size != 1) {
 			assertTrue(false)
 		} else {
 			//assertEquals((second.get(0).get(0) == newSystemClass)
@@ -73,13 +74,15 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		newInternalElement.refBaseSystemUnitPath = null
+		//newInternalElement.refBaseSystemUnitPath = null
+		newInternalElement.refBaseSystemUnitPath = ""
 		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
+		val third = correspondenceModel.getCorrespondences(first)
 		
 		assertTrue(second.get(0).size == 0)
 	}
@@ -107,9 +110,10 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		newHierarchy.internalElement.add(newInternalElement)
 		CAEXRootElement.instanceHierarchy.add(newHierarchy)
 		
+		newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass"
+		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass"
 		newInternalElement.refBaseSystemUnitPath = "BspLib/AnotherBspClass"
 		
 		CAEXRootElement.saveAndSynchronizeChanges
@@ -117,8 +121,9 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
+		val third = correspondenceModel.getCorrespondences(first)
 		
-		if (second.get(0).size == 0) {
+		if (second.get(0).size != 1) {
 			assertTrue(false)
 		} else {
 			//assertEquals((second.get(0).get(0) == newSystemClass)
