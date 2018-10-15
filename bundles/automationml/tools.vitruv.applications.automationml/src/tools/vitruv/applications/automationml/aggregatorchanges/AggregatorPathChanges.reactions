@@ -1,3 +1,8 @@
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import org.eclipse.xtext.EcoreUtil2
+import org.plcopen.xml.tc60201.PouType1
+
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
 import "http://edu.kit.ipd.sdq.aml" as aml
@@ -7,6 +12,50 @@ reactions: aggregatorPathChanges
 in reaction to changes in AML
 execute actions in AML
 
-// ***** Pfadattribut in Collada geändert
+// ***** Pfadattribut in den Containern geändert
 
-// ***** Pfadattribut in PLCopen geändert
+reaction ChangePathForCollada {
+	after attribute replaced at aml::ColladaContainer[path]
+	call {
+		changePathInColladaInterfaces(affectedEObject)
+	}
+}
+
+reaction ChangePathForPlcopen {
+	after attribute replaced at aml::PLCopenContainer[path]
+	call {
+		changePathInPlcopenInterfaces(affectedEObject)
+	}
+}
+
+// ***** Routinen, um Pfade in den Interfaces abzuändern
+
+routine changePathInColladaInterfaces (aml::ColladaContainer container) {
+	match {
+		val colladaType = retrieve collada::COLLADAType corresponding to container
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to colladaType	//TODO nicht den Wurzelknoten, sondern die enthaltene Beschreibung
+	}
+	action {
+		execute {
+			for (ExternalInterface currInterface : externalInterfaces) {
+				val currAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				currAttribute.value = container.path
+			}
+		}
+	}
+}
+
+routine changePathInPlcopenInterfaces (aml::PLCopenContainer container) {
+	match {
+		val projectType = retrieve plcopen::ProjectType corresponding to container
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(projectType, PouType1).get(0)
+	}
+	action {
+		execute {
+			for (ExternalInterface currInterface : externalInterfaces) {
+				val currAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				currAttribute.value = container.path
+			}
+		}
+	}
+}
