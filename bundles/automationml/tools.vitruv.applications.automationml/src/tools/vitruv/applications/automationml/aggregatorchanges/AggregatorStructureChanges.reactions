@@ -1,3 +1,8 @@
+import org.eclipse.xtext.EcoreUtil2
+import org.plcopen.xml.tc60201.PouType1
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
 import "http://edu.kit.ipd.sdq.aml" as aml
@@ -7,10 +12,154 @@ reactions: aggregatorStructureChanges
 in reaction to changes in AML
 execute actions in AML
 
-// ***** AML Projekt anlegen
+// ***** AML Projekt anlegen/ entfernen
 
-// ***** AML Projekt oder CAEX Datei löschen
+reaction CreateAMLProject {
+	after element aml::AMLProject created and inserted as root
+	call {
+		createCAEXContainerAndFile()
+	}
+}
 
-// ***** Collada oder PLCopen Datei anlegen
+reaction RemoveAMLProject {
+	after element aml::AMLProject removed as root
+	call {
+		val userInput = userInteractor.confirmationDialogBuilder.message("Das gamze Projekt würde gelöscht werden. Fortfahren?").startInteraction
+		if(!userInput) {
+			//TODO Änderung zurückrollen
+		}
+	}
+}
 
-// ***** Collada oder PLCopen Datei löschen
+// ***** CAEX Datei löschen
+
+reaction RemoveCAEXContainer {
+	after element aml::CAEXContainer removed from aml::AMLProject[caexcontainer]
+	call {
+		val userInput = userInteractor.confirmationDialogBuilder.message("AML-Projekt kann ohne CAEX-Datei nicht existieren. Fortfahren? Dabei würde das ganze Projekt gelöscht werden.").startInteraction
+		if(userInput) {
+			removeAMLProject(affectedEObject)
+		} else {
+			//TODO Änderung zurückrollen
+		}
+	}
+}
+
+// ***** Collada oder PLCopen Datei anlegen/löschen
+
+reaction CreateColladaContainer {
+	after element aml::ColladaContainer created
+	call {
+		affectedEObject.path = ""
+		createColladaFile(affectedEObject)
+	}
+}
+
+reaction CreatePLCopenContainer {
+	after element aml::PLCopenContainer created
+	call {
+		affectedEObject.path = ""
+		createPLCopenFile(affectedEObject)
+	}
+}
+
+reaction RemoveColladaContainer {
+	after element aml::ColladaContainer deleted
+	call {
+		deleteColladaFile(affectedEObject)
+	}
+}
+
+reaction RemovePLCopenContainer {
+	after element aml::PLCopenContainer deleted
+	call {
+		deletePLCopenFile(affectedEObject)
+	}
+}
+
+// ***** Routine, um ein komplettes Projekt zu löschen
+
+routine removeAMLProject(aml::AMLProject amlProject){
+	action {
+		delete amlProject
+	}
+}
+
+// ***** Routinen, um Dateien zu erzeugen
+
+routine createCAEXContainerAndFile() {
+	action {
+		val container = create aml::CAEXContainer and initialize {
+			container.path = ""
+		}
+		val caexFile = create caex::CAEXFile
+		add correspondence between container and caexFile
+		execute {
+			//TODO resource erzeugen
+		}
+	}
+}
+
+routine createPLCopenFile(aml::PLCopenContainer container) {
+	action {
+		//TODO alles sonstige erzeugen
+		val projectType = create plcopen::ProjectType and initialize {
+			
+		}
+		add correspondence between projectType and container
+		execute {
+			//TODO resource erzeugen
+		}
+	}
+}
+
+routine createColladaFile(aml::ColladaContainer container) {
+	action {
+		//TODO alles erzeugen
+		//TODO Korrespondenz setzen
+		execute {
+			//TODO Resource erzeugen
+		}
+	}
+}
+
+// ***** Routinen, um Dateien zu löschen
+
+routine deletePLCopenFile(aml::PLCopenContainer container) {
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to container
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0)
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				changePathForInterfaceToEmpty(currInterface)
+			}
+		}
+		delete plcProject
+	}
+}
+
+routine deleteColladaFile(aml::ColladaContainer container) {
+	match {
+		val colladaType = retrieve collada::COLLADAType corresponding to container
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, PouType1).get(0)		//TODO Datentyp setzen
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				changePathForInterfaceToEmpty(currInterface)
+			}
+		}
+		delete colladaType
+	}
+}
+
+routine changePathForInterfaceToEmpty(caex::ExternalInterface externalInterface) {
+	action {
+		execute {
+			val pathAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(externalInterface, "refUri")
+			pathAttribute.value = ""
+		}
+	}
+}
