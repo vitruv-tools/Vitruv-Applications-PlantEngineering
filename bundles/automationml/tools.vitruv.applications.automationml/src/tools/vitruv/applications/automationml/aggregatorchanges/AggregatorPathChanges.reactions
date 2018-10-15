@@ -17,6 +17,8 @@ execute actions in AML
 reaction ChangePathForCollada {
 	after attribute replaced at aml::ColladaContainer[path]
 	call {
+		System.out.println("Reaction ChangePathForCollada")
+		
 		changePathInColladaInterfaces(affectedEObject)
 	}
 }
@@ -24,6 +26,8 @@ reaction ChangePathForCollada {
 reaction ChangePathForPlcopen {
 	after attribute replaced at aml::PLCopenContainer[path]
 	call {
+		System.out.println("Reaction ChangePathForPLCopen")
+		
 		changePathInPlcopenInterfaces(affectedEObject)
 	}
 }

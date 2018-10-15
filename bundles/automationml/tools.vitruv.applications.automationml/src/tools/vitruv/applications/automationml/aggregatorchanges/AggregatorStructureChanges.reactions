@@ -17,6 +17,8 @@ execute actions in AML
 reaction CreateAMLProject {
 	after element aml::AMLProject created and inserted as root
 	call {
+		System.out.println("Reaction CreateAMLProject")
+		
 		createCAEXContainerAndFile()
 	}
 }
@@ -24,7 +26,9 @@ reaction CreateAMLProject {
 reaction RemoveAMLProject {
 	after element aml::AMLProject removed as root
 	call {
-		val userInput = userInteractor.confirmationDialogBuilder.message("Das gamze Projekt würde gelöscht werden. Fortfahren?").startInteraction
+		System.out.println("Reaction RemoveAMLProject")
+		
+		val userInput = userInteractor.confirmationDialogBuilder.message("Das ganze Projekt würde gelöscht werden. Fortfahren?").startInteraction
 		if(!userInput) {
 			//TODO Änderung zurückrollen
 		}
@@ -36,6 +40,8 @@ reaction RemoveAMLProject {
 reaction RemoveCAEXContainer {
 	after element aml::CAEXContainer removed from aml::AMLProject[caexcontainer]
 	call {
+		System.out.println("Reaction RemoveCAEXContainer")
+		
 		val userInput = userInteractor.confirmationDialogBuilder.message("AML-Projekt kann ohne CAEX-Datei nicht existieren. Fortfahren? Dabei würde das ganze Projekt gelöscht werden.").startInteraction
 		if(userInput) {
 			removeAMLProject(affectedEObject)
@@ -50,6 +56,8 @@ reaction RemoveCAEXContainer {
 reaction CreateColladaContainer {
 	after element aml::ColladaContainer created
 	call {
+		System.out.println("Reaction CreateColladaContainer")
+		
 		affectedEObject.path = ""
 		createColladaFile(affectedEObject)
 	}
@@ -58,6 +66,8 @@ reaction CreateColladaContainer {
 reaction CreatePLCopenContainer {
 	after element aml::PLCopenContainer created
 	call {
+		System.out.println("Reaction CreatePLCopenContainer")
+		
 		affectedEObject.path = ""
 		createPLCopenFile(affectedEObject)
 	}
@@ -66,6 +76,8 @@ reaction CreatePLCopenContainer {
 reaction RemoveColladaContainer {
 	after element aml::ColladaContainer deleted
 	call {
+		System.out.println("Reaction RemoveColladaContainer")
+		
 		deleteColladaFile(affectedEObject)
 	}
 }
@@ -73,6 +85,8 @@ reaction RemoveColladaContainer {
 reaction RemovePLCopenContainer {
 	after element aml::PLCopenContainer deleted
 	call {
+		System.out.println("Reaction RemovePLCopenContainer")
+		
 		deletePLCopenFile(affectedEObject)
 	}
 }
