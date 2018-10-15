@@ -7,10 +7,56 @@ reactions: colladaStructureChanges
 in reaction to changes in Collada
 execute actions in Collada
 
-// ***** Root anlegen
+// ***** Root anlegen/löschen
 
-// ***** Root löschen
+reaction CreateColladaRoot {
+	after element collada::COLLADAType created
+	call {
+		System.out.println("CreateColladaRoot")
+		
+		createColladaContainer(affectedEObject)
+		createColladaStructure(affectedEObject)
+	}
+}
+
+reaction RemoveColladaRoot {
+	after element collada::COLLADAType deleted
+	call {
+		System.out.println("RemoveColladaRoot")
+		
+		removeColladaContainer(affectedEObject)
+	}
+}
 
 // ***** notwendige Beschreibungcontainer löschen
 
 // ***** neue Beschreibungscontainer anlegen
+
+// ***** Routinen, um Container für Collada anzulegen oder zu entfernen
+
+routine createColladaContainer(collada::COLLADAType colladaType) {
+	action {
+		val container = create aml::ColladaContainer and initialize {
+			container.path = ""
+		} 
+		add correspondence between colladaType and container
+	}
+}
+
+routine removeColladaContainer(collada::COLLADAType colladaType) {
+	action {
+		execute {
+			//TODO 
+		}
+	}
+}
+
+// ***** Routine, um Grundstruktur der Datei anzulegen
+
+routine createColladaStructure(collada::COLLADAType colladaType) {
+	action {
+		execute {
+			//TODO
+		}
+	}
+}

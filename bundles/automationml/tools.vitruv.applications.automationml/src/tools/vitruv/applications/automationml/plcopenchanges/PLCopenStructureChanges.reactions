@@ -7,10 +7,56 @@ reactions: plcopenStructureChanges
 in reaction to changes in PLCOpen
 execute actions in PLCOpen
 
-// ***** Root anlegen
+// ***** Root anlegen/löschen
 
-// ***** Root löschen
+reaction CreatePLCopenRoot {
+	after element plcopen::ProjectType created
+	call {
+		System.out.println("CreatePLCopenRoot")
+		
+		createPLCopenContainer(affectedEObject)
+		createPLCopenStructure(affectedEObject)
+	}
+}
+
+reaction RemovePLCopenRoot {
+	after element plcopen::ProjectType deleted
+	call {
+		System.out.println("RemovePLCopenRoot")
+		
+		removePLCopenContainer(affectedEObject)
+	}
+}
 
 // ***** notwendige Beschreibungcontainer löschen
 
 // ***** neue Beschreibungscontainer anlegen
+
+// ***** Routinen, um Container für PLCopen anzulegen oder zu entfernen
+
+routine createPLCopenContainer(plcopen::ProjectType projectType) {
+	action {
+		val container = create aml::PLCopenContainer and initialize {
+			container.path = ""
+		} 
+		add correspondence between projectType and container
+	}
+}
+
+routine removePLCopenContainer(plcopen::ProjectType projectType) {
+	action {
+		execute {
+			//TODO 
+		}
+	}
+}
+
+// ***** Routine, um Grundstruktur der Datei anzulegen
+
+routine createPLCopenStructure(plcopen::ProjectType projectType) {
+	action {
+		execute {
+			//TODO
+		}
+	}
+}
