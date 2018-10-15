@@ -6,7 +6,6 @@ import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritance
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
 import caex.caex30.caex.CAEXFile
 import caex.caex30.caex.InternalElement
-import caex.caex30.caex.RoleClass
 import caex.caex30.caex.SystemUnitClass
 import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
@@ -25,7 +24,7 @@ reactions: caexExternalInterfaceChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
-// ***** Interface Typ einfügen/entfernen (ändern dadurch abgehandelt)
+// ***** Interface Typ einfügen/ändern/entfernen
 
 reaction AddExternalInterfaceType {
 	after attribute insert in caex::ExternalInterface[refBaseClassPath]
@@ -33,23 +32,19 @@ reaction AddExternalInterfaceType {
 		System.out.println("Reaction AddExternalInterfaceType")
 		
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
-		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(newValue ,caexFile)
+		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
 		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
 		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
 		val container = affectedEObject.eContainer
 				
 		if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, plcopenInterfacePath)) {
 			addPathAttributeToExternalInterface(affectedEObject)
-			//addCorrespondenceBetweenInterfaceAndPLCopen(affectedEObject, caexFile)	//TODO brauche ich das überhaupt? (Pfad immer leer?) oder Nutzerinteraktion?
 		} else if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, colladaInterfacePath)) {
 			addPathAttributeToExternalInterface(affectedEObject)
-			//addCorrespondenceBetweenInterfaceAndCollada(affectedEObject, caexFile)	//TODO brauche ich das überhaupt? (Pfad immer leer?) oder Nutzerinteraktion?
 		}
 		
 		if(container instanceof InternalElement) {
 			//TODO Spiegelelement?? Vorüberprüfung notwendig??
-		} else if(container instanceof RoleClass) {
-			//TODO
 		} else if(container instanceof SystemUnitClass) {
 			val userInputClone = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
 			if(userInputClone) {
@@ -58,6 +53,47 @@ reaction AddExternalInterfaceType {
 		}
 	}
 }
+
+reaction ChangeExternalInterfaceType {
+	after attribute replaced at caex::ExternalInterface[refBaseClassPath]
+	call {
+		System.out.println("Reaction ChangeExternalInterfaceType")
+		
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		val externalInterfaceTypeOld = CAEXStringResolver.resolveInterfacePath(oldValue, caexFile)
+		val externalInterfaceTypeNew = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
+		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
+		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
+		val container = affectedEObject.eContainer
+		
+		val isOldPlcopen = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeOld, plcopenInterfacePath)
+		val isOldCollada = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeOld, colladaInterfacePath)
+		val isNewPlcopen = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeNew, plcopenInterfacePath)
+		val isNewCollada = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeNew, colladaInterfacePath)
+		
+		if(isOldPlcopen) {
+			removeCorrespondenceBetweenInterfaceAndPLCopen(affectedEObject)
+			removePathAttributeFromExternalInterface(affectedEObject)
+		} else if(isOldCollada) {
+			removeCorrespondenceBetweenInterfaceAndCollada(affectedEObject)
+			removePathAttributeFromExternalInterface(affectedEObject)
+		} 
+		
+		if(isNewPlcopen || isNewCollada) {
+			addPathAttributeToExternalInterface(affectedEObject)
+		}
+		
+		if(container instanceof InternalElement) {
+			//TODO Spiegelelement?? Vorüberprüfung notwendig??
+		} else if(container instanceof SystemUnitClass) {
+			val userInputClone = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(userInputClone) {
+				changeExternalInterfaceTypeInInternalElement(affectedEObject, container)
+			}
+		}
+	}
+}
+
 
 reaction RemoveExternalInterfaceType {
 	after attribute remove from caex::ExternalInterface[refBaseClassPath]
@@ -80,8 +116,6 @@ reaction RemoveExternalInterfaceType {
 		
 		if(container instanceof InternalElement) {
 			//TODO Spiegelelement?? Vorüberprüfung notwendig
-		} else if(container instanceof RoleClass) {
-			//TODO
 		} else if(container instanceof SystemUnitClass) {
 			val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
 			if(userInput) {
@@ -116,8 +150,6 @@ reaction ChangeExternalInterfacePath {
 		
 		if(parentContainer instanceof InternalElement) {
 			//TODO Spiegelelement?? Vorüberprüfung notwendig
-		} else if(parentContainer instanceof RoleClass) {
-			//TODO
 		} else if(parentContainer instanceof SystemUnitClass) {
 			val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
 			if(userInput) {

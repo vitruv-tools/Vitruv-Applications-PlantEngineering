@@ -40,7 +40,6 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
-		val third = correspondenceModel.getCorrespondences(first)
 		
 		if (second.get(0).size != 1) {
 			assertTrue(false)
@@ -82,7 +81,6 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
-		val third = correspondenceModel.getCorrespondences(first)
 		
 		assertTrue(second.get(0).size == 0)
 	}
@@ -121,7 +119,6 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
-		val third = correspondenceModel.getCorrespondences(first)
 		
 		if (second.get(0).size != 1) {
 			assertTrue(false)
@@ -129,5 +126,18 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 			//assertEquals((second.get(0).get(0) == newSystemClass)
 			assertEquals((second.get(0).get(0) as SystemUnitClass).name, newSystemClassB.name)
 		}
+	}
+	
+	//@Test
+	public def testAddInterfaceToInternalElement() {
+		System.out.println("TestD")
+		val caexFactory = caexFactory
+		val newHierarchy = caexFactory.createInstanceHierarchy
+		val newInternalElement = caexFactory.createInternalElement
+		val newInterface = caexFactory.createExternalInterface
+		
+		newHierarchy.name = "BspHier"
+		newInternalElement.name = "BspElem"
+		newInterface.name = "BspIf"		
 	}
 }
