@@ -28,9 +28,43 @@ reaction RemovePLCopenRoot {
 	}
 }
 
-// ***** notwendige Beschreibungcontainer löschen
+// ***** notwendige Beschreibungcontainer  anlegen/löschen
 
-// ***** neue Beschreibungscontainer anlegen
+reaction CreatePouType {
+	after element plcopen::PouType1 created
+	call {
+		System.out.println("CreatePouType")
+		
+		deletePouType(affectedEObject)
+	}
+}
+
+reaction DeletePouType {
+	after element plcopen::PouType1 removed from plcopen::PousType[pou]
+	call {
+		
+		//TODO
+		recreatePouType(affectedEObject, null)
+	}
+}
+
+reaction DeletePousType {
+	after element plcopen::PousType deleted
+	call {
+		
+		
+		recreatePousType(affectedEObject)
+	}
+}
+
+reaction DeleteTypesType {
+	after element plcopen::TypesType deleted
+	call {
+		
+		
+		recreateTypesType(affectedEObject)
+	}
+}
 
 // ***** Routinen, um Container für PLCopen anzulegen oder zu entfernen
 
@@ -44,10 +78,11 @@ routine createPLCopenContainer(plcopen::ProjectType projectType) {
 }
 
 routine removePLCopenContainer(plcopen::ProjectType projectType) {
+	match {
+		val container = retrieve aml::PLCopenContainer corresponding to projectType
+	}
 	action {
-		execute {
-			//TODO 
-		}
+		delete container
 	}
 }
 
@@ -55,8 +90,57 @@ routine removePLCopenContainer(plcopen::ProjectType projectType) {
 
 routine createPLCopenStructure(plcopen::ProjectType projectType) {
 	action {
+		val pouType = create plcopen::PouType1
+		val pousType = create plcopen::PousType and initialize {
+			pousType.pou.add(pouType)
+		}
+		val typesType = create plcopen::TypesType and initialize {
+			typesType.pous = pousType
+		}
+		update projectType {
+			projectType.types = typesType
+		}
+	}
+}
+
+// ***** Routinen, um Grundstruktur der Datei beizubehalten
+
+routine deletePouType(plcopen::PouType1 pouType) {
+	action {
+		delete pouType
+	}
+}
+
+routine recreatePouType(plcopen::PousType pousType, plcopen::PouType1 pouType) {
+	action {
+		update pousType {
+			pousType.pou.add(pouType)
+		}
+	}
+}
+
+routine recreatePousType(plcopen::PousType pousType) {
+	match {
+		check {
+			pousType.pou.size == 1
+		}
+	}
+	action {
 		execute {
-			//TODO
+			//TODO Änderung zurückrollen
+		}
+	}
+}
+
+routine recreateTypesType(plcopen::TypesType typesType) {
+	match {
+		check {
+			typesType.pous.pou.size == 1
+		}
+	}
+	action {
+		execute {
+			//TODO Änderung zurückrollen
 		}
 	}
 }
