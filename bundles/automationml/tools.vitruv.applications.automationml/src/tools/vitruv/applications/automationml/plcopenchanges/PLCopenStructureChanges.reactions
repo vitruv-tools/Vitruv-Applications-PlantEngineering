@@ -1,3 +1,8 @@
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import org.plcopen.xml.tc60201.PouType1
+import org.eclipse.xtext.EcoreUtil2
+
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
 import "http://edu.kit.ipd.sdq.aml" as aml
@@ -24,11 +29,14 @@ reaction RemovePLCopenRoot {
 	call {
 		System.out.println("RemovePLCopenRoot")
 		
+		val pouType = EcoreUtil2.getAllContentsOfType(affectedEObject, PouType1).get(0) 
+		
+		changePathForPLCopenInterfacesToEmpty(pouType)
 		removePLCopenContainer(affectedEObject)
 	}
 }
 
-// ***** notwendige Beschreibungcontainer  anlegen/löschen
+// ***** notwendige Beschreibungcontainer anlegen/löschen
 
 reaction CreatePouType {
 	after element plcopen::PouType1 created
@@ -42,6 +50,7 @@ reaction CreatePouType {
 reaction DeletePouType {
 	after element plcopen::PouType1 removed from plcopen::PousType[pou]
 	call {
+		System.out.println("DeletePouType")
 		
 		//TODO
 		recreatePouType(affectedEObject, null)
@@ -51,7 +60,7 @@ reaction DeletePouType {
 reaction DeletePousType {
 	after element plcopen::PousType deleted
 	call {
-		
+		System.out.println("DeletePousType")
 		
 		recreatePousType(affectedEObject)
 	}
@@ -60,7 +69,7 @@ reaction DeletePousType {
 reaction DeleteTypesType {
 	after element plcopen::TypesType deleted
 	call {
-		
+		System.out.println("DeleteTypesType")
 		
 		recreateTypesType(affectedEObject)
 	}
@@ -83,6 +92,22 @@ routine removePLCopenContainer(plcopen::ProjectType projectType) {
 	}
 	action {
 		delete container
+	}
+}
+
+// Routine, um Interfaces an gelöschte Dateien anzupassen
+
+routine changePathForPLCopenInterfacesToEmpty(plcopen::PouType1 pouType) {
+	match {
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				val pathAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				pathAttribute.value = ""
+			}
+		}
 	}
 }
 

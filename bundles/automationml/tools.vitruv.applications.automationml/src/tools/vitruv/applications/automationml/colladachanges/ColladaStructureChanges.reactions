@@ -1,3 +1,6 @@
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import caex.caex30.caex.ExternalInterface
+
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
 import "http://edu.kit.ipd.sdq.aml" as aml
@@ -24,13 +27,12 @@ reaction RemoveColladaRoot {
 	call {
 		System.out.println("RemoveColladaRoot")
 		
+		changePathForColladaInterfacesToEmpty()
 		removeColladaContainer(affectedEObject)
 	}
 }
 
-// ***** notwendige Beschreibungcontainer löschen
-
-// ***** neue Beschreibungscontainer anlegen
+// ***** notwendige Beschreibungcontainer anlegen/löschen
 
 // ***** Routinen, um Container für Collada anzulegen oder zu entfernen
 
@@ -44,9 +46,26 @@ routine createColladaContainer(collada::COLLADAType colladaType) {
 }
 
 routine removeColladaContainer(collada::COLLADAType colladaType) {
+	match {
+		val container = retrieve aml::ColladaContainer corresponding to colladaType
+	}
+	action {
+		delete container
+	}
+}
+
+// Routine, um Interfaces an gelöschte Dateien anzupassen
+
+routine changePathForColladaInterfacesToEmpty() {
+	match {
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to null	//TODO muss übergeben werden
+	}
 	action {
 		execute {
-			//TODO 
+			for(ExternalInterface currInterface : externalInterfaces) {
+				val pathAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				pathAttribute.value = ""
+			}
 		}
 	}
 }
@@ -60,3 +79,5 @@ routine createColladaStructure(collada::COLLADAType colladaType) {
 		}
 	}
 }
+
+// ***** Routinen, um Grundstruktur der Datei beizubehalten
