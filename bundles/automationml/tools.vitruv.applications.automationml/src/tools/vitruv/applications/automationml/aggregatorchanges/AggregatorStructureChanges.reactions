@@ -3,9 +3,10 @@ import org.plcopen.xml.tc60201.PouType1
 import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import org.khronos.collada.SceneType
-import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
+import edu.kit.sdq.aml_aggregator.ColladaContainer
+import edu.kit.sdq.aml_aggregator.PLCopenContainer
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -33,8 +34,18 @@ reaction RemoveAMLProject {
 		System.out.println("Reaction RemoveAMLProject")
 		
 		val userInput = userInteractor.confirmationDialogBuilder.message("Das ganze Projekt würde gelöscht werden. Fortfahren?").startInteraction
-		if(!userInput) {
-			//TODO Änderung zurückrollen
+		if(userInput) {
+			deleteCAEXFile(oldValue.caexcontainer)
+			for(ColladaContainer currContainer : oldValue.colladacontainer) {
+				deleteColladaFile(currContainer)
+			}
+			for(PLCopenContainer currContainer : oldValue.plcopencontainer) {
+				deletePLCopenFile(currContainer)
+			}
+		} else {
+			// Änderung zurückrollen
+			// kein Sprachstatement vorhanden, deswegen diese Formulierung
+			oldValue.eResource.contents.add(oldValue)
 		}
 	}
 }
@@ -48,9 +59,18 @@ reaction RemoveCAEXContainer {
 		
 		val userInput = userInteractor.confirmationDialogBuilder.message("AML-Projekt kann ohne CAEX-Datei nicht existieren. Fortfahren? Dabei würde das ganze Projekt gelöscht werden.").startInteraction
 		if(userInput) {
+			deleteCAEXFile(oldValue)
+			for(ColladaContainer currContainer : affectedEObject.colladacontainer) {
+				deleteColladaFile(currContainer)
+			}
+			for(PLCopenContainer currContainer : affectedEObject.plcopencontainer) {
+				deletePLCopenFile(currContainer)
+			}
 			removeAMLProject(affectedEObject)
 		} else {
-			//TODO Änderung zurückrollen
+			// Änderung zurückrollen
+			// kein Sprachstatement vorhanden, deswegen diese Formulierung
+			affectedEObject.caexcontainer = oldValue
 		}
 	}
 }
@@ -163,6 +183,15 @@ routine createColladaFile(aml::ColladaContainer container) {
 }
 
 // ***** Routinen, um Dateien zu löschen
+
+routine deleteCAEXFile(aml::CAEXContainer container) {
+	match {
+		val caexFile = retrieve caex::CAEXFile corresponding to container
+	}
+	action {
+		delete caexFile
+	}
+}
 
 routine deletePLCopenFile(aml::PLCopenContainer container) {
 	match {
