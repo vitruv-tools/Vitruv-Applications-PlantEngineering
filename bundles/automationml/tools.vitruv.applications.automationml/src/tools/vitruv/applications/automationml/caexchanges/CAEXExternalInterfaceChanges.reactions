@@ -14,6 +14,8 @@ import tools.vitruv.applications.automationml.utils.clonechangestests.InternalEl
 import tools.vitruv.applications.automationml.utils.amlutils.AMLAggregatorResolver
 import edu.kit.sdq.aml_aggregator.AMLProject
 import org.plcopen.xml.tc60201.ProjectType
+import org.khronos.collada.COLLADAType
+import org.khronos.collada.SceneType
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -249,11 +251,20 @@ routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInt
 }
 
 routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInterface, String newPath) {
+	match {
+		val scene = retrieve collada::SceneType corresponding to externalInterface
+		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType)
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene
+	}
 	action {
+		update colladaContainer {
+			colladaContainer.path = newPath
+		}
 		execute {
-			//TODO
-			// Pfad in Dokument abändern
-			// alle anderen Pfade in CAEX abändern
+			for(ExternalInterface currExternalInterface : externalInterfaces) {
+				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
+				uriAttribute.value = newPath
+			}
 		}
 	}
 }
@@ -293,10 +304,9 @@ routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface ext
 	}
 	action {
 		execute {
-			//TODO
-			// val 
+			val sceneTypes = EcoreUtil2.getAllContentsOfType(colladaProject, SceneType) 
 			val first = new LinkedList<EObject>
-			// first.add()
+			first.add(sceneTypes.get(0))
 			val second = new LinkedList<EObject>
 			second.add(externalInterface)
 			correspondenceModel.createAndAddCorrespondence(first, second)
@@ -306,10 +316,10 @@ routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface ext
 
 routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaXYZ = retrieve collada::COLLADAType corresponding to externalInterface	//TODO richtigen Datentyp
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface
 	}
 	action {
-		remove correspondence between externalInterface and colladaXYZ
+		remove correspondence between externalInterface and colladaScene
 	}
 }
 

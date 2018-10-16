@@ -198,9 +198,9 @@ routine removeCorrespondenceBetweenInterfaceInInternalAndPLCopen (caex::External
 
 routine removeCorrespondenceBetweenInterfaceInInternalAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaXYZ = retrieve collada::COLLADAType corresponding to externalInterface	//TODO richtigen Datentyp
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface
 	}
 	action {
-		remove correspondence between externalInterface and colladaXYZ
+		remove correspondence between externalInterface and colladaScene
 	}
 }
