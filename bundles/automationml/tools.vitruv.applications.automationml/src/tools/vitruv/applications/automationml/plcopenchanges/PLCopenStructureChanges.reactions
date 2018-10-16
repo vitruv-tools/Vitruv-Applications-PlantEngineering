@@ -36,13 +36,14 @@ reaction RemovePLCopenRoot {
 	}
 }
 
-// ***** notwendige Beschreibungcontainer anlegen/löschen
+// ***** zusätzliche Beschreibungcontainer anlegen/löschen
 
 reaction CreatePouType {
 	after element plcopen::PouType1 created
 	call {
 		System.out.println("CreatePouType")
 		
+		// Methode entspricht einem Zurückrollen der Änderung
 		deletePouType(affectedEObject)
 	}
 }
@@ -52,26 +53,29 @@ reaction DeletePouType {
 	call {
 		System.out.println("DeletePouType")
 		
-		//TODO
-		recreatePouType(affectedEObject, null)
+		// Änderung zurückrollen
+		// kein Sprachstatement vorhanden, deswegen diese Formulierung
+		affectedEObject.pou.add(oldValue)
 	}
 }
 
 reaction DeletePousType {
-	after element plcopen::PousType deleted
+	after element plcopen::PousType removed from plcopen::TypesType[pous]
 	call {
 		System.out.println("DeletePousType")
 		
-		recreatePousType(affectedEObject)
+		// Methode entspricht einem Zurückrollen der Änderung
+		recreatePousType(affectedEObject, oldValue)
 	}
 }
 
 reaction DeleteTypesType {
-	after element plcopen::TypesType deleted
+	after element plcopen::TypesType removed from plcopen::ProjectType[types]
 	call {
 		System.out.println("DeleteTypesType")
 		
-		recreateTypesType(affectedEObject)
+		// Methode entspricht einem Zurückrollen der Änderung
+		recreateTypesType(affectedEObject, oldValue)
 	}
 }
 
@@ -136,36 +140,28 @@ routine deletePouType(plcopen::PouType1 pouType) {
 	}
 }
 
-routine recreatePouType(plcopen::PousType pousType, plcopen::PouType1 pouType) {
-	action {
-		update pousType {
-			pousType.pou.add(pouType)
-		}
-	}
-}
-
-routine recreatePousType(plcopen::PousType pousType) {
+routine recreatePousType(plcopen::TypesType typesType, plcopen::PousType pousType) {
 	match {
 		check {
 			pousType.pou.size == 1
 		}
 	}
 	action {
-		execute {
-			//TODO Änderung zurückrollen
+		update typesType {
+			typesType.pous = pousType
 		}
 	}
 }
 
-routine recreateTypesType(plcopen::TypesType typesType) {
+routine recreateTypesType(plcopen::ProjectType projectType, plcopen::TypesType typesType) {
 	match {
 		check {
 			typesType.pous.pou.size == 1
 		}
 	}
 	action {
-		execute {
-			//TODO Änderung zurückrollen
+		update projectType {
+			projectType.types = typesType
 		}
 	}
 }
