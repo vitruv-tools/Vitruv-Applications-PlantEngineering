@@ -3,6 +3,9 @@ import org.plcopen.xml.tc60201.PouType1
 import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import org.khronos.collada.SceneType
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.common.util.URI
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -110,20 +113,34 @@ routine createCAEXContainerAndFile() {
 		val caexFile = create caex::CAEXFile
 		add correspondence between container and caexFile
 		execute {
-			//TODO resource erzeugen
+			val rs = new ResourceSetImpl()
+			val uri = URI.createURI("")		//TODO Pfad
+			val res = rs.createResource(uri)
+			res.contents.add(caexFile)
+			//res.save()
 		}
 	}
 }
 
 routine createPLCopenFile(aml::PLCopenContainer container) {
 	action {
-		//TODO alles sonstige erzeugen
+		val pouType = create plcopen::PouType1
+		val pousType = create plcopen::PousType and initialize {
+			pousType.pou.add(pouType)
+		}
+		val typesType = create plcopen::TypesType and initialize {
+			typesType.pous = pousType
+		}
 		val projectType = create plcopen::ProjectType and initialize {
-			
+			projectType.types = typesType
 		}
 		add correspondence between projectType and container
 		execute {
-			//TODO resource erzeugen
+			val rs = new ResourceSetImpl()
+			val uri = URI.createURI("")		//TODO Pfad
+			val res = rs.createResource(uri)
+			res.contents.add(projectType)
+			//res.save()
 		}
 	}
 }
@@ -136,7 +153,11 @@ routine createColladaFile(aml::ColladaContainer container) {
 		}
 		add correspondence between colladaType and container
 		execute {
-			//TODO Resource erzeugen
+			val rs = new ResourceSetImpl()
+			val uri = URI.createURI("")		//TODO Pfad
+			val res = rs.createResource(uri)
+			res.contents.add(colladaType)
+			//res.save()
 		}
 	}
 }
