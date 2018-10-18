@@ -33,8 +33,7 @@ reaction ChangeSystemClassInInternalElement {
 		val systemUnitClass = CAEXStringResolver.resolveSystemClassPath(newValue, caexFile)
 		
 		if(systemUnitClass === null) {
-			//val userInput = userInteractor.confirmationDialogBuilder.message("Klasse existiert nicht. Soll eine neue Klasse erzeugt werden? (Ansonsten wird die Änderung zurückgerollt)").startInteraction
-			val userInput = false
+			val userInput = userInteractor.confirmationDialogBuilder.message("Klasse existiert nicht. Soll eine neue Klasse erzeugt werden? (Ansonsten wird die Änderung zurückgerollt)").startInteraction
 			if(userInput) {
 				createSystemUnitClassInTree(affectedEObject)
 			} else {
@@ -45,8 +44,7 @@ reaction ChangeSystemClassInInternalElement {
 			return
 		}
 		
-		//val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
-		val userInput = false
+		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
 		if(userInput) {
 			copyPLCopenValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
 			copyColladaValuesFromPrototypeToClone(affectedEObject, systemUnitClass)

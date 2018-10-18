@@ -8,12 +8,13 @@ import static org.junit.Assert.assertNotNull
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import caex.caex30.caex.SystemUnitClass
+import tools.vitruv.framework.userinteraction.UserInteractor
 
 class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	public def testAddClassToInternalElement() {
-		System.out.println("TestA")
+		System.out.println("Test1A")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
@@ -35,6 +36,7 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		
 		newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass"
 		
+		testUserInteractor.addNextConfirmationInput(false)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
@@ -44,14 +46,13 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		if (second.get(0).size != 1) {
 			assertTrue(false)
 		} else {
-			//assertEquals((second.get(0).get(0) == newSystemClass)
-			assertEquals((second.get(0).get(0) as SystemUnitClass).name, newSystemClass.name)
+			assertEquals(newSystemClass.name, (second.get(0).get(0) as SystemUnitClass).name)
 		}
 	}
 	
 	@Test
 	public def testRemoveClassFromInternalElement() {
-		System.out.println("TestB")
+		System.out.println("Test1B")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
@@ -71,23 +72,24 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		
 		newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass"
 		
+		testUserInteractor.addNextConfirmationInput(false)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		//newInternalElement.refBaseSystemUnitPath = null
 		newInternalElement.refBaseSystemUnitPath = ""
 		
+		testUserInteractor.addNextConfirmationInput(false)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
 		
-		assertTrue(second.get(0).size == 0)
+		assertEquals(0, second.get(0).size)
 	}
 	
 	@Test
 	public def testChangeClassInInternalElement() {
-		System.out.println("TestC")
+		System.out.println("Test1C")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClassA = caexFactory.createSystemUnitClass
@@ -110,10 +112,12 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		
 		newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass"
 		
+		testUserInteractor.addNextConfirmationInput(false)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
 		newInternalElement.refBaseSystemUnitPath = "BspLib/AnotherBspClass"
 		
+		testUserInteractor.addNextConfirmationInput(false)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
@@ -123,21 +127,7 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 		if (second.get(0).size != 1) {
 			assertTrue(false)
 		} else {
-			//assertEquals((second.get(0).get(0) == newSystemClass)
-			assertEquals((second.get(0).get(0) as SystemUnitClass).name, newSystemClassB.name)
+			assertEquals(newSystemClassB.name, (second.get(0).get(0) as SystemUnitClass).name)
 		}
-	}
-	
-	//@Test
-	public def testAddInterfaceToInternalElement() {
-		System.out.println("TestD")
-		val caexFactory = caexFactory
-		val newHierarchy = caexFactory.createInstanceHierarchy
-		val newInternalElement = caexFactory.createInternalElement
-		val newInterface = caexFactory.createExternalInterface
-		
-		newHierarchy.name = "BspHier"
-		newInternalElement.name = "BspElem"
-		newInterface.name = "BspIf"		
 	}
 }
