@@ -103,7 +103,7 @@ routine createSystemUnitClassInTree(caex::InternalElement internalElement) {
 
 routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
 	action {
-		add correspondence between internalElement and systemUnitClass
+		add correspondence between systemUnitClass and internalElement
 	}
 }
 

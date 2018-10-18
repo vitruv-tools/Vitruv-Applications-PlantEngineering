@@ -1,4 +1,4 @@
-package tools.vitruv.applications.automationml.caexreactions.tests
+package tools.vitruv.applications.automationml.plcopenreactions.tests
 
 import tools.vitruv.applications.automationml.caexchanges.CombinedCAEXChangePropagationSpecification
 import java.util.NoSuchElementException
@@ -18,11 +18,11 @@ import tools.vitruv.domains.collada.ColladaDomainProvider
 import tools.vitruv.domains.aml.AMLDomainProvider
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.khronos.collada.COLLADAType
-import org.khronos.collada.ColladaFactory
 import edu.kit.sdq.aml_aggregator.AMLProject
+import org.khronos.collada.ColladaFactory
 import edu.kit.sdq.aml_aggregator.Aml_aggregatorFactory
 
-class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
+class AbstractPLCopenReactionsTest extends VitruviusApplicationTest {
 	private static val AGGREGATOR_MODEL_FILE_EXTENSION = "aml_aggregator"
 	private static val AGGREGATOR_MODEL_NAME = "model"
 	private static val CAEX_MODEL_FILE_EXTENSION = "caex";
@@ -79,10 +79,10 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 	override protected setup() {
 		/*val docRootAggregator = preloadExistingAggregatorModel("resources/bsp_aml_empty.aml_aggregator")
 		createAndSynchronizeModel(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath, docRootAggregator)*/
-		val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
-		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)
-		/*val docRootPLCopen = preloadExistingPLCopenModel("resources/bsp_plc_empty.tc60201")
-		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)*/
+		/*val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
+		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)*/
+		val docRootPLCopen = preloadExistingPLCopenModel("resources/bsp_plc_empty.tc60201")
+		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)
 		/*val docRootCollada = preloadExistingColladaModel("resources/bsp_collada_empty.dae")
 		createAndSynchronizeModel(COLLADA_MODEL_NAME.projectColladaModelPath, docRootCollada)*/
 	}
@@ -150,4 +150,22 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 		return found.get(0)
 	}
 
+
+	/*protected def caex.caex30.caex.DocumentRoot getCAEXRoot() {
+		val res = getModelResource(CAEX_MODEL_NAME.projectCAEXModelPath)
+		return res.contents.get(0) as caex.caex30.caex.DocumentRoot 
+	}
+	
+	protected def org.plcopen.xml.tc60201.DocumentRoot getPLCopenRoot(){
+		val res = getModelResource(PLCOPEN_MODEL_NAME.projectPLCopenModelPath)
+		return res.contents.get(0) as org.plcopen.xml.tc60201.DocumentRoot
+	}
+	
+	protected def CAEXFile getRootElementVirtualCAEXModel() {
+		virtualModel.getModelInstance(CAEX_MODEL_NAME.projectCAEXModelPath.modelVuri).firstRootEObject as CAEXFile
+	}
+	
+	protected def ProjectType getRootElementVirtualPLCopenModel(){
+		virtualModel.getModelInstance(PLCOPEN_MODEL_NAME.projectPLCopenModelPath.modelVuri).firstRootEObject as ProjectType
+	}*/
 }

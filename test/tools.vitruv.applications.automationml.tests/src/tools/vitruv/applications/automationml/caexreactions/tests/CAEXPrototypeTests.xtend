@@ -10,11 +10,11 @@ import org.eclipse.emf.ecore.EObject
 import caex.caex30.caex.SystemUnitClass
 import tools.vitruv.framework.userinteraction.UserInteractor
 
-class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
+class CAEXPrototypeTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	public def testAddClassToInternalElement() {
-		System.out.println("Test1A")
+		System.out.println("Test21A")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
@@ -52,7 +52,7 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	public def testRemoveClassFromInternalElement() {
-		System.out.println("Test1B")
+		System.out.println("Test21B")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
@@ -89,7 +89,7 @@ class CAEXReactionsSimpleTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	public def testChangeClassInInternalElement() {
-		System.out.println("Test1C")
+		System.out.println("Test21C")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClassA = caexFactory.createSystemUnitClass
