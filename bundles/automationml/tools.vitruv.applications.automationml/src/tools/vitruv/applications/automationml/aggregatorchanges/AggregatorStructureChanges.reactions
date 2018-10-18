@@ -19,6 +19,7 @@ execute actions in AML
 
 // ***** AML Projekt anlegen/ entfernen
 
+// Reaction notwendig??
 reaction CreateAMLProject {
 	after element aml::AMLProject created and inserted as root
 	call {
@@ -50,28 +51,22 @@ reaction RemoveAMLProject {
 	}
 }
 
-// ***** CAEX Datei löschen
+// ***** CAEX erzeugen/löschen
 
-reaction RemoveCAEXContainer {
-	after element aml::CAEXContainer removed from aml::AMLProject[caexcontainer]
+reaction ReplaceCAEXContainer {
+	after element aml::CAEXContainer replaced at aml::AMLProject[caexcontainer]
 	call {
-		System.out.println("Reaction RemoveCAEXContainer")
+		System.out.println("Reaction ReplaceCAEXContainer")
 		
-		val userInput = userInteractor.confirmationDialogBuilder.message("AML-Projekt kann ohne CAEX-Datei nicht existieren. Fortfahren? Dabei würde das ganze Projekt gelöscht werden.").startInteraction
-		if(userInput) {
-			deleteCAEXFile(oldValue)
-			for(ColladaContainer currContainer : affectedEObject.colladacontainer) {
-				deleteColladaFile(currContainer)
-			}
-			for(PLCopenContainer currContainer : affectedEObject.plcopencontainer) {
-				deletePLCopenFile(currContainer)
-			}
-			removeAMLProject(affectedEObject)
-		} else {
+		if(newValue === null) {
 			// Änderung zurückrollen
 			// kein Sprachstatement vorhanden, deswegen diese Formulierung
 			affectedEObject.caexcontainer = oldValue
+			return;
 		}
+		
+		deleteCAEXFile(oldValue)
+		createCAEXFile(newValue)
 	}
 }
 
@@ -130,6 +125,14 @@ routine createCAEXContainerAndFile() {
 		val container = create aml::CAEXContainer and initialize {
 			container.path = ""
 		}
+		execute {
+			createCAEXFile(container)
+		}
+	}
+}
+
+routine createCAEXFile(aml::CAEXContainer container) {
+	action {
 		val caexFile = create caex::CAEXFile
 		add correspondence between container and caexFile
 		execute {
