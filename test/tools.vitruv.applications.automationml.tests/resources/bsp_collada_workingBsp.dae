@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema:COLLADA xmlns:schema="http://www.collada.org/2005/11/COLLADASchema">
-  <schema:library_geometries>
-    <schema:geometry>
+  <schema:library_geometries id="GeoLib" name="GeometrieBibliothek">
+    <schema:geometry id="geo1" name="Geometrie">
       <schema:spline>
         <schema:source/>
       </schema:spline>
     </schema:geometry>
   </schema:library_geometries>
-  <schema:extra/>
+  <schema:library_visual_scenes id="VisuLib" name="VisuelleBibliothek">
+    <schema:visual_scene id="visu1" name="Visuelles">
+      <schema:node>
+        <schema:instance_geometry/>
+      </schema:node>
+    </schema:visual_scene>
+  </schema:library_visual_scenes>
+  <schema:scene>
+    <schema:instance_visual_scene name="Szene" url=""/>
+  </schema:scene>
 </schema:COLLADA>
