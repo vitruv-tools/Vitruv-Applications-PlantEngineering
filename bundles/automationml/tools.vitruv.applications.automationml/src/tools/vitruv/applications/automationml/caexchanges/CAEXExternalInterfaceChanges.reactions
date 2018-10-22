@@ -16,6 +16,7 @@ import edu.kit.sdq.aml_aggregator.AMLProject
 import org.plcopen.xml.tc60201.ProjectType
 import org.khronos.collada.COLLADAType
 import org.khronos.collada.SceneType
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -158,7 +159,7 @@ reaction ChangeExternalInterfacePath {
 //Boolean false: plcopen
 routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile, String newPath, Boolean isCollada ) {
 	match {
-		val caexContainer = retrieve aml::CAEXContainer corresponding to caexFile
+		val caexContainer = retrieve aml::CAEXContainer corresponding to caexFile tagged with TagHelper.TAG
 	}
 	action {
 		execute{
@@ -225,9 +226,9 @@ routine createNewColladaContainer (caex::ExternalInterface externalInterface, am
 
 routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInterface, String newPath) {
 	match {
-		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface
-		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType)
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType
+		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.TAG
 	}
 	action {
 		update plcopenContainer {
@@ -244,9 +245,9 @@ routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInt
 
 routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInterface, String newPath) {
 	match {
-		val scene = retrieve collada::SceneType corresponding to externalInterface
-		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType)
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene
+		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType) tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.TAG
 	}
 	action {
 		update colladaContainer {
@@ -265,26 +266,28 @@ routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInt
 
 routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
 	}
 	action {
 		execute {
 			val pouTypes = EcoreUtil2.getAllContentsOfType(plcProject, PouType1)
-			val first = new LinkedList<EObject>
-			first.add(pouTypes.get(0))
-			val second = new LinkedList<EObject>
-			second.add(externalInterface)
-			correspondenceModel.createAndAddCorrespondence(first, second)
+			addCorrespondenceBetweenInterfaceAndPou(externalInterface, pouTypes.get(0))
 		}
+	}
+}
+
+routine addCorrespondenceBetweenInterfaceAndPou(caex::ExternalInterface externalInterface, plcopen::PouType1 pou) {
+	action {
+		add correspondence between externalInterface and pou tagged with TagHelper.TAG
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
-		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
 	}
 	action {
-		remove correspondence between externalInterface and plcPouType
+		remove correspondence between externalInterface and plcPouType tagged with TagHelper.TAG
 	}
 }
 
@@ -292,26 +295,28 @@ routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface 
 
 routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
 	match {
-		val colladaProject = retrieve collada::COLLADAType corresponding to container
+		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
 	}
 	action {
 		execute {
 			val sceneTypes = EcoreUtil2.getAllContentsOfType(colladaProject, SceneType) 
-			val first = new LinkedList<EObject>
-			first.add(sceneTypes.get(0))
-			val second = new LinkedList<EObject>
-			second.add(externalInterface)
-			correspondenceModel.createAndAddCorrespondence(first, second)
+			addCorrespondenceBetweenInterfaceAndScene(externalInterface, sceneTypes.get(0))
 		}
+	}
+}
+
+routine addCorrespondenceBetweenInterfaceAndScene(caex::ExternalInterface externalInterface, collada::SceneType scene) {
+	action {
+		add correspondence between externalInterface and scene tagged with TagHelper.TAG
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaScene = retrieve collada::SceneType corresponding to externalInterface
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
 	}
 	action {
-		remove correspondence between externalInterface and colladaScene
+		remove correspondence between externalInterface and colladaScene tagged with TagHelper.TAG
 	}
 }
 
@@ -345,7 +350,7 @@ routine removePathAttributeFromExternalInterface(caex::ExternalInterface externa
 
 routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
 	}
 	action {
 		execute {
@@ -360,7 +365,7 @@ routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface ext
 
 routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, String path) {
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
 	}
 	action {
 		execute {

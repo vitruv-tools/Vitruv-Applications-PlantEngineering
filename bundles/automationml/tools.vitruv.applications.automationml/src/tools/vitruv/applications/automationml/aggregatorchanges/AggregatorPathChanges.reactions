@@ -3,7 +3,7 @@ import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.Inter
 import org.eclipse.xtext.EcoreUtil2
 import org.plcopen.xml.tc60201.PouType1
 import org.khronos.collada.SceneType
-import java.util.logging.Logging
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -38,8 +38,8 @@ reaction ChangePathForPlcopen {
 
 routine changePathInColladaInterfaces (aml::ColladaContainer container) {
 	match {
-		val colladaType = retrieve collada::COLLADAType corresponding to container
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0)
+		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with TagHelper.TAG
 	}
 	action {
 		execute {
@@ -53,8 +53,8 @@ routine changePathInColladaInterfaces (aml::ColladaContainer container) {
 
 routine changePathInPlcopenInterfaces (aml::PLCopenContainer container) {
 	match {
-		val projectType = retrieve plcopen::ProjectType corresponding to container
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(projectType, PouType1).get(0)
+		val projectType = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(projectType, PouType1).get(0) tagged with TagHelper.TAG
 	}
 	action {
 		execute {

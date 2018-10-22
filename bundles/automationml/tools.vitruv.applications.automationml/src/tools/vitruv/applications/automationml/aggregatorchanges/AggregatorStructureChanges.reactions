@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import edu.kit.sdq.aml_aggregator.ColladaContainer
 import edu.kit.sdq.aml_aggregator.PLCopenContainer
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -134,7 +135,7 @@ routine createCAEXContainerAndFile() {
 routine createCAEXFile(aml::CAEXContainer container) {
 	action {
 		val caexFile = create caex::CAEXFile
-		add correspondence between container and caexFile
+		add correspondence between container and caexFile tagged with TagHelper.TAG
 		execute {
 			val rs = new ResourceSetImpl()
 			val uri = URI.createURI("")		//TODO Pfad
@@ -157,7 +158,7 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 		val projectType = create plcopen::ProjectType and initialize {
 			projectType.types = typesType
 		}
-		add correspondence between projectType and container
+		add correspondence between projectType and container tagged with TagHelper.TAG
 		execute {
 			val rs = new ResourceSetImpl()
 			val uri = URI.createURI("")		//TODO Pfad
@@ -175,7 +176,7 @@ routine createColladaFile(aml::ColladaContainer container) {
 		val colladaType = create collada::COLLADAType and initialize {
 			
 		}
-		add correspondence between colladaType and container
+		add correspondence between colladaType and container tagged with TagHelper.TAG
 		execute {
 			val rs = new ResourceSetImpl()
 			val uri = URI.createURI("")		//TODO Pfad
@@ -190,7 +191,7 @@ routine createColladaFile(aml::ColladaContainer container) {
 
 routine deleteCAEXFile(aml::CAEXContainer container) {
 	match {
-		val caexFile = retrieve caex::CAEXFile corresponding to container
+		val caexFile = retrieve caex::CAEXFile corresponding to container tagged with TagHelper.TAG
 	}
 	action {
 		delete caexFile
@@ -199,8 +200,8 @@ routine deleteCAEXFile(aml::CAEXContainer container) {
 
 routine deletePLCopenFile(aml::PLCopenContainer container) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0)
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with TagHelper.TAG
 	}
 	action {
 		execute {
@@ -214,8 +215,8 @@ routine deletePLCopenFile(aml::PLCopenContainer container) {
 
 routine deleteColladaFile(aml::ColladaContainer container) {
 	match {
-		val colladaType = retrieve collada::COLLADAType corresponding to container
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0)
+		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with TagHelper.TAG
 		}
 	action {
 		execute {

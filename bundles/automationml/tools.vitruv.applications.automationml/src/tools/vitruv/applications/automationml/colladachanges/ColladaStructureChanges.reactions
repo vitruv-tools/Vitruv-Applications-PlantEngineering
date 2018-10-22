@@ -1,5 +1,6 @@
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -41,13 +42,13 @@ routine createColladaContainer(collada::COLLADAType colladaType) {
 		val container = create aml::ColladaContainer and initialize {
 			container.path = ""
 		} 
-		add correspondence between colladaType and container
+		add correspondence between colladaType and container tagged with TagHelper.TAG
 	}
 }
 
 routine removeColladaContainer(collada::COLLADAType colladaType) {
 	match {
-		val container = retrieve aml::ColladaContainer corresponding to colladaType
+		val container = retrieve aml::ColladaContainer corresponding to colladaType tagged with TagHelper.TAG
 	}
 	action {
 		delete container
@@ -58,7 +59,7 @@ routine removeColladaContainer(collada::COLLADAType colladaType) {
 
 routine changePathForColladaInterfacesToEmpty() {
 	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to null	//TODO muss übergeben werden
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to null tagged with TagHelper.TAG	//TODO muss übergeben werden
 	}
 	action {
 		execute {

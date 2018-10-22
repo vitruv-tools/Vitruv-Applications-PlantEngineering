@@ -6,6 +6,7 @@ import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker.InterfaceType
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -22,10 +23,9 @@ reaction ChangeSystemClassInInternalElement {
 	after attribute replaced at caex::InternalElement[refBaseSystemUnitPath]
 	call {
 		logger.debug("Reaction ChangeSystemClassInInternalElement")
-		
-		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
-		
+				
 		if(newValue.isNullOrEmpty) {
+			removeCorrespondenceBetweenClassAndInstance(affectedEObject)
 			return
 		}
 		
@@ -35,6 +35,7 @@ reaction ChangeSystemClassInInternalElement {
 		if(systemUnitClass === null) {
 			val userInput = userInteractor.confirmationDialogBuilder.message("Klasse existiert nicht. Soll eine neue Klasse erzeugt werden? (Ansonsten wird die Änderung zurückgerollt)").startInteraction
 			if(userInput) {
+				removeCorrespondenceBetweenClassAndInstance(affectedEObject)
 				createSystemUnitClassInTree(affectedEObject)
 			} else {
 				// Änderung wird zurückgerollt
@@ -45,6 +46,7 @@ reaction ChangeSystemClassInInternalElement {
 			return
 		}
 		
+		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
 		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
 		if(userInput) {
 			copyPLCopenValuesFromPrototypeToClone(affectedEObject, systemUnitClass)
@@ -79,10 +81,10 @@ reaction RemoveExternalInterfaceFromInternalElement {
 
 routine removeCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement) {
 	match {
-		val systemUnitClass = retrieve caex::SystemUnitClass corresponding to internalElement
+		val systemUnitClass = retrieve caex::SystemUnitClass corresponding to internalElement tagged with TagHelper.TAG
 	}
 	action {
-		remove correspondence between internalElement and systemUnitClass
+		remove correspondence between internalElement and systemUnitClass tagged with TagHelper.TAG
 	}
 }
 
@@ -94,7 +96,7 @@ routine createSystemUnitClassInTree(caex::InternalElement internalElement) {
 		execute {
 			//TODO Baum durchsuchen, ab wo der Pfad tot ist
 		}
-		add correspondence between internalElement and newSystemUnitClass
+		add correspondence between internalElement and newSystemUnitClass tagged with TagHelper.TAG
 	}
 }
 
@@ -102,7 +104,7 @@ routine createSystemUnitClassInTree(caex::InternalElement internalElement) {
 
 routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
 	action {
-		add correspondence between systemUnitClass and internalElement
+		add correspondence between systemUnitClass and internalElement tagged with TagHelper.TAG
 	}
 }
 
@@ -128,7 +130,7 @@ routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElem
 			internalElement.externalInterface.add(newInterface)
 		}
 		
-		add correspondence between internalElement and systemUnitClass
+		add correspondence between internalElement and systemUnitClass tagged with TagHelper.TAG
 	}
 }
 
@@ -154,7 +156,7 @@ routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElem
 			internalElement.externalInterface.add(newInterface)
 		}
 		
-		add correspondence between internalElement and systemUnitClass
+		add correspondence between internalElement and systemUnitClass tagged with TagHelper.TAG
 	}
 }
 
@@ -162,18 +164,18 @@ routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElem
 
 routine removeCorrespondenceBetweenInterfaceInInternalAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
-		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
 	}
 	action {
-		remove correspondence between externalInterface and plcPouType
+		remove correspondence between externalInterface and plcPouType tagged with TagHelper.TAG
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceInInternalAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaScene = retrieve collada::SceneType corresponding to externalInterface
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
 	}
 	action {
-		remove correspondence between externalInterface and colladaScene
+		remove correspondence between externalInterface and colladaScene tagged with TagHelper.TAG
 	}
 }
