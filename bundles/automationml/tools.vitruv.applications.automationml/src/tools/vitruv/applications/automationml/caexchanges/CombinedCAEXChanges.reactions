@@ -10,6 +10,7 @@ execute actions in CAEX
 import caexExternalInterfaceChanges
 import caexInternalElementChanges
 import caexSystemUnitClassChanges
+import caexInterfaceLibraryChanges
 import caexUnitChanges
 
 // ***** Anlegen, Löschen Spiegelobjekt

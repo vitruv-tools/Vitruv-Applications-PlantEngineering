@@ -1,0 +1,186 @@
+import org.eclipse.xtext.EcoreUtil2
+import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import caex.caex30.caex.InterfaceClass
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexInterfaceLibraryChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+reaction RemoveInterfaceClassLibrary {
+	after element caex::InterfaceClassLib removed from caex::CAEXFile[interfaceClassLib]
+	call {
+		if(CAEXInheritanceResolver.automationMLInterfaceBaseLib.equals(oldValue.name)) {
+			//TODO entspricht Zurückrollen der Änderung
+			affectedEObject.interfaceClassLib.add(oldValue)
+			return
+		}
+		
+		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
+		
+		for(InterfaceClass currClass : listOfInterfaceClasses) {
+			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+		}
+	}
+}
+
+reaction RemoveInterfaceClass {
+	after element caex::InterfaceClass removed from caex::InterfaceClass[interfaceClass]
+	call {
+		if(CAEXInheritanceResolver.automationMLExternalBaseInterface.equals(affectedEObject.name)
+			|| CAEXInheritanceResolver.externalColladaBaseInterface.equals(affectedEObject.name)
+			|| CAEXInheritanceResolver.externalPLCopenBaseInterface.equals(affectedEObject.name)
+		) 
+		{
+			//TODO Änderung zurückrollen
+			affectedEObject.interfaceClass.add(oldValue)
+			return
+		}
+		
+		changeRefBaseClassPathOfExternalInterfaces(oldValue, "")
+		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
+		
+		for(InterfaceClass currClass : listOfInterfaceClasses) {
+			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+		}
+	}
+}
+
+reaction RemoveInterfaceClassFromLib {
+	after element caex::InterfaceClass removed from caex::InterfaceClassLib[interfaceClass]
+	call {
+		if(CAEXInheritanceResolver.automationMLBaseInterface.equals(affectedEObject.name))
+		{
+			//TODO Änderung zurückrollen
+			affectedEObject.interfaceClass.add(oldValue)
+			return
+		}
+		
+		changeRefBaseClassPathOfExternalInterfaces(oldValue, "")
+		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
+		
+		for(InterfaceClass currClass : listOfInterfaceClasses) {
+			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+		}
+	}
+}
+
+reaction ChangeInterfaceParent {
+	after attribute replaced at caex::InterfaceClass[refBaseClassPath]
+	call {
+		if(CAEXInheritanceResolver.automationMLBaseInterface.equals(affectedEObject.name)
+			|| CAEXInheritanceResolver.automationMLExternalBaseInterface.equals(affectedEObject.name)
+			|| CAEXInheritanceResolver.externalColladaBaseInterface.equals(affectedEObject.name)
+			|| CAEXInheritanceResolver.externalPLCopenBaseInterface.equals(affectedEObject.name)
+		) 
+		{
+			//TODO Änderung zurückrollen
+			affectedEObject.refBaseClassPath = oldValue
+			return
+		}
+		
+		changeExternalInterfacesDueToNewParent(affectedEObject)
+	}
+}
+
+reaction ChangeInterfaceName {
+	after attribute replaced at caex::InterfaceClass[name]
+	call {
+		//TODO
+	}
+}
+
+reaction ChangeInterfaceLibName {
+	after attribute replaced at caex::InterfaceClassLib[name]
+	call {
+		//TODO
+	}
+}
+
+// *****
+
+routine changeRefBaseClassPathOfExternalInterfaces(caex::InterfaceClass interfaceClass, String newInterfaceName) {
+	match {
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to interfaceClass tagged with TagHelper.TAG
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				currInterface.refBaseClassPath = newInterfaceName
+			}
+			if(!newInterfaceName.isNullOrEmpty) {
+				//Collada, PLC
+			}
+		}
+	}
+}
+
+routine changeExternalInterfacesDueToNewParent(caex::InterfaceClass interfaceClass) {
+	match {
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to interfaceClass tagged with TagHelper.TAG
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				removeUriAndCorrespondence(currInterface)
+				addUri(currInterface)
+			}
+		}
+	}
+}
+
+routine removeUriAndCorrespondence(caex::ExternalInterface externalInterface) {
+	action {
+		execute {
+			val pathAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(externalInterface, "refUri")
+			if(pathAttribute !== null){
+				externalInterface.^attribute.remove(pathAttribute)
+				removeCorrespondenceToCollada(externalInterface)
+				removeCorrespondenceToPLCopen(externalInterface)
+			}
+		}
+	}
+}
+
+routine removeCorrespondenceToCollada(caex::ExternalInterface externalInterface) {
+	match{
+		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+	}
+	action {
+		remove correspondence between scene and externalInterface tagged with TagHelper.TAG
+	}
+}
+
+routine removeCorrespondenceToPLCopen(caex::ExternalInterface externalInterface) {
+	match{
+		val pou = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+	}
+	action {
+		remove correspondence between pou and externalInterface tagged with TagHelper.TAG
+	}
+}
+
+routine addUri(caex::ExternalInterface externalInterface) {
+	match {
+		check {
+			CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterface) || CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterface)
+		}
+	}
+	action {
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = "refUri"
+			newAttribute.attributeDataType = "xs:anyURI"
+			newAttribute.value = ""
+		}
+		update externalInterface {
+			externalInterface.^attribute.add(newAttribute)
+		}
+	}
+}
