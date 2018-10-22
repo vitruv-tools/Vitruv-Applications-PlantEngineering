@@ -21,17 +21,17 @@ public class SystemUnitClassForInterfaceChecker {
 			if(currInterface instanceof ExternalInterface) {
 				switch (interfaceType) {
 					case PLCOPEN:
-						if(CAEXInheritanceResolver.isInterfaceInstanceOf((ExternalInterface)currInterface, "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")) {
+						if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface((ExternalInterface)currInterface)) {
 							return true;
 						}
 						break;
 					case COLLADA:
-						if(CAEXInheritanceResolver.isInterfaceInstanceOf((ExternalInterface)currInterface, "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface")) {
+						if(CAEXInheritanceResolver.isInstanceOfColladaInterface((ExternalInterface)currInterface)) {
 							return true;
 						}
 						break;
 					case DEFAULT:
-						if(CAEXInheritanceResolver.isInterfaceInstanceOf((ExternalInterface)currInterface, refBaseClassPath)) {
+						if(CAEXInheritanceResolver.isInstanceOfSpecificInterface((ExternalInterface)currInterface, refBaseClassPath)) {
 							return true;
 						}
 						break;
@@ -57,17 +57,17 @@ public class SystemUnitClassForInterfaceChecker {
 			if(currInterface instanceof ExternalInterface) {
 				switch (interfaceType) {
 					case PLCOPEN:
-						if(CAEXInheritanceResolver.isInterfaceInstanceOf((ExternalInterface)currInterface, "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface")) {
+						if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface((ExternalInterface)currInterface)) {
 							return (ExternalInterface)currInterface;
 						}
 						break;
 					case COLLADA:
-						if(CAEXInheritanceResolver.isInterfaceInstanceOf((ExternalInterface)currInterface, "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface")) {
+						if(CAEXInheritanceResolver.isInstanceOfColladaInterface((ExternalInterface)currInterface)) {
 							return (ExternalInterface)currInterface;
 						}
 						break;
 					case DEFAULT:
-						if(CAEXInheritanceResolver.isInterfaceInstanceOf((ExternalInterface)currInterface, refBaseClassPath)) {
+						if(CAEXInheritanceResolver.isInstanceOfSpecificInterface((ExternalInterface)currInterface, refBaseClassPath)) {
 							return (ExternalInterface)currInterface;
 						}
 						break;

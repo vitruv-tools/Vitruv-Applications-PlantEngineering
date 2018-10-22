@@ -3,6 +3,7 @@ import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.Inter
 import org.eclipse.xtext.EcoreUtil2
 import org.plcopen.xml.tc60201.PouType1
 import org.khronos.collada.SceneType
+import java.util.logging.Logging
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -18,7 +19,7 @@ execute actions in AML
 reaction ChangePathForCollada {
 	after attribute replaced at aml::ColladaContainer[path]
 	call {
-		System.out.println("Reaction ChangePathForCollada")
+		logger.debug("Reaction ChangePathForCollada")
 		
 		changePathInColladaInterfaces(affectedEObject)
 	}
@@ -27,7 +28,7 @@ reaction ChangePathForCollada {
 reaction ChangePathForPlcopen {
 	after attribute replaced at aml::PLCopenContainer[path]
 	call {
-		System.out.println("Reaction ChangePathForPLCopen")
+		logger.debug("Reaction ChangePathForPLCopen")
 		
 		changePathInPlcopenInterfaces(affectedEObject)
 	}

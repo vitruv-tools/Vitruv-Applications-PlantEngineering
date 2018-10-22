@@ -15,7 +15,7 @@ execute actions in Collada
 reaction CreateColladaRoot {
 	after element collada::COLLADAType created
 	call {
-		System.out.println("CreateColladaRoot")
+		logger.debug("CreateColladaRoot")
 		
 		createColladaContainer(affectedEObject)
 		createColladaStructure(affectedEObject)
@@ -25,7 +25,7 @@ reaction CreateColladaRoot {
 reaction RemoveColladaRoot {
 	after element collada::COLLADAType deleted
 	call {
-		System.out.println("RemoveColladaRoot")
+		logger.debug("RemoveColladaRoot")
 		
 		changePathForColladaInterfacesToEmpty()
 		removeColladaContainer(affectedEObject)

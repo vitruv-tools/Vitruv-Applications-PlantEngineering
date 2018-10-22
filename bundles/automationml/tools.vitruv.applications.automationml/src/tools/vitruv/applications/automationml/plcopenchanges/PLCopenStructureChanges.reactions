@@ -17,7 +17,7 @@ execute actions in PLCOpen
 reaction CreatePLCopenRoot {
 	after element plcopen::ProjectType created
 	call {
-		System.out.println("CreatePLCopenRoot")
+		logger.debug("CreatePLCopenRoot")
 		
 		createPLCopenContainer(affectedEObject)
 		createPLCopenStructure(affectedEObject)
@@ -27,7 +27,7 @@ reaction CreatePLCopenRoot {
 reaction RemovePLCopenRoot {
 	after element plcopen::ProjectType deleted
 	call {
-		System.out.println("RemovePLCopenRoot")
+		logger.debug("RemovePLCopenRoot")
 		
 		val pouType = EcoreUtil2.getAllContentsOfType(affectedEObject, PouType1).get(0) 
 		
@@ -41,7 +41,7 @@ reaction RemovePLCopenRoot {
 reaction CreatePouType {
 	after element plcopen::PouType1 created
 	call {
-		System.out.println("CreatePouType")
+		logger.debug("CreatePouType")
 		
 		// Methode entspricht einem Zurückrollen der Änderung
 		deletePouType(affectedEObject)
@@ -51,7 +51,7 @@ reaction CreatePouType {
 reaction DeletePouType {
 	after element plcopen::PouType1 removed from plcopen::PousType[pou]
 	call {
-		System.out.println("DeletePouType")
+		logger.debug("DeletePouType")
 		
 		// Änderung zurückrollen
 		// kein Sprachstatement vorhanden, deswegen diese Formulierung
@@ -62,7 +62,7 @@ reaction DeletePouType {
 reaction DeletePousType {
 	after element plcopen::PousType removed from plcopen::TypesType[pous]
 	call {
-		System.out.println("DeletePousType")
+		logger.debug("DeletePousType")
 		
 		// Methode entspricht einem Zurückrollen der Änderung
 		recreatePousType(affectedEObject, oldValue)
@@ -72,7 +72,7 @@ reaction DeletePousType {
 reaction DeleteTypesType {
 	after element plcopen::TypesType removed from plcopen::ProjectType[types]
 	call {
-		System.out.println("DeleteTypesType")
+		logger.debug("DeleteTypesType")
 		
 		// Methode entspricht einem Zurückrollen der Änderung
 		recreateTypesType(affectedEObject, oldValue)

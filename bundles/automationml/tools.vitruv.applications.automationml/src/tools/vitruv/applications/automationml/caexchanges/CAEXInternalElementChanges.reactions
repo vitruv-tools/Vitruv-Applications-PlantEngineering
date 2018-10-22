@@ -21,7 +21,7 @@ execute actions in CAEX
 reaction ChangeSystemClassInInternalElement {
 	after attribute replaced at caex::InternalElement[refBaseSystemUnitPath]
 	call {
-		System.out.println("Reaction ChangeSystemClassInInternalElement")
+		logger.debug("Reaction ChangeSystemClassInInternalElement")
 		
 		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
 		
@@ -39,6 +39,7 @@ reaction ChangeSystemClassInInternalElement {
 			} else {
 				// Änderung wird zurückgerollt
 				// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
+				// TODO
 				affectedEObject.refBaseSystemUnitPath = oldValue
 			}
 			return
@@ -61,16 +62,14 @@ reaction RemoveExternalInterfaceFromInternalElement {
 		oldValue instanceof ExternalInterface
 	}
 	call {
-		System.out.println("Reaction RemoveExternalInterfaceFromInternalElement")
+		logger.debug("Reaction RemoveExternalInterfaceFromInternalElement")
 				
 		val caexFile = EcoreUtil2.getContainerOfType(oldValue, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath ,caexFile)
-		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
-		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
 		
-		if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, plcopenInterfacePath)) {
+		if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType)) {
 			removeCorrespondenceBetweenInterfaceInInternalAndPLCopen(oldValue as ExternalInterface)
-		} else if (CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, colladaInterfacePath)) {
+		} else if (CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType)) {
 			removeCorrespondenceBetweenInterfaceInInternalAndCollada(oldValue as ExternalInterface)
 		}
 	}

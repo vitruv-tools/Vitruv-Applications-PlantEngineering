@@ -31,17 +31,15 @@ execute actions in CAEX
 reaction AddExternalInterfaceType {
 	after attribute insert in caex::ExternalInterface[refBaseClassPath]
 	call {
-		System.out.println("Reaction AddExternalInterfaceType")
+		logger.debug("Reaction AddExternalInterfaceType")
 		
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
-		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
-		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
 		val container = affectedEObject.eContainer
 				
-		if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, plcopenInterfacePath)) {
+		if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType)) {
 			addPathAttributeToExternalInterface(affectedEObject)
-		} else if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, colladaInterfacePath)) {
+		} else if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType)) {
 			addPathAttributeToExternalInterface(affectedEObject)
 		}
 		
@@ -59,19 +57,17 @@ reaction AddExternalInterfaceType {
 reaction ChangeExternalInterfaceType {
 	after attribute replaced at caex::ExternalInterface[refBaseClassPath]
 	call {
-		System.out.println("Reaction ChangeExternalInterfaceType")
+		logger.debug("Reaction ChangeExternalInterfaceType")
 		
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val externalInterfaceTypeOld = CAEXStringResolver.resolveInterfacePath(oldValue, caexFile)
 		val externalInterfaceTypeNew = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
-		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
-		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
 		val container = affectedEObject.eContainer
 		
-		val isOldPlcopen = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeOld, plcopenInterfacePath)
-		val isOldCollada = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeOld, colladaInterfacePath)
-		val isNewPlcopen = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeNew, plcopenInterfacePath)
-		val isNewCollada = CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceTypeNew, colladaInterfacePath)
+		val isOldPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceTypeOld)
+		val isOldCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceTypeOld)
+		val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceTypeNew)
+		val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceTypeNew)
 		
 		if(isOldPlcopen) {
 			removeCorrespondenceBetweenInterfaceAndPLCopen(affectedEObject)
@@ -100,18 +96,16 @@ reaction ChangeExternalInterfaceType {
 reaction RemoveExternalInterfaceType {
 	after attribute remove from caex::ExternalInterface[refBaseClassPath]
 	call {
-		System.out.println("Reaction RemoveExternalInterfaceType")
+		logger.debug("Reaction RemoveExternalInterfaceType")
 				
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue, caexFile)
-		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
-		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
 		val container = affectedEObject.eContainer
 				
-		if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, plcopenInterfacePath)) {
+		if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType)) {
 			removeCorrespondenceBetweenInterfaceAndPLCopen(affectedEObject)
 			removePathAttributeFromExternalInterface(affectedEObject)
-		} else if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, colladaInterfacePath)) {
+		} else if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType)) {
 			removeCorrespondenceBetweenInterfaceAndCollada(affectedEObject)
 			removePathAttributeFromExternalInterface(affectedEObject)
 		}
@@ -135,18 +129,16 @@ reaction ChangeExternalInterfacePath {
 		affectedEObject.name.equals("refURI") && EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface) !== null 
 	}
 	call {
-		System.out.println("Reaction ChangeExternalInterfacePath")
+		logger.debug("Reaction ChangeExternalInterfacePath")
 				
 		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
 		val caexFile = EcoreUtil2.getContainerOfType(attributeParent, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(attributeParent.refBaseClassPath, caexFile)
-		val plcopenInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"
-		val colladaInterfacePath = "AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/COLLADAInterface"
 		val parentContainer = attributeParent.eContainer
 				
-		if (CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, plcopenInterfacePath)) {
+		if (CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType)) {
 			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, false)
-		} else if(CAEXInheritanceResolver.isInterfaceInstanceOf(externalInterfaceType, colladaInterfacePath)) {
+		} else if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType)) {
 			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, true)
 		}
 		

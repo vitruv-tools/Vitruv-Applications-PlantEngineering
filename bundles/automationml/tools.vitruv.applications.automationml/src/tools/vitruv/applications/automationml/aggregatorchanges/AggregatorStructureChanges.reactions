@@ -23,7 +23,7 @@ execute actions in AML
 reaction CreateAMLProject {
 	after element aml::AMLProject created and inserted as root
 	call {
-		System.out.println("Reaction CreateAMLProject")
+		logger.debug("Reaction CreateAMLProject")
 		
 		createCAEXContainerAndFile()
 	}
@@ -32,7 +32,7 @@ reaction CreateAMLProject {
 reaction RemoveAMLProject {
 	after element aml::AMLProject removed as root
 	call {
-		System.out.println("Reaction RemoveAMLProject")
+		logger.debug("Reaction RemoveAMLProject")
 		
 		val userInput = userInteractor.confirmationDialogBuilder.message("Das ganze Projekt würde gelöscht werden. Fortfahren?").startInteraction
 		if(userInput) {
@@ -56,7 +56,7 @@ reaction RemoveAMLProject {
 reaction ReplaceCAEXContainer {
 	after element aml::CAEXContainer replaced at aml::AMLProject[caexcontainer]
 	call {
-		System.out.println("Reaction ReplaceCAEXContainer")
+		logger.debug("Reaction ReplaceCAEXContainer")
 		
 		if(newValue === null) {
 			// Änderung zurückrollen
@@ -75,7 +75,7 @@ reaction ReplaceCAEXContainer {
 reaction CreateColladaContainer {
 	after element aml::ColladaContainer created
 	call {
-		System.out.println("Reaction CreateColladaContainer")
+		logger.debug("Reaction CreateColladaContainer")
 		
 		affectedEObject.path = ""
 		createColladaFile(affectedEObject)
@@ -85,7 +85,7 @@ reaction CreateColladaContainer {
 reaction CreatePLCopenContainer {
 	after element aml::PLCopenContainer created
 	call {
-		System.out.println("Reaction CreatePLCopenContainer")
+		logger.debug("Reaction CreatePLCopenContainer")
 		
 		affectedEObject.path = ""
 		createPLCopenFile(affectedEObject)
@@ -95,7 +95,7 @@ reaction CreatePLCopenContainer {
 reaction RemoveColladaContainer {
 	after element aml::ColladaContainer deleted
 	call {
-		System.out.println("Reaction RemoveColladaContainer")
+		logger.debug("Reaction RemoveColladaContainer")
 		
 		deleteColladaFile(affectedEObject)
 	}
@@ -104,7 +104,7 @@ reaction RemoveColladaContainer {
 reaction RemovePLCopenContainer {
 	after element aml::PLCopenContainer deleted
 	call {
-		System.out.println("Reaction RemovePLCopenContainer")
+		logger.debug("Reaction RemovePLCopenContainer")
 		
 		deletePLCopenFile(affectedEObject)
 	}
@@ -164,6 +164,7 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 			val res = rs.createResource(uri)
 			res.contents.add(projectType)
 			//res.save()
+			//persistProjectRelative()
 		}
 	}
 }
