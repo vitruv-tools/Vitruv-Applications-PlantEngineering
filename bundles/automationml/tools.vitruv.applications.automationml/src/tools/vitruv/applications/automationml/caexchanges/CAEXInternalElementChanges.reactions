@@ -38,9 +38,8 @@ reaction ChangeSystemClassInInternalElement {
 				removeCorrespondenceBetweenClassAndInstance(affectedEObject)
 				createSystemUnitClassInTree(affectedEObject)
 			} else {
-				// Änderung wird zurückgerollt
+				//TODO Änderung wird zurückgerollt
 				// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
-				// TODO
 				affectedEObject.refBaseSystemUnitPath = oldValue
 			}
 			return

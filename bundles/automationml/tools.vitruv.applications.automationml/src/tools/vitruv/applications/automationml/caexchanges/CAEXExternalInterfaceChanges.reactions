@@ -1,6 +1,4 @@
 import org.eclipse.xtext.EcoreUtil2
-import java.util.LinkedList
-import org.eclipse.emf.ecore.EObject
 import org.plcopen.xml.tc60201.PouType1
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver

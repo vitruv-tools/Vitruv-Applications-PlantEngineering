@@ -44,7 +44,7 @@ reaction CreatePouType {
 	call {
 		logger.debug("CreatePouType")
 		
-		// Methode entspricht einem Zurückrollen der Änderung
+		//TODO Methode entspricht einem Zurückrollen der Änderung
 		deletePouType(affectedEObject)
 	}
 }
@@ -54,7 +54,7 @@ reaction DeletePouType {
 	call {
 		logger.debug("DeletePouType")
 		
-		// Änderung zurückrollen
+		//TODO Änderung zurückrollen
 		// kein Sprachstatement vorhanden, deswegen diese Formulierung
 		affectedEObject.pou.add(oldValue)
 	}
@@ -65,7 +65,7 @@ reaction DeletePousType {
 	call {
 		logger.debug("DeletePousType")
 		
-		// Methode entspricht einem Zurückrollen der Änderung
+		//TODO Methode entspricht einem Zurückrollen der Änderung
 		recreatePousType(affectedEObject, oldValue)
 	}
 }
@@ -75,7 +75,7 @@ reaction DeleteTypesType {
 	call {
 		logger.debug("DeleteTypesType")
 		
-		// Methode entspricht einem Zurückrollen der Änderung
+		//TODO Methode entspricht einem Zurückrollen der Änderung
 		recreateTypesType(affectedEObject, oldValue)
 	}
 }

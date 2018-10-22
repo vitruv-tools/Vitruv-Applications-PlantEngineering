@@ -45,7 +45,7 @@ reaction RemoveAMLProject {
 				deletePLCopenFile(currContainer)
 			}
 		} else {
-			// Änderung zurückrollen
+			//TODO Änderung zurückrollen
 			// kein Sprachstatement vorhanden, deswegen diese Formulierung
 			oldValue.eResource.contents.add(oldValue)
 		}
@@ -60,7 +60,7 @@ reaction ReplaceCAEXContainer {
 		logger.debug("Reaction ReplaceCAEXContainer")
 		
 		if(newValue === null) {
-			// Änderung zurückrollen
+			//TODO Änderung zurückrollen
 			// kein Sprachstatement vorhanden, deswegen diese Formulierung
 			affectedEObject.caexcontainer = oldValue
 			return;
