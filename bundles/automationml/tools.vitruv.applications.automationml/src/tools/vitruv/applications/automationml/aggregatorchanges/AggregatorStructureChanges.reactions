@@ -3,11 +3,10 @@ import org.plcopen.xml.tc60201.PouType1
 import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import org.khronos.collada.SceneType
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.common.util.URI
 import edu.kit.sdq.aml_aggregator.ColladaContainer
 import edu.kit.sdq.aml_aggregator.PLCopenContainer
 import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.amlutils.ResourcesHelper
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -137,11 +136,8 @@ routine createCAEXFile(aml::CAEXContainer container) {
 		val caexFile = create caex::CAEXFile
 		add correspondence between container and caexFile tagged with TagHelper.TAG
 		execute {
-			val rs = new ResourceSetImpl()
-			val uri = URI.createURI("")		//TODO Pfad
-			val res = rs.createResource(uri)
-			res.contents.add(caexFile)
-			//res.save()
+			val caexNumber = ResourcesHelper.newNumberOfCAEXFiles
+			persistProjectRelative(container, caexFile, "resources/resources-gen/caex" + caexNumber + ".caex")
 		}
 	}
 }
@@ -159,13 +155,9 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 			projectType.types = typesType
 		}
 		add correspondence between projectType and container tagged with TagHelper.TAG
-		execute {
-			val rs = new ResourceSetImpl()
-			val uri = URI.createURI("")		//TODO Pfad
-			val res = rs.createResource(uri)
-			res.contents.add(projectType)
-			//res.save()
-			//persistProjectRelative()
+		execute { 
+			val plcNumber = ResourcesHelper.newNumberOfPLCopenFiles
+			persistProjectRelative(container, projectType, "resources/resources-gen/plc" + plcNumber + ".tc60201")
 		}
 	}
 }
@@ -178,11 +170,8 @@ routine createColladaFile(aml::ColladaContainer container) {
 		}
 		add correspondence between colladaType and container tagged with TagHelper.TAG
 		execute {
-			val rs = new ResourceSetImpl()
-			val uri = URI.createURI("")		//TODO Pfad
-			val res = rs.createResource(uri)
-			res.contents.add(colladaType)
-			//res.save()
+			val colladaNumber = ResourcesHelper.newNumberOfColladaFiles
+			persistProjectRelative(container, colladaType, "resources/resources-gen/collada" + colladaNumber + ".dae")
 		}
 	}
 }
