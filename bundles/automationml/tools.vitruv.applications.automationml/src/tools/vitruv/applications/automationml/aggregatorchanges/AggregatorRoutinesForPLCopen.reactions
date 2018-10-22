@@ -1,0 +1,54 @@
+import org.eclipse.xtext.EcoreUtil2
+import org.plcopen.xml.tc60201.PouType1
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.amlutils.ResourcesHelper
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: aggregatorToPlcopen
+in reaction to changes in AML
+execute actions in AML
+
+// ***** Routine, um PLCopen Dateien zu erzeugen
+
+routine createPLCopenFile(aml::PLCopenContainer container) {
+	action {
+		val pouType = create plcopen::PouType1
+		val pousType = create plcopen::PousType and initialize {
+			pousType.pou.add(pouType)
+		}
+		val typesType = create plcopen::TypesType and initialize {
+			typesType.pous = pousType
+		}
+		val projectType = create plcopen::ProjectType and initialize {
+			projectType.types = typesType
+		}
+		add correspondence between projectType and container tagged with TagHelper.TAG
+		execute { 
+			val plcNumber = ResourcesHelper.newNumberOfPLCopenFiles
+			persistProjectRelative(container, projectType, "resources/resources-gen/plc" + plcNumber + ".tc60201")
+		}
+	}
+}
+
+// ***** Routine, um PLCopen Dateien zu löschen
+
+routine deletePLCopenFile(aml::PLCopenContainer container) {
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with TagHelper.TAG
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri").value = ""
+			}
+		}
+		delete plcProject
+	}
+}

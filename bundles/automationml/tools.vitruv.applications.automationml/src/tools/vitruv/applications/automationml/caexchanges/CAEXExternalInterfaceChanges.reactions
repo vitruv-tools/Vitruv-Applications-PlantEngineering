@@ -1,5 +1,4 @@
 import org.eclipse.xtext.EcoreUtil2
-import org.plcopen.xml.tc60201.PouType1
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
 import caex.caex30.caex.CAEXFile
@@ -11,9 +10,6 @@ import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.Inter
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
 import tools.vitruv.applications.automationml.utils.amlutils.AMLAggregatorResolver
 import edu.kit.sdq.aml_aggregator.AMLProject
-import org.plcopen.xml.tc60201.ProjectType
-import org.khronos.collada.COLLADAType
-import org.khronos.collada.SceneType
 import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
@@ -24,6 +20,9 @@ import "http://www.collada.org/2005/11/COLLADASchema" as collada
 reactions: caexExternalInterfaceChanges
 in reaction to changes in CAEX
 execute actions in CAEX
+
+import caexToCollada
+import caexToPlcopen
 
 // ***** Interface Typ einfügen/ändern/entfernen
 
@@ -42,11 +41,9 @@ reaction AddExternalInterfaceType {
 			addPathAttributeToExternalInterface(affectedEObject)
 		}
 		
-		if(container instanceof InternalElement) {
-			//TODO Spiegelelement?? Vorüberprüfung notwendig??
-		} else if(container instanceof SystemUnitClass) {
-			val userInputClone = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
-			if(userInputClone) {
+		if(container instanceof SystemUnitClass) {
+			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(shouldChangePropagated) {
 				changeExternalInterfaceTypeInInternalElement(affectedEObject, container)
 			}
 		}
@@ -80,11 +77,9 @@ reaction ChangeExternalInterfaceType {
 			addPathAttributeToExternalInterface(affectedEObject)
 		}
 		
-		if(container instanceof InternalElement) {
-			//TODO Spiegelelement?? Vorüberprüfung notwendig??
-		} else if(container instanceof SystemUnitClass) {
-			val userInputClone = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
-			if(userInputClone) {
+		if(container instanceof SystemUnitClass) {
+			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(shouldChangePropagated) {
 				changeExternalInterfaceTypeInInternalElement(affectedEObject, container)
 			}
 		}
@@ -109,11 +104,9 @@ reaction RemoveExternalInterfaceType {
 			removePathAttributeFromExternalInterface(affectedEObject)
 		}
 		
-		if(container instanceof InternalElement) {
-			//TODO Spiegelelement?? Vorüberprüfung notwendig
-		} else if(container instanceof SystemUnitClass) {
-			val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
-			if(userInput) {
+		if(container instanceof SystemUnitClass) {
+			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(shouldChangePropagated) {
 				changeExternalInterfaceTypeInInternalElement(affectedEObject, container)
 			}
 		}
@@ -141,11 +134,9 @@ reaction ChangeExternalInterfacePath {
 			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, true)
 		}
 		
-		if(parentContainer instanceof InternalElement) {
-			//TODO Spiegelelement?? Vorüberprüfung notwendig
-		} else if(parentContainer instanceof SystemUnitClass) {
-			val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
-			if(userInput) {
+		if(parentContainer instanceof SystemUnitClass) {
+			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			if(shouldChangePropagated) {
 				changePathForExternalInterfaceInInternalElement(attributeParent, parentContainer, newValue)
 			}
 		}
@@ -177,8 +168,8 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 				}
 			}
 			
-			val userInput = userInteractor.confirmationDialogBuilder.message("Der angegebene Pfad existiert nicht. Soll ein neues Dokument angelegt werden? Alternativ würden der bisherige Pfad überall in den neuen verwandelt werden.").startInteraction
-			if(userInput) {
+			val shouldFileCreated = userInteractor.confirmationDialogBuilder.message("Der angegebene Pfad existiert nicht. Soll ein neues Dokument angelegt werden? Alternativ würden der bisherige Pfad überall in den neuen verwandelt werden.").startInteraction
+			if(shouldFileCreated) {
 				if(isCollada) {
 					createNewColladaContainer(externalInterface, caexContainer.eContainer as AMLProject, newPath)
 				} else {
@@ -192,129 +183,6 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 				}
 			}
 		}
-	}
-}
-
-// ***** Hilfsroutinen, um auf nicht vorhandene Pfade reagieren zu können
-
-routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
-	action {
-		val newContainer = create aml::PLCopenContainer and initialize {
-			newContainer.path = path
-		}
-		execute {
-			removeCorrespondenceBetweenInterfaceAndPLCopen(externalInterface)
-			addCorrespondenceBetweenInterfaceAndPLCopen(externalInterface, newContainer)
-			
-		}
-	}
-}
-
-routine createNewColladaContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
-	action {
-		val newContainer = create aml::ColladaContainer and initialize {
-			newContainer.path = path
-		}
-		execute {
-			removeCorrespondenceBetweenInterfaceAndCollada(externalInterface)
-			addCorrespondenceBetweenInterfaceAndCollada(externalInterface, newContainer)
-		}
-	}
-}
-
-routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInterface, String newPath) {
-	match {
-		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
-		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.TAG
-	}
-	action {
-		update plcopenContainer {
-			plcopenContainer.path = newPath
-		}
-		execute {
-			for(ExternalInterface currExternalInterface : externalInterfaces) {
-				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
-				uriAttribute.value = newPath
-			}
-		}
-	}
-}
-
-routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInterface, String newPath) {
-	match {
-		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
-		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType) tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.TAG
-	}
-	action {
-		update colladaContainer {
-			colladaContainer.path = newPath
-		}
-		execute {
-			for(ExternalInterface currExternalInterface : externalInterfaces) {
-				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
-				uriAttribute.value = newPath
-			}
-		}
-	}
-}
-
-// ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu setzen bzw. zu entfernen
-
-routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
-	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
-	}
-	action {
-		execute {
-			val pouTypes = EcoreUtil2.getAllContentsOfType(plcProject, PouType1)
-			addCorrespondenceBetweenInterfaceAndPou(externalInterface, pouTypes.get(0))
-		}
-	}
-}
-
-routine addCorrespondenceBetweenInterfaceAndPou(caex::ExternalInterface externalInterface, plcopen::PouType1 pou) {
-	action {
-		add correspondence between externalInterface and pou tagged with TagHelper.TAG
-	}
-}
-
-routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
-	match {
-		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
-	}
-	action {
-		remove correspondence between externalInterface and plcPouType tagged with TagHelper.TAG
-	}
-}
-
-// ***** Routinen, um Korrespondenzen zwischen Interface und Geometriebeschreibung zu setzen bzw. zu entfernen
-
-routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
-	match {
-		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
-	}
-	action {
-		execute {
-			val sceneTypes = EcoreUtil2.getAllContentsOfType(colladaProject, SceneType) 
-			addCorrespondenceBetweenInterfaceAndScene(externalInterface, sceneTypes.get(0))
-		}
-	}
-}
-
-routine addCorrespondenceBetweenInterfaceAndScene(caex::ExternalInterface externalInterface, collada::SceneType scene) {
-	action {
-		add correspondence between externalInterface and scene tagged with TagHelper.TAG
-	}
-}
-
-routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
-	match {
-		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
-	}
-	action {
-		remove correspondence between externalInterface and colladaScene tagged with TagHelper.TAG
 	}
 }
 
@@ -364,6 +232,9 @@ routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface ext
 routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, String path) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
+		//with {
+		//	InternalElementChecker.hasNotChanged(internalElements, systemUnitClass) //TODO klappt das? 
+		//}
 	}
 	action {
 		execute {

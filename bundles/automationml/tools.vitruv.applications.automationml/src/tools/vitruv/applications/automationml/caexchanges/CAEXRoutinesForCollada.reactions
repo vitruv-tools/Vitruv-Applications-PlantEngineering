@@ -1,0 +1,77 @@
+import org.eclipse.xtext.EcoreUtil2
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import org.khronos.collada.COLLADAType
+import org.khronos.collada.SceneType
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexToCollada
+in reaction to changes in CAEX
+execute actions in CAEX
+
+// ***** Hilfsroutinen, um auf nicht vorhandene Pfade reagieren zu können
+
+routine createNewColladaContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
+	action {
+		val newContainer = create aml::ColladaContainer and initialize {
+			newContainer.path = path
+		}
+		execute {
+			removeCorrespondenceBetweenInterfaceAndCollada(externalInterface)
+			addCorrespondenceBetweenInterfaceAndCollada(externalInterface, newContainer)
+		}
+	}
+}
+
+routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInterface, String newPath) {
+	match {
+		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType) tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.TAG
+	}
+	action {
+		update colladaContainer {
+			colladaContainer.path = newPath
+		}
+		execute {
+			for(ExternalInterface currExternalInterface : externalInterfaces) {
+				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
+				uriAttribute.value = newPath
+			}
+		}
+	}
+}
+
+// ***** Routinen, um Korrespondenzen zwischen Interface und Geometriebeschreibung zu setzen bzw. zu entfernen
+
+routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
+	match {
+		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
+	}
+	action {
+		execute {
+			val sceneTypes = EcoreUtil2.getAllContentsOfType(colladaProject, SceneType) 
+			addCorrespondenceBetweenInterfaceAndScene(externalInterface, sceneTypes.get(0))
+		}
+	}
+}
+
+routine addCorrespondenceBetweenInterfaceAndScene(caex::ExternalInterface externalInterface, collada::SceneType scene) {
+	action {
+		add correspondence between externalInterface and scene tagged with TagHelper.TAG
+	}
+}
+
+routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
+	match {
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+	}
+	action {
+		remove correspondence between externalInterface and colladaScene tagged with TagHelper.TAG
+	}
+}

@@ -1,8 +1,3 @@
-import org.eclipse.xtext.EcoreUtil2
-import org.plcopen.xml.tc60201.PouType1
-import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
-import org.khronos.collada.SceneType
 import edu.kit.sdq.aml_aggregator.ColladaContainer
 import edu.kit.sdq.aml_aggregator.PLCopenContainer
 import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
@@ -17,25 +12,18 @@ reactions: aggregatorStructureChanges
 in reaction to changes in AML
 execute actions in AML
 
-// ***** AML Projekt anlegen/ entfernen
+import aggregatorToCollada
+import aggregatorToPlcopen
 
-// Reaction notwendig??
-reaction CreateAMLProject {
-	after element aml::AMLProject created and inserted as root
-	call {
-		logger.debug("Reaction CreateAMLProject")
-		
-		createCAEXContainerAndFile()
-	}
-}
+// ***** AML Projekt anlegen/ entfernen
 
 reaction RemoveAMLProject {
 	after element aml::AMLProject removed as root
 	call {
 		logger.debug("Reaction RemoveAMLProject")
 		
-		val userInput = userInteractor.confirmationDialogBuilder.message("Das ganze Projekt würde gelöscht werden. Fortfahren?").startInteraction
-		if(userInput) {
+		val shouldDeleteProject = userInteractor.confirmationDialogBuilder.message("Das ganze Projekt würde gelöscht werden. Fortfahren?").startInteraction
+		if(shouldDeleteProject) {
 			deleteCAEXFile(oldValue.caexcontainer)
 			for(ColladaContainer currContainer : oldValue.colladacontainer) {
 				deleteColladaFile(currContainer)
@@ -120,17 +108,6 @@ routine removeAMLProject(aml::AMLProject amlProject){
 
 // ***** Routinen, um Dateien zu erzeugen
 
-routine createCAEXContainerAndFile() {
-	action {
-		val container = create aml::CAEXContainer and initialize {
-			container.path = ""
-		}
-		execute {
-			createCAEXFile(container)
-		}
-	}
-}
-
 routine createCAEXFile(aml::CAEXContainer container) {
 	action {
 		val caexFile = create caex::CAEXFile
@@ -138,40 +115,6 @@ routine createCAEXFile(aml::CAEXContainer container) {
 		execute {
 			val caexNumber = ResourcesHelper.newNumberOfCAEXFiles
 			persistProjectRelative(container, caexFile, "resources/resources-gen/caex" + caexNumber + ".caex")
-		}
-	}
-}
-
-routine createPLCopenFile(aml::PLCopenContainer container) {
-	action {
-		val pouType = create plcopen::PouType1
-		val pousType = create plcopen::PousType and initialize {
-			pousType.pou.add(pouType)
-		}
-		val typesType = create plcopen::TypesType and initialize {
-			typesType.pous = pousType
-		}
-		val projectType = create plcopen::ProjectType and initialize {
-			projectType.types = typesType
-		}
-		add correspondence between projectType and container tagged with TagHelper.TAG
-		execute { 
-			val plcNumber = ResourcesHelper.newNumberOfPLCopenFiles
-			persistProjectRelative(container, projectType, "resources/resources-gen/plc" + plcNumber + ".tc60201")
-		}
-	}
-}
-
-routine createColladaFile(aml::ColladaContainer container) {
-	action {
-		//TODO alles weitere erzeugen
-		val colladaType = create collada::COLLADAType and initialize {
-			
-		}
-		add correspondence between colladaType and container tagged with TagHelper.TAG
-		execute {
-			val colladaNumber = ResourcesHelper.newNumberOfColladaFiles
-			persistProjectRelative(container, colladaType, "resources/resources-gen/collada" + colladaNumber + ".dae")
 		}
 	}
 }
@@ -184,44 +127,5 @@ routine deleteCAEXFile(aml::CAEXContainer container) {
 	}
 	action {
 		delete caexFile
-	}
-}
-
-routine deletePLCopenFile(aml::PLCopenContainer container) {
-	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with TagHelper.TAG
-	}
-	action {
-		execute {
-			for(ExternalInterface currInterface : externalInterfaces) {
-				changePathForInterfaceToEmpty(currInterface)
-			}
-		}
-		delete plcProject
-	}
-}
-
-routine deleteColladaFile(aml::ColladaContainer container) {
-	match {
-		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with TagHelper.TAG
-		}
-	action {
-		execute {
-			for(ExternalInterface currInterface : externalInterfaces) {
-				changePathForInterfaceToEmpty(currInterface)
-			}
-		}
-		delete colladaType
-	}
-}
-
-routine changePathForInterfaceToEmpty(caex::ExternalInterface externalInterface) {
-	action {
-		execute {
-			val pathAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(externalInterface, "refUri")
-			pathAttribute.value = ""
-		}
 	}
 }

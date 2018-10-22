@@ -1,0 +1,78 @@
+import org.eclipse.xtext.EcoreUtil2
+import org.plcopen.xml.tc60201.PouType1
+import caex.caex30.caex.ExternalInterface
+import org.plcopen.xml.tc60201.ProjectType
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexToPlcopen
+in reaction to changes in CAEX
+execute actions in CAEX
+
+// ***** Hilfsroutinen, um auf nicht vorhandene Pfade reagieren zu können
+
+routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
+	action {
+		val newContainer = create aml::PLCopenContainer and initialize {
+			newContainer.path = path
+		}
+		execute {
+			removeCorrespondenceBetweenInterfaceAndPLCopen(externalInterface)
+			addCorrespondenceBetweenInterfaceAndPLCopen(externalInterface, newContainer)
+			
+		}
+	}
+}
+
+routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInterface, String newPath) {
+	match {
+		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.TAG
+	}
+	action {
+		update plcopenContainer {
+			plcopenContainer.path = newPath
+		}
+		execute {
+			for(ExternalInterface currExternalInterface : externalInterfaces) {
+				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
+				uriAttribute.value = newPath
+			}
+		}
+	}
+}
+
+// ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu setzen bzw. zu entfernen
+
+routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
+	}
+	action {
+		execute {
+			val pouTypes = EcoreUtil2.getAllContentsOfType(plcProject, PouType1)
+			addCorrespondenceBetweenInterfaceAndPou(externalInterface, pouTypes.get(0))
+		}
+	}
+}
+
+routine addCorrespondenceBetweenInterfaceAndPou(caex::ExternalInterface externalInterface, plcopen::PouType1 pou) {
+	action {
+		add correspondence between externalInterface and pou tagged with TagHelper.TAG
+	}
+}
+
+routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
+	match {
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+	}
+	action {
+		remove correspondence between externalInterface and plcPouType tagged with TagHelper.TAG
+	}
+}

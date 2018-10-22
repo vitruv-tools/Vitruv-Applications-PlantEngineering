@@ -25,6 +25,11 @@ public class InternalElementChecker {
 		return filteredList;
 	}
 	
+	//TODO Problem wie oben
+	public static boolean hasNotChanged(InternalElement internalElement, SystemUnitClass systemUnitClass) {
+		return checkInternalElementForChanges(internalElement, systemUnitClass);
+	}
+	
 	// Überprüft ein InternalElement, ob die Angaben aus dem Prototyp zu ExternalInterfaces bereits überschrieben wurden (true: unverändert)
 	private static boolean checkInternalElementForChanges(InternalElement internalElement, SystemUnitClass systemUnitClass) {
 		EList<InterfaceClass> interfacesElement = internalElement.getExternalInterface();

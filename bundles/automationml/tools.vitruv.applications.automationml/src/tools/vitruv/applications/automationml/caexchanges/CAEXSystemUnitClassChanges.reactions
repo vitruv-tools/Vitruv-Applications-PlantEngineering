@@ -6,10 +6,10 @@ import caex.caex30.caex.CAEXFile
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.clonechangestests.InternalElementChecker
 import caex.caex30.caex.InternalElement
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker.InterfaceType
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import caex.caex30.caex.SystemUnitClass
 import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.ExternalInterfaceType
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -27,8 +27,8 @@ reaction DeleteSystemUnitClass {
 	call {
 		logger.debug("Reaction DeleteSystemUnitClass")
 				
-		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese oder eine untergeordnete Klasse referenzieren, gelöscht werden?").startInteraction
-		if(userInput) {
+		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese oder eine untergeordnete Klasse referenzieren, gelöscht werden?").startInteraction
+		if(shouldClonesDeleted) {
 			removeClones(affectedEObject)
 			for(SystemUnitClass currClass : EcoreUtil2.getAllContentsOfType(affectedEObject, SystemUnitClass)) {
 				removeClones(currClass)
@@ -47,8 +47,8 @@ reaction RemoveSystemUnitClassLib {
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassLib")
 				
-		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die Klassen dieser Bibliothek referenzieren, gelöscht werden?").startInteraction
-		if(userInput) {
+		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die Klassen dieser Bibliothek referenzieren, gelöscht werden?").startInteraction
+		if(shouldClonesDeleted) {
 			for(SystemUnitClass currClass : EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)) {
 				removeClones(currClass)
 			}
@@ -67,8 +67,8 @@ reaction AddExternalInterfaceToSystemClass {
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassLib")
 				
-		val userInput = userInteractor.confirmationDialogBuilder.message("Soll in allen internen Elementen, die diese Klasse referenzieren, das Interface hinzugefügt werden?").startInteraction
-		if(userInput) {
+		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Soll in allen internen Elementen, die diese Klasse referenzieren, das Interface hinzugefügt werden?").startInteraction
+		if(shouldChangePropagated) {
 			addExternalInterfaceToInternalElements(newValue, affectedEObject)
 		}		
 	} 
@@ -91,8 +91,8 @@ reaction RemoveExternalInterfaceFromSystemClass {
 			removeCorrespondenceBetweenInterfaceInClassAndCollada(oldValue as ExternalInterface)
 		}
 		
-		val userInput = userInteractor.confirmationDialogBuilder.message("Sollen in allen internen Elementen, die diese Klasse referenzieren, Interfaces entfernt werden?").startInteraction
-		if(userInput) {
+		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen in allen internen Elementen, die diese Klasse referenzieren, Interfaces entfernt werden?").startInteraction
+		if(shouldChangePropagated) {
 			removeExternalInterfaceFromInternalElement(oldValue as ExternalInterface, affectedEObject)
 		}
 	}
@@ -139,9 +139,9 @@ routine addExternalInterfaceToInternalElements(caex::ExternalInterface externalI
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
 		check {
 			if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterface)) {
-				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.PLCOPEN)
+				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN)
 			} else if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterface)) {
-				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, InterfaceType.COLLADA)
+				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, ExternalInterfaceType.COLLADA)
 			} else {
 				return false
 			}

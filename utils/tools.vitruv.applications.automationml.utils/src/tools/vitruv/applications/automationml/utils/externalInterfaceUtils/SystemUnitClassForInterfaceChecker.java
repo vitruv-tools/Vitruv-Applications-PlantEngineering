@@ -7,16 +7,11 @@ import caex.caex30.caex.SystemUnitClass;
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver;
 
 public class SystemUnitClassForInterfaceChecker {
-	public static enum InterfaceType{
-		PLCOPEN,
-		COLLADA,
-		DEFAULT
-	}
 	
 	// Prüft, ob ein bestimmtes Interface in einer Klasse enthalten ist (true: ist enthalten)
 	// Falls das Interface ein PLCopen oder ein Collada Interface sein soll, wird refBaseClassPath nicht berücksichtigt, nur bei Default
 	// Auch Vererbung wird berücksichtigt
-	public static boolean checkForExternalInterface(SystemUnitClass systemClass, InterfaceType interfaceType, String refBaseClassPath) {
+	public static boolean checkForExternalInterface(SystemUnitClass systemClass, ExternalInterfaceType interfaceType, String refBaseClassPath) {
 		for(InterfaceClass currInterface : systemClass.getExternalInterface()) {
 			if(currInterface instanceof ExternalInterface) {
 				switch (interfaceType) {
@@ -41,18 +36,18 @@ public class SystemUnitClassForInterfaceChecker {
 		return false;
 	}
 	
-	public static boolean checkForExternalInterface(SystemUnitClass systemClass, InterfaceType interfaceType) {
+	public static boolean checkForExternalInterface(SystemUnitClass systemClass, ExternalInterfaceType interfaceType) {
 		return checkForExternalInterface(systemClass, interfaceType, "");
 	}
 	
 	public static boolean checkForExternalInterface(SystemUnitClass systemClass, String refBaseClassPath) {
-		return checkForExternalInterface(systemClass, InterfaceType.DEFAULT, refBaseClassPath);
+		return checkForExternalInterface(systemClass, ExternalInterfaceType.DEFAULT, refBaseClassPath);
 	}
 	
 	// Liefert ein bestimmtes Interface zurück, falls vorhanden
 	// Falls das Interface ein PLCopen oder ein Collada Interface sein soll, wird refBaseClassPath nicht berücksichtigt, nur bei Default
 	// Auch Vererbung wird berücksichtigt
-	public static ExternalInterface getExternalInterface(SystemUnitClass systemClass, InterfaceType interfaceType, String refBaseClassPath) {
+	public static ExternalInterface getExternalInterface(SystemUnitClass systemClass, ExternalInterfaceType interfaceType, String refBaseClassPath) {
 		for(InterfaceClass currInterface : systemClass.getExternalInterface()) {
 			if(currInterface instanceof ExternalInterface) {
 				switch (interfaceType) {
@@ -77,12 +72,12 @@ public class SystemUnitClassForInterfaceChecker {
 		return null;
 	}
 		
-	public static ExternalInterface getExternalInterface(SystemUnitClass systemClass, InterfaceType interfaceType) {
+	public static ExternalInterface getExternalInterface(SystemUnitClass systemClass, ExternalInterfaceType interfaceType) {
 		return getExternalInterface(systemClass, interfaceType, "");
 	}
 		
 	public static ExternalInterface getExternalInterface(SystemUnitClass systemClass, String refBaseClassPath) {
-		return getExternalInterface(systemClass, InterfaceType.DEFAULT, refBaseClassPath);
+		return getExternalInterface(systemClass, ExternalInterfaceType.DEFAULT, refBaseClassPath);
 	}
 	
 	/*public static ExternalInterface getExternalInterfaceFromClass(SystemUnitClass systemClass, String externalInterfaceName) {
