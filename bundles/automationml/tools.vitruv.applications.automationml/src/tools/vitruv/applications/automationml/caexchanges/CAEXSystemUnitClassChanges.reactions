@@ -102,7 +102,7 @@ reaction RemoveExternalInterfaceFromSystemClass {
 
 routine removePrototypeFromInternalElement (caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
@@ -115,7 +115,7 @@ routine removePrototypeFromInternalElement (caex::SystemUnitClass systemUnitClas
 
 routine removeClones(caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
@@ -136,7 +136,7 @@ routine removeClone(caex::InternalElement internalElement) {
 
 routine addExternalInterfaceToInternalElements(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 		check {
 			if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterface)) {
 				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN)
@@ -178,7 +178,7 @@ routine addExternalInterfaceWithUriToInternalElement(caex::ExternalInterface ext
 
 routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass){
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 	} action {
 		execute {
 			val filteredList = InternalElementChecker.filterInternalElementsForChanges(internalElements, systemUnitClass)
@@ -196,18 +196,18 @@ routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface exter
 
 routine removeCorrespondenceBetweenInterfaceInClassAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
-		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.INTERFACE_POU
 	}
 	action {
-		remove correspondence between externalInterface and plcPouType tagged with TagHelper.TAG
+		remove correspondence between externalInterface and plcPouType tagged with TagHelper.INTERFACE_POU
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceInClassAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.INTERFACE_SCENE
 	}
 	action {
-		remove correspondence between externalInterface and colladaScene tagged with TagHelper.TAG
+		remove correspondence between externalInterface and colladaScene tagged with TagHelper.INTERFACE_SCENE
 	}
 }

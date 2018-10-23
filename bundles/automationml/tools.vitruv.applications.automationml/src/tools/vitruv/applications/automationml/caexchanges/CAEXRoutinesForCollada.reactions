@@ -30,9 +30,9 @@ routine createNewColladaContainer (caex::ExternalInterface externalInterface, am
 
 routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInterface, String newPath) {
 	match {
-		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
-		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType) tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.TAG
+		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.INTERFACE_SCENE
+		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType) tagged with TagHelper.AML_COLLADA
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.INTERFACE_SCENE
 	}
 	action {
 		update colladaContainer {
@@ -51,7 +51,7 @@ routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInt
 
 routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
 	match {
-		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
+		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.AML_COLLADA
 	}
 	action {
 		execute {
@@ -63,15 +63,15 @@ routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface ext
 
 routine addCorrespondenceBetweenInterfaceAndScene(caex::ExternalInterface externalInterface, collada::SceneType scene) {
 	action {
-		add correspondence between externalInterface and scene tagged with TagHelper.TAG
+		add correspondence between externalInterface and scene tagged with TagHelper.INTERFACE_SCENE
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.INTERFACE_SCENE
 	}
 	action {
-		remove correspondence between externalInterface and colladaScene tagged with TagHelper.TAG
+		remove correspondence between externalInterface and colladaScene tagged with TagHelper.INTERFACE_SCENE
 	}
 }

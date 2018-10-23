@@ -137,7 +137,7 @@ reaction ChangeInterfaceLibName {
 
 routine changeRefBaseClassPathOfExternalInterfaces(caex::InterfaceClass interfaceClass, String newPath) {
 	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to interfaceClass tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to interfaceClass tagged with TagHelper.CLASS_INTERFACE
 	}
 	action {
 		execute {
@@ -156,7 +156,7 @@ routine changeRefBaseClassPathOfExternalInterfaces(caex::InterfaceClass interfac
 
 routine changeExternalInterfacesDueToNewParent(caex::InterfaceClass interfaceClass) {
 	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to interfaceClass tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to interfaceClass tagged with TagHelper.CLASS_INTERFACE
 	}
 	action {
 		execute {
@@ -183,19 +183,19 @@ routine removeUriAndCorrespondence(caex::ExternalInterface externalInterface) {
 
 routine removeCorrespondenceToCollada(caex::ExternalInterface externalInterface) {
 	match{
-		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.INTERFACE_SCENE
 	}
 	action {
-		remove correspondence between scene and externalInterface tagged with TagHelper.TAG
+		remove correspondence between scene and externalInterface tagged with TagHelper.INTERFACE_SCENE
 	}
 }
 
 routine removeCorrespondenceToPLCopen(caex::ExternalInterface externalInterface) {
 	match{
-		val pou = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+		val pou = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.INTERFACE_POU
 	}
 	action {
-		remove correspondence between pou and externalInterface tagged with TagHelper.TAG
+		remove correspondence between pou and externalInterface tagged with TagHelper.INTERFACE_POU
 	}
 }
 

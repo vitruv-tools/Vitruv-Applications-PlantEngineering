@@ -22,7 +22,7 @@ routine createColladaFile(aml::ColladaContainer container) {
 		val colladaType = create collada::COLLADAType and initialize {
 			
 		}
-		add correspondence between colladaType and container tagged with TagHelper.TAG
+		add correspondence between colladaType and container tagged with TagHelper.AML_COLLADA
 		execute {
 			val colladaNumber = ResourcesHelper.newNumberOfColladaFiles
 			persistProjectRelative(container, colladaType, "resources/resources-gen/collada" + colladaNumber + ".dae")
@@ -34,8 +34,8 @@ routine createColladaFile(aml::ColladaContainer container) {
 
 routine deleteColladaFile(aml::ColladaContainer container) {
 	match {
-		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with TagHelper.TAG
+		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.AML_COLLADA
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with TagHelper.INTERFACE_SCENE
 		}
 	action {
 		execute {

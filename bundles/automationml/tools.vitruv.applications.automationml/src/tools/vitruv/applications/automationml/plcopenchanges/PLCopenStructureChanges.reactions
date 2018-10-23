@@ -87,13 +87,13 @@ routine createPLCopenContainer(plcopen::ProjectType projectType) {
 		val container = create aml::PLCopenContainer and initialize {
 			container.path = ""
 		} 
-		add correspondence between projectType and container tagged with TagHelper.TAG
+		add correspondence between projectType and container tagged with TagHelper.AML_PLCOPEN
 	}
 }
 
 routine removePLCopenContainer(plcopen::ProjectType projectType) {
 	match {
-		val container = retrieve aml::PLCopenContainer corresponding to projectType tagged with TagHelper.TAG
+		val container = retrieve aml::PLCopenContainer corresponding to projectType tagged with TagHelper.AML_PLCOPEN
 	}
 	action {
 		delete container
@@ -104,7 +104,7 @@ routine removePLCopenContainer(plcopen::ProjectType projectType) {
 
 routine changePathForPLCopenInterfacesToEmpty(plcopen::PouType1 pouType) {
 	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.TAG
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.INTERFACE_POU
 	}
 	action {
 		execute {

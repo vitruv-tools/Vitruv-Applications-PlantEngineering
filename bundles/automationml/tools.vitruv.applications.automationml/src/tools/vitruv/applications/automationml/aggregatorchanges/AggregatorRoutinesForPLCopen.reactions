@@ -28,7 +28,7 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 		val projectType = create plcopen::ProjectType and initialize {
 			projectType.types = typesType
 		}
-		add correspondence between projectType and container tagged with TagHelper.TAG
+		add correspondence between projectType and container tagged with TagHelper.AML_PLCOPEN
 		execute { 
 			val plcNumber = ResourcesHelper.newNumberOfPLCopenFiles
 			persistProjectRelative(container, projectType, "resources/resources-gen/plc" + plcNumber + ".tc60201")
@@ -40,8 +40,8 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 
 routine deletePLCopenFile(aml::PLCopenContainer container) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with TagHelper.TAG
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.AML_PLCOPEN
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with TagHelper.INTERFACE_POU
 	}
 	action {
 		execute {

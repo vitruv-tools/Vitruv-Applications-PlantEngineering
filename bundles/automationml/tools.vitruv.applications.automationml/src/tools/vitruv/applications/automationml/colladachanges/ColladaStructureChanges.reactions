@@ -1,6 +1,8 @@
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import caex.caex30.caex.ExternalInterface
 import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import org.khronos.collada.SceneType
+import org.eclipse.xtext.EcoreUtil2
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -28,7 +30,9 @@ reaction RemoveColladaRoot {
 	call {
 		logger.debug("RemoveColladaRoot")
 		
-		changePathForColladaInterfacesToEmpty()
+		val sceneType = EcoreUtil2.getAllContentsOfType(affectedEObject, SceneType).get(0) 
+		
+		changePathForColladaInterfacesToEmpty(sceneType)
 		removeColladaContainer(affectedEObject)
 	}
 }
@@ -42,13 +46,13 @@ routine createColladaContainer(collada::COLLADAType colladaType) {
 		val container = create aml::ColladaContainer and initialize {
 			container.path = ""
 		} 
-		add correspondence between colladaType and container tagged with TagHelper.TAG
+		add correspondence between colladaType and container tagged with TagHelper.AML_COLLADA
 	}
 }
 
 routine removeColladaContainer(collada::COLLADAType colladaType) {
 	match {
-		val container = retrieve aml::ColladaContainer corresponding to colladaType tagged with TagHelper.TAG
+		val container = retrieve aml::ColladaContainer corresponding to colladaType tagged with TagHelper.AML_COLLADA
 	}
 	action {
 		delete container
@@ -57,9 +61,9 @@ routine removeColladaContainer(collada::COLLADAType colladaType) {
 
 // Routine, um Interfaces an gelöschte Dateien anzupassen
 
-routine changePathForColladaInterfacesToEmpty() {
+routine changePathForColladaInterfacesToEmpty(collada::SceneType scene) {
 	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to null tagged with TagHelper.TAG	//TODO muss übergeben werden
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.INTERFACE_SCENE
 	}
 	action {
 		execute {

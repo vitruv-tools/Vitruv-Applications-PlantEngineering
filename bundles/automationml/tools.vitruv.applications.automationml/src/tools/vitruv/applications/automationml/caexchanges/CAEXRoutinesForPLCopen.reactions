@@ -31,9 +31,9 @@ routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, am
 
 routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInterface, String newPath) {
 	match {
-		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
-		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with TagHelper.TAG
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.TAG
+		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.INTERFACE_POU
+		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with TagHelper.AML_PLCOPEN
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.INTERFACE_POU
 	}
 	action {
 		update plcopenContainer {
@@ -52,7 +52,7 @@ routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInt
 
 routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.TAG
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.AML_PLCOPEN
 	}
 	action {
 		execute {
@@ -64,15 +64,15 @@ routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface ext
 
 routine addCorrespondenceBetweenInterfaceAndPou(caex::ExternalInterface externalInterface, plcopen::PouType1 pou) {
 	action {
-		add correspondence between externalInterface and pou tagged with TagHelper.TAG
+		add correspondence between externalInterface and pou tagged with TagHelper.INTERFACE_POU
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
-		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.INTERFACE_POU
 	}
 	action {
-		remove correspondence between externalInterface and plcPouType tagged with TagHelper.TAG
+		remove correspondence between externalInterface and plcPouType tagged with TagHelper.INTERFACE_POU
 	}
 }

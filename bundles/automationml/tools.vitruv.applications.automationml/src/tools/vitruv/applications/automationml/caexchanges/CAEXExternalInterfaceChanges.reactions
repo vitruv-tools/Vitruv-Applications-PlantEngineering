@@ -137,10 +137,10 @@ reaction ChangeExternalInterfacePath {
 
 routine removeInterfacePropertiesFromExternalInterface (caex::ExternalInterface oldInterface) {
 	match {
-		val interfaceClass = retrieve caex::InterfaceClass corresponding to oldInterface tagged with TagHelper.TAG
+		val interfaceClass = retrieve caex::InterfaceClass corresponding to oldInterface tagged with TagHelper.CLASS_INTERFACE
 	}
 	action {
-		remove correspondence between interfaceClass and oldInterface tagged with TagHelper.TAG
+		remove correspondence between interfaceClass and oldInterface tagged with TagHelper.CLASS_INTERFACE
 		execute {
 			val isOldPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(interfaceClass)
 			val isOldCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(interfaceClass)
@@ -158,7 +158,7 @@ routine removeInterfacePropertiesFromExternalInterface (caex::ExternalInterface 
 
 routine addCorrespondenceBetweenInterfaceAndItsClass (caex::ExternalInterface externalInterface, caex::InterfaceClass interfaceClass) {
 	action {
-		add correspondence between externalInterface and interfaceClass tagged with TagHelper.TAG
+		add correspondence between externalInterface and interfaceClass tagged with TagHelper.CLASS_INTERFACE
 	}
 }
 
@@ -168,7 +168,7 @@ routine addCorrespondenceBetweenInterfaceAndItsClass (caex::ExternalInterface ex
 //Boolean false: plcopen
 routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile, String newPath, Boolean isCollada ) {
 	match {
-		val caexContainer = retrieve aml::CAEXContainer corresponding to caexFile tagged with TagHelper.TAG
+		val caexContainer = retrieve aml::CAEXContainer corresponding to caexFile tagged with TagHelper.AML_CAEX
 	}
 	action {
 		execute{
@@ -236,7 +236,7 @@ routine removePathAttributeFromExternalInterface(caex::ExternalInterface externa
 
 routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface newExternalInterface, caex::SystemUnitClass systemUnitClass, caex::InterfaceClass newInterfaceClass) {
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
@@ -253,16 +253,16 @@ routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface new
 
 routine removeCorrespondenceBetweenInterfaceAndItsClass(caex::ExternalInterface externalInterface) {
 	match {
-		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with TagHelper.TAG
+		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with TagHelper.CLASS_INTERFACE
 	}
 	action {
-		remove correspondence between interfaceClass and externalInterface tagged with TagHelper.TAG
+		remove correspondence between interfaceClass and externalInterface tagged with TagHelper.CLASS_INTERFACE
 	}
 }
 
 routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, String path) {
 	match {
-		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 		//with {
 		//	InternalElementChecker.hasNotChanged(internalElements, systemUnitClass) //TODO klappt das? 
 		//}

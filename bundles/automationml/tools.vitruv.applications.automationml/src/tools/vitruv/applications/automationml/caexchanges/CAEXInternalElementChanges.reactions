@@ -80,10 +80,10 @@ reaction RemoveExternalInterfaceFromInternalElement {
 
 routine removeCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement) {
 	match {
-		val systemUnitClass = retrieve caex::SystemUnitClass corresponding to internalElement tagged with TagHelper.TAG
+		val systemUnitClass = retrieve caex::SystemUnitClass corresponding to internalElement tagged with TagHelper.PROTOTYPE_CLONE
 	}
 	action {
-		remove correspondence between internalElement and systemUnitClass tagged with TagHelper.TAG
+		remove correspondence between internalElement and systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 	}
 }
 
@@ -95,7 +95,7 @@ routine createSystemUnitClassInTree(caex::InternalElement internalElement) {
 		execute {
 			//TODO Baum durchsuchen, ab wo der Pfad tot ist
 		}
-		add correspondence between internalElement and newSystemUnitClass tagged with TagHelper.TAG
+		add correspondence between internalElement and newSystemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 	}
 }
 
@@ -103,10 +103,7 @@ routine createSystemUnitClassInTree(caex::InternalElement internalElement) {
 
 routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
 	action {
-		add correspondence between systemUnitClass and internalElement tagged with TagHelper.TAG
-		execute {
-			
-		}
+		add correspondence between systemUnitClass and internalElement tagged with TagHelper.PROTOTYPE_CLONE
 	}
 }
 
@@ -131,8 +128,6 @@ routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElem
 		update internalElement {
 			internalElement.externalInterface.add(newInterface)
 		}
-		
-		add correspondence between internalElement and systemUnitClass tagged with TagHelper.TAG
 	}
 }
 
@@ -157,8 +152,6 @@ routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElem
 		update internalElement {
 			internalElement.externalInterface.add(newInterface)
 		}
-		
-		add correspondence between internalElement and systemUnitClass tagged with TagHelper.TAG
 	}
 }
 
@@ -166,18 +159,18 @@ routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElem
 
 routine removeCorrespondenceBetweenInterfaceInInternalAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
-		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.TAG
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.INTERFACE_POU
 	}
 	action {
-		remove correspondence between externalInterface and plcPouType tagged with TagHelper.TAG
+		remove correspondence between externalInterface and plcPouType tagged with TagHelper.INTERFACE_POU
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceInInternalAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.TAG
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.INTERFACE_SCENE
 	}
 	action {
-		remove correspondence between externalInterface and colladaScene tagged with TagHelper.TAG
+		remove correspondence between externalInterface and colladaScene tagged with TagHelper.INTERFACE_SCENE
 	}
 }
