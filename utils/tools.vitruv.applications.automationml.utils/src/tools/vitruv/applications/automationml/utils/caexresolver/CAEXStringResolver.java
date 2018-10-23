@@ -37,6 +37,31 @@ public class CAEXStringResolver {
 		return finalPath;
 	}
 	
+	public static String getCompletePath(SystemUnitClass systemClass) {
+		SystemUnitClass currClass = systemClass;
+		EObject helpingObject;
+		String[] currStringParts = new String[100];		//Anzahl utopisch
+		int currPart = 0;
+		
+		while(true) {
+			currStringParts[currPart] = currClass.getName();
+			currPart ++;
+			helpingObject = currClass.eContainer();
+			if(helpingObject instanceof SystemUnitClass) {
+				currClass = (SystemUnitClass) helpingObject;
+			} else {
+				break;
+			}
+		}
+		
+		String finalPath = ((SystemUnitClassLib)helpingObject).getName();
+		for(int i = currPart - 1; i >= 0; i--) {
+			finalPath = finalPath + "/" + currStringParts[i];
+		}
+		
+		return finalPath;
+	}
+	
 	// löst einen Pfad auf, und liefert das zugehörige Interface (aus den Interfacebibliotheken) zurück
 	public static InterfaceClass resolveInterfacePath(String path, CAEXFile caexFile) {
 		if(path == null || path.isEmpty() || caexFile == null) {

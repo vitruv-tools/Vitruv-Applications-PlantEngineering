@@ -60,6 +60,33 @@ reaction RemoveSystemUnitClassLib {
 	}
 }
 
+// ***** Namensänderung einer Klasse bzw. Lib
+
+reaction ChangeSystemUnitClassName {
+	after attribute replaced at caex::SystemUnitClass[name]
+	call {
+		val newPath = CAEXStringResolver.getCompletePath(affectedEObject)
+		changeClassPathInInternalElement(affectedEObject, newPath)
+		
+		val systemClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, SystemUnitClass)
+		for(SystemUnitClass currClass : systemClasses) {
+			val currPath = CAEXStringResolver.getCompletePath(currClass)
+			changeClassPathInInternalElement(currClass, currPath)
+		}
+	}
+}
+
+reaction ChangeSystemUnitClassLibName {
+	after attribute replaced at caex::SystemUnitClassLib[name]
+	call {
+		val systemClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, SystemUnitClass)
+		for(SystemUnitClass currClass : systemClasses) {
+			val currPath = CAEXStringResolver.getCompletePath(currClass)
+			changeClassPathInInternalElement(currClass, currPath)
+		}
+	}
+}
+
 // ***** ExternalInterface in Klassendefinition hinzufügen, entfernen
 
 reaction AddExternalInterfaceToSystemClass {
@@ -209,5 +236,20 @@ routine removeCorrespondenceBetweenInterfaceInClassAndCollada (caex::ExternalInt
 	}
 	action {
 		remove correspondence between externalInterface and colladaScene tagged with TagHelper.INTERFACE_SCENE
+	}
+}
+
+// *****
+
+routine changeClassPathInInternalElement(caex::SystemUnitClass systemUnitClass, String newPath) {
+	match {
+		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE 
+	}
+	action {
+		execute {
+			for(InternalElement currElement : internalElements) {
+				currElement.refBaseSystemUnitPath = newPath
+			}
+		}
 	}
 }
