@@ -24,9 +24,9 @@ execute actions in CAEX
 import caexToCollada
 import caexToPlcopen
 
-// ***** Interface Typ einfügen/ändern/entfernen
+// ***** Interface Typ ändern
 
-reaction AddExternalInterfaceType {
+/*reaction AddExternalInterfaceType {
 	after attribute insert in caex::ExternalInterface[refBaseClassPath]
 	call {
 		logger.debug("Reaction AddExternalInterfaceType")
@@ -48,7 +48,7 @@ reaction AddExternalInterfaceType {
 			}
 		}
 	}
-}
+}*/
 
 reaction ChangeExternalInterfaceType {
 	after attribute replaced at caex::ExternalInterface[refBaseClassPath]
@@ -56,38 +56,28 @@ reaction ChangeExternalInterfaceType {
 		logger.debug("Reaction ChangeExternalInterfaceType")
 		
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
-		val externalInterfaceTypeOld = CAEXStringResolver.resolveInterfacePath(oldValue, caexFile)
-		val externalInterfaceTypeNew = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
-		val container = affectedEObject.eContainer
-		
-		val isOldPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceTypeOld)
-		val isOldCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceTypeOld)
-		val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceTypeNew)
-		val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceTypeNew)
-		
-		if(isOldPlcopen) {
-			removeCorrespondenceBetweenInterfaceAndPLCopen(affectedEObject)
-			removePathAttributeFromExternalInterface(affectedEObject)
-		} else if(isOldCollada) {
-			removeCorrespondenceBetweenInterfaceAndCollada(affectedEObject)
-			removePathAttributeFromExternalInterface(affectedEObject)
-		} 
+		val newInterfaceClass = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
+		val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(newInterfaceClass)
+		val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(newInterfaceClass)
 		
 		if(isNewPlcopen || isNewCollada) {
 			addPathAttributeToExternalInterface(affectedEObject)
 		}
 		
+		addCorrespondenceBetweenInterfaceAndItsClass(affectedEObject, newInterfaceClass)
+		
+		val container = affectedEObject.eContainer
 		if(container instanceof SystemUnitClass) {
 			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
 			if(shouldChangePropagated) {
-				changeExternalInterfaceTypeInInternalElement(affectedEObject, container)
+				changeExternalInterfaceTypeInInternalElement(affectedEObject, container, newInterfaceClass)
 			}
 		}
 	}
 }
 
 
-reaction RemoveExternalInterfaceType {
+/*reaction RemoveExternalInterfaceType {
 	after attribute remove from caex::ExternalInterface[refBaseClassPath]
 	call {
 		logger.debug("Reaction RemoveExternalInterfaceType")
@@ -111,7 +101,7 @@ reaction RemoveExternalInterfaceType {
 			}
 		}
 	}
-}
+}*/
 
 // ***** Pfadangabe in CAEX zu PLCopen Datei geändert
 
@@ -142,6 +132,36 @@ reaction ChangeExternalInterfacePath {
 		}
 	}
 }
+
+// ***** Routine, für geänderten Interface-Typ
+
+routine removeInterfacePropertiesFromExternalInterface (caex::ExternalInterface oldInterface) {
+	match {
+		val interfaceClass = retrieve caex::InterfaceClass corresponding to oldInterface tagged with TagHelper.TAG
+	}
+	action {
+		remove correspondence between interfaceClass and oldInterface tagged with TagHelper.TAG
+		execute {
+			val isOldPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(interfaceClass)
+			val isOldCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(interfaceClass)
+		
+			if(isOldPlcopen) {
+				removeCorrespondenceBetweenInterfaceAndPLCopen(oldInterface)
+				removePathAttributeFromExternalInterface(oldInterface)
+			} else if(isOldCollada) {
+				removeCorrespondenceBetweenInterfaceAndCollada(oldInterface)
+				removePathAttributeFromExternalInterface(oldInterface)
+			} 
+		}
+	}
+}
+
+routine addCorrespondenceBetweenInterfaceAndItsClass (caex::ExternalInterface externalInterface, caex::InterfaceClass interfaceClass) {
+	action {
+		add correspondence between externalInterface and interfaceClass tagged with TagHelper.TAG
+	}
+}
+
 
 // ***** Routine, um mit Pfadänderungen umzugehen
 
@@ -214,7 +234,7 @@ routine removePathAttributeFromExternalInterface(caex::ExternalInterface externa
 
 // ***** Routinen, um interne Elemente abzuändern, analog zur Änderung der Klasse
 
-routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass) {
+routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface newExternalInterface, caex::SystemUnitClass systemUnitClass, caex::InterfaceClass newInterfaceClass) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with TagHelper.TAG
 	}
@@ -222,10 +242,21 @@ routine changeExternalInterfaceTypeInInternalElement(caex::ExternalInterface ext
 		execute {
 			val filteredInternalElements = InternalElementChecker.filterInternalElementsForChanges(internalElements, systemUnitClass)
 			for(InternalElement currInternalElement : filteredInternalElements) {
-				val foundedInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(currInternalElement, externalInterface.name)
-				foundedInterface.refBaseClassPath = externalInterface.refBaseClassPath
+				val foundedInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(currInternalElement, newExternalInterface.name)
+				foundedInterface.refBaseClassPath = newExternalInterface.refBaseClassPath
+				removeCorrespondenceBetweenInterfaceAndItsClass(foundedInterface)
+				addCorrespondenceBetweenInterfaceAndItsClass(foundedInterface, newInterfaceClass)
 			}
 		}
+	}
+}
+
+routine removeCorrespondenceBetweenInterfaceAndItsClass(caex::ExternalInterface externalInterface) {
+	match {
+		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with TagHelper.TAG
+	}
+	action {
+		remove correspondence between interfaceClass and externalInterface tagged with TagHelper.TAG
 	}
 }
 

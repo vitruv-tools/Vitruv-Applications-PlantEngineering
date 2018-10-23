@@ -1,6 +1,7 @@
 package tools.vitruv.applications.automationml.utils.caexresolver;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 import caex.caex30.caex.CAEXFile;
 import caex.caex30.caex.ExternalInterface;
@@ -11,10 +12,33 @@ import caex.caex30.caex.SystemUnitClassLib;
 
 
 public class CAEXStringResolver {
-	//TODO allgemeiner Resolver
+	public static String getCompletePath(InterfaceClass interfaceClass) {
+		InterfaceClass currInterface = interfaceClass;
+		EObject helpingObject;
+		String[] currStringParts = new String[100];		//Anzahl utopisch
+		int currPart = 0;
+		
+		while(true) {
+			currStringParts[currPart] = currInterface.getName();
+			currPart ++;
+			helpingObject = currInterface.eContainer();
+			if(helpingObject instanceof InterfaceClass) {
+				currInterface = (InterfaceClass) helpingObject;
+			} else {
+				break;
+			}
+		}
+		
+		String finalPath = ((InterfaceClassLib)helpingObject).getName();
+		for(int i = currPart - 1; i >= 0; i--) {
+			finalPath = finalPath + "/" + currStringParts[i];
+		}
+		
+		return finalPath;
+	}
 	
 	// löst einen Pfad auf, und liefert das zugehörige Interface (aus den Interfacebibliotheken) zurück
-	public static ExternalInterface resolveInterfacePath(String path, CAEXFile caexFile) {
+	public static InterfaceClass resolveInterfacePath(String path, CAEXFile caexFile) {
 		if(path == null || path.isEmpty() || caexFile == null) {
 			return null;
 		}
@@ -49,8 +73,8 @@ public class CAEXStringResolver {
 			}
 		}
 		
-		if(currInterfaces.size() == 1 && currInterfaces.get(0) instanceof ExternalInterface) {
-			return (ExternalInterface)currInterfaces.get(0);
+		if(currInterfaces.size() == 1) {
+			return currInterfaces.get(0);
 		} else {
 			return null;
 		}

@@ -1,6 +1,7 @@
 package tools.vitruv.applications.automationml.utils.caexresolver;
 
 import caex.caex30.caex.ExternalInterface;
+import caex.caex30.caex.InterfaceClass;
 
 public class CAEXInheritanceResolver {
 	private static final String automationMLInterfaceBaseLib = "AutomationMLInterfaceClassLib";
@@ -10,21 +11,21 @@ public class CAEXInheritanceResolver {
 	private static final String externalPLCopenBaseInterface = "PLCopenXMLInterface";
 	
 	// überprüft, ob ein Interface aus der InterfaceBibliothek (externalInterface) im Vererbungsbaum unter einem anderen Interface (interfaceClass) steht
-	public static boolean isInstanceOfPLCopenInterface(ExternalInterface externalInterface) {
-		return isInstanceOfSpecificInterface(externalInterface, automationMLInterfaceBaseLib + "/" + automationMLBaseInterface + "/" + automationMLExternalBaseInterface + "/" + externalPLCopenBaseInterface);
+	public static boolean isInstanceOfPLCopenInterface(InterfaceClass interfaceChild) {
+		return isInstanceOfSpecificInterface(interfaceChild, automationMLInterfaceBaseLib + "/" + automationMLBaseInterface + "/" + automationMLExternalBaseInterface + "/" + externalPLCopenBaseInterface);
 	}
 	
-	public static boolean isInstanceOfColladaInterface(ExternalInterface externalInterface) {
-		return isInstanceOfSpecificInterface(externalInterface, automationMLInterfaceBaseLib + "/" + automationMLBaseInterface + "/" + automationMLExternalBaseInterface + "/" + externalPLCopenBaseInterface);
+	public static boolean isInstanceOfColladaInterface(InterfaceClass interfaceChild) {
+		return isInstanceOfSpecificInterface(interfaceChild, automationMLInterfaceBaseLib + "/" + automationMLBaseInterface + "/" + automationMLExternalBaseInterface + "/" + externalPLCopenBaseInterface);
 	}
 	
-	public static boolean isInstanceOfSpecificInterface(ExternalInterface externalInterface, String interfaceClass) {
-		ExternalInterface currInterface = externalInterface;
+	public static boolean isInstanceOfSpecificInterface(InterfaceClass interfaceChild, String interfaceParent) {
+		InterfaceClass currInterface = interfaceChild;
 		while(currInterface != null) {
-			if(currInterface.getName().equals(interfaceClass)) {
+			if(currInterface.getName().equals(interfaceParent)) {
 				return true;
 			}
-			if(currInterface.getBaseClass() instanceof ExternalInterface) {
+			if(currInterface.getBaseClass() instanceof InterfaceClass) {
 				currInterface = (ExternalInterface)currInterface.getBaseClass();
 			} else {
 				return false;
