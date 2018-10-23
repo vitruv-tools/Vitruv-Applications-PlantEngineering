@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.emf.codegen.ecore;bundle-version="2.13.0",
  org.eclipse.xtext;bundle-version="2.12.0",
  caex.caex30;bundle-version="0.1.0",
  edu.kit.sdq.aml_aggregator;bundle-version="0.1.0",
- org.plcopen.xml.tc60201;bundle-version="1.0.0"
+ org.plcopen.xml.tc60201;bundle-version="1.0.0",
+ org.khronos.collada;bundle-version="1.0.0"
 Import-Package: org.eclipse.emf.common.util
 Export-Package: tools.vitruv.applications.automationml.utils.amlutils,
  tools.vitruv.applications.automationml.utils.caexresolver,

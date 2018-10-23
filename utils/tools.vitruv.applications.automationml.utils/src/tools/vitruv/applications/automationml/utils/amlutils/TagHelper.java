@@ -9,4 +9,6 @@ public class TagHelper {
 	public static final String AML_CAEX = "TagForContainerAndCAEXFile";
 	public static final String AML_COLLADA = "TagForContainerAndColladaFile";
 	public static final String AML_PLCOPEN = "TagForContainerAndPLCopenFile";
+	public static final String SCENE_VISUAL = "TagForSceneAndVisualScene";
+	public static final String GEOMETRY_INSTANCE = "TagForGeometryAndInstance";
 }

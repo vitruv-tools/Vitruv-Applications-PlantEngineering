@@ -37,8 +37,6 @@ reaction RemoveColladaRoot {
 	}
 }
 
-// ***** notwendige Beschreibungcontainer anlegen/löschen
-
 // ***** Routinen, um Container für Collada anzulegen oder zu entfernen
 
 routine createColladaContainer(collada::COLLADAType colladaType) {
@@ -79,10 +77,12 @@ routine changePathForColladaInterfacesToEmpty(collada::SceneType scene) {
 
 routine createColladaStructure(collada::COLLADAType colladaType) {
 	action {
-		execute {
-			//TODO
+		val instance = create collada::InstanceWithExtra
+		val sceneType = create collada::SceneType and initialize {
+			sceneType.instanceVisualScene = instance
+		}
+		update colladaType {
+			colladaType.scene = sceneType
 		}
 	}
 }
-
-// ***** Routinen, um Grundstruktur der Datei beizubehalten

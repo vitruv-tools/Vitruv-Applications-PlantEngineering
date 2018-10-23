@@ -2,6 +2,8 @@
 <schema:COLLADA xmlns:schema="http://www.collada.org/2005/11/COLLADASchema">
   <schema:library_geometries id="GeoLib" name="GeometrieBibliothek">
     <schema:geometry id="geo1" name="Geometrie">
+      <schema:convex_mesh/>
+      <schema:mesh/>
       <schema:spline>
         <schema:source/>
       </schema:spline>
