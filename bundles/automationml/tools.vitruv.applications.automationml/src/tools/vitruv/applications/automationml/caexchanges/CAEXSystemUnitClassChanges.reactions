@@ -65,6 +65,8 @@ reaction RemoveSystemUnitClassLib {
 reaction ChangeSystemUnitClassName {
 	after attribute replaced at caex::SystemUnitClass[name]
 	call {
+		logger.debug("ChangeSystemUnitClassName")
+		
 		val newPath = CAEXStringResolver.getCompletePath(affectedEObject)
 		changeClassPathInInternalElement(affectedEObject, newPath)
 		
@@ -79,6 +81,8 @@ reaction ChangeSystemUnitClassName {
 reaction ChangeSystemUnitClassLibName {
 	after attribute replaced at caex::SystemUnitClassLib[name]
 	call {
+		logger.debug("ChangeSystemUnitClassLibName")
+		
 		val systemClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, SystemUnitClass)
 		for(SystemUnitClass currClass : systemClasses) {
 			val currPath = CAEXStringResolver.getCompletePath(currClass)

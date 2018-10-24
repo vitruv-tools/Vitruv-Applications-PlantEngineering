@@ -17,6 +17,8 @@ execute actions in Collada
 reaction RemoveScene {
 	after element collada::SceneType removed from collada::COLLADAType[scene]
 	call {
+		logger.debug("RemoveScene")
+		
 		//TODO entspricht Zurückrollen der Änderung
 		affectedEObject.scene = oldValue
 	}
@@ -25,6 +27,8 @@ reaction RemoveScene {
 reaction RemoveInstance {
 	after element collada::InstanceWithExtra removed from collada::SceneType[instanceVisualScene]
 	call {
+		logger.debug("RemoveInstance")
+		
 		//TODO entspricht Zurückrollen der Änderung
 		affectedEObject.instanceVisualScene = oldValue
 	}
@@ -35,6 +39,8 @@ reaction RemoveInstance {
 reaction ChangeVisualInstance {
 	after attribute replaced at collada::InstanceWithExtra[url]
 	call {
+		logger.debug("ChangeVisualInstance")
+		
 		val root = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
 		val visualScene = StringResolver.resolveVisualSceneID(newValue, root)
 				

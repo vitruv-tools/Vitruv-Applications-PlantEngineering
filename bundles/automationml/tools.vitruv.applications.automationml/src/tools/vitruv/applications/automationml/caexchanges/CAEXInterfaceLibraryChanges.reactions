@@ -18,6 +18,8 @@ execute actions in CAEX
 reaction RemoveInterfaceClassLibrary {
 	after element caex::InterfaceClassLib removed from caex::CAEXFile[interfaceClassLib]
 	call {
+		logger.debug("RemoveInterfaceClassLibrary")
+		
 		if(CAEXInheritanceResolver.automationMLInterfaceBaseLib.equals(oldValue.name)) {
 			//TODO entspricht Zurückrollen der Änderung
 			affectedEObject.interfaceClassLib.add(oldValue)
@@ -35,6 +37,8 @@ reaction RemoveInterfaceClassLibrary {
 reaction RemoveInterfaceClass {
 	after element caex::InterfaceClass removed from caex::InterfaceClass[interfaceClass]
 	call {
+		logger.debug("RemoveInterfaceClass")
+		
 		if(CAEXInheritanceResolver.automationMLExternalBaseInterface.equals(affectedEObject.name)
 			|| CAEXInheritanceResolver.externalColladaBaseInterface.equals(affectedEObject.name)
 			|| CAEXInheritanceResolver.externalPLCopenBaseInterface.equals(affectedEObject.name)
@@ -57,6 +61,8 @@ reaction RemoveInterfaceClass {
 reaction RemoveInterfaceClassFromLib {
 	after element caex::InterfaceClass removed from caex::InterfaceClassLib[interfaceClass]
 	call {
+		logger.debug("RemoveInterfaceClassFromLib")
+		
 		if(CAEXInheritanceResolver.automationMLBaseInterface.equals(affectedEObject.name)) {
 			//TODO Änderung zurückrollen
 			affectedEObject.interfaceClass.add(oldValue)
@@ -75,6 +81,8 @@ reaction RemoveInterfaceClassFromLib {
 reaction ChangeInterfaceParent {
 	after attribute replaced at caex::InterfaceClass[refBaseClassPath]
 	call {
+		logger.debug("ChangeInterfaceParent")
+		
 		if(CAEXInheritanceResolver.automationMLBaseInterface.equals(affectedEObject.name)
 			|| CAEXInheritanceResolver.automationMLExternalBaseInterface.equals(affectedEObject.name)
 			|| CAEXInheritanceResolver.externalColladaBaseInterface.equals(affectedEObject.name)
@@ -93,6 +101,8 @@ reaction ChangeInterfaceParent {
 reaction ChangeInterfaceName {
 	after attribute replaced at caex::InterfaceClass[name]
 	call {
+		logger.debug("ChangeInterfaceName")
+		
 		if(CAEXInheritanceResolver.automationMLExternalBaseInterface.equals(affectedEObject.name)
 			|| CAEXInheritanceResolver.externalColladaBaseInterface.equals(affectedEObject.name)
 			|| CAEXInheritanceResolver.externalPLCopenBaseInterface.equals(affectedEObject.name)
@@ -117,6 +127,8 @@ reaction ChangeInterfaceName {
 reaction ChangeInterfaceLibName {
 	after attribute replaced at caex::InterfaceClassLib[name]
 	call {
+		logger.debug("ChangeInterfaceLibName")
+		
 		if(CAEXInheritanceResolver.automationMLBaseInterface.equals(affectedEObject.name)) {
 			//TODO Änderung zurückrollen
 			affectedEObject.name = oldValue

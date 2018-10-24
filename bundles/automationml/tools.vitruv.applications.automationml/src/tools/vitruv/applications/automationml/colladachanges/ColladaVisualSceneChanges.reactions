@@ -20,6 +20,8 @@ execute actions in Collada
 reaction RemoveVisualSceneLibrary {
 	after element collada::LibraryVisualScenesType removed from collada::COLLADAType[libraryVisualScenes]
 	call {
+		logger.debug("RemoveVisualSceneLibrary")
+		
 		val geometries = EcoreUtil2.getAllContentsOfType(oldValue, InstanceGeometryType)
 		for(InstanceGeometryType currGeo : geometries) {
 			removeCorrespondenceBetweenInstanceAndGeometry(currGeo)
@@ -34,6 +36,8 @@ reaction RemoveVisualSceneLibrary {
 reaction RemoveVisualSceneType {
 	after element collada::VisualSceneType removed from collada::LibraryVisualScenesType[visualScene]
 	call {
+		logger.debug("RemoveVisualSceneType")
+		
 		val geometries = EcoreUtil2.getAllContentsOfType(oldValue, InstanceGeometryType)
 		for(InstanceGeometryType currGeo : geometries) {
 			removeCorrespondenceBetweenInstanceAndGeometry(currGeo)
@@ -45,6 +49,8 @@ reaction RemoveVisualSceneType {
 reaction RemoveNodeFromVisualScene {
 	after element collada::NodeType1 removed from collada::VisualSceneType[node]
 	call {
+		logger.debug("RemoveNodeFromVisualScene")
+		
 		for(InstanceGeometryType currGeo : oldValue.instanceGeometry) {
 			removeCorrespondenceBetweenInstanceAndGeometry(currGeo)
 		}
@@ -54,6 +60,8 @@ reaction RemoveNodeFromVisualScene {
 reaction RemoveGeometryInstanceFromNode {
 	after element collada::InstanceGeometryType removed from collada::NodeType1[instanceGeometry]
 	call {
+		logger.debug("RemoveGeometryInstanceFromNode")
+		
 		removeCorrespondenceBetweenInstanceAndGeometry(oldValue)
 	}
 }
@@ -63,6 +71,8 @@ reaction RemoveGeometryInstanceFromNode {
 reaction ChangeVisualSceneID {
 	after attribute replaced at collada::VisualSceneType[id]
 	call {
+		logger.debug("ChangeVisualSceneID")
+		
 		changeIdInVisualSceneInstances(affectedEObject)
 	}
 }
@@ -72,6 +82,8 @@ reaction ChangeVisualSceneID {
 reaction ChangeGeometryInstance {
 	after attribute replaced at collada::InstanceGeometryType[url]
 	call {
+		logger.debug("ChangeGeometryInstance")
+		
 		val root = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
 		val geometry = StringResolver.resolveGeometryID(newValue, root)
 		

@@ -16,6 +16,8 @@ execute actions in Collada
 reaction RemoveGeometriesLibrary {
 	after element collada::LibraryGeometriesType removed from collada::COLLADAType[libraryGeometries]
 	call {
+		logger.debug("RemoveGeometriesLibrary")
+		
 		for(GeometryType currGeo : oldValue.geometry) {
 			removeIdAndCorrespondenceForGeometryAndInstances(currGeo)
 		}
@@ -25,6 +27,8 @@ reaction RemoveGeometriesLibrary {
 reaction RemoveGeometry {
 	after element collada::GeometryType removed from collada::LibraryGeometriesType[geometry]
 	call {
+		logger.debug("RemoveGeometry")
+		
 		removeIdAndCorrespondenceForGeometryAndInstances(oldValue)
 	}
 }
@@ -34,6 +38,8 @@ reaction RemoveGeometry {
 reaction ChangeGeometryID {
 	after attribute replaced at collada::GeometryType[id]
 	call {
+		logger.debug("ChangeGeometryID")
+		
 		changeIdInGeometrieInstances(affectedEObject)
 	}
 }
