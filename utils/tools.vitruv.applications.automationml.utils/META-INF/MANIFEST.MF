@@ -15,5 +15,6 @@ Import-Package: org.eclipse.emf.common.util
 Export-Package: tools.vitruv.applications.automationml.utils.amlutils,
  tools.vitruv.applications.automationml.utils.caexresolver,
  tools.vitruv.applications.automationml.utils.clonechangestests,
+ tools.vitruv.applications.automationml.utils.colladautils,
  tools.vitruv.applications.automationml.utils.externalInterfaceUtils,
  tools.vitruv.applications.automationml.utils.plcopenutils

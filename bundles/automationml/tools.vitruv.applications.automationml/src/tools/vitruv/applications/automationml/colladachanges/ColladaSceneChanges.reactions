@@ -1,0 +1,92 @@
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import org.eclipse.xtext.EcoreUtil2
+import org.khronos.collada.COLLADAType
+import tools.vitruv.applications.automationml.utils.colladautils.StringResolver
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: colladaSceneChanges
+in reaction to changes in Collada
+execute actions in Collada
+
+// ***** Scene bzw. Verweis löschen
+
+reaction RemoveScene {
+	after element collada::SceneType removed from collada::COLLADAType[scene]
+	call {
+		//TODO entspricht Zurückrollen der Änderung
+		affectedEObject.scene = oldValue
+	}
+}
+
+reaction RemoveInstance {
+	after element collada::InstanceWithExtra removed from collada::SceneType[instanceVisualScene]
+	call {
+		//TODO entspricht Zurückrollen der Änderung
+		affectedEObject.instanceVisualScene = oldValue
+	}
+}
+
+// ***** Verweis ändern
+
+reaction ChangeVisualInstance {
+	after attribute replaced at collada::InstanceWithExtra[url]
+	call {
+		val root = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
+		val visualScene = StringResolver.resolveVisualSceneID(newValue, root)
+				
+		if(visualScene === null) {
+			val shouldVisualSceneCreated = userInteractor.confirmationDialogBuilder.message("ID existiert nicht. Soll neue visuelle Szene angelegt werden? Alternativ würde die Änderung zurückgerollt werden.").startInteraction
+			if(shouldVisualSceneCreated) {
+				removeCorrespondenceBetweenInstanceAndVisualScene(affectedEObject)
+				addVisualSceneInTree(root, affectedEObject, newValue)
+			} else {
+				//TODO entspricht Zurückrollen der Änderung
+				affectedEObject.url = oldValue
+			}
+		} else {
+			removeCorrespondenceBetweenInstanceAndVisualScene(affectedEObject)
+			addCorrespondenceBetweenInstanceAndVisualScene(affectedEObject, visualScene)
+		}
+	}
+}
+
+routine removeCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithExtra instance) {
+	match {
+		val visualScene = retrieve collada::VisualSceneType corresponding to instance tagged with TagHelper.SCENE_VISUAL
+	}
+	action {
+		remove correspondence between visualScene and instance tagged with TagHelper.SCENE_VISUAL
+	}
+}
+
+routine addCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithExtra instance, collada::VisualSceneType visualScene) {
+	action {
+		add correspondence between instance and visualScene tagged with TagHelper.SCENE_VISUAL
+	}
+}
+
+routine addVisualSceneInTree(collada::COLLADAType root, collada::InstanceWithExtra instance, String id) {
+	action {
+		val geometryInstance = create collada::InstanceGeometryType and initialize {
+			geometryInstance.url = ""
+		}
+		val node = create collada::NodeType1 and initialize {
+			node.instanceGeometry.add(geometryInstance)
+		}
+		val visualScene = create collada::VisualSceneType and initialize {
+			visualScene.id = id
+			visualScene.node.add(node)
+		}
+		val visualSceneLib = create collada::LibraryVisualScenesType and initialize {
+			visualSceneLib.visualScene.add(visualScene)
+		}
+		update root {
+			root.libraryVisualScenes.add(visualSceneLib)
+		}
+		add correspondence between instance and visualScene
+	}
+}

@@ -1,0 +1,74 @@
+import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import org.khronos.collada.InstanceGeometryType
+import org.khronos.collada.GeometryType
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: colladaGeometryChanges
+in reaction to changes in Collada
+execute actions in Collada
+
+// ***** Bib bzw. Geo löschen
+
+reaction RemoveGeometriesLibrary {
+	after element collada::LibraryGeometriesType removed from collada::COLLADAType[libraryGeometries]
+	call {
+		for(GeometryType currGeo : oldValue.geometry) {
+			removeIdAndCorrespondenceForGeometryAndInstances(currGeo)
+		}
+	}
+}
+
+reaction RemoveGeometry {
+	after element collada::GeometryType removed from collada::LibraryGeometriesType[geometry]
+	call {
+		removeIdAndCorrespondenceForGeometryAndInstances(oldValue)
+	}
+}
+
+// ***** ID der Geo ändern
+
+reaction ChangeGeometryID {
+	after attribute replaced at collada::GeometryType[id]
+	call {
+		changeIdInGeometrieInstances(affectedEObject)
+	}
+}
+
+// ***** Routines for changing ID or remove geometry description
+
+routine changeIdInGeometrieInstances(collada::GeometryType geometry) {
+	match {
+		val instances = retrieve many collada::InstanceGeometryType corresponding to geometry tagged with TagHelper.GEOMETRY_INSTANCE
+	}
+	action {
+		execute {
+			for(InstanceGeometryType currInstance : instances) {
+				currInstance.url = geometry.id
+			}
+		}
+	}
+}
+
+routine removeIdAndCorrespondenceForGeometryAndInstances(collada::GeometryType geometry) {
+	match {
+		val instances = retrieve many collada::InstanceGeometryType corresponding to geometry tagged with TagHelper.GEOMETRY_INSTANCE
+	}
+	action {
+		execute {
+			for(InstanceGeometryType currInstance : instances) {
+				currInstance.url = ""
+				removeCorrespondenceBetweenGeoemtryAndInstance(geometry, currInstance)
+			}
+		}
+	}
+}
+
+routine removeCorrespondenceBetweenGeoemtryAndInstance(collada::GeometryType geometry, collada::InstanceGeometryType instance) {
+	action {
+		remove correspondence between geometry and instance tagged with TagHelper.GEOMETRY_INSTANCE
+	}
+}

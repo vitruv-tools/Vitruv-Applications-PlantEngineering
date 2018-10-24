@@ -8,4 +8,7 @@ in reaction to changes in Collada
 execute actions in Collada
 
 import colladaStructureChanges
+import colladaGeometryChanges
+import colladaSceneChanges
+import colladaVisualSceneChanges
 import colladaUnitChanges
