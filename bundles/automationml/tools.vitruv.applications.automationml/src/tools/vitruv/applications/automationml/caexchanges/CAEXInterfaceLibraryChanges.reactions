@@ -5,6 +5,7 @@ import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
 import caex.caex30.caex.InterfaceClass
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
 import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
+import caex.caex30.caex.CAEXFile
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -18,7 +19,7 @@ execute actions in CAEX
 reaction RemoveInterfaceClassLibrary {
 	after element caex::InterfaceClassLib removed from caex::CAEXFile[interfaceClassLib]
 	call {
-		logger.debug("RemoveInterfaceClassLibrary")
+		logger.debug("RemoveInterfaceClassLibrary")		
 		
 		if(CAEXInheritanceResolver.automationMLInterfaceBaseLib.equals(oldValue.name)) {
 			//TODO entspricht Zurückrollen der Änderung
@@ -26,10 +27,13 @@ reaction RemoveInterfaceClassLibrary {
 			return
 		}
 		
+		val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
 		
 		for(InterfaceClass currClass : listOfInterfaceClasses) {
 			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+			val newPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveInterfacePath(currClass.refBaseClassPath, root))
+			changeInheritanceInInterfaces(CAEXStringResolver.getCompletePath(currClass), newPath, root)
 		}
 	}
 }
@@ -49,11 +53,18 @@ reaction RemoveInterfaceClass {
 			return
 		}
 		
+		val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		
 		changeRefBaseClassPathOfExternalInterfaces(oldValue, "")
+		val newPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath, root))
+		changeInheritanceInInterfaces(CAEXStringResolver.getCompletePath(oldValue), newPath, root)
+		
 		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
 		
 		for(InterfaceClass currClass : listOfInterfaceClasses) {
 			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+			val currNewPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveSystemClassPath(currClass.refBaseClassPath, root))
+			changeInheritanceInInterfaces(CAEXStringResolver.getCompletePath(currClass), currNewPath, root)
 		}
 	}
 }
@@ -69,11 +80,18 @@ reaction RemoveInterfaceClassFromLib {
 			return
 		}
 		
+		val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		
 		changeRefBaseClassPathOfExternalInterfaces(oldValue, "")
+		val newPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath, root))
+		changeInheritanceInInterfaces(CAEXStringResolver.getCompletePath(oldValue), newPath, root)
+		
 		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
 		
 		for(InterfaceClass currClass : listOfInterfaceClasses) {
 			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+			val currNewPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveSystemClassPath(currClass.refBaseClassPath, root))
+			changeInheritanceInInterfaces(CAEXStringResolver.getCompletePath(currClass), currNewPath, root)
 		}
 	}
 }
@@ -225,6 +243,20 @@ routine addUri(caex::ExternalInterface externalInterface) {
 		}
 		update externalInterface {
 			externalInterface.^attribute.add(newAttribute)
+		}
+	}
+}
+
+//Interface Typ kann nicht wechseln: Collada bleibt Collada, PLC bleibt PLC, andere werden nicht Collada oder PLC
+routine changeInheritanceInInterfaces(String oldParent, String newParent, caex::CAEXFile root) {
+	action {
+		execute {
+			val allInterfaces = EcoreUtil2.getAllContentsOfType(root, InterfaceClass)
+			for(InterfaceClass currInterface : allInterfaces) {
+				if(oldParent.equals(currInterface.refBaseClassPath)) {
+					currInterface.refBaseClassPath = newParent
+				}
+			}
 		}
 	}
 }
