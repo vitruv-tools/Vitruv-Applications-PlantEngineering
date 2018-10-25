@@ -12,7 +12,7 @@ import org.khronos.collada.COLLADAType
 
 class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	
-	@Test
+	//@Test
 	public def testCreatePLCopenContainer() {
 		System.out.println("Test11A")
 		

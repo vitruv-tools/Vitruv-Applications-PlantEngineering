@@ -41,7 +41,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		CAEXRootElement.saveAndSynchronizeChanges
 	}
 	
-	@Test
+	//@Test
 	public def testLibDeletionWithoutCloneDeletion() {
 		System.out.println("Test22A")
 		
@@ -55,7 +55,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		assertEquals("", CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
-	@Test
+	//@Test
 	public def testLibDeletionWithCloneDeletion() {
 		System.out.println("Test2B")
 		
@@ -69,7 +69,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		assertEquals(0, CAEXRootElement.instanceHierarchy.get(0).internalElement.size)
 	}
 	
-	@Test
+	//@Test
 	public def testClassDeletionWithoutCloneDeletion() {
 		System.out.println("Test22C")
 		
@@ -91,7 +91,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		assertEquals("", CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
-	@Test
+	//@Test
 	public def testClassDeletionWithCloneDeletion() {
 		System.out.println("Test22D")
 		
@@ -105,7 +105,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		assertEquals(0, CAEXRootElement.instanceHierarchy.get(0).internalElement.size)
 	}
 	
-	@Test
+	//@Test
 	public def testClassInClassDeletionWithoutCloneDeletion() {
 		System.out.println("Test22E")
 		
@@ -119,7 +119,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		assertEquals("", CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
-	@Test
+	//@Test
 	public def testClassInClassDeletionWithCloneDeletion() {
 		System.out.println("Test22F")
 		

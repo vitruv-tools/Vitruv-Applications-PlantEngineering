@@ -23,7 +23,10 @@ execute actions in CAEX
 // ***** Klasse bzw. Klassenbib entfernen
 
 reaction DeleteSystemUnitClass {
-	after element caex::SystemUnitClass deleted
+	after element caex::SystemUnitClass deleted 
+	with {
+		!(affectedEObject instanceof InternalElement)
+	}
 	call {
 		logger.debug("Reaction DeleteSystemUnitClass")
 		
@@ -77,7 +80,10 @@ reaction RemoveSystemUnitClassLib {
 // ***** Namensänderung einer Klasse bzw. Lib
 
 reaction ChangeSystemUnitClassName {
-	after attribute replaced at caex::SystemUnitClass[name]
+	after attribute replaced at caex::SystemUnitClass[name] 
+	with {
+		!(affectedEObject instanceof InternalElement)
+	}
 	call {
 		logger.debug("ChangeSystemUnitClassName")
 		

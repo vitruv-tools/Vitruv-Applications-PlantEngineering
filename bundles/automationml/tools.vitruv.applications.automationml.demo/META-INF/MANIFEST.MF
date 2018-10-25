@@ -23,8 +23,8 @@ Require-Bundle: com.google.guava,
  tools.vitruv.domains.plcopen,
  tools.vitruv.domains.caex,
  tools.vitruv.extensions.emf;bundle-version="0.2.0",
- tools.vitruv.testutils;bundle-version="0.2.0",
  tools.vitruv.extensions.emf.monitorededitor;bundle-version="0.2.0",
  tools.vitruv.applications.automationml;bundle-version="1.0.0",
  tools.vitruv.domains.collada;bundle-version="0.3.0",
- tools.vitruv.domains.aml;bundle-version="0.3.0"
+ tools.vitruv.domains.aml;bundle-version="0.3.0",
+ tools.vitruv.testutils;bundle-version="0.3.0"
