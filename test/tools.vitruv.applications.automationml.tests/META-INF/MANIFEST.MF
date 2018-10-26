@@ -34,5 +34,8 @@ Require-Bundle: org.apache.log4j,
  caex.caex30;bundle-version="0.1.0",
  tools.vitruv.applications.automationml;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.applications.automationml.caexreactions.tests
+Export-Package: tools.vitruv.applications.automationml.tests.aggregatorreactions,
+ tools.vitruv.applications.automationml.tests.caexreactions,
+ tools.vitruv.applications.automationml.tests.colladareactions,
+ tools.vitruv.applications.automationml.tests.plcopenreactions
 

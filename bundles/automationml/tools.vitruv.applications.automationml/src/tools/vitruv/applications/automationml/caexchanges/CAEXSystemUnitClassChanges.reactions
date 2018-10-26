@@ -159,8 +159,15 @@ routine removePrototypeFromInternalElement (caex::SystemUnitClass systemUnitClas
 		execute {
 			for(InternalElement currInternalElement : internalElements) {
 				currInternalElement.refBaseSystemUnitPath = ""
+				removeCorrespondenceBetweenPrototypeAndClone(systemUnitClass, currInternalElement)
 			}
 		}
+	}
+}
+
+routine removeCorrespondenceBetweenPrototypeAndClone(caex::SystemUnitClass systemUnitClass, caex::InternalElement internalElement) {
+	action {
+		remove correspondence between internalElement and systemUnitClass tagged with TagHelper.PROTOTYPE_CLONE
 	}
 }
 

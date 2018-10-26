@@ -1,4 +1,4 @@
-package tools.vitruv.applications.automationml.aggregatorreactions.tests
+package tools.vitruv.applications.automationml.tests.caexreactions
 
 import tools.vitruv.applications.automationml.caexchanges.CombinedCAEXChangePropagationSpecification
 import java.util.NoSuchElementException
@@ -17,20 +17,20 @@ import caex.caex30.caex.CAEXFactory
 import tools.vitruv.domains.collada.ColladaDomainProvider
 import tools.vitruv.domains.aml.AMLDomainProvider
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import edu.kit.sdq.aml_aggregator.AMLProject
 import org.khronos.collada.COLLADAType
-import edu.kit.sdq.aml_aggregator.Aml_aggregatorFactory
 import org.khronos.collada.ColladaFactory
+import edu.kit.sdq.aml_aggregator.AMLProject
+import edu.kit.sdq.aml_aggregator.Aml_aggregatorFactory
 
-class AbstractAggregatorReactionsTest extends VitruviusApplicationTest {
-	private static val AGGREGATOR_MODEL_FILE_EXTENSION = "aml_aggregator"
-	private static val AGGREGATOR_MODEL_NAME = "model"
-	private static val CAEX_MODEL_FILE_EXTENSION = "caex";
-	private static val CAEX_MODEL_NAME = "model";
-	private static val PLCOPEN_MODEL_FILE_EXTENSION = "tc60201"
-	private static val PLCOPEN_MODEL_NAME = "model"
-	private static val COLLADA_MODEL_FILE_EXTENSION = "dae"
-	private static val COLLADA_MODEL_NAME = "model"
+class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
+	static val AGGREGATOR_MODEL_FILE_EXTENSION = "aml_aggregator"
+	static val AGGREGATOR_MODEL_NAME = "model"
+	static val CAEX_MODEL_FILE_EXTENSION = "caex";
+	static val CAEX_MODEL_NAME = "model";
+	static val PLCOPEN_MODEL_FILE_EXTENSION = "tc60201"
+	static val PLCOPEN_MODEL_NAME = "model"
+	static val COLLADA_MODEL_FILE_EXTENSION = "dae"
+	static val COLLADA_MODEL_NAME = "model"
 
 	override protected cleanup() {
 		// nothing to cleanup
@@ -77,10 +77,10 @@ class AbstractAggregatorReactionsTest extends VitruviusApplicationTest {
 	}
 	
 	override protected setup() {
-		val docRootAggregator = preloadExistingAggregatorModel("resources/bsp_aml_empty.aml_aggregator")
-		createAndSynchronizeModel(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath, docRootAggregator)
-		/*val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
-		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)*/
+		/*val docRootAggregator = preloadExistingAggregatorModel("resources/bsp_aml_empty.aml_aggregator")
+		createAndSynchronizeModel(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath, docRootAggregator)*/
+		val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
+		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)
 		/*val docRootPLCopen = preloadExistingPLCopenModel("resources/bsp_plc_empty.tc60201")
 		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)*/
 		/*val docRootCollada = preloadExistingColladaModel("resources/bsp_collada_empty.dae")

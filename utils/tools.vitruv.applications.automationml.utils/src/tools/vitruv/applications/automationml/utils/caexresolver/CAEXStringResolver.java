@@ -11,6 +11,10 @@ import caex.caex30.caex.SystemUnitClassLib;
 
 public class CAEXStringResolver {
 	public static String getCompletePath(InterfaceClass interfaceClass) {
+		if(interfaceClass == null) {
+			return null;
+		}
+		
 		InterfaceClass currInterface = interfaceClass;
 		EObject helpingObject;
 		String[] currStringParts = new String[100];		//Anzahl utopisch
@@ -36,6 +40,10 @@ public class CAEXStringResolver {
 	}
 	
 	public static String getCompletePath(SystemUnitClass systemClass) {
+		if(systemClass == null) {
+			return "";
+		}
+		
 		SystemUnitClass currClass = systemClass;
 		EObject helpingObject;
 		String[] currStringParts = new String[100];		//Anzahl utopisch

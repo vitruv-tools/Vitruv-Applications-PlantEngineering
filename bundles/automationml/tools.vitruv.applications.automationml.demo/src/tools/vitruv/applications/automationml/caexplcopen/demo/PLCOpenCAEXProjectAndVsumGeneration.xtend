@@ -21,7 +21,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionFactory
 
 class PLCOpenCAEXProjectAndVsumGeneration {
 	
-	public def void createProjectAndVsum() {
+	def void createProjectAndVsum() {
 		TuidManager.instance.reinitialize();
         val project = createTestProject("testProject");
         val virtualModel = createVirtualModel("testProjectVsum");

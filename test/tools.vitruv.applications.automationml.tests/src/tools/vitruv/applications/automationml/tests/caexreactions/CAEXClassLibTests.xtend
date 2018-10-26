@@ -1,4 +1,4 @@
-package tools.vitruv.applications.automationml.caexreactions.tests
+package tools.vitruv.applications.automationml.tests.caexreactions
 
 import org.junit.Test
 
@@ -41,22 +41,33 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		CAEXRootElement.saveAndSynchronizeChanges
 	}
 	
-	//@Test
-	public def testLibDeletionWithoutCloneDeletion() {
+	@Test
+	def testLibDeletionWithoutCloneDeletion() {
 		System.out.println("Test22A")
 		
 		createBasicModel(false)
 		
-		CAEXRootElement.systemUnitClassLib.remove(0)
+		val systemClass = CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0)
+		
+		val first = new LinkedList<EObject>
+		first.add(systemClass)
+		val second = correspondenceModel.getCorrespondingEObjects(first)
+		
+		CAEXRootElement.systemUnitClassLib.remove(systemClass)
 		testUserInteractor.addNextConfirmationInput(false)
+		
 		CAEXRootElement.saveAndSynchronizeChanges
+		
+		val third = new LinkedList<EObject>
+		third.add(systemClass)
+		val forth = correspondenceModel.getCorrespondingEObjects(first)
 		
 		assertEquals(0, CAEXRootElement.systemUnitClassLib.size)
 		assertEquals("", CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
-	//@Test
-	public def testLibDeletionWithCloneDeletion() {
+	@Test
+	def testLibDeletionWithCloneDeletion() {
 		System.out.println("Test2B")
 		
 		createBasicModel(false)
@@ -70,18 +81,18 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 	}
 	
 	//@Test
-	public def testClassDeletionWithoutCloneDeletion() {
+	def testClassDeletionWithoutCloneDeletion() {
 		System.out.println("Test22C")
 		
 		createBasicModel(false)
 		
 		val first = new LinkedList<EObject>
 		first.add(CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0))
-		val second = correspondenceModel.getCorrespondingEObjects(first)
+		//val second = correspondenceModel.getCorrespondingEObjects(first)
 		
 		val third = new LinkedList<EObject>
 		third.add(CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0))
-		val fourth = correspondenceModel.getCorrespondingEObjects(third)
+		//val fourth = correspondenceModel.getCorrespondingEObjects(third)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
 		testUserInteractor.addNextConfirmationInput(false)
@@ -92,7 +103,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 	}
 	
 	//@Test
-	public def testClassDeletionWithCloneDeletion() {
+	def testClassDeletionWithCloneDeletion() {
 		System.out.println("Test22D")
 		
 		createBasicModel(false)
@@ -106,7 +117,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 	}
 	
 	//@Test
-	public def testClassInClassDeletionWithoutCloneDeletion() {
+	def testClassInClassDeletionWithoutCloneDeletion() {
 		System.out.println("Test22E")
 		
 		createBasicModel(true)
@@ -120,7 +131,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 	}
 	
 	//@Test
-	public def testClassInClassDeletionWithCloneDeletion() {
+	def testClassInClassDeletionWithCloneDeletion() {
 		System.out.println("Test22F")
 		
 		createBasicModel(true)

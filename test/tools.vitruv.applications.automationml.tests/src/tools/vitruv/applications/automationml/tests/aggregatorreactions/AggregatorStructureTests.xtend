@@ -1,4 +1,4 @@
-package tools.vitruv.applications.automationml.aggregatorreactions.tests
+package tools.vitruv.applications.automationml.tests.aggregatorreactions
 
 import org.junit.Test
 
@@ -13,7 +13,7 @@ import org.khronos.collada.COLLADAType
 class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	
 	//@Test
-	public def testCreatePLCopenContainer() {
+	def testCreatePLCopenContainer() {
 		System.out.println("Test11A")
 		
 		aggregatorRootElement.caexcontainer = aggregatorFactory.createCAEXContainer
@@ -38,7 +38,7 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	}
 	
 	//@Test
-	public def testCreateColladaContainer() {
+	def testCreateColladaContainer() {
 		System.out.println("Test11B")
 		
 		aggregatorRootElement.caexcontainer = aggregatorFactory.createCAEXContainer
@@ -60,7 +60,7 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	}
 	
 	//@Test
-	public def testRemoveCAEXContainer() {
+	def testRemoveCAEXContainer() {
 		System.out.println("Test11C")
 		
 		val caexContainer = aggregatorFactory.createCAEXContainer
@@ -77,12 +77,12 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	}
 	
 	//@Test
-	public def testRemovePLCopenContainer() {
+	def testRemovePLCopenContainer() {
 		System.out.println("Test11D")
 	}
 	
 	//@Test
-	public def testRemoveColladaContainer() {
+	def testRemoveColladaContainer() {
 		System.out.println("Test11E")
 	}
 }

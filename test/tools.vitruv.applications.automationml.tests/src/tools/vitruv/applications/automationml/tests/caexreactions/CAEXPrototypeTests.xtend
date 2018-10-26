@@ -1,4 +1,4 @@
-package tools.vitruv.applications.automationml.caexreactions.tests
+package tools.vitruv.applications.automationml.tests.caexreactions
 
 import org.junit.Test
 
@@ -8,12 +8,11 @@ import static org.junit.Assert.assertNotNull
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import caex.caex30.caex.SystemUnitClass
-import tools.vitruv.framework.userinteraction.UserInteractor
 
 class CAEXPrototypeTests extends AbstractCAEXReactionsTest {
 	
 	@Test
-	public def testAddClassToInternalElement() {
+	def testAddClassToInternalElement() {
 		System.out.println("Test21A")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
@@ -43,7 +42,9 @@ class CAEXPrototypeTests extends AbstractCAEXReactionsTest {
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if (second.get(0).size != 1) {
+		if(second.size == 0) {
+			assertTrue(false)
+		} else if (second.get(0).size != 1) {
 			assertTrue(false)
 		} else {
 			assertEquals(newSystemClass.name, (second.get(0).get(0) as SystemUnitClass).name)
@@ -51,7 +52,7 @@ class CAEXPrototypeTests extends AbstractCAEXReactionsTest {
 	}
 	
 	@Test
-	public def testRemoveClassFromInternalElement() {
+	def testRemoveClassFromInternalElement() {
 		System.out.println("Test21B")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
@@ -84,11 +85,11 @@ class CAEXPrototypeTests extends AbstractCAEXReactionsTest {
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
 		
-		assertEquals(0, second.get(0).size)
+		assertEquals(0, second.size)
 	}
 	
 	@Test
-	public def testChangeClassInInternalElement() {
+	def testChangeClassInInternalElement() {
 		System.out.println("Test21C")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
@@ -124,7 +125,9 @@ class CAEXPrototypeTests extends AbstractCAEXReactionsTest {
 		first.add(newInternalElement)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if (second.get(0).size != 1) {
+		if(second.size == 0) {
+			assertTrue(false)
+		} else if (second.get(0).size != 1) {
 			assertTrue(false)
 		} else {
 			assertEquals(newSystemClassB.name, (second.get(0).get(0) as SystemUnitClass).name)
