@@ -142,7 +142,7 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 	}
 	
 	@Test
-	def testClassWithsubclassDeletionWithCloneDeletion() {
+	def testClassWithSubclassDeletionWithCloneDeletion() {
 		System.out.println("Test22H")
 		
 		createBasicModel(true)
@@ -154,5 +154,44 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		
 		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.get(0).systemUnitClass.size)
 		assertEquals(0, CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.size)
+	}
+	
+	@Test 
+	def testClassLibNameChange() {
+		System.out.println("Test22I")
+		
+		createBasicModel(false)
+		
+		CAEXRootElement.systemUnitClassLib.get(0).name = "NewLibName"
+		
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals("NewLibName/BspClass",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+	}
+	
+	@Test
+	def testClassNameChange() {
+		System.out.println("Test22J")
+		
+		createBasicModel(false)
+		
+		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).name = "NewClassName"
+		
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals("BspLib/NewClassName",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+	}
+	
+	@Test
+	def testClasWithSubClassNameChange() {
+		System.out.println("Test22K")
+		
+		createBasicModel(true)
+		
+		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).name = "NewClassName"
+		
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals("BspLib/NewClassName/AnotherClass",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 }
