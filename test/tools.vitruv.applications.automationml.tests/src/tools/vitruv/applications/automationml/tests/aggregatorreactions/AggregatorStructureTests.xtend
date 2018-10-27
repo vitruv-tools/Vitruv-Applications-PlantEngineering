@@ -27,7 +27,11 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 		first.add(newContainer)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if(second.get(0).size != 1) {
+		if(second.size == 0) {
+			assertTrue(false)
+		} else if(second.get(0).size != 1) {
+			assertTrue(false)
+		} else if(!(second.get(0).get(0) instanceof ProjectType)) {
 			assertTrue(false)
 		}
 		
@@ -52,11 +56,17 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 		first.add(newContainer)
 		val second = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if(second.get(0).size != 1) {
+		if(second.size == 0) {
+			assertTrue(false)
+		} else if(second.get(0).size != 1) {
+			assertTrue(false)
+		} else if(!(second.get(0).get(0) instanceof COLLADAType)) {
 			assertTrue(false)
 		}
 		
 		val collada = second.get(0).get(0) as COLLADAType
+		assertNotNull(collada.scene)
+		assertNotNull(collada.scene.instanceVisualScene)
 	}
 	
 	//@Test

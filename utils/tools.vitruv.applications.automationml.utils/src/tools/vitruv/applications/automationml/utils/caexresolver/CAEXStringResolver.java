@@ -49,17 +49,17 @@ public class CAEXStringResolver {
 		String[] currStringParts = new String[100];		//Anzahl utopisch
 		int currPart = 0;
 		
-		while(true) {
-			currStringParts[currPart] = currClass.getName();
-			currPart ++;
-			helpingObject = currClass.eContainer();
-			if(helpingObject instanceof SystemUnitClass) {
-				currClass = (SystemUnitClass) helpingObject;
-			} else {
-				break;
+			while(true) {
+				currStringParts[currPart] = currClass.getName();
+				currPart ++;
+				helpingObject = currClass.eContainer();
+				if(helpingObject instanceof SystemUnitClass) {
+					currClass = (SystemUnitClass) helpingObject;
+				} else {
+					break;
+				}
 			}
-		}
-		
+
 		String finalPath = ((SystemUnitClassLib)helpingObject).getName();
 		for(int i = currPart - 1; i >= 0; i--) {
 			finalPath = finalPath + "/" + currStringParts[i];

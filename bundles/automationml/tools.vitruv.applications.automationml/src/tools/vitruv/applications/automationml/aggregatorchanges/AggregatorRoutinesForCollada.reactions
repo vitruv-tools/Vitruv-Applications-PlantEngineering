@@ -18,9 +18,12 @@ execute actions in AML
 
 routine createColladaFile(aml::ColladaContainer container) {
 	action {
-		//TODO alles weitere erzeugen
+		val visualSceneInstance = create collada::InstanceWithExtra
+		val scene = create collada::SceneType and initialize {
+			scene.instanceVisualScene = visualSceneInstance
+		}
 		val colladaType = create collada::COLLADAType and initialize {
-			
+			colladaType.scene = scene
 		}
 		add correspondence between colladaType and container tagged with TagHelper.AML_COLLADA
 		execute {

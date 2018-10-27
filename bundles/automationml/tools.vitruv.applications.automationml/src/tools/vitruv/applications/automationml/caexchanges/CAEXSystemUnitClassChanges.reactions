@@ -23,14 +23,13 @@ execute actions in CAEX
 // ***** Klasse bzw. Klassenbib entfernen
 
 reaction DeleteSystemUnitClass {
-	after element caex::SystemUnitClass deleted 
+	after element caex::SystemUnitClass deleted
 	with {
 		!(affectedEObject instanceof InternalElement)
 	}
 	call {
-		logger.debug("Reaction DeleteSystemUnitClass")
+		logger.debug("Reaction RemoveSystemUnitClassFromClass")
 		
-		val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese oder eine untergeordnete Klasse referenzieren, gelöscht werden?").startInteraction
 		
 		if(shouldClonesDeleted) {
@@ -38,8 +37,6 @@ reaction DeleteSystemUnitClass {
 		} else {
 			removePrototypeFromInternalElement(affectedEObject)
 		}
-		val newPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveSystemClassPath(affectedEObject.refBaseClassPath, root))
-		changeInheritanceInClasses(CAEXStringResolver.getCompletePath(affectedEObject), newPath, root)
 					
 		for(SystemUnitClass currClass : EcoreUtil2.getAllContentsOfType(affectedEObject, SystemUnitClass)) {
 			if(shouldClonesDeleted) {
@@ -47,8 +44,6 @@ reaction DeleteSystemUnitClass {
 			} else {
 				removePrototypeFromInternalElement(currClass)
 			}
-			val currNewPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveSystemClassPath(currClass.refBaseClassPath, root))
-			changeInheritanceInClasses(CAEXStringResolver.getCompletePath(currClass), currNewPath, root)
 		}
 	}
 }
@@ -58,20 +53,15 @@ reaction RemoveSystemUnitClassLib {
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassLib")
 		
-		val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die Klassen dieser Bibliothek referenzieren, gelöscht werden?").startInteraction
 		
 		if(shouldClonesDeleted) {
 			for(SystemUnitClass currClass : EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)) {
 				removeClones(currClass)
-				val newPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveSystemClassPath(currClass.refBaseClassPath, root))
-				changeInheritanceInClasses(CAEXStringResolver.getCompletePath(currClass), newPath, root)
 			}
 		} else {
 			for(SystemUnitClass currClass : EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)) {
 				removePrototypeFromInternalElement(currClass)
-				val newPath = CAEXStringResolver.getCompletePath(CAEXStringResolver.resolveSystemClassPath(currClass.refBaseClassPath, root))
-				changeInheritanceInClasses(CAEXStringResolver.getCompletePath(currClass), newPath, root)
 			}
 		}
 	}
@@ -280,21 +270,6 @@ routine changeClassPathInInternalElement(caex::SystemUnitClass systemUnitClass, 
 		execute {
 			for(InternalElement currElement : internalElements) {
 				currElement.refBaseSystemUnitPath = newPath
-			}
-		}
-	}
-}
-
-// ***** 
-
-routine changeInheritanceInClasses(String oldParent, String newParent, caex::CAEXFile root) {
-	action {
-		execute {
-			val allClasses = EcoreUtil2.getAllContentsOfType(root, SystemUnitClass)
-			for(SystemUnitClass currClass : allClasses) {
-				if(oldParent.equals(currClass.refBaseClassPath)) {
-					currClass.refBaseClassPath = newParent
-				}
 			}
 		}
 	}

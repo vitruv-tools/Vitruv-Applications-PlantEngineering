@@ -47,28 +47,18 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		
 		createBasicModel(false)
 		
-		val systemClass = CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0)
-		
-		val first = new LinkedList<EObject>
-		first.add(systemClass)
-		val second = correspondenceModel.getCorrespondingEObjects(first)
-		
-		CAEXRootElement.systemUnitClassLib.remove(systemClass)
+		CAEXRootElement.systemUnitClassLib.remove(0)
 		testUserInteractor.addNextConfirmationInput(false)
 		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		val third = new LinkedList<EObject>
-		third.add(systemClass)
-		val forth = correspondenceModel.getCorrespondingEObjects(first)
-		
-		assertEquals(0, CAEXRootElement.systemUnitClassLib.size)
-		assertEquals("", CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.size)
+		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
 	@Test
 	def testLibDeletionWithCloneDeletion() {
-		System.out.println("Test2B")
+		System.out.println("Test22B")
 		
 		createBasicModel(false)
 		
@@ -76,33 +66,25 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		testUserInteractor.addNextConfirmationInput(true)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals(0, CAEXRootElement.systemUnitClassLib.size)
-		assertEquals(0, CAEXRootElement.instanceHierarchy.get(0).internalElement.size)
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.size)
+		assertEquals(0, CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.size)
 	}
 	
-	//@Test
+	@Test
 	def testClassDeletionWithoutCloneDeletion() {
 		System.out.println("Test22C")
 		
 		createBasicModel(false)
 		
-		val first = new LinkedList<EObject>
-		first.add(CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0))
-		//val second = correspondenceModel.getCorrespondingEObjects(first)
-		
-		val third = new LinkedList<EObject>
-		third.add(CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0))
-		//val fourth = correspondenceModel.getCorrespondingEObjects(third)
-		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
 		testUserInteractor.addNextConfirmationInput(false)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals(0, CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.size)
-		assertEquals("", CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.get(0).systemUnitClass.size)
+		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
-	//@Test
+	@Test
 	def testClassDeletionWithCloneDeletion() {
 		System.out.println("Test22D")
 		
@@ -112,11 +94,11 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		testUserInteractor.addNextConfirmationInput(true)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals(0, CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.size)
-		assertEquals(0, CAEXRootElement.instanceHierarchy.get(0).internalElement.size)
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.get(0).systemUnitClass.size)
+		assertEquals(0, CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.size)
 	}
 	
-	//@Test
+	@Test
 	def testClassInClassDeletionWithoutCloneDeletion() {
 		System.out.println("Test22E")
 		
@@ -126,11 +108,11 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		testUserInteractor.addNextConfirmationInput(false)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals(0, CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).systemUnitClass.size)
-		assertEquals("", CAEXRootElement.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.get(0).systemUnitClass.get(0).systemUnitClass.size)
+		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
-	//@Test
+	@Test
 	def testClassInClassDeletionWithCloneDeletion() {
 		System.out.println("Test22F")
 		
@@ -141,7 +123,36 @@ class CAEXClassLibTests extends AbstractCAEXReactionsTest {
 		testUserInteractor.addNextConfirmationInput(true)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals(0, CAEXRootElement.systemUnitClassLib.size)
-		assertEquals(0, CAEXRootElement.instanceHierarchy.get(0).internalElement.size)
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.get(0).systemUnitClass.get(0).systemUnitClass.size)
+		assertEquals(0, CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.size)
+	}
+	
+	@Test
+	def testClassWithSubclassDeletionWithoutCloneDeletion() {
+		System.out.println("Test22G")
+		
+		createBasicModel(true)
+		
+		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
+		testUserInteractor.addNextConfirmationInput(false)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.get(0).systemUnitClass.size)
+		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+	}
+	
+	@Test
+	def testClassWithsubclassDeletionWithCloneDeletion() {
+		System.out.println("Test22H")
+		
+		createBasicModel(true)
+		
+		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
+		
+		testUserInteractor.addNextConfirmationInput(true)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.get(0).systemUnitClass.size)
+		assertEquals(0, CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.size)
 	}
 }
