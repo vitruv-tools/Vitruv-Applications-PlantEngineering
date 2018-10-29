@@ -21,6 +21,7 @@ import org.khronos.collada.COLLADAType
 import org.khronos.collada.ColladaFactory
 import edu.kit.sdq.aml_aggregator.AMLProject
 import edu.kit.sdq.aml_aggregator.Aml_aggregatorFactory
+import org.khronos.collada.DocumentRoot
 
 class AbstractColladaReactionsTest extends VitruviusApplicationTest {
 	static val AGGREGATOR_MODEL_FILE_EXTENSION = "aml_aggregator"
@@ -64,8 +65,24 @@ class AbstractColladaReactionsTest extends VitruviusApplicationTest {
 		return PLCOPEN_MODEL_NAME.projectPLCopenModelPath.firstRootElement as ProjectType
 	}
 	
-	protected def COLLADAType getColladaRootElement() {
-		return COLLADA_MODEL_NAME.projectColladaModelPath.firstRootElement as COLLADAType
+	protected def DocumentRoot getColladaRootElement() {
+		return COLLADA_MODEL_NAME.projectColladaModelPath.firstRootElement as DocumentRoot
+	}
+
+	protected def AMLProject getAggregatorRootElementVirtualModel() {
+		virtualModel.getModelInstance(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath.modelVuri).firstRootEObject as AMLProject
+	}
+	
+	protected def CAEXFile getCAEXRootElementVirtualModel() {
+		virtualModel.getModelInstance(CAEX_MODEL_NAME.projectCAEXModelPath.modelVuri).firstRootEObject as CAEXFile
+	}
+	
+	protected def ProjectType getPLCopenRootElementVirtualModel() {
+		virtualModel.getModelInstance(PLCOPEN_MODEL_NAME.projectPLCopenModelPath.modelVuri).firstRootEObject as ProjectType
+	}
+	
+	protected def DocumentRoot getColladaRootElementVirtualModel() {
+		virtualModel.getModelInstance(COLLADA_MODEL_NAME.projectColladaModelPath.modelVuri).firstRootEObject as DocumentRoot
 	}
 
 	override protected createChangePropagationSpecifications() {
@@ -127,12 +144,12 @@ class AbstractColladaReactionsTest extends VitruviusApplicationTest {
 		return targetModel as ProjectType
 	}
 	
-	protected def COLLADAType preloadExistingColladaModel(String path) {
+	protected def DocumentRoot preloadExistingColladaModel(String path) {
 		val dslURI = URI.createURI(path)
         val resourceSet = new ResourceSetImpl()
         val resource = resourceSet.getResource(dslURI, true)
         val targetModel = resource.getContents().get(0)
-		return targetModel as COLLADAType
+		return targetModel as DocumentRoot
 	}
 	
 	protected def TestUserInteraction getTestUserInteractor() {

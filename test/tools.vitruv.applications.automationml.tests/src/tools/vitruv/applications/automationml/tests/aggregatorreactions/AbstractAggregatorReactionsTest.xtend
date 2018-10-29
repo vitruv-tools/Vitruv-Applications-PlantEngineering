@@ -68,6 +68,22 @@ class AbstractAggregatorReactionsTest extends VitruviusApplicationTest {
 		return COLLADA_MODEL_NAME.projectColladaModelPath.firstRootElement as COLLADAType
 	}
 
+	protected def AMLProject getAggregatorRootElementVirtualModel() {
+		virtualModel.getModelInstance(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath.modelVuri).firstRootEObject as AMLProject
+	}
+	
+	protected def CAEXFile getCAEXRootElementVirtualModel() {
+		virtualModel.getModelInstance(CAEX_MODEL_NAME.projectCAEXModelPath.modelVuri).firstRootEObject as CAEXFile
+	}
+	
+	protected def ProjectType getPLCopenRootElementVirtualModel() {
+		virtualModel.getModelInstance(PLCOPEN_MODEL_NAME.projectPLCopenModelPath.modelVuri).firstRootEObject as ProjectType
+	}
+	
+	protected def COLLADAType getColladaRootElementVirtualModel() {
+		virtualModel.getModelInstance(COLLADA_MODEL_NAME.projectColladaModelPath.modelVuri).firstRootEObject as COLLADAType
+	}
+
 	override protected createChangePropagationSpecifications() {
 		return #[new CombinedCAEXChangePropagationSpecification]
 	}
