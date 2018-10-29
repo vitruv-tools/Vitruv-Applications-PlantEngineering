@@ -1,9 +1,9 @@
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import org.eclipse.xtext.EcoreUtil2
 import org.plcopen.xml.tc60201.PouType1
 import org.khronos.collada.SceneType
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -38,13 +38,13 @@ reaction ChangePathForPlcopen {
 
 routine changePathInColladaInterfaces (aml::ColladaContainer container) {
 	match {
-		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.AML_COLLADA
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with TagHelper.INTERFACE_SCENE
+		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with AMLTags.INTERFACE_SCENE
 	}
 	action {
 		execute {
 			for (ExternalInterface currInterface : externalInterfaces) {
-				val currAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				val currAttribute = CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri")
 				currAttribute.value = container.path
 			}
 		}
@@ -53,13 +53,13 @@ routine changePathInColladaInterfaces (aml::ColladaContainer container) {
 
 routine changePathInPlcopenInterfaces (aml::PLCopenContainer container) {
 	match {
-		val projectType = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.AML_PLCOPEN
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(projectType, PouType1).get(0) tagged with TagHelper.INTERFACE_POU
+		val projectType = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(projectType, PouType1).get(0) tagged with AMLTags.INTERFACE_POU
 	}
 	action {
 		execute {
 			for (ExternalInterface currInterface : externalInterfaces) {
-				val currAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				val currAttribute = CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri")
 				currAttribute.value = container.path
 			}
 		}

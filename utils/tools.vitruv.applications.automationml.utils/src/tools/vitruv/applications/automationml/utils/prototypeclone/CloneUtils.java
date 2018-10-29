@@ -1,4 +1,4 @@
-package tools.vitruv.applications.automationml.utils.clonechangestests;
+package tools.vitruv.applications.automationml.utils.prototypeclone;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,11 +11,10 @@ import caex.caex30.caex.InterfaceClass;
 import caex.caex30.caex.InternalElement;
 import caex.caex30.caex.SystemUnitClass;
 
-public class InternalElementChecker {
-	
+public class CloneUtils {
 	// Filtert aus einer Liste von InternalElements diejenigen heraus, bei denen bereits die Angaben im Prototyp zu ExternalInterfaces überschrieben wurden
 	//TODO Problem: bereits geänderte systemUnitClass wird übergeben!!
-	public static List<InternalElement> filterInternalElementsForChanges(List<InternalElement> internalElements, SystemUnitClass systemUnitClass) {
+	public static List<InternalElement> filterChangedClones(List<InternalElement> internalElements, SystemUnitClass systemUnitClass) {
 		List<InternalElement> filteredList = new LinkedList<InternalElement>();
 		for(InternalElement currInternalElement : internalElements) {
 			if(checkInternalElementForChanges(currInternalElement, systemUnitClass)) {
@@ -24,9 +23,9 @@ public class InternalElementChecker {
 		}
 		return filteredList;
 	}
-	
+		
 	//TODO Problem wie oben
-	public static boolean hasNotChanged(InternalElement internalElement, SystemUnitClass systemUnitClass) {
+	public static boolean hasCloneNotChanged(InternalElement internalElement, SystemUnitClass systemUnitClass) {
 		return checkInternalElementForChanges(internalElement, systemUnitClass);
 	}
 	
@@ -37,7 +36,7 @@ public class InternalElementChecker {
 		if(interfacesElement.size() != interfacesClass.size()) {
 			return false;
 		}
-		
+			
 		for(int i=0; i<interfacesElement.size(); i++) {
 			if(interfacesElement.get(i) instanceof ExternalInterface) {
 				if(interfacesClass.get(i) instanceof ExternalInterface) {
@@ -53,10 +52,10 @@ public class InternalElementChecker {
 				}
 			}
 		}
-		
+			
 		return true;
 	}
-	
+		
 	// Hilfsmethode: divide et impera InternalElement -> ExternalInterface
 	private static boolean checkExternalInterfaceForChanges(ExternalInterface interfaceFromElement, ExternalInterface interfaceFromClass) {
 		if(!interfaceFromElement.getID().equals(interfaceFromClass.getID())) {
@@ -68,22 +67,22 @@ public class InternalElementChecker {
 		if(!interfaceFromElement.getRefBaseClassPath().equals(interfaceFromClass.getRefBaseClassPath())) {
 			return false;
 		}
-		
+			
 		EList<Attribute> attributesElement = interfaceFromElement.getAttribute();
 		EList<Attribute> attributesClass = interfaceFromClass.getAttribute();
 		if(attributesElement.size() != attributesClass.size()) {
 			return false;
 		}
-		
+			
 		for(int i=0; i<attributesElement.size(); i++) {
 			if(!checkAttributeForChanges(attributesElement.get(i), attributesClass.get(i))) {
 				return false;
 			}
 		}
-		
+			
 		return true;
 	}
-	
+		
 	// Hilfsmethode: divide et impera ExternalInterface -> Attribute
 	private static boolean checkAttributeForChanges(Attribute attributeFromElement, Attribute attributeFromClass) {
 		if(!attributeFromElement.getName().equals(attributeFromClass.getName())) {

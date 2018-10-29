@@ -1,8 +1,8 @@
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import org.plcopen.xml.tc60201.PouType1
 import org.eclipse.xtext.EcoreUtil2
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -87,13 +87,13 @@ routine createPLCopenContainer(plcopen::ProjectType projectType) {
 		val container = create aml::PLCopenContainer and initialize {
 			container.path = ""
 		} 
-		add correspondence between projectType and container tagged with TagHelper.AML_PLCOPEN
+		add correspondence between projectType and container tagged with AMLTags.AML_PLCOPEN
 	}
 }
 
 routine removePLCopenContainer(plcopen::ProjectType projectType) {
 	match {
-		val container = retrieve aml::PLCopenContainer corresponding to projectType tagged with TagHelper.AML_PLCOPEN
+		val container = retrieve aml::PLCopenContainer corresponding to projectType tagged with AMLTags.AML_PLCOPEN
 	}
 	action {
 		delete container
@@ -104,12 +104,12 @@ routine removePLCopenContainer(plcopen::ProjectType projectType) {
 
 routine changePathForPLCopenInterfacesToEmpty(plcopen::PouType1 pouType) {
 	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.INTERFACE_POU
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with AMLTags.INTERFACE_POU
 	}
 	action {
 		execute {
 			for(ExternalInterface currInterface : externalInterfaces) {
-				val pathAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				val pathAttribute = CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri")
 				pathAttribute.value = ""
 			}
 		}

@@ -1,9 +1,9 @@
 import org.eclipse.xtext.EcoreUtil2
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import org.khronos.collada.SceneType
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
-import tools.vitruv.applications.automationml.utils.amlutils.ResourcesHelper
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -25,9 +25,9 @@ routine createColladaFile(aml::ColladaContainer container) {
 		val colladaType = create collada::COLLADAType and initialize {
 			colladaType.scene = scene
 		}
-		add correspondence between colladaType and container tagged with TagHelper.AML_COLLADA
+		add correspondence between colladaType and container tagged with AMLTags.AML_COLLADA
 		execute {
-			val colladaNumber = ResourcesHelper.newNumberOfColladaFiles
+			val colladaNumber = AggregatorUtils.newNumberOfColladaFiles
 			persistProjectRelative(container, colladaType, "resources/resources-gen/collada" + colladaNumber + ".dae")
 		}
 	}
@@ -37,13 +37,13 @@ routine createColladaFile(aml::ColladaContainer container) {
 
 routine deleteColladaFile(aml::ColladaContainer container) {
 	match {
-		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.AML_COLLADA
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with TagHelper.INTERFACE_SCENE
+		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with AMLTags.INTERFACE_SCENE
 		}
 	action {
 		execute {
 			for(ExternalInterface currInterface : externalInterfaces) {
-				InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri").value = ""
+				CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri").value = ""
 			}
 		}
 		delete colladaType

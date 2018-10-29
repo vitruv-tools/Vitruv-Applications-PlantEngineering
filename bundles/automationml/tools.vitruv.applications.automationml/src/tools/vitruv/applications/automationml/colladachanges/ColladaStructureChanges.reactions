@@ -1,6 +1,6 @@
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import org.khronos.collada.SceneType
 import org.eclipse.xtext.EcoreUtil2
 
@@ -44,13 +44,13 @@ routine createColladaContainer(collada::COLLADAType colladaType) {
 		val container = create aml::ColladaContainer and initialize {
 			container.path = ""
 		} 
-		add correspondence between colladaType and container tagged with TagHelper.AML_COLLADA
+		add correspondence between colladaType and container tagged with AMLTags.AML_COLLADA
 	}
 }
 
 routine removeColladaContainer(collada::COLLADAType colladaType) {
 	match {
-		val container = retrieve aml::ColladaContainer corresponding to colladaType tagged with TagHelper.AML_COLLADA
+		val container = retrieve aml::ColladaContainer corresponding to colladaType tagged with AMLTags.AML_COLLADA
 	}
 	action {
 		delete container
@@ -61,12 +61,12 @@ routine removeColladaContainer(collada::COLLADAType colladaType) {
 
 routine changePathForColladaInterfacesToEmpty(collada::SceneType scene) {
 	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.INTERFACE_SCENE
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with AMLTags.INTERFACE_SCENE
 	}
 	action {
 		execute {
 			for(ExternalInterface currInterface : externalInterfaces) {
-				val pathAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri")
+				val pathAttribute = CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri")
 				pathAttribute.value = ""
 			}
 		}

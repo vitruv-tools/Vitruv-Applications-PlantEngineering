@@ -1,9 +1,9 @@
 import org.eclipse.xtext.EcoreUtil2
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import org.khronos.collada.COLLADAType
 import org.khronos.collada.SceneType
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -30,9 +30,9 @@ routine createNewColladaContainer (caex::ExternalInterface externalInterface, am
 
 routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInterface, String newPath) {
 	match {
-		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.INTERFACE_SCENE
-		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType) tagged with TagHelper.AML_COLLADA
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with TagHelper.INTERFACE_SCENE
+		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with AMLTags.INTERFACE_SCENE
+		val colladaContainer = retrieve aml::ColladaContainer corresponding to EcoreUtil2.getContainerOfType(scene, COLLADAType) tagged with AMLTags.AML_COLLADA
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to scene tagged with AMLTags.INTERFACE_SCENE
 	}
 	action {
 		update colladaContainer {
@@ -40,7 +40,7 @@ routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInt
 		}
 		execute {
 			for(ExternalInterface currExternalInterface : externalInterfaces) {
-				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
+				val uriAttribute = CAEXUtils.getAttributeInExternalInterface(currExternalInterface, "refUri")
 				uriAttribute.value = newPath
 			}
 		}
@@ -51,7 +51,7 @@ routine changeAllCorrespondingColladaPathes (caex::ExternalInterface externalInt
 
 routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
 	match {
-		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with TagHelper.AML_COLLADA
+		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA
 	}
 	action {
 		execute {
@@ -63,15 +63,15 @@ routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface ext
 
 routine addCorrespondenceBetweenInterfaceAndScene(caex::ExternalInterface externalInterface, collada::SceneType scene) {
 	action {
-		add correspondence between externalInterface and scene tagged with TagHelper.INTERFACE_SCENE
+		add correspondence between externalInterface and scene tagged with AMLTags.INTERFACE_SCENE
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
 	match {
-		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with TagHelper.INTERFACE_SCENE
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with AMLTags.INTERFACE_SCENE
 	}
 	action {
-		remove correspondence between externalInterface and colladaScene tagged with TagHelper.INTERFACE_SCENE
+		remove correspondence between externalInterface and colladaScene tagged with AMLTags.INTERFACE_SCENE
 	}
 }

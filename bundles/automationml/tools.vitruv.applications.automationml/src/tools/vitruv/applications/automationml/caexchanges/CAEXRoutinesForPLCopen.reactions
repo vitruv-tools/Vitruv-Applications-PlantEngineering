@@ -2,8 +2,8 @@ import org.eclipse.xtext.EcoreUtil2
 import org.plcopen.xml.tc60201.PouType1
 import caex.caex30.caex.ExternalInterface
 import org.plcopen.xml.tc60201.ProjectType
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -31,9 +31,9 @@ routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, am
 
 routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInterface, String newPath) {
 	match {
-		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.INTERFACE_POU
-		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with TagHelper.AML_PLCOPEN
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with TagHelper.INTERFACE_POU
+		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU
+		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with AMLTags.AML_PLCOPEN
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with AMLTags.INTERFACE_POU
 	}
 	action {
 		update plcopenContainer {
@@ -41,7 +41,7 @@ routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInt
 		}
 		execute {
 			for(ExternalInterface currExternalInterface : externalInterfaces) {
-				val uriAttribute = InterfaceForAttributeChecker.getAttributeInExternalInterface(currExternalInterface, "refUri")
+				val uriAttribute = CAEXUtils.getAttributeInExternalInterface(currExternalInterface, "refUri")
 				uriAttribute.value = newPath
 			}
 		}
@@ -52,7 +52,7 @@ routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInt
 
 routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.AML_PLCOPEN
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN
 	}
 	action {
 		execute {
@@ -64,15 +64,15 @@ routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface ext
 
 routine addCorrespondenceBetweenInterfaceAndPou(caex::ExternalInterface externalInterface, plcopen::PouType1 pou) {
 	action {
-		add correspondence between externalInterface and pou tagged with TagHelper.INTERFACE_POU
+		add correspondence between externalInterface and pou tagged with AMLTags.INTERFACE_POU
 	}
 }
 
 routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
-		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with TagHelper.INTERFACE_POU
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU
 	}
 	action {
-		remove correspondence between externalInterface and plcPouType tagged with TagHelper.INTERFACE_POU
+		remove correspondence between externalInterface and plcPouType tagged with AMLTags.INTERFACE_POU
 	}
 }

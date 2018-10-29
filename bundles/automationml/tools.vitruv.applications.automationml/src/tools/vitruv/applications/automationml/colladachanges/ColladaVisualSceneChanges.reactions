@@ -1,9 +1,9 @@
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import org.eclipse.xtext.EcoreUtil2
 import org.khronos.collada.InstanceWithExtra
 import org.khronos.collada.InstanceGeometryType
 import org.khronos.collada.VisualSceneType
-import tools.vitruv.applications.automationml.utils.colladautils.StringResolver
+import tools.vitruv.applications.automationml.utils.stringreferences.collada.ColladaStringUtils
 import org.khronos.collada.COLLADAType
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
@@ -85,7 +85,7 @@ reaction ChangeGeometryInstance {
 		logger.debug("ChangeGeometryInstance")
 		
 		val root = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
-		val geometry = StringResolver.resolveGeometryID(newValue, root)
+		val geometry = ColladaStringUtils.getGeometryByID(newValue, root)
 		
 		if(geometry === null) {
 			val shouldGeometryCreated = userInteractor.confirmationDialogBuilder.message("ID existiert nicht. Soll neue Geometrie angelegt werden? Alternativ würde die Änderung zurückgerollt werden.").startInteraction
@@ -107,7 +107,7 @@ reaction ChangeGeometryInstance {
 
 routine changeIdInVisualSceneInstances(collada::VisualSceneType visualScene) {
 	match {
-		val instances = retrieve many collada::InstanceWithExtra corresponding to visualScene tagged with TagHelper.SCENE_VISUAL
+		val instances = retrieve many collada::InstanceWithExtra corresponding to visualScene tagged with AMLTags.SCENE_VISUAL
 	}
 	action {
 		execute {
@@ -120,7 +120,7 @@ routine changeIdInVisualSceneInstances(collada::VisualSceneType visualScene) {
 
 routine removeIdAndCorrespondenceForVisualSceneAndInstances(collada::VisualSceneType visualScene) {
 	match {
-		val instances = retrieve many collada::InstanceWithExtra corresponding to visualScene tagged with TagHelper.SCENE_VISUAL
+		val instances = retrieve many collada::InstanceWithExtra corresponding to visualScene tagged with AMLTags.SCENE_VISUAL
 	}
 	action {
 		execute {
@@ -134,22 +134,22 @@ routine removeIdAndCorrespondenceForVisualSceneAndInstances(collada::VisualScene
 
 routine removeCorrespondenceBetweenVisualSceneAndInstance(collada::VisualSceneType visualScene, collada::InstanceWithExtra instance) {
 	action {
-		remove correspondence between visualScene and instance tagged with TagHelper.SCENE_VISUAL
+		remove correspondence between visualScene and instance tagged with AMLTags.SCENE_VISUAL
 	}
 }
 
 routine removeCorrespondenceBetweenInstanceAndGeometry(collada::InstanceGeometryType instance) {
 	match {
-		val geometry = retrieve collada::GeometryType corresponding to instance tagged with TagHelper.GEOMETRY_INSTANCE
+		val geometry = retrieve collada::GeometryType corresponding to instance tagged with AMLTags.GEOMETRY_INSTANCE
 	}
 	action {
-		remove correspondence between geometry and instance tagged with TagHelper.GEOMETRY_INSTANCE
+		remove correspondence between geometry and instance tagged with AMLTags.GEOMETRY_INSTANCE
 	}
 }
 
 routine addCorrespondenceBetweenInstanceAndGeometry(collada::InstanceGeometryType instance, collada::GeometryType geometry) {
 	action {
-		add correspondence between instance and geometry tagged with TagHelper.GEOMETRY_INSTANCE
+		add correspondence between instance and geometry tagged with AMLTags.GEOMETRY_INSTANCE
 	}
 }
 

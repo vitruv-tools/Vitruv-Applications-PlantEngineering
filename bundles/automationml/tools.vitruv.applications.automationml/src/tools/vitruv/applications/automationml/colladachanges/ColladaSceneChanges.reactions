@@ -1,7 +1,7 @@
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import org.eclipse.xtext.EcoreUtil2
 import org.khronos.collada.COLLADAType
-import tools.vitruv.applications.automationml.utils.colladautils.StringResolver
+import tools.vitruv.applications.automationml.utils.stringreferences.collada.ColladaStringUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -42,7 +42,7 @@ reaction ChangeVisualInstance {
 		logger.debug("ChangeVisualInstance")
 		
 		val root = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
-		val visualScene = StringResolver.resolveVisualSceneID(newValue, root)
+		val visualScene = ColladaStringUtils.getVisualSceneByID(newValue, root)
 				
 		if(visualScene === null) {
 			val shouldVisualSceneCreated = userInteractor.confirmationDialogBuilder.message("ID existiert nicht. Soll neue visuelle Szene angelegt werden? Alternativ würde die Änderung zurückgerollt werden.").startInteraction
@@ -62,16 +62,16 @@ reaction ChangeVisualInstance {
 
 routine removeCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithExtra instance) {
 	match {
-		val visualScene = retrieve collada::VisualSceneType corresponding to instance tagged with TagHelper.SCENE_VISUAL
+		val visualScene = retrieve collada::VisualSceneType corresponding to instance tagged with AMLTags.SCENE_VISUAL
 	}
 	action {
-		remove correspondence between visualScene and instance tagged with TagHelper.SCENE_VISUAL
+		remove correspondence between visualScene and instance tagged with AMLTags.SCENE_VISUAL
 	}
 }
 
 routine addCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithExtra instance, collada::VisualSceneType visualScene) {
 	action {
-		add correspondence between instance and visualScene tagged with TagHelper.SCENE_VISUAL
+		add correspondence between instance and visualScene tagged with AMLTags.SCENE_VISUAL
 	}
 }
 

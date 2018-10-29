@@ -1,6 +1,6 @@
-package tools.vitruv.applications.automationml.utils.amlutils;
+package tools.vitruv.applications.automationml.utils.aml;
 
-public class TagHelper {
+public class AMLTags {
 	//public static final String TAG = "aTag";	// Dummy-Tag
 	public static final String INTERFACE_SCENE = "TagForExternalInterfaceAndScene";				// Verknüpfung CAEX zu Collada
 	public static final String INTERFACE_POU = "TagForExternalInterfaceAndPou";					// Verknüpfung CAEX zu PLCopen

@@ -1,9 +1,9 @@
 import org.eclipse.xtext.EcoreUtil2
 import org.plcopen.xml.tc60201.PouType1
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceForAttributeChecker
-import tools.vitruv.applications.automationml.utils.amlutils.TagHelper
-import tools.vitruv.applications.automationml.utils.amlutils.ResourcesHelper
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -28,9 +28,9 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 		val projectType = create plcopen::ProjectType and initialize {
 			projectType.types = typesType
 		}
-		add correspondence between projectType and container tagged with TagHelper.AML_PLCOPEN
+		add correspondence between projectType and container tagged with AMLTags.AML_PLCOPEN
 		execute { 
-			val plcNumber = ResourcesHelper.newNumberOfPLCopenFiles
+			val plcNumber = AggregatorUtils.newNumberOfPLCopenFiles
 			persistProjectRelative(container, projectType, "resources/resources-gen/plc" + plcNumber + ".tc60201")
 		}
 	}
@@ -40,13 +40,13 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 
 routine deletePLCopenFile(aml::PLCopenContainer container) {
 	match {
-		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with TagHelper.AML_PLCOPEN
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with TagHelper.INTERFACE_POU
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with AMLTags.INTERFACE_POU
 	}
 	action {
 		execute {
 			for(ExternalInterface currInterface : externalInterfaces) {
-				InterfaceForAttributeChecker.getAttributeInExternalInterface(currInterface, "refUri").value = ""
+				CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri").value = ""
 			}
 		}
 		delete plcProject
