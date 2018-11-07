@@ -65,8 +65,8 @@ class AbstractColladaReactionsTest extends VitruviusApplicationTest {
 		return PLCOPEN_MODEL_NAME.projectPLCopenModelPath.firstRootElement as ProjectType
 	}
 	
-	protected def /*DocumentRoot*/ COLLADAType getColladaRootElement() {
-		return COLLADA_MODEL_NAME.projectColladaModelPath.firstRootElement as COLLADAType //DocumentRoot
+	protected def DocumentRoot /*COLLADAType*/ getColladaRootElement() {
+		return COLLADA_MODEL_NAME.projectColladaModelPath.firstRootElement as /*COLLADAType*/ DocumentRoot
 	}
 
 	protected def AMLProject getAggregatorRootElementVirtualModel() {
@@ -81,8 +81,8 @@ class AbstractColladaReactionsTest extends VitruviusApplicationTest {
 		virtualModel.getModelInstance(PLCOPEN_MODEL_NAME.projectPLCopenModelPath.modelVuri).firstRootEObject as ProjectType
 	}
 	
-	protected def /*DocumentRoot*/COLLADAType getColladaRootElementVirtualModel() {
-		virtualModel.getModelInstance(COLLADA_MODEL_NAME.projectColladaModelPath.modelVuri).firstRootEObject as COLLADAType //DocumentRoot
+	protected def DocumentRoot /*COLLADAType*/ getColladaRootElementVirtualModel() {
+		virtualModel.getModelInstance(COLLADA_MODEL_NAME.projectColladaModelPath.modelVuri).firstRootEObject as /*COLLADAType*/ DocumentRoot
 	}
 
 	override protected createChangePropagationSpecifications() {

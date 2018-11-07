@@ -130,7 +130,6 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 		}
 	}
 	
-	//Änderung zurückrollen bei nicht vorhandener Klasse
 	
 	@Test
 	def changeNameToNotExistentClass() {

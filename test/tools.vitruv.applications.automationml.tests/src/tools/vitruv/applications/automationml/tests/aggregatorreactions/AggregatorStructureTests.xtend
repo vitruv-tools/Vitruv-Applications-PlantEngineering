@@ -39,7 +39,7 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 		assertEquals(1, project.types.pous.pou.size)
 	}
 	
-	//@Test
+	@Test
 	def testCreateColladaContainer() {		
 		aggregatorRootElement.caexcontainer = aggregatorFactory.createCAEXContainer
 		aggregatorRootElement.saveAndSynchronizeChanges

@@ -1,9 +1,3 @@
-import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
-import org.plcopen.xml.tc60201.PouType1
-import org.eclipse.xtext.EcoreUtil2
-import tools.vitruv.applications.automationml.utils.aml.AMLTags
-
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
 import "http://edu.kit.ipd.sdq.aml" as aml
@@ -12,30 +6,6 @@ import "http://www.collada.org/2005/11/COLLADASchema" as collada
 reactions: plcopenStructureChanges
 in reaction to changes in PLCOpen
 execute actions in PLCOpen
-
-// ***** Root anlegen/löschen
-
-reaction CreatePLCopenRoot {
-	after element plcopen::ProjectType created
-	call {
-		logger.debug("CreatePLCopenRoot")
-		
-		createPLCopenContainer(affectedEObject)
-		createPLCopenStructure(affectedEObject)
-	}
-}
-
-reaction RemovePLCopenRoot {
-	after element plcopen::ProjectType deleted
-	call {
-		logger.debug("RemovePLCopenRoot")
-		
-		val pouType = EcoreUtil2.getAllContentsOfType(affectedEObject, PouType1).get(0) 
-		
-		changePathForPLCopenInterfacesToEmpty(pouType)
-		removePLCopenContainer(affectedEObject)
-	}
-}
 
 // ***** zusätzliche Beschreibungcontainer anlegen/löschen
 
@@ -65,8 +35,8 @@ reaction DeletePousType {
 	call {
 		logger.debug("DeletePousType")
 		
-		//TODO Methode entspricht einem Zurückrollen der Änderung
-		recreatePousType(affectedEObject, oldValue)
+		//TODO entspricht einem Zurückrollen der Änderung
+		affectedEObject.pous = oldValue
 	}
 }
 
@@ -75,61 +45,8 @@ reaction DeleteTypesType {
 	call {
 		logger.debug("DeleteTypesType")
 		
-		//TODO Methode entspricht einem Zurückrollen der Änderung
-		recreateTypesType(affectedEObject, oldValue)
-	}
-}
-
-// ***** Routinen, um Container für PLCopen anzulegen oder zu entfernen
-
-routine createPLCopenContainer(plcopen::ProjectType projectType) {
-	action {
-		val container = create aml::PLCopenContainer and initialize {
-			container.path = ""
-		} 
-		add correspondence between projectType and container tagged with AMLTags.AML_PLCOPEN
-	}
-}
-
-routine removePLCopenContainer(plcopen::ProjectType projectType) {
-	match {
-		val container = retrieve aml::PLCopenContainer corresponding to projectType tagged with AMLTags.AML_PLCOPEN
-	}
-	action {
-		delete container
-	}
-}
-
-// Routine, um Interfaces an gelöschte Dateien anzupassen
-
-routine changePathForPLCopenInterfacesToEmpty(plcopen::PouType1 pouType) {
-	match {
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with AMLTags.INTERFACE_POU
-	}
-	action {
-		execute {
-			for(ExternalInterface currInterface : externalInterfaces) {
-				val pathAttribute = CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri")
-				pathAttribute.value = ""
-			}
-		}
-	}
-}
-
-// ***** Routine, um Grundstruktur der Datei anzulegen
-
-routine createPLCopenStructure(plcopen::ProjectType projectType) {
-	action {
-		val pouType = create plcopen::PouType1
-		val pousType = create plcopen::PousType and initialize {
-			pousType.pou.add(pouType)
-		}
-		val typesType = create plcopen::TypesType and initialize {
-			typesType.pous = pousType
-		}
-		update projectType {
-			projectType.types = typesType
-		}
+		//TODO entspricht einem Zurückrollen der Änderung
+		affectedEObject.types = oldValue
 	}
 }
 
@@ -138,31 +55,5 @@ routine createPLCopenStructure(plcopen::ProjectType projectType) {
 routine deletePouType(plcopen::PouType1 pouType) {
 	action {
 		delete pouType
-	}
-}
-
-routine recreatePousType(plcopen::TypesType typesType, plcopen::PousType pousType) {
-	match {
-		check {
-			pousType.pou.size == 1
-		}
-	}
-	action {
-		update typesType {
-			typesType.pous = pousType
-		}
-	}
-}
-
-routine recreateTypesType(plcopen::ProjectType projectType, plcopen::TypesType typesType) {
-	match {
-		check {
-			typesType.pous.pou.size == 1
-		}
-	}
-	action {
-		update projectType {
-			projectType.types = typesType
-		}
 	}
 }
