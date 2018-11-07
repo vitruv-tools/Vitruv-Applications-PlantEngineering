@@ -11,12 +11,12 @@ import org.plcopen.xml.tc60201.ProjectType
 import org.khronos.collada.COLLADAType
 
 class ChangeContainerPathesTests extends AbstractAggregatorReactionsTest {
-	@Test
+	//@Test
 	def testChangePathInPLCopenContainer() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testChangePathInColladaContainer() {
 		
 	}

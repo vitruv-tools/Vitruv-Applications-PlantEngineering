@@ -13,7 +13,6 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testAddClassToInternalElement() {
-		System.out.println("Test21A")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
@@ -53,7 +52,6 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testRemoveClassFromInternalElement() {
-		System.out.println("Test21B")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
@@ -89,7 +87,6 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testChangeClassInInternalElement() {
-		System.out.println("Test21C")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClassA = caexFactory.createSystemUnitClass
@@ -137,7 +134,6 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def changeNameToNotExistentClass() {
-		System.out.println("Test21D")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newHierarchy = caexFactory.createInstanceHierarchy
@@ -163,7 +159,6 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def addPrototypeToInternalElementWithColladaCopy() {
-		System.out.println("Test21E")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass
@@ -213,7 +208,6 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def addPrototypeToInternalElementWithPLCopenCopy() {
-		System.out.println("Test21F")
 		val caexFactory = caexFactory
 		val newSystemClassLib = caexFactory.createSystemUnitClassLib
 		val newSystemClass = caexFactory.createSystemUnitClass

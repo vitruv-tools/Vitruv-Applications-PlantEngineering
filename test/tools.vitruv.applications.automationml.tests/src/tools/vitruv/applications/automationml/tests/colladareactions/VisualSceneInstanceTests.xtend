@@ -7,17 +7,17 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
 class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
-	@Test
+	//@Test
 	def testChangeVisualSceneReference() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testChangeVisualSceneReferenceWithRollback() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testChangeVisualSceneReferenceWithAimCreation() {
 		
 	}

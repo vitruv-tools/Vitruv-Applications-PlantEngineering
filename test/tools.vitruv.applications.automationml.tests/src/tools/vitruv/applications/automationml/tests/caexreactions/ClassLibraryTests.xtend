@@ -40,8 +40,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testLibDeletionWithoutCloneDeletion() {
-		System.out.println("Test22A")
-		
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.remove(0)
@@ -55,8 +53,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testLibDeletionWithCloneDeletion() {
-		System.out.println("Test22B")
-		
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.remove(0)
@@ -69,8 +65,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClassDeletionWithoutCloneDeletion() {
-		System.out.println("Test22C")
-		
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
@@ -83,8 +77,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClassDeletionWithCloneDeletion() {
-		System.out.println("Test22D")
-		
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
@@ -97,8 +89,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClassInClassDeletionWithoutCloneDeletion() {
-		System.out.println("Test22E")
-		
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).systemUnitClass.remove(0)
@@ -111,8 +101,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClassInClassDeletionWithCloneDeletion() {
-		System.out.println("Test22F")
-		
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).systemUnitClass.remove(0)
@@ -126,8 +114,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClassWithSubclassDeletionWithoutCloneDeletion() {
-		System.out.println("Test22G")
-		
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
@@ -140,8 +126,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClassWithSubclassDeletionWithCloneDeletion() {
-		System.out.println("Test22H")
-		
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
@@ -155,8 +139,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test 
 	def testClassLibNameChange() {
-		System.out.println("Test22I")
-		
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).name = "NewLibName"
@@ -168,8 +150,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClassNameChange() {
-		System.out.println("Test22J")
-		
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).name = "NewClassName"
@@ -181,8 +161,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	@Test
 	def testClasWithSubClassNameChange() {
-		System.out.println("Test22K")
-		
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).name = "NewClassName"

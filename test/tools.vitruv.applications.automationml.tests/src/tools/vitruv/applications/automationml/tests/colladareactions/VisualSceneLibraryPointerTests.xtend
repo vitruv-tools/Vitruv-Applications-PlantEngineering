@@ -7,22 +7,22 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
 class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
-	@Test
+	//@Test
 	def testChangeVisualSceneID() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testChangeReferenceToGeometry() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testChangeReferenceToGeoemtryWithRollback() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testChangeReferenceToGeometryWithAimCreation() {
 		
 	}

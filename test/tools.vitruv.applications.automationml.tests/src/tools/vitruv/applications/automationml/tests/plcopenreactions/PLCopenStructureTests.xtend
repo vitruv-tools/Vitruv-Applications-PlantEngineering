@@ -7,32 +7,32 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
 class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
-	@Test
+	//@Test
 	def testRemovePou() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemovePous() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemovePousWithRollback() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveType() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveTypeWithRollback() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testCreatePou() {
 		
 	}

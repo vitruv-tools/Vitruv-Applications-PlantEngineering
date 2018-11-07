@@ -7,22 +7,22 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
 class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
-	@Test
+	//@Test
 	def testRemoveVisualSceneLib() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveVisualScene() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveNode() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveGeometryInstance() {
 		
 	}

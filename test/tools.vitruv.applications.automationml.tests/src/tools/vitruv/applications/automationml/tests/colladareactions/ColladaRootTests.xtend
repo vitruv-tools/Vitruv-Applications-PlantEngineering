@@ -7,17 +7,17 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
 class ColladaRootTests extends AbstractColladaReactionsTest {
-	@Test
+	//@Test
 	def testCreateRootElement() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveRootElement() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveRootElementWithInterfaces() {
 		
 	}

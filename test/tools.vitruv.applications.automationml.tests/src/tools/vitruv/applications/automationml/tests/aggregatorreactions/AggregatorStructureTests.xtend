@@ -12,10 +12,8 @@ import org.khronos.collada.COLLADAType
 
 class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	
-	//@Test
-	def testCreatePLCopenContainer() {
-		System.out.println("Test11A")
-		
+	@Test
+	def testCreatePLCopenContainer() {		
 		aggregatorRootElement.caexcontainer = aggregatorFactory.createCAEXContainer
 		aggregatorRootElement.saveAndSynchronizeChanges
 		
@@ -42,9 +40,7 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	}
 	
 	//@Test
-	def testCreateColladaContainer() {
-		System.out.println("Test11B")
-		
+	def testCreateColladaContainer() {		
 		aggregatorRootElement.caexcontainer = aggregatorFactory.createCAEXContainer
 		aggregatorRootElement.saveAndSynchronizeChanges
 		
@@ -71,8 +67,6 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	
 	//@Test
 	def testRemoveCAEXContainer() {
-		System.out.println("Test11C")
-		
 		val caexContainer = aggregatorFactory.createCAEXContainer
 		aggregatorRootElement.caexcontainer = caexContainer
 		aggregatorRootElement.saveAndSynchronizeChanges
@@ -88,11 +82,11 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	
 	//@Test
 	def testRemovePLCopenContainer() {
-		System.out.println("Test11D")
+		
 	}
 	
 	//@Test
 	def testRemoveColladaContainer() {
-		System.out.println("Test11E")
+		
 	}
 }
