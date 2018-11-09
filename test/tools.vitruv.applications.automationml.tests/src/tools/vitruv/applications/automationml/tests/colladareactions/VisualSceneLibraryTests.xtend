@@ -22,19 +22,17 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 		val instanceGeometry = colladaFactory.createInstanceGeometryType
 		instanceGeometry.name = "geoInstance"
 		
-		val collada = colladaFactory.createCOLLADAType
 		val scene = colladaFactory.createSceneType
 		val instanceVisualScene = colladaFactory.createInstanceWithExtra
 		
 		geometryLib.geometry.add(geometry)
-		collada.libraryGeometries.add(geometryLib)
+		colladaRootElement.libraryGeometries.add(geometryLib)
 		node.instanceGeometry.add(instanceGeometry)
 		visualScene.node.add(node)
 		visualSceneLib.visualScene.add(visualScene)
-		collada.libraryVisualScenes.add(visualSceneLib)
+		colladaRootElement.libraryVisualScenes.add(visualSceneLib)
 		scene.instanceVisualScene = instanceVisualScene
-		collada.scene = scene
-		colladaRootElement.COLLADA = collada
+		colladaRootElement.scene = scene
 		
 		instanceGeometry.url = "geo1ID"
 		instanceVisualScene.url = "visualSceneID"
@@ -59,22 +57,22 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 	def testRemoveVisualSceneLib() {
 		createBasicModel(true)
 		
-		colladaRootElement.COLLADA.libraryVisualScenes.remove(0)
+		colladaRootElement.libraryVisualScenes.remove(0)
 		colladaRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
 		val second = new LinkedList<EObject>
 		val third = new LinkedList<EObject>
 		
-		first.add(colladaRootElementVirtualModel.COLLADA.libraryGeometries.get(0).geometry.get(0))
-		second.add(colladaRootElementVirtualModel.COLLADA.libraryGeometries.get(0).geometry.get(1))
-		third.add(colladaRootElementVirtualModel.COLLADA.scene.instanceVisualScene)
+		first.add(colladaRootElementVirtualModel.libraryGeometries.get(0).geometry.get(0))
+		second.add(colladaRootElementVirtualModel.libraryGeometries.get(0).geometry.get(1))
+		third.add(colladaRootElementVirtualModel.scene.instanceVisualScene)
 		
 		val four = correspondenceModel.getCorrespondingEObjects(first)
 		val five = correspondenceModel.getCorrespondingEObjects(second)
 		val six = correspondenceModel.getCorrespondingEObjects(third)
 		
-		assertEquals(0, colladaRootElementVirtualModel.COLLADA.libraryVisualScenes.size)
+		assertEquals(0, colladaRootElementVirtualModel.libraryVisualScenes.size)
 		assertEquals(0, four.size)
 		assertEquals(0, five.size)
 		assertEquals(0, six.size)
@@ -84,19 +82,19 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 	def testRemoveVisualScene() {
 		createBasicModel(false)
 		
-		colladaRootElement.COLLADA.libraryVisualScenes.get(0).visualScene.remove(0)
+		colladaRootElement.libraryVisualScenes.get(0).visualScene.remove(0)
 		colladaRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
 		val second = new LinkedList<EObject>
 		
-		first.add(colladaRootElementVirtualModel.COLLADA.libraryGeometries.get(0).geometry.get(0))
-		second.add(colladaRootElementVirtualModel.COLLADA.scene.instanceVisualScene)
+		first.add(colladaRootElementVirtualModel.libraryGeometries.get(0).geometry.get(0))
+		second.add(colladaRootElementVirtualModel.scene.instanceVisualScene)
 		
 		val three = correspondenceModel.getCorrespondingEObjects(first)
 		val four = correspondenceModel.getCorrespondingEObjects(second)
 		
-		assertEquals(0, colladaRootElementVirtualModel.COLLADA.libraryVisualScenes.get(0).visualScene.size)
+		assertEquals(0, colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.size)
 		assertEquals(0, three.size)
 		assertEquals(0, four.size)
 	}
@@ -105,14 +103,14 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 	def testRemoveNode() {
 		createBasicModel(false)
 		
-		colladaRootElement.COLLADA.libraryVisualScenes.get(0).visualScene.get(0).node.remove(0)
+		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.remove(0)
 		colladaRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
-		first.add(colladaRootElementVirtualModel.COLLADA.libraryGeometries.get(0).geometry.get(0))
+		first.add(colladaRootElementVirtualModel.libraryGeometries.get(0).geometry.get(0))
 		val two = correspondenceModel.getCorrespondingEObjects(first)
 		
-		assertEquals(0, colladaRootElementVirtualModel.COLLADA.libraryVisualScenes.get(0).visualScene.get(0).node.size)
+		assertEquals(0, colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.size)
 		assertEquals(0, two.size)
 	}
 	
@@ -120,14 +118,14 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 	def testRemoveGeometryInstance() {
 		createBasicModel(false)
 		
-		colladaRootElement.COLLADA.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.remove(0)
+		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.remove(0)
 		colladaRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
-		first.add(colladaRootElementVirtualModel.COLLADA.libraryGeometries.get(0).geometry.get(0))
+		first.add(colladaRootElementVirtualModel.libraryGeometries.get(0).geometry.get(0))
 		val two = correspondenceModel.getCorrespondingEObjects(first)
 		
-		assertEquals(0, colladaRootElementVirtualModel.COLLADA.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.size)
+		assertEquals(0, colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.size)
 		assertEquals(0, two.size)
 	}
 }

@@ -12,7 +12,7 @@ import org.khronos.collada.COLLADAType
 
 class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 	
-	@Test
+	//@Test
 	def testCreatePLCopenContainer() {		
 		aggregatorRootElement.caexcontainer = aggregatorFactory.createCAEXContainer
 		aggregatorRootElement.saveAndSynchronizeChanges
@@ -39,7 +39,7 @@ class AggregatorStructureTests extends AbstractAggregatorReactionsTest {
 		assertEquals(1, project.types.pous.pou.size)
 	}
 	
-	@Test
+	//@Test
 	def testCreateColladaContainer() {		
 		aggregatorRootElement.caexcontainer = aggregatorFactory.createCAEXContainer
 		aggregatorRootElement.saveAndSynchronizeChanges

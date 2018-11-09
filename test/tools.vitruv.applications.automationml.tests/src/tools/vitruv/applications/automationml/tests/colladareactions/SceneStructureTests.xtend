@@ -6,32 +6,30 @@ import static org.junit.Assert.assertNotNull
 
 class SceneStructureTests extends AbstractColladaReactionsTest {
 	def createBasicModel() {
-		val collada = colladaFactory.createCOLLADAType
 		val scene = colladaFactory.createSceneType
 		val visualInstance = colladaFactory.createInstanceWithExtra
 		
 		scene.instanceVisualScene = visualInstance
-		collada.scene = scene
-		colladaRootElement.COLLADA = collada
+		colladaRootElement.scene = scene
 		
 		colladaRootElement.saveAndSynchronizeChanges
 	}
 	
-	@Test
+	//@Test
 	def testRemoveScene() {
-		colladaRootElement.COLLADA.scene = null
+		colladaRootElement.scene = null
 		
 		colladaRootElement.saveAndSynchronizeChanges
 		
-		assertNotNull(colladaRootElementVirtualModel.COLLADA.scene)
+		assertNotNull(colladaRootElementVirtualModel.scene)
 	}
 	
-	@Test
+	//@Test
 	def testRemoveVisualSceneInstance() {
-		colladaRootElement.COLLADA.scene.instanceVisualScene = null
+		colladaRootElement.scene.instanceVisualScene = null
 		
 		colladaRootElement.saveAndSynchronizeChanges
 		
-		assertNotNull(colladaRootElementVirtualModel.COLLADA.scene.instanceVisualScene)
+		assertNotNull(colladaRootElementVirtualModel.scene.instanceVisualScene)
 	}
 }
