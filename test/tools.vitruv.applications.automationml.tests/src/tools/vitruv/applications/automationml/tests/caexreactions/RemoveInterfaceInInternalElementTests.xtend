@@ -7,5 +7,23 @@ import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
 class RemoveInterfaceInInternalElementTests extends AbstractCAEXReactionsTest {
+	def createBasicModel() {
+		
+	}
 	
+	@Test
+	def testRemoveExternalInterfaceFromInternalElement() {
+		
+	}
+	
+	
+	@Test
+	def testRemoveExternalColladaInterfaceFromInternalElement() {
+		
+	}
+	
+	@Test
+	def testRemoveExternalPLCopenInterfaceFromInternalElement() {
+		
+	}
 }

@@ -60,7 +60,7 @@ reaction ChangeExternalInterfaceType {
 		val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(newInterfaceClass, caexFile)
 		val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(newInterfaceClass, caexFile)
 		
-		//TODO!!!!!!!
+		//TODO!!!!!!! Durchdenken (löschen??)
 		
 		if(isNewPlcopen || isNewCollada) {
 			addPathAttributeToExternalInterface(affectedEObject)
@@ -114,6 +114,8 @@ reaction ChangeExternalInterfacePath {
 	}
 	call {
 		logger.debug("Reaction ChangeExternalInterfacePath")
+		
+		//leerer Pfad (vorher/nachher) beachten!
 				
 		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
 		val caexFile = EcoreUtil2.getContainerOfType(attributeParent, CAEXFile)

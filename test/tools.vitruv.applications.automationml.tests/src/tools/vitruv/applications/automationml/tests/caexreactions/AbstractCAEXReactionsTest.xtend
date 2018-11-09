@@ -166,4 +166,7 @@ class AbstractCAEXReactionsTest extends VitruviusApplicationTest {
 		return found.get(0)
 	}
 
+	protected def createCAEXBasicInterfaceLib() {
+		//TODO
+	}
 }
