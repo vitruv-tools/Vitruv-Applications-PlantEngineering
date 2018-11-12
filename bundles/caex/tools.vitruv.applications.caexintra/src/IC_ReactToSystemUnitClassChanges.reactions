@@ -85,7 +85,7 @@ routine correctPathsSystemUnitClassClones(CAEX::SystemUnitClass affectedEObject)
 		call {
 			if(correspondenceModel.getCorrespondingEObjects(#[affectedEObject]).isEmpty) return;
 			//TODO: Modify to only start correction for Elements with correspondences
-			var newRefBasePath = CAEXIntraConsistencyTools.generatePathFromTuid(correspondenceModel,affectedEObject,correspondenceModel.calculateTuidFromEObject(affectedEObject))				
+			var newRefBasePath = CAEXIntraConsistencyTools.generatePath(affectedEObject)				
 			if(newRefBasePath === null) return;
 			val feature = CAEXFactory.eINSTANCE.createInternalElement.eClass.getEStructuralFeature("refBaseSystemUnitPath")
 			correctSystemUnitClassClones(affectedEObject, feature, newRefBasePath)

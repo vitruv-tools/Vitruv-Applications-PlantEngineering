@@ -10,7 +10,6 @@ import tools.vitruv.applications.caexintra.CAEXIntraConsistencyTools;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
-import tools.vitruv.framework.tuid.Tuid;
 
 @SuppressWarnings("all")
 public class NewCorrespondenceCloneProtoRoutine extends AbstractRepairRoutineRealization {
@@ -25,9 +24,8 @@ public class NewCorrespondenceCloneProtoRoutine extends AbstractRepairRoutineRea
       if (((sucStr == null) || (sucStr == ""))) {
         return;
       }
-      String affectedTuid = CAEXIntraConsistencyTools.generateTuidFromPath(this.correspondenceModel, ie, sucStr);
-      EObject _resolveEObjectFromTuid = this.correspondenceModel.resolveEObjectFromTuid(Tuid.getInstance(affectedTuid));
-      CAEXObject suc = ((CAEXObject) _resolveEObjectFromTuid);
+      EObject _findByPathFromRoot = CAEXIntraConsistencyTools.findByPathFromRoot(ie, sucStr);
+      CAEXObject suc = ((CAEXObject) _findByPathFromRoot);
       if ((suc != null)) {
         _routinesFacade.addCAEXCorrespondence(ie, suc);
       }

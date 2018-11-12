@@ -34,7 +34,7 @@ public class CorrectPathsSystemUnitClassClonesRoutine extends AbstractRepairRout
       if (_isEmpty) {
         return;
       }
-      String newRefBasePath = CAEXIntraConsistencyTools.generatePathFromTuid(this.correspondenceModel, affectedEObject, this.correspondenceModel.calculateTuidFromEObject(affectedEObject));
+      String newRefBasePath = CAEXIntraConsistencyTools.generatePath(affectedEObject);
       if ((newRefBasePath == null)) {
         return;
       }

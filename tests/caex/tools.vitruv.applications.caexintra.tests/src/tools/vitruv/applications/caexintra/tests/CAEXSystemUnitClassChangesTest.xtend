@@ -1,23 +1,20 @@
 package tools.vitruv.applications.caexintra.tests
 
-
-import org.junit.Test
-import org.junit.Rule
-
-import static org.junit.Assert.fail
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.assertNotNull
-
+import caex.caex30.caex.ChangeMode
 import caex.caex30.caex.InternalElement
 import caex.caex30.caex.SystemUnitClass
 import caex.caex30.caex.SystemUnitClassLib
-import caex.caex30.caex.ChangeMode
 import java.util.NoSuchElementException
+import org.eclipse.emf.ecore.EObject
+import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.ExpectedException
-import org.junit.Ignore
 
-class CAEXSystemUnitClassChangesTest extends tools.vitruv.applications.caexintra.tests.AbstractCAEXIntraModelConsistencyTest {
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.fail
+
+class CAEXSystemUnitClassChangesTest extends AbstractCAEXIntraModelConsistencyTest {
 	
 	@Rule
 	public ExpectedException expected = ExpectedException.none
@@ -49,12 +46,11 @@ class CAEXSystemUnitClassChangesTest extends tools.vitruv.applications.caexintra
 		instHier.internalElement.get(0).refBaseSystemUnitPath = "SUCL/SUC"
 		rootElement.saveAndSynchronizeChanges
 		
-		val correspondences = correspondenceModel.allCorrespondences
-		val equ1 = correspondences.get(0).ATuids.get(0).equals(correspondenceModel.calculateTuidFromEObject(intElem))
-		val equ2 = correspondences.get(0).BTuids.get(0).equals(correspondenceModel.calculateTuidFromEObject(sysClass))
+		val correspondece = correspondenceModel.getCorrespondingEObjects(#[intElem]).get(0).get(0) as EObject
+		sysClass = findByPath(rootElementVirtualModel, "SUCL/SUC") as SystemUnitClass
 		
-		assertEquals(1,correspondences.length)
-		assertTrue(equ1 && equ2)
+		assertEquals(1, correspondenceModel.allCorrespondences.length)
+		assertEquals(correspondece, sysClass)
 	}
 	
 	@Test
@@ -72,10 +68,10 @@ class CAEXSystemUnitClassChangesTest extends tools.vitruv.applications.caexintra
 		assertEquals("SysUCL/SysUClassNameChanged", targetElem.refBaseSystemUnitPath)
 	}
 	
-	@Ignore
+	
 	@Test
 	public def testSystemUnitClassLibNameChanged() {
-		//TODO: This Test should run without complications but fails for unknown reasons while testing.
+		//TODO: This Test should run without complications but fails sometimes for unknown reasons while testing.
 		//Different behavior in the monitor.
 		
 		var targetElem = rootElement.findByPath("InstanceHierarchy_1/InternalElement_1") as InternalElement

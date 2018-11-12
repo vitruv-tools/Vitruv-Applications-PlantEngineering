@@ -1,6 +1,5 @@
-import tools.vitruv.applications.caexintra.CAEXIntraConsistencyTools
 import caex.caex30.caex.CAEXObject
-import tools.vitruv.framework.tuid.Tuid
+import tools.vitruv.applications.caexintra.CAEXIntraConsistencyTools
 
 import "http://www.dke.de/CAEX/300" as CAEX
 
@@ -37,8 +36,7 @@ routine newCorrespondenceCloneProto(CAEX::InternalElement ie, String sucStr) {
 		call{
 			if(sucStr === null || sucStr === "") return;
 			//Add correspondence
-			var affectedTuid = CAEXIntraConsistencyTools.generateTuidFromPath(correspondenceModel,ie,sucStr);			
-			var suc = correspondenceModel.resolveEObjectFromTuid(Tuid.getInstance(affectedTuid)) as CAEXObject;
+			var suc = CAEXIntraConsistencyTools.findByPathFromRoot(ie,sucStr) as CAEXObject
 			if(suc !== null)
 				addCAEXCorrespondence(ie,suc);
 		}
