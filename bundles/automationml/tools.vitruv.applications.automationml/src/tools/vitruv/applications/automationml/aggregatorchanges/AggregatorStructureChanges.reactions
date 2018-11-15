@@ -1,8 +1,3 @@
-import edu.kit.sdq.aml_aggregator.ColladaContainer
-import edu.kit.sdq.aml_aggregator.PLCopenContainer
-import tools.vitruv.applications.automationml.utils.aml.AMLTags
-import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
-
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
 import "http://edu.kit.ipd.sdq.aml" as aml
@@ -22,20 +17,9 @@ reaction RemoveAMLProject {
 	call {
 		logger.debug("Reaction RemoveAMLProject")
 		
-		val shouldDeleteProject = userInteractor.confirmationDialogBuilder.message("Das ganze Projekt würde gelöscht werden. Fortfahren?").startInteraction
-		if(shouldDeleteProject) {
-			deleteCAEXFile(oldValue.caexcontainer)
-			for(ColladaContainer currContainer : oldValue.colladacontainer) {
-				deleteColladaFile(currContainer)
-			}
-			for(PLCopenContainer currContainer : oldValue.plcopencontainer) {
-				deletePLCopenFile(currContainer)
-			}
-		} else {
-			//TODO Änderung zurückrollen
-			// kein Sprachstatement vorhanden, deswegen diese Formulierung
-			oldValue.eResource.contents.add(oldValue)
-		}
+		//TODO Änderung zurückrollen
+		// kein Sprachstatement vorhanden, deswegen diese Formulierung
+		oldValue.eResource.contents.add(oldValue)
 	}
 }
 
@@ -46,15 +30,13 @@ reaction ReplaceCAEXContainer {
 	call {
 		logger.debug("Reaction ReplaceCAEXContainer")
 		
-		if(newValue === null) {
+		if(oldValue !== null) {
 			//TODO Änderung zurückrollen
 			// kein Sprachstatement vorhanden, deswegen diese Formulierung
 			affectedEObject.caexcontainer = oldValue
-			return;
+		} else {
+			//TODO CAEX Datei erzeugen
 		}
-		
-		deleteCAEXFile(oldValue)
-		createCAEXFile(newValue)
 	}
 }
 
@@ -95,35 +77,5 @@ reaction RemovePLCopenContainer {
 		logger.debug("Reaction RemovePLCopenContainer")
 		
 		deletePLCopenFile(affectedEObject)
-	}
-}
-
-// ***** Routine, um ein komplettes Projekt zu löschen
-
-/*routine removeAMLProject(aml::AMLProject amlProject){
-	action {
-		delete amlProject
-	}
-}*/
-
-// ***** Routinen, um CAEX Dateien zu erzeugen/löschen
-
-routine createCAEXFile(aml::CAEXContainer container) {
-	action {
-		val caexFile = create caex::CAEXFile
-		add correspondence between container and caexFile tagged with AMLTags.AML_CAEX
-		execute {
-			val caexNumber = AggregatorUtils.newNumberOfCAEXFiles
-			persistProjectRelative(container, caexFile, "resources/resources-gen/caex" + caexNumber + ".caex")
-		}
-	}
-}
-
-routine deleteCAEXFile(aml::CAEXContainer container) {
-	match {
-		val caexFile = retrieve caex::CAEXFile corresponding to container tagged with AMLTags.AML_CAEX
-	}
-	action {
-		delete caexFile
 	}
 }

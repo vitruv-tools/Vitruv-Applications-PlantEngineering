@@ -3,15 +3,13 @@ package tools.vitruv.applications.automationml.utils.caexresolver;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import caex.caex30.caex.CAEXFile;
+import caex.caex30.caex.ExternalInterface;
 import caex.caex30.caex.InterfaceClass;
 import caex.caex30.caex.InterfaceClassLib;
-import caex.caex30.caex.SystemUnitClass;
-import caex.caex30.caex.SystemUnitClassLib;
-
 
 public class CAEXStringResolver {
 	public static String getCompletePath(InterfaceClass interfaceClass) {
-		if(interfaceClass == null) {
+		if(interfaceClass == null || interfaceClass instanceof ExternalInterface) {
 			return null;
 		}
 		

@@ -7,26 +7,15 @@ import static org.junit.Assert.assertTrue
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import org.khronos.collada.VisualSceneType
+import tools.vitruv.applications.automationml.tests.amlutils.ColladaModelFactory
 
 class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 	def createBasicModel(boolean extended) {
-		val visualSceneLib = colladaFactory.createLibraryVisualScenesType
-		visualSceneLib.name = "visualLib"
-		val visualScene = colladaFactory.createVisualSceneType
-		visualScene.id = "visualSceneID"
-		
-		val scene = colladaFactory.createSceneType
-		val instanceVisualScene = colladaFactory.createInstanceWithExtra
-		
-		visualSceneLib.visualScene.add(visualScene)
+		val visualSceneLib = ColladaModelFactory.createVisualSceneLib(extended)
+		val scene = ColladaModelFactory.createScene
+
 		colladaRootElement.libraryVisualScenes.add(visualSceneLib)
-		scene.instanceVisualScene = instanceVisualScene
 		colladaRootElement.scene = scene
-		
-		if(extended) {
-			val visualSceneTwo = colladaFactory.createVisualSceneType
-			visualSceneTwo.id = "anotherVisualSceneID"
-		}
 		
 		colladaRootElement.saveAndSynchronizeChanges
 	}
@@ -35,7 +24,7 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 	def testAddVisualSceneReference() {
 		createBasicModel(false)
 		
-		colladaRootElement.scene.instanceVisualScene.url = "visualSceneID"
+		colladaRootElement.scene.instanceVisualScene.url = "BspVisualSceneID"
 		colladaRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
@@ -55,10 +44,10 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 	def testChangeVisualSceneReference() {
 		createBasicModel(true)
 		
-		colladaRootElement.scene.instanceVisualScene.url = "visualSceneID"
+		colladaRootElement.scene.instanceVisualScene.url = "BspVisualSceneID"
 		colladaRootElement.saveAndSynchronizeChanges
 		
-		colladaRootElement.scene.instanceVisualScene.url = "anotherVisualSceneID"
+		colladaRootElement.scene.instanceVisualScene.url = "AnotherVisualSceneID"
 		colladaRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
@@ -78,7 +67,7 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 	def testChangeVisualSceneReferenceWithRollback() {
 		createBasicModel(false)
 		
-		colladaRootElement.scene.instanceVisualScene.url = "anotherVisualSceneID"
+		colladaRootElement.scene.instanceVisualScene.url = "NotExistingVisualSceneID"
 		userInteractor.addNextConfirmationInput(false)
 		colladaRootElement.saveAndSynchronizeChanges
 		
@@ -89,7 +78,7 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 	def testChangeVisualSceneReferenceWithAimCreation() {
 		createBasicModel(false)
 		
-		val newString = "anotherVisualSceneID"
+		val newString = "NotExistingVisualSceneID"
 		colladaRootElement.scene.instanceVisualScene.url = newString
 		userInteractor.addNextConfirmationInput(true)
 		colladaRootElement.saveAndSynchronizeChanges

@@ -4,15 +4,11 @@ import org.junit.Test
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
+import tools.vitruv.applications.automationml.tests.amlutils.PLCopenModelFactory
 
 class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
 	def createBasicModel(){
-		val type = plcopenFactory.createTypesType
-		val pous = plcopenFactory.createPousType
-		val pou = plcopenFactory.createPouType1
-		
-		pous.pou.add(pou)
-		type.pous = pous
+		val type = PLCopenModelFactory.createPLCStructure
 		PLCopenRootElement.types = type
 		
 		PLCopenRootElement.saveAndSynchronizeChanges
@@ -52,7 +48,7 @@ class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
 	def testCreatePou() {
 		createBasicModel
 		
-		PLCopenRootElement.types.pous.pou.add(plcopenFactory.createPouType1)
+		PLCopenRootElement.types.pous.pou.add(PLCopenModelFactory.createPou)
 		PLCopenRootElement.saveAndSynchronizeChanges
 		
 		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)

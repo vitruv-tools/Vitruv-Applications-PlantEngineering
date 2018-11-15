@@ -4,34 +4,21 @@ import org.junit.Test
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
+import tools.vitruv.applications.automationml.tests.amlutils.CAEXModelFactory
 
 class ClassLibraryTests extends AbstractCAEXReactionsTest {
 	
 	private def createBasicModel(boolean extended) {
-		val caexFactory = caexFactory
-		val newSystemClassLib = caexFactory.createSystemUnitClassLib
-		val newSystemClass = caexFactory.createSystemUnitClass
-		val newHierarchy = caexFactory.createInstanceHierarchy
-		val newInternalElement = caexFactory.createInternalElement
+		val newSystemClassLib = CAEXModelFactory.createSystemUnitClassLib(extended, true)
+		val newHierarchy = CAEXModelFactory.createInstanceHierarchy(false, false)
 		
-		newSystemClassLib.name = "BspLib"
-		newSystemClass.name = "BspClass"
-		newHierarchy.name = "BspHier"
-		newInternalElement.name = "BspElem"
-		
-		newSystemClassLib.systemUnitClass.add(newSystemClass)
 		CAEXRootElement.systemUnitClassLib.add(newSystemClassLib)
-		
-		newHierarchy.internalElement.add(newInternalElement)
 		CAEXRootElement.instanceHierarchy.add(newHierarchy)
 		
 		if(extended) {
-			val anotherSystemClass = caexFactory.createSystemUnitClass
-			anotherSystemClass.name = "AnotherClass"
-			newSystemClass.systemUnitClass.add(anotherSystemClass)
-			newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass/AnotherClass"
+			newHierarchy.internalElement.get(0).refBaseSystemUnitPath = "BspSystemLib/BspSystemClass/AnotherSystemClass"
 		} else {
-			newInternalElement.refBaseSystemUnitPath = "BspLib/BspClass"
+			newHierarchy.internalElement.get(0).refBaseSystemUnitPath = "BspSystemLib/BspSystemClass"
 		}
 		
 		testUserInteractor.addNextConfirmationInput(false)

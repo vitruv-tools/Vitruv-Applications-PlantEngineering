@@ -5,29 +5,26 @@ import org.junit.Test
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
+import tools.vitruv.applications.automationml.tests.amlutils.AggregatorModelFactory
+import tools.vitruv.applications.automationml.tests.amlutils.CAEXModelFactory
 
 class ChangeExternalInterfacePathTests extends AbstractCAEXReactionsTest {
 	// falls nicht Collada: PLCopen
 	def createBasicModels(boolean collada) {
-		val caexContainer = aggregatorFactory.createCAEXContainer
-		caexContainer.path = "bspCAEXPath"
+		val caexContainer = AggregatorModelFactory.createCAEXContainer
 		aggregatorRootElement.caexcontainer = caexContainer
 		
 		if(collada) {
-			val colladaContainerA = aggregatorFactory.createColladaContainer
-			colladaContainerA.path = "bspColladaPath"
+			val colladaContainerA = AggregatorModelFactory.createColladaContainer
 			aggregatorRootElement.colladacontainer.add(colladaContainerA)
-			val colladaContainerB = aggregatorFactory.createColladaContainer
-			colladaContainerB.path = "anotherColladaPath"
-			aggregatorRootElement.colladacontainer.add(colladaContainerA)
+			val colladaContainerB = AggregatorModelFactory.createColladaContainer
+			aggregatorRootElement.colladacontainer.add(colladaContainerB)
 			
 			//TODO Collada Dokumente aufbauen
 		} else {
-			val plcContainerA = aggregatorFactory.createPLCopenContainer
-			plcContainerA.path = "bspPlcPath"
+			val plcContainerA = AggregatorModelFactory.createPLCopenContainer
 			aggregatorRootElement.plcopencontainer.add(plcContainerA)
-			val plcContainerB = aggregatorFactory.createPLCopenContainer
-			plcContainerB.path = "anotherPlcPath"
+			val plcContainerB = AggregatorModelFactory.createPLCopenContainer
 			aggregatorRootElement.plcopencontainer.add(plcContainerB)
 			
 			//TODO PLCopen Dokumente aufbauen
@@ -35,29 +32,28 @@ class ChangeExternalInterfacePathTests extends AbstractCAEXReactionsTest {
 		
 		//TODO Verknüpfung Container/Dokumente aufbauen????
 		
-		createCAEXBasicInterfaceLib
+		val interfaceLib = CAEXModelFactory.createInterfaceClassLib(true)
+		val instanceHierarchy = CAEXModelFactory.createInstanceHierarchy(false, false)
+		val systemUnitClassLib = CAEXModelFactory.createSystemUnitClassLib(false, false)
 		
-		val instanceHierarchy = caexFactory.createInstanceHierarchy
-		val internalElement = caexFactory.createInternalElement
-		val systemUnitClassLib = caexFactory.createSystemUnitClassLib
-		val systemUnitClass = caexFactory.createSystemUnitClass
-		
-		val externalInterfaceA = caexFactory.createExternalInterface
-		val externalInterfaceB = caexFactory.createExternalInterface
 		
 		//TODO Typ setzen
 		if(collada) {
+			val externalInterfaceA = CAEXModelFactory.createColladaExternalInterface
+			instanceHierarchy.internalElement.get(0).externalInterface.add(externalInterfaceA)
 			
+			val externalInterfaceB = CAEXModelFactory.createColladaExternalInterface
+			systemUnitClassLib.systemUnitClass.get(0).externalInterface.add(externalInterfaceB)
 		} else {
+			val externalInterfaceA = CAEXModelFactory.createPLCopenExternalInterface
+			instanceHierarchy.internalElement.get(0).externalInterface.add(externalInterfaceA)
 			
+			val externalInterfaceB = CAEXModelFactory.createPLCopenExternalInterface
+			systemUnitClassLib.systemUnitClass.get(0).externalInterface.add(externalInterfaceB)
 		}
 		
-		internalElement.externalInterface.add(externalInterfaceA)
-		instanceHierarchy.internalElement.add(internalElement)
+		CAEXRootElement.interfaceClassLib.add(interfaceLib)
 		CAEXRootElement.instanceHierarchy.add(instanceHierarchy)
-		
-		systemUnitClass.externalInterface.add(externalInterfaceB)
-		systemUnitClassLib.systemUnitClass.add(systemUnitClass)
 		CAEXRootElement.systemUnitClassLib.add(systemUnitClassLib)
 		
 		aggregatorRootElement.saveAndSynchronizeChanges

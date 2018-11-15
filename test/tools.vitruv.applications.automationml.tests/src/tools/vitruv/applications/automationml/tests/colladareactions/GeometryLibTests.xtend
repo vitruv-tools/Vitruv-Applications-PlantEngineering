@@ -4,33 +4,17 @@ import org.junit.Test
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
+import tools.vitruv.applications.automationml.tests.amlutils.ColladaModelFactory
 
 class GeometryLibTests extends AbstractColladaReactionsTest {
 	def createBasicModel() {
-		val geoLib = colladaFactory.createLibraryGeometriesType
-		val geo = colladaFactory.createGeometryType
-		val visualSceneLib = colladaFactory.createLibraryVisualScenesType
-		val visualScene = colladaFactory.createVisualSceneType
-		val node = colladaFactory.createNodeType1
-		val geoInstance = colladaFactory.createInstanceGeometryType
+		val geoLib = ColladaModelFactory.createGeometryLib(false)
+		val visualSceneLib = ColladaModelFactory.createVisualSceneLib(false)
 		
-		geoLib.name = "geoLib"
-		geo.name = "geo"
-		visualSceneLib.name = "visualLib"
-		visualScene.name = "visual"
-		node.name = "node"
-		geoInstance.name = "geoInst"
-		
-		geo.id = "newGeo123"
-		
-		geoLib.geometry.add(geo)
 		colladaRootElement.libraryGeometries.add(geoLib)
-		node.instanceGeometry.add(geoInstance)
-		visualScene.node.add(node)
-		visualSceneLib.visualScene.add(visualScene)
 		colladaRootElement.libraryVisualScenes.add(visualSceneLib)
 
-		geoInstance.url = "newGeo123"
+		visualSceneLib.visualScene.get(0).node.get(0).instanceGeometry.get(0).url = "BspGeoID"
 		
 		colladaRootElement.saveAndSynchronizeChanges
 	}
@@ -59,7 +43,7 @@ class GeometryLibTests extends AbstractColladaReactionsTest {
 		assertEquals("", colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url)
 	}
 	
-	@Test
+	//@Test
 	def testChangeGeometryID() {
 		createBasicModel
 		

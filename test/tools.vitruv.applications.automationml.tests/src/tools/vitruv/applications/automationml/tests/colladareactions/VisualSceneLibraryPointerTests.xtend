@@ -8,43 +8,20 @@ import static org.junit.Assert.assertNotNull
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import org.khronos.collada.GeometryType
+import tools.vitruv.applications.automationml.tests.amlutils.ColladaModelFactory
 
 class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 	def createBasicModel(boolean extended) {
-		val geometryLib = colladaFactory.createLibraryGeometriesType
-		geometryLib.name = "geoLib"
-		val geometry = colladaFactory.createGeometryType
-		geometry.id = "geo1ID"
-		
-		val visualSceneLib = colladaFactory.createLibraryVisualScenesType
-		visualSceneLib.name = "visualLib"
-		val visualScene = colladaFactory.createVisualSceneType
-		visualScene.id = "visualSceneID"
-		val node = colladaFactory.createNodeType1
-		node.name = "bspNode"
-		val instanceGeometry = colladaFactory.createInstanceGeometryType
-		instanceGeometry.name = "geoInstance"
+		val geometryLib = ColladaModelFactory.createGeometryLib(extended)
+		val visualSceneLib = ColladaModelFactory.createVisualSceneLib(false)
+		val scene = ColladaModelFactory.createScene
 
-		val scene = colladaFactory.createSceneType
-		val instanceVisualScene = colladaFactory.createInstanceWithExtra
-		
-		geometryLib.geometry.add(geometry)
 		colladaRootElement.libraryGeometries.add(geometryLib)
-		node.instanceGeometry.add(instanceGeometry)
-		visualScene.node.add(node)
-		visualSceneLib.visualScene.add(visualScene)
 		colladaRootElement.libraryVisualScenes.add(visualSceneLib)
-		scene.instanceVisualScene = instanceVisualScene
 		colladaRootElement.scene = scene
 		
-		instanceVisualScene.url = "visualSceneID"
-		
-		if(extended) {
-			val geo2 = colladaFactory.createGeometryType
-			geo2.id = "geo2ID"
-			geometryLib.geometry.add(geo2)
-		}
-		
+		colladaRootElement.scene.instanceVisualScene.url = "BspVisualSceneID"
+
 		colladaRootElement.saveAndSynchronizeChanges
 	}
 	
@@ -63,7 +40,7 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 	def testAddReferenceToGeometry() {
 		createBasicModel(false)
 		
-		val newUrl = "geo1ID"
+		val newUrl = "BspGeoID"
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = newUrl
 		colladaRootElement.saveAndSynchronizeChanges
 		
@@ -84,11 +61,11 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 	def testChangeReferenceToGeometry() {
 		createBasicModel(true)
 		
-		val newUrlA = "geo1ID"
+		val newUrlA = "BspGeoID"
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = newUrlA
 		colladaRootElement.saveAndSynchronizeChanges
 		
-		val newUrlB = "geo1ID"
+		val newUrlB = "'AnotherGeoID"
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = newUrlB
 		colladaRootElement.saveAndSynchronizeChanges
 		
@@ -109,7 +86,7 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 	def testChangeReferenceToGeoemtryWithRollback() {
 		createBasicModel(false)
 		
-		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = "anotherUrl"
+		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = "NotExistentUrl"
 		userInteractor.addNextConfirmationInput(false)
 		colladaRootElement.saveAndSynchronizeChanges
 		
@@ -120,7 +97,7 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 	def testChangeReferenceToGeometryWithAimCreation() {
 		createBasicModel(false)
 		
-		val newString = "anotherUrl"
+		val newString = "NotExistentUrl"
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = newString
 		userInteractor.addNextConfirmationInput(true)
 		colladaRootElement.saveAndSynchronizeChanges

@@ -11,18 +11,18 @@ class RemoveInterfaceInInternalElementTests extends AbstractCAEXReactionsTest {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveExternalInterfaceFromInternalElement() {
 		
 	}
 	
 	
-	@Test
+	//@Test
 	def testRemoveExternalColladaInterfaceFromInternalElement() {
 		
 	}
 	
-	@Test
+	//@Test
 	def testRemoveExternalPLCopenInterfaceFromInternalElement() {
 		
 	}
