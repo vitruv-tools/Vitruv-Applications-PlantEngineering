@@ -18,7 +18,7 @@ public class CAEXInheritanceResolver {
 	public static boolean isInstanceOfSpecificInterface(InterfaceClass interfaceChild, String interfaceParent, CAEXFile root) {
 		InterfaceClass currInterface = interfaceChild;
 		while(currInterface != null) {
-			if(interfaceParent.contentEquals(CAEXStringResolver.getCompletePath(currInterface))) {
+			if(interfaceParent.equals(CAEXStringResolver.getCompletePath(currInterface))) {
 				return true;
 			}
 			currInterface = CAEXStringResolver.resolveInterfacePath(currInterface.getRefBaseClassPath(), root);

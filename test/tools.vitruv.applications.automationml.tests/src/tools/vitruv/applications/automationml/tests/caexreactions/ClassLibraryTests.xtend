@@ -31,7 +31,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 		
 		CAEXRootElement.systemUnitClassLib.remove(0)
 		testUserInteractor.addNextConfirmationInput(false)
-		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
 		assertEquals(0, CAEXRootElementVirtualModel.systemUnitClassLib.size)
@@ -91,7 +90,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).systemUnitClass.remove(0)
-		
 		testUserInteractor.addNextConfirmationInput(true)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
@@ -116,7 +114,6 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.remove(0)
-		
 		testUserInteractor.addNextConfirmationInput(true)
 		CAEXRootElement.saveAndSynchronizeChanges
 		
@@ -129,10 +126,9 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).name = "NewLibName"
-		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals("NewLibName/BspClass",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+		assertEquals("NewLibName/BspSystemClass",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
 	@Test
@@ -140,20 +136,18 @@ class ClassLibraryTests extends AbstractCAEXReactionsTest {
 		createBasicModel(false)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).name = "NewClassName"
-		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals("BspLib/NewClassName",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+		assertEquals("BspSystemLib/NewClassName",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
 	@Test
-	def testClasWithSubClassNameChange() {
+	def testClassWithSubClassNameChange() {
 		createBasicModel(true)
 		
 		CAEXRootElement.systemUnitClassLib.get(0).systemUnitClass.get(0).name = "NewClassName"
-		
 		CAEXRootElement.saveAndSynchronizeChanges
 		
-		assertEquals("BspLib/NewClassName/AnotherClass",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
+		assertEquals("BspSystemLib/NewClassName/AnotherSystemClass",  CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 }

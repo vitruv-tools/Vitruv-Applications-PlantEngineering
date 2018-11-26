@@ -60,14 +60,19 @@ public class CAEXStringResolver {
 			return null;
 		}
 		
+		int j = 0;
+		
 		for(int i = 1; i < partsOfPath.length; i++) {
-			for(int j = 0; j < currInterfaces.size(); j++) {
+			for(j = 0; j < currInterfaces.size(); j++) {
 				if(currInterfaces.get(j).getName().equals(partsOfPath[i])) {
+					if(i + 1 == partsOfPath.length) {
+						return currInterfaces.get(j);
+					}
 					nextInterfaces = currInterfaces.get(j).getInterfaceClass();
 					break;
 				}
 			}
-			if(nextInterfaces == null) {
+			if(nextInterfaces == null || nextInterfaces.size() == 0) {
 				return null;
 			} else {
 				currInterfaces = nextInterfaces;
@@ -75,10 +80,6 @@ public class CAEXStringResolver {
 			}
 		}
 		
-		if(currInterfaces.size() == 1) {
-			return currInterfaces.get(0);
-		} else {
-			return null;
-		}
+		return null;
 	}
 }

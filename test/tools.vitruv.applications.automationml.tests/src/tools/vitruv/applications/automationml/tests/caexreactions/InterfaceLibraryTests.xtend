@@ -1,48 +1,93 @@
 package tools.vitruv.applications.automationml.tests.caexreactions
 
 import org.junit.Test
-
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.assertNotNull
+import tools.vitruv.applications.automationml.tests.amlutils.CAEXModelFactory
 
 class InterfaceLibraryTests extends AbstractCAEXReactionsTest {
-	def createBasicModel() {
+	def createBasicModel(boolean basicLib) {
+		val lib = CAEXModelFactory.createInterfaceClassLib(basicLib)
+		CAEXRootElement.interfaceClassLib.add(lib)
 		
+		if(!basicLib) {
+			val hierarchy = CAEXModelFactory.createInstanceHierarchy(false, false)
+			CAEXRootElement.instanceHierarchy.add(hierarchy)
+			val externalInterface = CAEXModelFactory.createSomeExternalInterface
+			hierarchy.internalElement.get(0).externalInterface.add(externalInterface)
+		}
+		
+		CAEXRootElement.saveAndSynchronizeChanges
 	}
 	
-	//@Test
+	@Test
 	def testRemoveInterfaceLib() {
+		createBasicModel(false)
 		
+		CAEXRootElement.interfaceClassLib.remove(0)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(0, CAEXRootElementVirtualModel.interfaceClassLib.size)
+		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).externalInterface.get(0).refBaseClassPath)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveInterfaceLibWithRollback() {
+		createBasicModel(true)
 		
+		CAEXRootElement.interfaceClassLib.remove(0)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(1, CAEXRootElementVirtualModel.interfaceClassLib.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveInterface() {
+		createBasicModel(false)
 		
+		CAEXRootElement.interfaceClassLib.get(0).interfaceClass.remove(0)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(0, CAEXRootElementVirtualModel.interfaceClassLib.get(0).interfaceClass.size)
+		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).externalInterface.get(0).refBaseClassPath)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveInterfaceBasic() {
+		createBasicModel(true)
 		
+		CAEXRootElement.interfaceClassLib.get(0).interfaceClass.remove(0)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(1, CAEXRootElementVirtualModel.interfaceClassLib.get(0).interfaceClass.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveInterfaceConnection() {
+		createBasicModel(true)
 		
+		CAEXRootElement.interfaceClassLib.get(0).interfaceClass.get(0).interfaceClass.remove(0)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(1, CAEXRootElementVirtualModel.interfaceClassLib.get(0).interfaceClass.get(0).interfaceClass.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveInterfacePLCopen() {
+		createBasicModel(true)
 		
+		CAEXRootElement.interfaceClassLib.get(0).interfaceClass.get(0).interfaceClass.get(0).interfaceClass.remove(0)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(2, CAEXRootElementVirtualModel.interfaceClassLib.get(0).interfaceClass.get(0).interfaceClass.get(0).interfaceClass.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveInterfaceCollada() {
+		createBasicModel(true)
 		
+		CAEXRootElement.interfaceClassLib.get(0).interfaceClass.get(0).interfaceClass.get(0).interfaceClass.remove(1)
+		CAEXRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(2, CAEXRootElementVirtualModel.interfaceClassLib.get(0).interfaceClass.get(0).interfaceClass.get(0).interfaceClass.size)
 	}
 }

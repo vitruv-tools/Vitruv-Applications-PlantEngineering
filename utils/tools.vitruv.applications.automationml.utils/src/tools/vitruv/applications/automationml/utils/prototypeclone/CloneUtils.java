@@ -17,7 +17,8 @@ public class CloneUtils {
 	public static List<InternalElement> filterChangedClones(List<InternalElement> internalElements, SystemUnitClass systemUnitClass) {
 		List<InternalElement> filteredList = new LinkedList<InternalElement>();
 		for(InternalElement currInternalElement : internalElements) {
-			if(checkInternalElementForChanges(currInternalElement, systemUnitClass)) {
+			//if(checkInternalElementForChanges(currInternalElement, systemUnitClass)) {
+			if(true) {	
 				filteredList.add(currInternalElement);
 			}
 		}

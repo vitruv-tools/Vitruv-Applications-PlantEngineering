@@ -105,14 +105,16 @@ reaction ChangeSystemUnitClassLibName {
 // ***** ExternalInterface in Klassendefinition hinzufügen, entfernen
 
 reaction AddExternalInterfaceToSystemClass {
-	after element caex::ExternalInterface inserted in caex::SystemUnitClass[externalInterface]
+	after element caex::ExternalInterface inserted in caex::SystemUnitClass[externalInterface] 
+	with {
+		!(affectedEObject instanceof InternalElement)
+	}
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassLib")
-		
-		val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
-		
+		//!!
 		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Soll in allen internen Elementen, die diese Klasse referenzieren, das Interface hinzugefügt werden?").startInteraction
 		if(shouldChangePropagated) {
+			val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 			addExternalInterfaceToInternalElements(newValue, affectedEObject, root)
 		}		
 	} 
