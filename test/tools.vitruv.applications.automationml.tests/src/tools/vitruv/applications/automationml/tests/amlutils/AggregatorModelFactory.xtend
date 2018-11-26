@@ -13,6 +13,8 @@ class AggregatorModelFactory {
 		return Aml_aggregatorFactory.eINSTANCE
 	}
 	
+	//TODO entstehenden Containern Namen geben
+	
 	static def CAEXContainer createCAEXContainer() {
 		val container = amlFactory.createCAEXContainer
 		container.path = "BspCAEXPath"

@@ -108,8 +108,8 @@ class CAEXModelFactory {
 		interfaceLib.name = AMLBasicStrings.automationMLInterfaceBaseLibName
 		basicInterface.name = AMLBasicStrings.automationMLBaseInterfaceName
 		basicConnectionInterface.name = AMLBasicStrings.automationMLExternalBaseInterfaceName
-		basicPLCopenInterface.name = AMLBasicStrings.completePLCopenBaseInterfacePath
-		basicColladaInterface.name = AMLBasicStrings.completeColladaBaseInterfacePath
+		basicPLCopenInterface.name = AMLBasicStrings.externalPLCopenBaseInterfaceName
+		basicColladaInterface.name = AMLBasicStrings.externalColladaBaseInterfaceName
 		
 		basicConnectionInterface.interfaceClass.add(basicPLCopenInterface)
 		basicConnectionInterface.interfaceClass.add(basicColladaInterface)

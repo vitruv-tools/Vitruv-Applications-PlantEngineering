@@ -9,13 +9,23 @@ class PLCopenModelFactory {
 		return Tc60201Factory.eINSTANCE
 	}
 	
-	static def TypesType createPLCStructure() {
+	static def TypesType createPLCStructure(boolean extended) {
 		val type = plcopenFactory.createTypesType
 		val pous = plcopenFactory.createPousType
 		val pou = plcopenFactory.createPouType1
 		
+		type.name = "bspType"
+		pous.name = "bspPous"
+		pou.name = "bspPou"
+		
 		type.pous = pous
 		pous.pou.add(pou)
+		
+		if(extended) {
+			val secondPou = plcopenFactory.createPouType1
+			secondPou.name = "anotherPou"
+			pous.pou.add(secondPou)
+		}
 		
 		return type
 	}

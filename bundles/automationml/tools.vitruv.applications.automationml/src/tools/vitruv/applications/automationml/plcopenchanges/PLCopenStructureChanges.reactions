@@ -7,53 +7,44 @@ reactions: plcopenStructureChanges
 in reaction to changes in PLCOpen
 execute actions in PLCOpen
 
-// ***** zusätzliche Beschreibungcontainer anlegen/löschen
+// ***** Beschreibungcontainer löschen
 
-reaction CreatePouType {
-	after element plcopen::PouType1 created
-	call {
-		logger.debug("CreatePouType")
-		
-		//TODO Methode entspricht einem Zurückrollen der Änderung
-		deletePouType(affectedEObject)
-	}
-}
-
-reaction DeletePouType {
+reaction RemovePouType {
 	after element plcopen::PouType1 removed from plcopen::PousType[pou]
+	with {
+		affectedEObject.pou.size == 0
+	}
 	call {
-		logger.debug("DeletePouType")
-		
+		logger.debug("RemovePouType")
+
 		//TODO Änderung zurückrollen
 		// kein Sprachstatement vorhanden, deswegen diese Formulierung
 		affectedEObject.pou.add(oldValue)
 	}
 }
 
-reaction DeletePousType {
-	after element plcopen::PousType removed from plcopen::TypesType[pous]
+reaction ReplacePousType {
+	after element plcopen::PousType replaced at plcopen::TypesType[pous]
+	with {
+		oldValue !== null
+	}
 	call {
-		logger.debug("DeletePousType")
-		
+		logger.debug("ReplacePousType")
+
 		//TODO entspricht einem Zurückrollen der Änderung
 		affectedEObject.pous = oldValue
 	}
 }
 
-reaction DeleteTypesType {
-	after element plcopen::TypesType removed from plcopen::ProjectType[types]
+reaction ReplaceTypesType {
+	after element plcopen::TypesType replaced at plcopen::ProjectType[types]
+	with {
+		oldValue !== null
+	}
 	call {
-		logger.debug("DeleteTypesType")
-		
+		logger.debug("ReplaceTypesType")
+
 		//TODO entspricht einem Zurückrollen der Änderung
 		affectedEObject.types = oldValue
-	}
-}
-
-// ***** Routinen, um Grundstruktur der Datei beizubehalten
-
-routine deletePouType(plcopen::PouType1 pouType) {
-	action {
-		delete pouType
 	}
 }

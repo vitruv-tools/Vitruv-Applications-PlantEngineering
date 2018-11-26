@@ -7,16 +7,16 @@ import static org.junit.Assert.assertNotNull
 import tools.vitruv.applications.automationml.tests.amlutils.PLCopenModelFactory
 
 class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
-	def createBasicModel(){
-		val type = PLCopenModelFactory.createPLCStructure
+	def createBasicModel(boolean extended) {
+		val type = PLCopenModelFactory.createPLCStructure(extended)
 		PLCopenRootElement.types = type
 		
 		PLCopenRootElement.saveAndSynchronizeChanges
 	}
 	
-	//@Test
-	def testRemovePou() {
-		createBasicModel
+	@Test
+	def testRemoveLonelyPou() {
+		createBasicModel(false)
 		
 		PLCopenRootElement.types.pous.pou.remove(0)
 		PLCopenRootElement.saveAndSynchronizeChanges
@@ -24,33 +24,36 @@ class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
 		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)
 	}
 	
-	//@Test
+	@Test
+	def testRemovePairwisePou() {
+		createBasicModel(true)
+		
+		PLCopenRootElement.types.pous.pou.remove(0)
+		PLCopenRootElement.saveAndSynchronizeChanges
+		
+		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)
+	}
+	
+	@Test
 	def testRemovePous() {
-		createBasicModel
+		createBasicModel(false)
 		
 		PLCopenRootElement.types.pous = null
 		PLCopenRootElement.saveAndSynchronizeChanges
 		
 		assertNotNull(PLCopenRootElementVirtualModel.types.pous)
+		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveType() {
-		createBasicModel
+		createBasicModel(false)
 		
 		PLCopenRootElement.types = null
 		PLCopenRootElement.saveAndSynchronizeChanges
 		
 		assertNotNull(PLCopenRootElementVirtualModel.types)
-	}
-	
-	//@Test
-	def testCreatePou() {
-		createBasicModel
-		
-		PLCopenRootElement.types.pous.pou.add(PLCopenModelFactory.createPou)
-		PLCopenRootElement.saveAndSynchronizeChanges
-		
+		assertNotNull(PLCopenRootElementVirtualModel.types.pous)
 		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)
 	}
 }
