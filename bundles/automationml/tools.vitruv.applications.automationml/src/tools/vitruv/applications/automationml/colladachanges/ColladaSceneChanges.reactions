@@ -14,20 +14,26 @@ execute actions in Collada
 
 // ***** Scene bzw. Verweis löschen
 
-reaction RemoveScene {
-	after element collada::SceneType removed from collada::COLLADAType[scene]
+reaction ReplaceScene {
+	after element collada::SceneType replaced at collada::COLLADAType[scene]
+	with {
+		oldValue !== null
+	}
 	call {
-		logger.debug("RemoveScene")
+		logger.debug("ReplaceScene")
 		
 		//TODO entspricht Zurückrollen der Änderung
 		affectedEObject.scene = oldValue
 	}
 }
 
-reaction RemoveInstance {
-	after element collada::InstanceWithExtra removed from collada::SceneType[instanceVisualScene]
+reaction ReplaceInstance {
+	after element collada::InstanceWithExtra replaced at collada::SceneType[instanceVisualScene]
+	with {
+		oldValue !== null
+	}
 	call {
-		logger.debug("RemoveInstance")
+		logger.debug("ReplaceInstance")
 		
 		//TODO entspricht Zurückrollen der Änderung
 		affectedEObject.instanceVisualScene = oldValue

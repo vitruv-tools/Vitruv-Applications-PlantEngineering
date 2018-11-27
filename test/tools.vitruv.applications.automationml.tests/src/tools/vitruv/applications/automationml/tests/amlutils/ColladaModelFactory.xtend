@@ -65,7 +65,10 @@ class ColladaModelFactory {
 	static def SceneType createScene() {
 		val scene = colladaFactory.createSceneType
 		val instance = colladaFactory.createInstanceWithExtra
+		
+		scene.name = "BspScene"
 		instance.name = "BspVisualInstance"
+		
 		scene.instanceVisualScene = instance
 		return scene
 	}

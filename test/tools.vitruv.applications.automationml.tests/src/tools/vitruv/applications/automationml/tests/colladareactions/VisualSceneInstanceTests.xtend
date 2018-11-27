@@ -20,7 +20,7 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 		colladaRootElement.saveAndSynchronizeChanges
 	}
 	
-	//@Test
+	@Test
 	def testAddVisualSceneReference() {
 		createBasicModel(false)
 		
@@ -31,16 +31,12 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 		first.add(colladaRootElementVirtualModel.scene.instanceVisualScene)
 		val two = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if(two.size == 0) {
-			assertTrue(false)
-		} else if (two.get(0).size != 1) {
-			assertTrue(false)
-		} else {
-			assertEquals(colladaRootElementVirtualModel.scene.instanceVisualScene.url, (two.get(0).get(0) as VisualSceneType).id)
-		}
+		assertEquals(1, two.size)
+		assertEquals(1, two.get(0).size)
+		assertEquals(colladaRootElementVirtualModel.scene.instanceVisualScene.url, (two.get(0).get(0) as VisualSceneType).id)
 	}
 	
-	//@Test
+	@Test
 	def testChangeVisualSceneReference() {
 		createBasicModel(true)
 		
@@ -54,16 +50,12 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 		first.add(colladaRootElementVirtualModel.scene.instanceVisualScene)
 		val two = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if(two.size == 0) {
-			assertTrue(false)
-		} else if (two.get(0).size != 1) {
-			assertTrue(false)
-		} else {
-			assertEquals(colladaRootElementVirtualModel.scene.instanceVisualScene.url, (two.get(0).get(0) as VisualSceneType).id)
-		}
+		assertEquals(1, two.size)
+		assertEquals(1, two.get(0).size)
+		assertEquals(colladaRootElementVirtualModel.scene.instanceVisualScene.url, (two.get(0).get(0) as VisualSceneType).id)
 	}
 	
-	//@Test
+	@Test
 	def testChangeVisualSceneReferenceWithRollback() {
 		createBasicModel(false)
 		
@@ -74,7 +66,7 @@ class VisualSceneInstanceTests extends AbstractColladaReactionsTest {
 		assertEquals(null, colladaRootElementVirtualModel.scene.instanceVisualScene.url)
 	}
 	
-	//@Test
+	@Test
 	def testChangeVisualSceneReferenceWithAimCreation() {
 		createBasicModel(false)
 		

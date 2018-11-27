@@ -1,7 +1,7 @@
 package tools.vitruv.applications.automationml.tests.colladareactions
 
-import tools.vitruv.applications.automationml.caexchanges.CombinedCAEXChangePropagationSpecification
 import tools.vitruv.applications.automationml.tests.amlutils.AbstractAMLTest
+import tools.vitruv.applications.automationml.colladachanges.CombinedColladaChangePropagationSpecification
 
 class AbstractColladaReactionsTest extends AbstractAMLTest {
 	override protected cleanup() {
@@ -9,7 +9,7 @@ class AbstractColladaReactionsTest extends AbstractAMLTest {
 	}
 
 	override protected createChangePropagationSpecifications() {
-		return #[new CombinedCAEXChangePropagationSpecification]
+		return #[new CombinedColladaChangePropagationSpecification]
 	}
 
 	override protected setup() {
@@ -17,7 +17,7 @@ class AbstractColladaReactionsTest extends AbstractAMLTest {
 		createAndSynchronizeModel(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath, docRootAggregator)*/
 		/*val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
 		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)*/
-		/*val docRootPLCopen = preloadExistingPLCopenModel("resources/bsp_plc_empty.tc60201")
+		/*val docRootPLCopen = preloadExistingPLCopenModel("resources/bsp_plcopen_empty.tc60201")
 		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)*/
 		val docRootCollada = preloadExistingColladaModel("resources/bsp_collada_empty.dae")
 		createAndSynchronizeModel(COLLADA_MODEL_NAME.projectColladaModelPath, docRootCollada)

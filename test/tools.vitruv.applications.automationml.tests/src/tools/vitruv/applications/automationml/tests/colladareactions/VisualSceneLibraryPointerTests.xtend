@@ -25,7 +25,7 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 		colladaRootElement.saveAndSynchronizeChanges
 	}
 	
-	//@Test
+	@Test
 	def testChangeVisualSceneID() {
 		createBasicModel(false)
 		
@@ -36,7 +36,7 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 		assertEquals(newString, colladaRootElementVirtualModel.scene.instanceVisualScene.url)
 	}
 	
-	//@Test
+	@Test
 	def testAddReferenceToGeometry() {
 		createBasicModel(false)
 		
@@ -48,16 +48,12 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 		first.add(colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0))
 		val two = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if(two.size == 0) {
-			assertTrue(false)
-		} else if (two.get(0).size != 1) {
-			assertTrue(false)
-		} else {
-			assertEquals(newUrl, (two.get(0).get(0) as GeometryType).id)
-		}
+		assertEquals(1, two.size)
+		assertEquals(1, two.get(0).size)
+		assertEquals(newUrl, (two.get(0).get(0) as GeometryType).id)
 	}
 	
-	//@Test
+	@Test
 	def testChangeReferenceToGeometry() {
 		createBasicModel(true)
 		
@@ -65,25 +61,21 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = newUrlA
 		colladaRootElement.saveAndSynchronizeChanges
 		
-		val newUrlB = "'AnotherGeoID"
+		val newUrlB = "AnotherGeoID"
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = newUrlB
 		colladaRootElement.saveAndSynchronizeChanges
 		
 		val first = new LinkedList<EObject>
-		first.add(colladaRootElementVirtualModel.scene.instanceVisualScene)
+		first.add(colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0))
 		val two = correspondenceModel.getCorrespondingEObjects(first)
 		
-		if(two.size == 0) {
-			assertTrue(false)
-		} else if (two.get(0).size != 1) {
-			assertTrue(false)
-		} else {
-			assertEquals(newUrlB, (two.get(0).get(0) as GeometryType).id)
-		}
+		assertEquals(1, two.size)
+		assertEquals(1, two.get(0).size)
+		assertEquals(newUrlB, (two.get(0).get(0) as GeometryType).id)
 	}
 	
-	//@Test
-	def testChangeReferenceToGeoemtryWithRollback() {
+	@Test
+	def testChangeReferenceToGeometryWithRollback() {
 		createBasicModel(false)
 		
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = "NotExistentUrl"
@@ -93,7 +85,7 @@ class VisualSceneLibraryPointerTests extends AbstractColladaReactionsTest {
 		assertEquals(null, colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url)
 	}
 	
-	//@Test
+	@Test
 	def testChangeReferenceToGeometryWithAimCreation() {
 		createBasicModel(false)
 		

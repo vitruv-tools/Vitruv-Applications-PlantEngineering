@@ -12,17 +12,23 @@ class SceneStructureTests extends AbstractColladaReactionsTest {
 		colladaRootElement.saveAndSynchronizeChanges
 	}
 	
-	//@Test
+	@Test
 	def testRemoveScene() {
+		createBasicModel
+		
 		colladaRootElement.scene = null
 		colladaRootElement.saveAndSynchronizeChanges
+		
 		assertNotNull(colladaRootElementVirtualModel.scene)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveVisualSceneInstance() {
+		createBasicModel
+		
 		colladaRootElement.scene.instanceVisualScene = null
 		colladaRootElement.saveAndSynchronizeChanges
+		
 		assertNotNull(colladaRootElementVirtualModel.scene.instanceVisualScene)
 	}
 }

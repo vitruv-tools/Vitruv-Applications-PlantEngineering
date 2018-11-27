@@ -9,7 +9,7 @@ import tools.vitruv.applications.automationml.tests.amlutils.ColladaModelFactory
 
 class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 	def createBasicModel(boolean extended) {
-		val geometryLib = ColladaModelFactory.createGeometryLib(false)
+		val geometryLib = ColladaModelFactory.createGeometryLib(extended)
 		val visualSceneLib = ColladaModelFactory.createVisualSceneLib(extended)
 		val scene = ColladaModelFactory.createScene
 		
@@ -17,13 +17,19 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 		colladaRootElement.libraryVisualScenes.add(visualSceneLib)
 		colladaRootElement.scene = scene
 		
+		colladaRootElement.saveAndSynchronizeChanges
+		
+		if(extended) {
+			colladaRootElement.libraryVisualScenes.get(0).visualScene.get(1).node.get(0).instanceGeometry.get(0).url = "AnotherGeoID"
+		}
+		
 		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = "BspGeoID"
 		colladaRootElement.scene.instanceVisualScene.url = "BspVisualSceneID"
 		
 		colladaRootElement.saveAndSynchronizeChanges
 	}
 	
-	//@Test
+	@Test
 	def testRemoveVisualSceneLib() {
 		createBasicModel(true)
 		
@@ -48,7 +54,7 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 		assertEquals(0, six.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveVisualScene() {
 		createBasicModel(false)
 		
@@ -69,7 +75,7 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 		assertEquals(0, four.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveNode() {
 		createBasicModel(false)
 		
@@ -84,7 +90,7 @@ class VisualSceneLibraryTests extends AbstractColladaReactionsTest {
 		assertEquals(0, two.size)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveGeometryInstance() {
 		createBasicModel(false)
 		

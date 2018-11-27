@@ -14,12 +14,14 @@ class GeometryLibTests extends AbstractColladaReactionsTest {
 		colladaRootElement.libraryGeometries.add(geoLib)
 		colladaRootElement.libraryVisualScenes.add(visualSceneLib)
 
-		visualSceneLib.visualScene.get(0).node.get(0).instanceGeometry.get(0).url = "BspGeoID"
-		
 		colladaRootElement.saveAndSynchronizeChanges
+		
+		colladaRootElement.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url = "BspGeoID"
+		
+		colladaRootElement.saveAndSynchronizeChanges	
 	}
 	
-	//@Test
+	@Test
 	def testRemoveGeometry() {
 		createBasicModel
 		
@@ -31,9 +33,9 @@ class GeometryLibTests extends AbstractColladaReactionsTest {
 		assertEquals("", colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url)
 	}
 	
-	//@Test
+	@Test
 	def testRemoveGeometryLib() {
-		createBasicModel
+		createBasicModel	
 		
 		colladaRootElement.libraryGeometries.remove(0)
 		
@@ -43,7 +45,7 @@ class GeometryLibTests extends AbstractColladaReactionsTest {
 		assertEquals("", colladaRootElementVirtualModel.libraryVisualScenes.get(0).visualScene.get(0).node.get(0).instanceGeometry.get(0).url)
 	}
 	
-	//@Test
+	@Test
 	def testChangeGeometryID() {
 		createBasicModel
 		
