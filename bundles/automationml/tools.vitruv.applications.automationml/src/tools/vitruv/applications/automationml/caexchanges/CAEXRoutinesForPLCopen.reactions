@@ -1,9 +1,5 @@
-import org.eclipse.xtext.EcoreUtil2
-import org.plcopen.xml.tc60201.PouType1
-import caex.caex30.caex.ExternalInterface
-import org.plcopen.xml.tc60201.ProjectType
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
-import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -22,28 +18,29 @@ routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, am
 			newContainer.path = path
 		}
 		execute {
+			createNewPLCopenFile(newContainer)
 			removeCorrespondenceBetweenInterfaceAndPLCopen(externalInterface)
 			addCorrespondenceBetweenInterfaceAndPLCopen(externalInterface, newContainer)
-			
 		}
 	}
 }
 
-routine changeAllCorrespondingPLCopenPathes (caex::ExternalInterface externalInterface, String newPath) {
-	match {
-		val pouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU
-		val plcopenContainer = retrieve aml::PLCopenContainer corresponding to EcoreUtil2.getContainerOfType(pouType, ProjectType) tagged with AMLTags.AML_PLCOPEN
-		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to pouType tagged with AMLTags.INTERFACE_POU
-	}
+routine createNewPLCopenFile(aml::PLCopenContainer container) {
 	action {
-		update plcopenContainer {
-			plcopenContainer.path = newPath
+		val pouType = create plcopen::PouType1
+		val pousType = create plcopen::PousType and initialize {
+			pousType.pou.add(pouType)
 		}
-		execute {
-			for(ExternalInterface currExternalInterface : externalInterfaces) {
-				val uriAttribute = CAEXUtils.getAttributeInExternalInterface(currExternalInterface, "refUri")
-				uriAttribute.value = newPath
-			}
+		val typesType = create plcopen::TypesType and initialize {
+			typesType.pous = pousType
+		}
+		val projectType = create plcopen::ProjectType and initialize {
+			projectType.types = typesType
+		}
+		add correspondence between projectType and container tagged with AMLTags.AML_PLCOPEN
+		execute { 
+			val plcNumber = AggregatorUtils.newNumberOfPLCopenFiles
+			persistProjectRelative(container, projectType, "../../../../../Desktop/resources-gen/plc" + plcNumber + ".tc60201")
 		}
 	}
 }
@@ -56,8 +53,8 @@ routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface ext
 	}
 	action {
 		execute {
-			val pouTypes = EcoreUtil2.getAllContentsOfType(plcProject, PouType1)
-			addCorrespondenceBetweenInterfaceAndPou(externalInterface, pouTypes.get(0))
+			val pouType = plcProject.types.pous.pou.get(0)
+			addCorrespondenceBetweenInterfaceAndPou(externalInterface, pouType)
 		}
 	}
 }

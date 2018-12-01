@@ -11,9 +11,7 @@ import tools.vitruv.applications.automationml.utils.prototypeclone.CloneUtils
 import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
 import edu.kit.sdq.aml_aggregator.AMLProject
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.ExternalInterfaceType
 import caex.caex30.caex.Attribute
-import caex.caex30.caex.CAEXFactory
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -56,7 +54,7 @@ reaction ChangeExternalInterfaceType {
 	}
 }
 
-// ***** Pfadangabe in CAEX zu PLCopen Datei geändert
+// ***** Pfadangabe in CAEX zu PLCopen/Collada Datei geändert
 
 reaction ChangeExternalInterfacePath {
 	after attribute replaced at caex::Attribute[value] 
@@ -65,18 +63,26 @@ reaction ChangeExternalInterfacePath {
 	}
 	call {
 		logger.debug("Reaction ChangeExternalInterfacePath")
-		
-		//leerer Pfad (vorher/nachher) beachten!
 				
 		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
 		val caexFile = EcoreUtil2.getContainerOfType(attributeParent, CAEXFile)
 		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(attributeParent.refBaseClassPath, caexFile)
 		val parentContainer = attributeParent.eContainer
+		val isPLCopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType, caexFile)
+		val isCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType, caexFile)
 				
-		if (CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType, caexFile)) {
-			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, false)
-		} else if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType, caexFile)) {
-			changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, true)
+		if(newValue.isNullOrEmpty) {
+			if(isCollada) {
+				removeCorrespondenceBetweenInterfaceAndCollada(attributeParent)
+			} else if (isPLCopen) {
+				removeCorrespondenceBetweenInterfaceAndPLCopen(attributeParent)
+			}
+		} else {	
+			if (isPLCopen) {
+				changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, oldValue, false)
+			} else if(isCollada) {
+				changeCorrespondencesDueToPathChanges(attributeParent, caexFile, newValue, oldValue, true)
+			}
 		}
 		
 		if(parentContainer instanceof SystemUnitClass && !(parentContainer instanceof InternalElement)) {
@@ -167,7 +173,7 @@ routine addCorrespondenceBetweenInterfaceAndItsClass (caex::ExternalInterface ex
 // ***** Routine, um mit Pfadänderungen umzugehen
 
 //Boolean false: plcopen
-routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile, String newPath, Boolean isCollada ) {
+routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile, String newPath, String oldPath, Boolean isCollada ) {
 	match {
 		val caexContainer = retrieve aml::CAEXContainer corresponding to caexFile tagged with AMLTags.AML_CAEX
 	}
@@ -189,7 +195,7 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 				}
 			}
 			
-			val shouldFileCreated = userInteractor.confirmationDialogBuilder.message("Der angegebene Pfad existiert nicht. Soll ein neues Dokument angelegt werden? Alternativ würden der bisherige Pfad überall in den neuen verwandelt werden.").startInteraction
+			val shouldFileCreated = userInteractor.confirmationDialogBuilder.message("Der angegebene Pfad existiert nicht. Soll ein neues Dokument angelegt werden? Alternativ würde die Änderung zurückgerollt werden.").startInteraction
 			if(shouldFileCreated) {
 				if(isCollada) {
 					createNewColladaContainer(externalInterface, caexContainer.eContainer as AMLProject, newPath)
@@ -197,11 +203,9 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 					createNewPLCopenContainer(externalInterface, caexContainer.eContainer as AMLProject, newPath)
 				}
 			} else {
-				if(isCollada) {
-					changeAllCorrespondingColladaPathes(externalInterface, newPath)
-				} else {
-					changeAllCorrespondingPLCopenPathes(externalInterface, newPath)
-				}
+				//TODO Änderung zurückrollen
+				val att = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri")
+				att.value = oldPath
 			}
 		}
 	}
@@ -259,6 +263,9 @@ routine changeExternalInterfaceTypeInInternalElement(caex::SystemUnitClass syste
 }
 
 routine createExternalInterface(caex::InternalElement container, caex::ExternalInterface interfaceInSystemUnitClass) {
+	match {
+		val interfaceClass = retrieve caex::InterfaceClass corresponding to interfaceInSystemUnitClass tagged with AMLTags.CLASS_INTERFACE
+	}
 	action {
 		val newExternalInterface = create caex::ExternalInterface and initialize {
 			newExternalInterface.refBaseClassPath = interfaceInSystemUnitClass.refBaseClassPath
@@ -270,6 +277,7 @@ routine createExternalInterface(caex::InternalElement container, caex::ExternalI
 		update container {
 			container.externalInterface.add(newExternalInterface)
 		}
+		add correspondence between interfaceClass and newExternalInterface tagged with AMLTags.CLASS_INTERFACE
 	}
 }
 

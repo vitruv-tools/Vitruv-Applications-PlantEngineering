@@ -9,7 +9,6 @@ import caex.caex30.caex.InternalElement
 import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import caex.caex30.caex.SystemUnitClass
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.ExternalInterfaceType
 import tools.vitruv.applications.automationml.utils.stringreferences.caex.SystemUnitClassUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
@@ -111,7 +110,7 @@ reaction AddExternalInterfaceToSystemClass {
 	}
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassLib")
-		//!!
+		
 		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Soll in allen internen Elementen, die diese Klasse referenzieren, das Interface hinzugefügt werden?").startInteraction
 		if(shouldChangePropagated) {
 			val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
@@ -190,33 +189,49 @@ routine removeClone(caex::InternalElement internalElement) {
 routine addExternalInterfaceToInternalElements(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
-		check {
-			if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterface, root)) {
-				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN, root)
-			} else if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterface, root)) {
-				return SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, ExternalInterfaceType.COLLADA, root)
-			} else {
-				return false
-			}
-		}
 	}
 	action {
 		execute {
 			val filteredList = CloneUtils.filterChangedClones(internalElements, systemUnitClass)
-			val uri = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri").value
-			for(InternalElement currInternalElement : filteredList) {
-				addExternalInterfaceWithUriToInternalElement(externalInterface, currInternalElement, uri)
+			if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterface, root) || CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterface, root)) {
+				val uri = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri").value
+				for(InternalElement currInternalElement : filteredList) {
+					addExternalInterfaceWithUriToInternalElement(externalInterface, currInternalElement, uri)
+				}
+			} else {
+				for(InternalElement currInternalElement : filteredList) {
+					addExternalInterfaceWithoutUriToInternalElement(externalInterface, currInternalElement)
+				}
 			}
 		}
 	}
 }
 
+routine addExternalInterfaceWithoutUriToInternalElement(caex::ExternalInterface externalInterface, caex::InternalElement internalElement) {
+	match {
+		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with AMLTags.CLASS_INTERFACE
+	}
+	action {
+		val newInterface = create caex::ExternalInterface and initialize {
+			newInterface.name = externalInterface.name
+			newInterface.refBaseClassPath = externalInterface.refBaseClassPath
+		}
+		update internalElement {
+			internalElement.externalInterface.add(newInterface)
+		}
+		add correspondence between newInterface and interfaceClass
+	}
+}
+
 routine addExternalInterfaceWithUriToInternalElement(caex::ExternalInterface externalInterface, caex::InternalElement internalElement, String uri) {
+	match {
+		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with AMLTags.CLASS_INTERFACE
+	}
 	action {
 		val newAttribute = create caex::Attribute and initialize {
 			newAttribute.name = "refUri"
 			newAttribute.attributeDataType = "xs:anyURI"
-			newAttribute.value = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri").value
+			newAttribute.value = uri
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
 			newInterface.name = externalInterface.name
@@ -226,6 +241,7 @@ routine addExternalInterfaceWithUriToInternalElement(caex::ExternalInterface ext
 		update internalElement {
 			internalElement.externalInterface.add(newInterface)
 		}
+		add correspondence between newInterface and interfaceClass
 	}
 }
 

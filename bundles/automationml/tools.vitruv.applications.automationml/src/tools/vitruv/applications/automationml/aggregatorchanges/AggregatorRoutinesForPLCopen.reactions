@@ -31,7 +31,7 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 		add correspondence between projectType and container tagged with AMLTags.AML_PLCOPEN
 		execute { 
 			val plcNumber = AggregatorUtils.newNumberOfPLCopenFiles
-			persistProjectRelative(container, projectType, "resources/resources-gen/plc" + plcNumber + ".tc60201")
+			persistProjectRelative(container, projectType, "../../../../../Desktop/resources-gen/plc" + plcNumber + ".tc60201")
 		}
 	}
 }

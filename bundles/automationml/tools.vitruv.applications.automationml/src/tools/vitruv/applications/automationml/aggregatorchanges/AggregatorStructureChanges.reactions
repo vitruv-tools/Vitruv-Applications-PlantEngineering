@@ -1,3 +1,6 @@
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
+
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
 import "http://edu.kit.ipd.sdq.aml" as aml
@@ -35,7 +38,7 @@ reaction ReplaceCAEXContainer {
 			// kein Sprachstatement vorhanden, deswegen diese Formulierung
 			affectedEObject.caexcontainer = oldValue
 		} else {
-			//TODO CAEX Datei erzeugen
+			createCAEXFile(newValue)
 		}
 	}
 }
@@ -77,5 +80,17 @@ reaction RemovePLCopenContainer {
 		logger.debug("Reaction RemovePLCopenContainer")
 		
 		deletePLCopenFile(affectedEObject)
+	}
+}
+
+routine createCAEXFile (aml::CAEXContainer container) {
+	action {
+		val caexfile = create caex::CAEXFile
+		add correspondence between caexfile and container tagged with AMLTags.AML_CAEX
+		execute {
+			val caexNumber = AggregatorUtils.newNumberOfCAEXFiles
+			persistProjectRelative(container, caexfile, "../../../../../Desktop/resources-gen/caex" + caexNumber + ".caex")
+			//persistProjectRelative(container, caexfile, "resources-gen/caex" + caexNumber + ".caex")
+		}
 	}
 }
