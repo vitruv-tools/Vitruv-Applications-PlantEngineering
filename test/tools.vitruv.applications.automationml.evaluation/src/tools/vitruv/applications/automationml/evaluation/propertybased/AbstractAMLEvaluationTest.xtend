@@ -1,9 +1,9 @@
-package tools.vitruv.applications.automationml.tests.caexreactions
+package tools.vitruv.applications.automationml.evaluation.propertybased
 
 import tools.vitruv.applications.automationml.caexchanges.CombinedCAEXChangePropagationSpecification
 import tools.vitruv.applications.automationml.tests.amlutils.AbstractAMLTest
 
-class AbstractCAEXToXReactionsTest extends AbstractAMLTest {
+class AbstractAMLEvaluationTest extends AbstractAMLTest {
 	override protected cleanup() {
 		// nothing to cleanup
 	}
@@ -13,10 +13,10 @@ class AbstractCAEXToXReactionsTest extends AbstractAMLTest {
 	}
 	
 	override protected setup() {
-		val docRootAggregator = preloadExistingAggregatorModel("resources/bsp_aml_empty.aml_aggregator")
-		createAndSynchronizeModel(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath, docRootAggregator)
-		/*val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
-		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)*/
+		/*val docRootAggregator = preloadExistingAggregatorModel("resources/bsp_aml_empty.aml_aggregator")
+		createAndSynchronizeModel(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath, docRootAggregator)*/
+		val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
+		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)
 		/*val docRootPLCopen = preloadExistingPLCopenModel("resources/bsp_plcopen_empty.tc60201")
 		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)*/
 		/*val docRootCollada = preloadExistingColladaModel("resources/bsp_collada_empty.dae")
