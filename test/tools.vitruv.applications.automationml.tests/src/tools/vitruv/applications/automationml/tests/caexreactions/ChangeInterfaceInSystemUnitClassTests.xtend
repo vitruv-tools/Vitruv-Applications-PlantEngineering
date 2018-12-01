@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 
-class ChangeInterfaceInSystemUnitClassTests extends AbstractCAEXReactionsTest {
+class ChangeInterfaceInSystemUnitClassTests extends AbstractCAEXToXReactionsTest {
 	def createBasicModel() {
 		
 	}

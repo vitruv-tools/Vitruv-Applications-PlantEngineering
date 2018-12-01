@@ -76,9 +76,9 @@ class CAEXModelFactory {
 		return interface
 	}
 	
-	private static def Attribute createRefUriAttribute() {
+	static def Attribute createRefUriAttribute() {
 		val attribute = caexFactory.createAttribute
-		attribute.name = "refUri"
+		attribute.name = "refURI"
 		attribute.value = ""
 		attribute.attributeDataType = "xs:anyURI"
 		return attribute

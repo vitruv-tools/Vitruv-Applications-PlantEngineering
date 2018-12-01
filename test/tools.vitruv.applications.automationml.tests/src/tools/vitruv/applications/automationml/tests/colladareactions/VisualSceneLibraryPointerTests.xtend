@@ -3,8 +3,6 @@ package tools.vitruv.applications.automationml.tests.colladareactions
 import org.junit.Test
 
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.assertNotNull
 import java.util.LinkedList
 import org.eclipse.emf.ecore.EObject
 import org.khronos.collada.GeometryType

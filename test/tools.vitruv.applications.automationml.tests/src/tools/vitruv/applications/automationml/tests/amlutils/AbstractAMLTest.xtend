@@ -8,18 +8,14 @@ import tools.vitruv.domains.caex.CAEXDomainProvider
 import tools.vitruv.testutils.VitruviusApplicationTest
 import org.plcopen.xml.tc60201.ProjectType
 
-import org.plcopen.xml.tc60201.Tc60201Factory
 import tools.vitruv.domains.plcopen.PLCOpenDomainProvider
 import tools.vitruv.testutils.TestUserInteraction
 import caex.caex30.caex.CAEXFile
-import caex.caex30.caex.CAEXFactory
 import tools.vitruv.domains.collada.ColladaDomainProvider
 import tools.vitruv.domains.aml.AMLDomainProvider
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.khronos.collada.COLLADAType
-import org.khronos.collada.ColladaFactory
 import edu.kit.sdq.aml_aggregator.AMLProject
-import edu.kit.sdq.aml_aggregator.Aml_aggregatorFactory
 
 abstract class AbstractAMLTest extends VitruviusApplicationTest {
 	protected static val AGGREGATOR_MODEL_FILE_EXTENSION = "aml_aggregator"
