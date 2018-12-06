@@ -1,0 +1,10 @@
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: combinedAttributeChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+import caexAttributeChanges
