@@ -7,4 +7,6 @@ reactions: combinedAttributeChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
-import caexAttributeChanges
+import caexAttributePrototypChanges
+import caexAttributeCloneChanges
+import caexAttributeValueChanges

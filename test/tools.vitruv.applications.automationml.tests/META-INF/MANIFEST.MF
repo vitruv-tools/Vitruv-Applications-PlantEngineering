@@ -37,6 +37,7 @@ Require-Bundle: org.apache.log4j,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.applications.automationml.tests.aggregatorreactions,
  tools.vitruv.applications.automationml.tests.amlutils,
+ tools.vitruv.applications.automationml.tests.attributereactions,
  tools.vitruv.applications.automationml.tests.caexreactions,
  tools.vitruv.applications.automationml.tests.colladareactions,
  tools.vitruv.applications.automationml.tests.plcopenreactions

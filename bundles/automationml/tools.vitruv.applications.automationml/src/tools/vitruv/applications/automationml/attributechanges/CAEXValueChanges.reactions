@@ -1,0 +1,176 @@
+import tools.vitruv.applications.automationml.utils.propertybasedtags.PrototypTags
+import tools.vitruv.applications.automationml.utils.propertybasedtags.CloneTags
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
+import caex.caex30.caex.InternalElement
+import caex.caex30.caex.SystemUnitClass
+import tools.vitruv.applications.automationml.utils.propertybasedtags.PropertyTags
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexAttributeValueChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+// Regel 10 bi 21
+
+reaction ChangeAttributeInClone {
+	after attribute replaced at caex::Attribute[value]
+	with {
+		affectedEObject.eContainer instanceof SystemUnitClass && 
+		(!(affectedEObject.eContainer instanceof InternalElement))
+	}
+	call {
+		val prototype = affectedEObject.eContainer as SystemUnitClass
+		checkAdaptationForAllClones(prototype, affectedEObject, oldValue)
+	}
+}
+
+// Methode für Regeln 10 bis 21
+
+routine checkAdaptationForAllClones(caex::SystemUnitClass prototype, caex::Attribute property, String oldValue) {
+	match {
+		val clones = retrieve many caex::InternalElement corresponding to prototype tagged with AMLTags.PROTOTYPE_CLONE
+		val libNeverTagged = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.NEVER
+		val libAlwaysTagged = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.ALWAYS
+	}
+	action {
+		execute {
+			if(!libNeverTagged.isPresent && !libAlwaysTagged.isPresent) {
+				for(InternalElement currClone : clones) {
+					checkAdaptationForClone(currClone, property, oldValue)
+				}
+			}
+		}
+	}
+}
+
+routine checkAdaptationForClone(caex::InternalElement clone, caex::Attribute property, String oldValue) {
+	match {
+		val taggedWithDescriptive = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.DESCRIPTIVE
+		val taggedWithAbstract = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.ABSTRACT
+		val taggedWithReal = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.REAL
+		
+		val taggedWithBehaviour = retrieve optional caex::SystemUnitClass corresponding to property tagged with PropertyTags.BEHAVIOUR
+		val taggedWithSafty = retrieve optional caex::SystemUnitClass corresponding to property tagged with PropertyTags.SAFTY
+		val taggedWithComposition = retrieve optional caex::SystemUnitClass corresponding to property tagged with PropertyTags.COMPOSITION
+		val taggedWithMaterial = retrieve optional caex::SystemUnitClass corresponding to property tagged with PropertyTags.MATERIAL
+		val taggedWithTechnology = retrieve optional caex::SystemUnitClass corresponding to property tagged with PropertyTags.TECHNOLOGY
+		val taggedWithRule = retrieve optional caex::SystemUnitClass corresponding to property tagged with PropertyTags.RULE
+	}
+	action {
+		execute {
+			val isDescriptive = taggedWithDescriptive.isPresent
+			val isAbstract = taggedWithAbstract.isPresent
+			val isReal = taggedWithReal.isPresent
+			
+			val isBehaviour = taggedWithBehaviour.isPresent
+			val isSafty = taggedWithSafty.isPresent
+			val isComposition = taggedWithComposition.isPresent
+			val isMaterialOrTech = taggedWithMaterial.isPresent || taggedWithTechnology.isPresent
+			val isRule = taggedWithRule.isPresent
+			
+			val cloneProperty = CAEXUtils.getAttributeInClone(property.name, clone)
+			if(cloneProperty === null || cloneProperty.value === null) {
+				return
+			}
+			val hasChangedValue = !cloneProperty.value.equals(oldValue)
+			
+			
+			// Regel 11
+			if(isDescriptive && !hasChangedValue) {
+				copyValueToClone(cloneProperty, property)
+				return
+			}
+			
+			// Regel 12
+			if(isRule) {
+				copyValueToClone(cloneProperty, property)
+				return
+			}
+			
+			// Regel 13
+			if(isSafty) {
+				askUser(clone.name, cloneProperty, property)
+				return
+			}
+			
+			// Regel 15
+			if(isAbstract && isComposition) {
+				askUser(clone.name, cloneProperty, property)
+				return
+			}
+			
+			// Regel 17
+			if(isAbstract && isMaterialOrTech) {
+				copyValueToClone(cloneProperty, property)
+				return
+			}
+			
+			// Regel 18
+			if(!isAbstract && isMaterialOrTech && !hasChangedValue) {
+				askUser(clone.name, cloneProperty, property)
+				return
+			}
+			
+			// Regel 19, 20, 21
+			if(isBehaviour && isReal) {
+				checkAdaptationForBehaviourProperty(cloneProperty, property, hasChangedValue)
+				return
+			}
+			
+			// Regel 22
+			if(isBehaviour && !isReal && !hasChangedValue) {
+				copyValueToClone(cloneProperty, property)
+				return
+			}
+			
+			// Regel 23
+			if(isBehaviour && !isReal && hasChangedValue) {
+				askUser(clone.name, cloneProperty, property)
+				return
+			}
+		}
+	}
+}
+
+routine checkAdaptationForBehaviourProperty(caex::Attribute cloneProperty, caex::Attribute prototypeProperty, Boolean hasCloneChanged) {
+	match {
+		val clone = retrieve optional caex::InternalElement corresponding to cloneProperty tagged with PropertyTags.MAINTAINABLE
+	}
+	action {
+		execute {
+			if(clone.isPresent) {
+				if(hasCloneChanged) {
+					// Regel 21
+					askUser(clone.get.name, cloneProperty, prototypeProperty)
+				} else {
+					// Regel 20
+					copyValueToClone(cloneProperty, prototypeProperty)
+				}
+			}
+		}
+	}
+}
+
+routine askUser(String cloneName, caex::Attribute cloneProperty, caex::Attribute prototypeProperty) {
+	action {
+		execute {
+			val userInput = userInteractor.confirmationDialogBuilder.message("Soll dieser Klone (" + cloneName  + ") an die Änderung des Prototypen angepasst werden?").startInteraction
+			if(userInput) {
+				copyValueToClone(cloneProperty, prototypeProperty)
+			}
+		}
+	}
+}
+
+routine copyValueToClone(caex::Attribute cloneProperty, caex::Attribute prototypeProperty) {
+	action {
+		update cloneProperty {
+			cloneProperty.value = prototypeProperty.value
+		}
+	}
+}

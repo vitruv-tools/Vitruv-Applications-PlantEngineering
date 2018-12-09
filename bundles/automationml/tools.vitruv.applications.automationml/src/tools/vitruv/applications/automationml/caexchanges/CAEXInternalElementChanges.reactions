@@ -18,6 +18,36 @@ reactions: caexInternalElementChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
+// ***** Rollenangabe in Internem Element ändern
+
+reaction ChangeRoleClassInInternalElement {
+	after attribute replaced at caex::InternalElement[refBaseClassPath]
+	call {				
+		if(newValue.isNullOrEmpty) {
+			removeCorrespondenceBetweenInternalElementAndRoleClass(affectedEObject)
+			return
+		}
+		
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		val roleClass = CAEXStringResolver.resolveRolePath(newValue, caexFile)
+		
+		if(roleClass === null) {
+			val userInput = userInteractor.confirmationDialogBuilder.message("Rolle existiert nicht. Soll eine erzeugt werden? Andernfalls wird die Änderung zurückgerollt").startInteraction
+			if(userInput) {
+				createRoleInTree(newValue, affectedEObject)
+			} else {
+				//TODO Änderung wird zurückgerollt
+				// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
+				affectedEObject.refBaseSystemUnitPath = oldValue
+				return
+			}
+		}
+		
+		removeCorrespondenceBetweenInternalElementAndRoleClass(affectedEObject)
+		addCorrespondenceBetweenInternalElementAndRoleClass(affectedEObject, roleClass)
+	}
+}
+
 // ***** Klassenangabe in Internem Element ändern
 
 reaction ChangeSystemClassInInternalElement {
@@ -34,15 +64,10 @@ reaction ChangeSystemClassInInternalElement {
 		val systemUnitClass = SystemUnitClassUtils.getSystemClassByPath(newValue, caexFile)
 		
 		if(systemUnitClass === null) {
-			val shouldClassCreated = userInteractor.confirmationDialogBuilder.message("Klasse existiert nicht. Soll eine neue Klasse erzeugt werden? (Ansonsten wird die Änderung zurückgerollt)").startInteraction
-			if(shouldClassCreated) {
-				removeCorrespondenceBetweenClassAndInstance(affectedEObject)
-				createSystemUnitClassInTree(affectedEObject)
-			} else {
-				//TODO Änderung wird zurückgerollt
-				// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
-				affectedEObject.refBaseSystemUnitPath = oldValue
-			}
+			userInteractor.notificationDialogBuilder.message("Klasse existiert nicht. Änderung wird zurückgerollt").startInteraction
+			//TODO Änderung wird zurückgerollt
+			// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
+			affectedEObject.refBaseSystemUnitPath = oldValue
 			return
 		}
 		
@@ -174,5 +199,36 @@ routine removeCorrespondenceBetweenInterfaceInInternalAndCollada (caex::External
 	}
 	action {
 		remove correspondence between externalInterface and colladaScene tagged with AMLTags.INTERFACE_SCENE
+	}
+}
+
+// ***** Routinen für Rollen und Korrespondenze
+
+routine removeCorrespondenceBetweenInternalElementAndRoleClass(caex::InternalElement elem) {
+	match {
+		val roleClass = retrieve caex::RoleClass corresponding to elem tagged with AMLTags.CLONE_ROLE
+	}
+	action {
+		remove correspondence between elem and roleClass tagged with AMLTags.CLONE_ROLE
+	}
+}
+
+routine addCorrespondenceBetweenInternalElementAndRoleClass(caex::InternalElement elem, caex::RoleClass role) {
+	action {
+		add correspondence between elem and role tagged with AMLTags.CLONE_ROLE
+	}
+}
+
+// ***** Routine, um Rolle zu erzeugen
+routine createRoleInTree(String path, caex::InternalElement elem) {
+	action {
+		val newRole = create caex::RoleClass and initialize {
+			//TODO Rolle erzeugen
+		}
+		execute {
+			//TODO Rolle erzeugen
+			removeCorrespondenceBetweenInternalElementAndRoleClass(elem)
+			addCorrespondenceBetweenInternalElementAndRoleClass(elem, newRole)
+		}
 	}
 }

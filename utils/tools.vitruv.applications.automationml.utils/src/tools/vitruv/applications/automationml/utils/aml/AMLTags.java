@@ -11,4 +11,6 @@ public class AMLTags {
 	public static final String AML_PLCOPEN = "TagForContainerAndPLCopenFile";
 	public static final String SCENE_VISUAL = "TagForSceneAndVisualScene";
 	public static final String GEOMETRY_INSTANCE = "TagForGeometryAndInstance";
+	public static final String ROLE_ROLE = "TagForRoleAndInheritance";
+	public static final String CLONE_ROLE = "TagForCloneAndHisRole";
 }

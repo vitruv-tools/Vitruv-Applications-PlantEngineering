@@ -110,4 +110,15 @@ public class CloneUtils {
 		
 		return true;
 	}
+	
+	// true:: geändert!!
+	public static boolean checkTwoAttributesForDiffs(Attribute newAtt, Attribute oldAtt) {
+		if (!newAtt.getName().equals(oldAtt.getName())) {
+			return true;
+		}
+		if (!newAtt.getValue().equals(oldAtt.getValue())) {
+			return true;
+		}
+		return false;
+	}
 }

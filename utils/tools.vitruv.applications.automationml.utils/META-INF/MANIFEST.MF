@@ -15,6 +15,7 @@ Import-Package: org.eclipse.emf.common.util
 Export-Package: tools.vitruv.applications.automationml.utils.aml,
  tools.vitruv.applications.automationml.utils.caexresolver,
  tools.vitruv.applications.automationml.utils.externalInterfaceUtils,
+ tools.vitruv.applications.automationml.utils.propertybasedtags,
  tools.vitruv.applications.automationml.utils.prototypeclone,
  tools.vitruv.applications.automationml.utils.stringreferences.caex,
  tools.vitruv.applications.automationml.utils.stringreferences.collada

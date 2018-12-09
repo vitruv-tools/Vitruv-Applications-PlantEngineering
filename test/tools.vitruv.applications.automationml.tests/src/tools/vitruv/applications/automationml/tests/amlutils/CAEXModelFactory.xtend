@@ -12,7 +12,7 @@ class CAEXModelFactory {
 	protected static def CAEXFactory caexFactory() {
 		return CAEXFactory.eINSTANCE
 	}
-	
+
 	static def SystemUnitClassLib createSystemUnitClassLib(boolean withSecondClass, boolean withSecondLayer) {
 		val systemLib = caexFactory.createSystemUnitClassLib
 		systemLib.name = "BspSystemLib"

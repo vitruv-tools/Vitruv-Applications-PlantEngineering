@@ -12,6 +12,8 @@ import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
 import edu.kit.sdq.aml_aggregator.AMLProject
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import caex.caex30.caex.Attribute
+import tools.vitruv.applications.automationml.utils.caexresolver.InterfaceResolver
+import tools.vitruv.applications.automationml.utils.caexresolver.InterfaceResolver.ErrorCode
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -37,6 +39,42 @@ reaction ChangeExternalInterfaceType {
 		if(newValue.isNullOrEmpty) {
 			changeExternalInterfaceTypeToNull(affectedEObject, oldValue)
 		} else {
+			//TODO Änderungen werden zurückgerollt
+			val errorCode = InterfaceResolver.checkIfPathIsExisting(newValue, caexFile)
+			switch(errorCode) {
+				case ErrorCode.EMPTY_STRING_OR_FILE: {
+					userInteractor.notificationDialogBuilder.message("Fehler in der Implementierung").startInteraction
+					return
+				}
+				case ErrorCode.BREAK_RULE: {
+					userInteractor.notificationDialogBuilder.message("Interface nicht vorhanden. Änderung wird zurückgerollt").startInteraction
+					affectedEObject.refBaseClassPath = oldValue
+					return
+				}
+				case ErrorCode.SEGMENT_NOT_FOUND: {
+					userInteractor.notificationDialogBuilder.message("Interface nicht vorhanden. Änderung wird zurückgerollt").startInteraction
+					affectedEObject.refBaseClassPath = oldValue
+					return
+				}
+				case ErrorCode.LAST_SEGMENT_NOT_FOUND: {
+					val userInput = userInteractor.confirmationDialogBuilder.message("Interface nicht vorhanden. Soll es erzeugt werden? Ansonsten wird die Änderung zurückgerollt").startInteraction
+					if(userInput) {
+						//TODO Interface erzeugen
+					} else {
+						affectedEObject.refBaseClassPath = oldValue
+						return
+					}
+				}
+				case ErrorCode.WRONG_TYPE: {
+					userInteractor.notificationDialogBuilder.message("Interface nicht vorhanden. Änderung wird zurückgerollt").startInteraction
+					affectedEObject.refBaseClassPath = oldValue
+					return
+				}
+				case INTERFACE_FOUND: {
+					//Do nothing
+				}	
+			}
+			
 			if(oldValue.isNullOrEmpty) {
 				changeExternalInterfaceTypeFromNullToNotNull(caexFile, newValue, affectedEObject)
 			} else {
@@ -112,17 +150,8 @@ routine changeExternalInterfaceTypeNotToNull(caex::CAEXFile caexFile, String old
 			val oldInterfaceClass = CAEXStringResolver.resolveInterfacePath(oldValue, caexFile)
 			val isOldPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(oldInterfaceClass, caexFile)
 			val isOldCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(oldInterfaceClass, caexFile)
-		
+
 			val newInterfaceClass = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
-			if(newInterfaceClass === null) {
-				if(isOldCollada || isOldPlcopen) {
-					removePathAttributeFromExternalInterface(externalInterface)
-				}
-				removeCorrespondenceBetweenInterfaceAndItsClass(externalInterface)
-				externalInterface.refBaseClassPath = ""
-				return
-			}
-			
 			val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(newInterfaceClass, caexFile)
 			val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(newInterfaceClass, caexFile)
 			
@@ -144,10 +173,6 @@ routine changeExternalInterfaceTypeFromNullToNotNull(caex::CAEXFile caexFile, St
 	action {
 		execute {
 			val newInterfaceClass = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
-			if(newInterfaceClass === null) {
-				externalInterface.refBaseClassPath = ""
-				return
-			}
 			
 			val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(newInterfaceClass, caexFile)
 			val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(newInterfaceClass, caexFile)

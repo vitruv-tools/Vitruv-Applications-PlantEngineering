@@ -1,0 +1,122 @@
+import org.eclipse.xtext.EcoreUtil2
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AMLBasicStrings
+import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
+import caex.caex30.caex.RoleClass
+import caex.caex30.caex.InternalElement
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexRoleLibraryChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+reaction RemoveRoleClassLibrary {
+	after element caex::RoleClassLib removed from caex::CAEXFile[roleClassLib]
+	call {
+		if(AMLBasicStrings.automationMLRoleClassLibName.equals(oldValue.name)) {
+			//TODO entspricht Zurückrollen der Änderung
+			affectedEObject.roleClassLib.add(oldValue)
+			return
+		}
+		
+		val listOfRoleClasses = EcoreUtil2.getAllContentsOfType(oldValue, RoleClass)
+		for(RoleClass currClass : listOfRoleClasses) {
+			changeRefBaseClassPathOfInternalElements(currClass, "")
+		}
+	}
+}
+
+reaction RemoveRoleClass {
+	after element caex::RoleClass removed from caex::RoleClass[roleClass]
+	call {
+		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue.name)) 
+		{
+			//TODO Änderung zurückrollen
+			affectedEObject.roleClass.add(oldValue)
+			return
+		}
+				
+		changeRefBaseClassPathOfInternalElements(oldValue, "")
+		
+		val listOfRoleClasses = EcoreUtil2.getAllContentsOfType(oldValue, RoleClass)
+		for(RoleClass currClass : listOfRoleClasses) {
+			changeRefBaseClassPathOfInternalElements(currClass, "")
+		}
+	}
+}
+
+reaction RemoveRoleClassFromLib {
+	after element caex::RoleClass removed from caex::RoleClassLib[roleClass]
+	call {
+		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue.name)) {
+			//TODO Änderung zurückrollen
+			affectedEObject.roleClass.add(oldValue)
+			return
+		}
+		
+		changeRefBaseClassPathOfInternalElements(oldValue, "")
+		
+		val listOfRoleClasses = EcoreUtil2.getAllContentsOfType(oldValue, RoleClass)
+		for(RoleClass currClass : listOfRoleClasses) {
+			changeRefBaseClassPathOfInternalElements(currClass, "")
+		}
+	}
+}
+
+reaction ChangeRoleName {
+	after attribute replaced at caex::RoleClass[name]
+	call {		
+		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue)) 
+		{
+			//TODO Änderung zurückrollen
+			affectedEObject.name = oldValue
+			return
+		}
+		
+		val ownPath = CAEXStringResolver.getCompletePath(affectedEObject)
+		changeRefBaseClassPathOfInternalElements(affectedEObject, ownPath)
+		val roleClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, RoleClass)
+		
+		for(RoleClass currClass : roleClasses) {
+			val currPath = CAEXStringResolver.getCompletePath(currClass)
+			changeRefBaseClassPathOfInternalElements(currClass, currPath)
+		}
+	}
+}
+
+reaction ChangeRoleLibName {
+	after attribute replaced at caex::RoleClassLib[name]
+	call {		
+		if(AMLBasicStrings.automationMLRoleClassLibName.equals(oldValue)) {
+			//TODO Änderung zurückrollen
+			affectedEObject.name = oldValue
+			return
+		}
+		
+		val roleClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, RoleClass)
+		
+		for(RoleClass currClass : roleClasses) {
+			val currPath = CAEXStringResolver.getCompletePath(currClass)
+			changeRefBaseClassPathOfInternalElements(currClass, currPath)
+		}
+	}
+}
+
+// *****
+
+routine changeRefBaseClassPathOfInternalElements(caex::RoleClass roleClass, String newPath) {
+	match {
+		val internalElements = retrieve many caex::InternalElement corresponding to roleClass tagged with AMLTags.CLONE_ROLE
+	}
+	action {
+		execute {
+			for(InternalElement currElem : internalElements) {
+				currElem.refBaseClassPath = newPath
+			}
+		}
+	}
+}

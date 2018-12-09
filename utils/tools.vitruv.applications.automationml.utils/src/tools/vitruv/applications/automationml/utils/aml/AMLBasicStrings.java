@@ -6,6 +6,8 @@ public class AMLBasicStrings {
 	private static final String automationMLExternalBaseInterfaceName = "ExternalDataConnector";
 	private static final String externalColladaBaseInterfaceName = "COLLADAInterface";
 	private static final String externalPLCopenBaseInterfaceName = "PLCopenXMLInterface";
+	private static final String automationMLRoleBaseLibName = "AutomationMLRoleClassLib";
+	private static final String automationMLBaseRoleName = "AutomationMLBaseRole";
 	
 	public static String getAutomationMLInterfaceBaseLibName() {
 		return automationMLInterfaceBaseLibName;
@@ -33,5 +35,13 @@ public class AMLBasicStrings {
 	
 	public static String getCompletePLCopenBaseInterfacePath() {
 		return automationMLInterfaceBaseLibName + "/" + automationMLBaseInterfaceName + "/" + automationMLExternalBaseInterfaceName + "/" + externalPLCopenBaseInterfaceName;
+	}
+	
+	public static String getAutomationMLRoleClassLibName() {
+		return automationMLRoleBaseLibName;
+	}
+	
+	public static String getAutomationMLBaseRoleName() {
+		return automationMLBaseRoleName;
 	}
 }
