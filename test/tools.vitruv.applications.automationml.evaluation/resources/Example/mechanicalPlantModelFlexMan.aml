@@ -9,7 +9,7 @@
          <WriterVendorURL>www.ovgu.de</WriterVendorURL>
          <WriterVersion>0.2.1a</WriterVersion>
          <WriterRelease>unspecified</WriterRelease>
-         <LastWritingDateTime>2015-09-29 13:26:38</LastWritingDateTime>
+         <LastWritingDateTime>2015-09-29 13:26:51</LastWritingDateTime>
          <WriterProjectTitle>unspecified</WriterProjectTitle>
          <WriterProjectID>unspecified</WriterProjectID>
       </WriterHeader>
@@ -22,6 +22,26 @@
                <InternalElement ID="48b592dd-1900-400a-b0ee-e828c836b0de" Name="FlexibleManufacturingSystem">
                   <InternalElement ID="6ff4be82-cd3c-401e-9121-f31a82b17d41" Name="turntable0">
                      <Description>the first unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="c47cade7-7753-4565-a7b5-7a2d9817b942" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -415,6 +435,26 @@
                   </InternalElement>
                   <InternalElement ID="f240a59b-50f6-4578-bca2-bf2c9bfef0a3" Name="machine2">
                      <Description>machine at fourth unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>360.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>-120.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>180.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="b7d93925-d1df-4903-b7f0-57ce9d2e77e4" Name="tool_holder_bracket" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/tool_holder_bracket">
                         <Attribute Name="stiffness" Unit="N/mm2" AttributeDataType="xs:integer">
                            <Value>1300</Value>
@@ -954,6 +994,26 @@
                   </InternalElement>
                   <InternalElement ID="2fdcdfcc-268d-4000-b4c6-221c4ccc2b46" Name="turntable7">
                      <Description>the third unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="c4a7f952-aa7a-439f-818c-f6b03c6792de" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -1347,6 +1407,26 @@
                   </InternalElement>
                   <InternalElement ID="983d60a9-b92b-47a1-8787-5d3a41fb18d0" Name="turntable6">
                      <Description>the fifth unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>480.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="0e00b36c-4d52-475e-aac2-f19957343c16" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -1740,6 +1820,26 @@
                   </InternalElement>
                   <InternalElement ID="23642f11-7023-43ce-82f8-183daca08cd8" Name="turntable5">
                      <Description>the seventh unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>720.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>270.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="3d5fd113-f559-4d36-a7d3-ed7e92860c7f" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -2133,6 +2233,26 @@
                   </InternalElement>
                   <InternalElement ID="d98349a4-9ba9-4a4b-ae8b-1fa652734454" Name="conveyer0">
                      <Description>the second unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>120.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="424e5e58-8235-401a-9289-c517a1f61fb5" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -2312,6 +2432,26 @@
                   </InternalElement>
                   <InternalElement ID="e727216a-9aac-4000-b840-985f76e18ea6" Name="conveyer7">
                      <Description>the fourth unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>360.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>360.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="7be4e563-107f-4752-b8b6-d3702f040cf2" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -2491,6 +2631,26 @@
                   </InternalElement>
                   <InternalElement ID="0353075d-1235-4ace-81aa-4adf17b36430" Name="conveyer6">
                      <Description>the sixth unit in baseline</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>600.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="d7d58db7-ec52-4fba-acf6-b87f1395e61b" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -2670,6 +2830,26 @@
                   </InternalElement>
                   <InternalElement ID="135acc50-01c9-462c-8cb9-4b210e8f8b30" Name="conveyer2">
                      <Description>the third unit in slope1 </Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>120.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>180.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="40370ae4-03fa-4a93-9031-a3e45c6c1341" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -2850,6 +3030,26 @@
                   <InternalElement ID="61ef0ddf-75d1-45eb-b119-d1476151c8da" Name="conveyer8">
                      <Description>the fifth unit in slope1 </Description>
                      <AdditionalInformation>connected to third unit of baseline</AdditionalInformation>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>120.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>90.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="9967d694-2d75-46ca-9a28-c9a5b66a3ef7" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -3029,6 +3229,26 @@
                   </InternalElement>
                   <InternalElement ID="6c538c91-04d8-40c7-9f04-a9d15f32edbf" Name="turntable2">
                      <Description>the fourth unit in slope1 </Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>180.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="4d4e4555-1398-4d43-bb67-887c7f649545" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -3422,6 +3642,26 @@
                   </InternalElement>
                   <InternalElement ID="75e37e84-50c9-4e5e-b4c8-f635c8ebcba5" Name="machine1">
                      <Description>machine at third unit in slope1</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>120.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>360.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="cdad90b7-b22c-4323-aa5f-1835c741b2cf" Name="tool_holder_bracket" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/tool_holder_bracket">
                         <Attribute Name="stiffness" Unit="N/mm2" AttributeDataType="xs:integer">
                            <Value>1300</Value>
@@ -3962,6 +4202,26 @@
                   <InternalElement ID="ce8deb7c-e26c-43c6-a3f4-4eb321f60f1f" Name="conveyer1">
                      <Description>the first unit in slope1 </Description>
                      <AdditionalInformation>connected to first unit of baseline</AdditionalInformation>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>120.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>90.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="115ad1a9-0708-4ede-b574-67f664fe12bb" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -4141,6 +4401,26 @@
                   </InternalElement>
                   <InternalElement ID="9c4fca69-a3e8-418b-9cd1-49cfbf6ee25c" Name="turntable1">
                      <Description>the second unit in slope1 </Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>90.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="0f5ec890-886a-4b7b-a333-dbf720c25bff" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -4535,6 +4815,26 @@
                   <InternalElement ID="523c5f1b-e18c-426f-bd2f-4bf169ce1937" Name="conveyer9">
                      <Description>the first unit in slope2</Description>
                      <AdditionalInformation>connected to fifth unit of baseline</AdditionalInformation>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>480.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>120.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>270.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="b55183c4-8fc4-47cb-8209-323071766c94" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -4714,6 +5014,26 @@
                   </InternalElement>
                   <InternalElement ID="954aa368-518d-4103-b819-dd7db2c6d01e" Name="turntable3">
                      <Description>the second unit in slope2</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>480.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>180.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="3e0b2412-d5e5-4119-9436-c12e1e96187a" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -5107,6 +5427,26 @@
                   </InternalElement>
                   <InternalElement ID="5b291287-6b80-4c96-8568-3f63e63f85cd" Name="turntable4">
                      <Description>the fourth unit in slope2</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>720.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>180.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="b36ca1b8-ac81-4970-af23-31e4cda916b1" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
                         <Attribute Name="port" AttributeDataType="xs:string">
                            <Attribute Name="input- / output voltage" Unit="V" AttributeDataType="xs:integer">
@@ -5501,6 +5841,26 @@
                   <InternalElement ID="3f0ebf25-0b0a-48cd-aea9-7f183b573493" Name="conveyer5">
                      <Description>the fifth unit in slope1 </Description>
                      <AdditionalInformation>connected to seventh unit of baseline</AdditionalInformation>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>700.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>120.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>270.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="4bada760-2c61-4ffc-9bfe-b16aa5e458bf" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -5680,6 +6040,26 @@
                   </InternalElement>
                   <InternalElement ID="04612686-9d09-4649-b9b1-173f5262fc46" Name="conveyer4">
                      <Description>the third unit in slope2</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>600.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>180.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="c5c13c72-8bba-4602-90c0-55935a9c30e0" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
@@ -5859,6 +6239,26 @@
                   </InternalElement>
                   <InternalElement ID="1319fb10-66c3-45e0-9815-80bbf73fafca" Name="machine3">
                      <Description>machine at third unit in slope2</Description>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>600.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>360.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="a8197d56-c7fb-4144-bc6f-8cfd8674dfd1" Name="tool_holder_bracket" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/tool_holder_bracket">
                         <Attribute Name="stiffness" Unit="N/mm2" AttributeDataType="xs:integer">
                            <Value>1300</Value>
@@ -6399,6 +6799,26 @@
                   <InternalElement ID="ad258e93-f513-47ee-883a-2f4089f24597" Name="conveyer3">
                      <Description>bridge between slope1 and slope2</Description>
                      <AdditionalInformation>connected to fourth unit of slope1 and second unit of slope2</AdditionalInformation>
+                     <Attribute Name="Frame" AttributeDataType="xs:complexType">
+                        <Attribute Name="x" AttributeDataType="xs:double">
+                           <Value>360.00</Value>
+                        </Attribute>
+                        <Attribute Name="y" AttributeDataType="xs:double">
+                           <Value>240.00</Value>
+                        </Attribute>
+                        <Attribute Name="z" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rx" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="ry" AttributeDataType="xs:double">
+                           <Value>0.00</Value>
+                        </Attribute>
+                        <Attribute Name="rz" AttributeDataType="xs:double">
+                           <Value>180.00</Value>
+                        </Attribute>
+                     </Attribute>
                      <InternalElement ID="63a18013-6fce-470f-a0d5-b55d1d68046d" Name="frame_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
                         <Attribute Name="geometry" AttributeDataType="xs:string">
                            <Description>(LxWxH)</Description>
