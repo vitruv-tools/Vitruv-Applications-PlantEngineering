@@ -9,7 +9,7 @@
          <WriterVendorURL>www.ovgu.de</WriterVendorURL>
          <WriterVersion>0.2.1a</WriterVersion>
          <WriterRelease>unspecified</WriterRelease>
-         <LastWritingDateTime>2015-09-29 13:26:12</LastWritingDateTime>
+         <LastWritingDateTime>2015-09-29 13:26:24</LastWritingDateTime>
          <WriterProjectTitle>unspecified</WriterProjectTitle>
          <WriterProjectID>unspecified</WriterProjectID>
       </WriterHeader>
@@ -18,7 +18,7 @@
       <Version>1.0.0</Version>
       <InternalElement ID="3d7d5923-f2b7-448c-a4bb-4d2603fe25b1" Name="Otto-von-Guericke University Magdeburg">
          <InternalElement ID="f5e21e8f-fb2a-4429-9044-c77593efb8fc" Name="Building10">
-            <InternalElement ID="3dc9d017-fc44-47c0-a247-ba153b1f0180" Name="Room445">
+            <InternalElement ID="f5e21e8f-fb2a-4429-9044-c77593efb8fc" Name="Room445">
                <InternalElement ID="48b592dd-1900-400a-b0ee-e828c836b0de" Name="FlexibleManufacturingSystem">
                   <InternalElement ID="6ff4be82-cd3c-401e-9121-f31a82b17d41" Name="turntable0">
                      <Description>the first unit in baseline</Description>
@@ -135,8 +135,10 @@
                      <Description>the control cabinet for the extensions of the production system model</Description>
                      <RoleRequirements RefBaseRoleClassPath="AutomationMLExtendedRoleClassLib/ControlCabinet"/>
                   </InternalElement>
+                  <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/SubProject"/>
                   <RoleRequirements RefBaseRoleClassPath="AutomationMLExtendedRoleClassLib/ProductionLine"/>
                </InternalElement>
+               <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Project"/>
                <RoleRequirements RefBaseRoleClassPath="AutomationMLExtendedRoleClassLib/Area"/>
             </InternalElement>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLExtendedRoleClassLib/Site"/>
@@ -163,6 +165,66 @@
             <InterfaceClass Name="SignalInterface" RefBaseClassPath="Communication"/>
          </InterfaceClass>
       </InterfaceClass>
+   </InterfaceClassLib>
+   <InterfaceClassLib Name="VDMA66415InterfaceClassLib">
+      <Version>0.9</Version>
+      <InterfaceClass Name="PLCTag" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface">
+         <Attribute Name="Identifier" AttributeDataType="xs:string"/>
+         <Attribute Name="ToolID" AttributeDataType="xs:string">
+            <Description>Engineering-Werkzeug-interne Identifikation des Datenobjektes</Description>
+            <Attribute Name="ToolName" AttributeDataType="xs:string">
+               <Description>Eindeutiger Name des Engineering-Werkzeuges</Description>
+            </Attribute>
+            <Attribute Name="ToolSign" AttributeDataType="xs:string">
+               <Description>Eineindeutige Kennzeichnung der Instanz der Engineering-Software</Description>
+            </Attribute>
+            <Attribute Name="ToolIDInternal" AttributeDataType="xs:string">
+               <Description>Identifikation des Projektes im Werkzeuginternen Datenmodell</Description>
+            </Attribute>
+         </Attribute>
+         <Attribute Name="DataRevision" AttributeDataType="xs:string">
+            <Description>Änderungskennzeichen für das Datenobjekt</Description>
+            <Attribute Name="LastChange" AttributeDataType="xs:string">
+               <Description>Kennzeichnung der letzten Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Status" AttributeDataType="xs:string">
+               <Description>Status des Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Time" AttributeDataType="xs:dateTime">
+               <Description>Zeitpunkt der letzten Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Author" AttributeDataType="xs:string">
+               <Description>Autorenkürzel des letzten Bearbeiters</Description>
+            </Attribute>
+         </Attribute>
+         <Attribute Name="PLCManufacturer" AttributeDataType="xs:string">
+            <Description>Name des Herstellers der Steuerung</Description>
+         </Attribute>
+         <Attribute Name="PLCName" AttributeDataType="xs:string">
+            <Description>Name der Programmiersoftware der Steuerung, inkl. Version</Description>
+         </Attribute>
+         <Attribute Name="Operand" AttributeDataType="xs:string">
+            <Description>Typ des Operanden (Ein-/Ausgang der Steuerung)</Description>
+         </Attribute>
+         <Attribute Name="Adress" AttributeDataType="xs:string">
+            <Description>Adresse</Description>
+         </Attribute>
+         <Attribute Name="PLCNode" AttributeDataType="xs:string">
+            <Description>Identifizierung der Steuerung</Description>
+         </Attribute>
+         <Attribute Name="TagName" AttributeDataType="xs:string">
+            <Description>Eindeutiger Name der Variablen (Bezeichner, Sy&lt;mbol) im Steuerungsprogramm</Description>
+         </Attribute>
+         <Attribute Name="TagComment" AttributeDataType="xs:string">
+            <Description>Beschreibung der Variablen</Description>
+         </Attribute>
+      </InterfaceClass>
+      <InterfaceClass Name="UnitDrawingFileName" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+      <InterfaceClass ID="ca35eab5-1b07-452c-8759-5fcb6b6dd306" Name="UnitDocFileName" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+      <InterfaceClass ID="54dbf3f7-33ae-414d-bed1-8548b69a6bfd" Name="UnitUserDefinedFile" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+      <InterfaceClass ID="80c8f0e3-4cf9-4e9a-8183-32d28c256b75" Name="DeviceDataSheetFileName" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+      <InterfaceClass ID="430415b2-3574-4de5-b44a-842c27b128f0" Name="DeviceDocFileName" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+      <InterfaceClass ID="920e07b7-929b-4d44-92d0-d462efda2d89" Name="DeviceUserDefinedFile" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
    </InterfaceClassLib>
    <InterfaceClassLib Name="IAF_ModelInterfaceClassLib">
       <Description>Model Interface Class Library by IAF OvGU</Description>
@@ -286,6 +348,351 @@
          </RoleClass>
       </RoleClass>
    </RoleClassLib>
+   <RoleClassLib Name="VDMA66415RoleClassLib">
+      <Version>0.9</Version>
+      <RoleClass Name="VDMA66415" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+         <Attribute Name="ToolID" AttributeDataType="xs:string">
+            <Description>Engineering-Werkzeug-interne Identifikation des Datenobjektes</Description>
+            <Attribute Name="ToolName" AttributeDataType="xs:string">
+               <Description>Eindeutiger Name des Engineering-Werkzeuges</Description>
+            </Attribute>
+            <Attribute Name="ToolSign" AttributeDataType="xs:string">
+               <Description>Eineindeutige Kennzeichnung der Instanz der Engineering-Software</Description>
+            </Attribute>
+            <Attribute Name="ToolIDInternal" AttributeDataType="xs:string">
+               <Description>Identifikation des Projektes im Werkzeuginternen Datenmodell</Description>
+            </Attribute>
+         </Attribute>
+         <Attribute Name="DataRevision" AttributeDataType="xs:string">
+            <Description>Änderungskennzeichen für das Datenobjekt</Description>
+            <Attribute Name="LastChange" AttributeDataType="xs:string">
+               <Description>Kennzeichnung der letzten Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Status" AttributeDataType="xs:string">
+               <Description>Status des Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Time" AttributeDataType="xs:dateTime">
+               <Description>Zeitpunkt der letzten Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Author" AttributeDataType="xs:string">
+               <Description>Autorenkürzel des letzten Bearbeiters</Description>
+            </Attribute>
+         </Attribute>
+         <RoleClass Name="File" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+            <Attribute Name="Version" AttributeDataType="xs:string">
+               <Description>Version der Dateiformat-Definition VDMA66415</Description>
+            </Attribute>
+            <Attribute Name="FileName" AttributeDataType="xs:string">
+               <Description>Name der Projekt-Datei</Description>
+            </Attribute>
+            <Attribute Name="FileVersion" AttributeDataType="xs:string">
+               <Description>Version der Projektdatei</Description>
+            </Attribute>
+            <Attribute Name="FileTime" AttributeDataType="xs:dateTime">
+               <Description>Zeitpunkt des Schreibens (Speicherns) der Projektdatei</Description>
+            </Attribute>
+            <Attribute Name="FileAuthor" AttributeDataType="xs:string">
+               <Description>Eindeutiges Autorenkürzel des Bearbeiters der Projektdatei</Description>
+            </Attribute>
+            <Attribute Name="FileInfo" AttributeDataType="xs:string">
+               <Description>Informationstext zur Projektdatei</Description>
+            </Attribute>
+            <Attribute Name="FilePriorTime" AttributeDataType="xs:dateTime">
+               <Description>Zeitpunkt des Schreibens (Speicherns) der Vorgängerprojektdatei, welche angereichert oder gelesen wurde</Description>
+            </Attribute>
+            <Attribute Name="FilePriorAuther" AttributeDataType="xs:string">
+               <Description>Eindeutiges Autorenkürzel des Bearbeiters der Vorgängerprojektdatei, welche angereichert oder gelesen wurde</Description>
+            </Attribute>
+            <Attribute Name="FilePriorInfo" AttributeDataType="xs:string">
+               <Description>Informationstext der Vorgängerprojektdatei, welche angereichert oder gelesen wurde</Description>
+            </Attribute>
+            <Attribute Name="UsedLanguages" AttributeDataType="xs:language">
+               <Description>Aufzählung aller in der Projektdatei verwendeten Sprachen</Description>
+               <DefaultValue>de, en</DefaultValue>
+            </Attribute>
+         </RoleClass>
+         <RoleClass Name="Project" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+            <Attribute Name="ProjectManufacturer" AttributeDataType="xs:string">
+               <Description>Projekthersteller ((Maschinenhersteller)</Description>
+            </Attribute>
+            <Attribute Name="ProjectName" AttributeDataType="xs:string">
+               <Description>Name des Projektes</Description>
+            </Attribute>
+            <Attribute Name="ProjectSign" AttributeDataType="xs:string">
+               <Description>Kennzeichen / Nummer des Projektes</Description>
+            </Attribute>
+            <Attribute Name="ProjectRevision" AttributeDataType="xs:string">
+               <Description>Revisionsnummer des Projektes</Description>
+            </Attribute>
+            <Attribute Name="ProjectInformation" AttributeDataType="xs:string">
+               <Description>Informationstext zum Projekt</Description>
+            </Attribute>
+         </RoleClass>
+         <RoleClass Name="SubProject" RefBaseClassPath="VDMA66415RoleClassLib/VDMA66415">
+            <Attribute Name="SubProjectName" AttributeDataType="xs:string">
+               <Description>Name des Unterprojektes</Description>
+            </Attribute>
+            <Attribute Name="SubProjectSign" AttributeDataType="xs:string">
+               <Description>Kennzeichen / Nummer des Unterprojektes</Description>
+            </Attribute>
+            <Attribute Name="SubProjectRevision" AttributeDataType="xs:string">
+               <Description>Revisionsnummer des Unterprojektes</Description>
+            </Attribute>
+            <Attribute Name="SubProjectInformation" AttributeDataType="xs:string">
+               <Description>Informationstext zum Unterprojekt</Description>
+            </Attribute>
+         </RoleClass>
+         <RoleClass Name="Unit" RefBaseClassPath="VDMA66415RoleClassLib/VDMA66415">
+            <Attribute Name="Identifier" AttributeDataType="xs:string"/>
+            <Attribute Name="UnitSign" AttributeDataType="xs:string"/>
+            <Attribute Name="UnitName" AttributeDataType="xs:string"/>
+            <Attribute Name="UnitUserDefinedText" AttributeDataType="xs:string">
+               <Description>Information des Anwenders zur Einheit</Description>
+            </Attribute>
+            <Attribute Name="UnitParameterUser" AttributeDataType="xs:string">
+               <Description>Anwendungsspezifischer Parameter der Einheit</Description>
+               <Attribute Name="ParameterBuilt" AttributeDataType="xs:string">
+                  <Description>Eindeutiger Name des Autors, der den Parameter einträgt (Engineeringwerkzeug oder Autorenkürzel)</Description>
+               </Attribute>
+               <Attribute Name="ParamterName" AttributeDataType="xs:string">
+                  <Description>Name des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterKey" AttributeDataType="xs:string">
+                  <Description>Schlüssel des Parameters (z.B. IRDI)</Description>
+               </Attribute>
+               <Attribute Name="ParameterValue" AttributeDataType="xs:string">
+                  <Description>Wert des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterDataType" AttributeDataType="xs:string">
+                  <Description>Datentyp des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterSIUnit" AttributeDataType="xs:string">
+                  <Description>SI Einheit des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterDescription" AttributeDataType="xs:string">
+                  <Description>Beschreibung des Parameters</Description>
+               </Attribute>
+            </Attribute>
+            <Attribute Name="UnitSequence" AttributeDataType="xs:string">
+               <Description>Ablaufbeschreibung, die der Einheit zugeordnet ist</Description>
+               <Attribute Name="SequenceName" AttributeDataType="xs:string">
+                  <Description>Name der Sequenz</Description>
+               </Attribute>
+               <Attribute Name="SequenceStep" AttributeDataType="xs:string">
+                  <Description>Schritt der Sequenz</Description>
+                  <Attribute Name="StepName" AttributeDataType="xs:string">
+                     <Description>Name des Schrittes</Description>
+                  </Attribute>
+                  <Attribute Name="StepNext" AttributeDataType="xs:string">
+                     <Description>Namen aller nachfolgenden Schritte</Description>
+                  </Attribute>
+                  <Attribute Name="StepParameter" AttributeDataType="xs:string">
+                     <Description>Anwendungsspezifische Parameter des Schrittes</Description>
+                  </Attribute>
+               </Attribute>
+            </Attribute>
+            <ExternalInterface ID="7c809021-5183-46b2-a244-a40b476bf18b" Name="UnitDrawingFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/UnitDrawingFileName">
+               <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+            </ExternalInterface>
+            <ExternalInterface ID="f2664dca-8365-4951-81d7-ab598b5b22e0" Name="UnitDocFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/UnitDocFileName">
+               <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+            </ExternalInterface>
+            <ExternalInterface ID="29b36987-9924-44fc-8afa-6b0a69396952" Name="UnitUserDefinedFile" RefBaseClassPath="VDMA66415InterfaceClassLib/UnitUserDefinedFile">
+               <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+            </ExternalInterface>
+         </RoleClass>
+         <RoleClass Name="Device" RefBaseClassPath="VDMA66415RoleClassLib/VDMA66415">
+            <Attribute Name="Identifier" AttributeDataType="xs:string">
+               <Description>Identifizierung des Gerätes</Description>
+            </Attribute>
+            <Attribute Name="IsSubDeviceOf" AttributeDataType="xs:string">
+               <Description>Zuordnung zu einem anderen (führenden) Gerät durch Eintrag des Device.Identifiers dieses Gerätes</Description>
+            </Attribute>
+            <Attribute Name="SubDeviceIndex" AttributeDataType="xs:string">
+               <Description>Position des Gerätes im Verhältnis zum führenden Gerät</Description>
+            </Attribute>
+            <Attribute Name="DeviceManufacturer" AttributeDataType="xs:string">
+               <Description>Hersteller des Gerätes</Description>
+            </Attribute>
+            <Attribute Name="DeviceName" AttributeDataType="xs:string">
+               <Description>Name des Gerätes</Description>
+            </Attribute>
+            <Attribute Name="DeviceOrderNumber" AttributeDataType="xs:string">
+               <Description>Bestellnummer des Gerätes</Description>
+            </Attribute>
+            <Attribute Name="MaterialNumber" AttributeDataType="xs:string">
+               <Description>Materialnummer des Gerätes im betriebswirtschaftlichen Planungssystem des Projektherstellers</Description>
+            </Attribute>
+            <Attribute Name="PartNumber" AttributeDataType="xs:string">
+               <Description>Artikelnummer des Gerätes, bezeichnet einen Gerätetyp mit gewissen Merkmalen im betriebswirtschaftlichen Planungssystem des Projektherstellers</Description>
+            </Attribute>
+            <Attribute Name="DeviceUserDefinedText" AttributeDataType="xs:string">
+               <Description>Information des Anwenders zum Gerät</Description>
+            </Attribute>
+            <Attribute Name="DeviceParameterUser" AttributeDataType="xs:string">
+               <Description>Anwendungsspezifische Parameter des Gerätes</Description>
+               <Attribute Name="ParameterBuilt" AttributeDataType="xs:string">
+                  <Description>Eindeutiger Name des Autors, der den Parameter einträgt (Engineeringwerkzeug oder Autorenkürzel)</Description>
+               </Attribute>
+               <Attribute Name="ParamterName" AttributeDataType="xs:string">
+                  <Description>Name des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterKey" AttributeDataType="xs:string">
+                  <Description>Schlüssel des Parameters (z.B. IRDI)</Description>
+               </Attribute>
+               <Attribute Name="ParameterValue" AttributeDataType="xs:string">
+                  <Description>Wert des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterDataType" AttributeDataType="xs:string">
+                  <Description>Datentyp des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterSIUnit" AttributeDataType="xs:string">
+                  <Description>SI Einheit des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterDescription" AttributeDataType="xs:string">
+                  <Description>Beschreibung des Parameters</Description>
+               </Attribute>
+            </Attribute>
+            <ExternalInterface ID="ee51ec41-894d-4005-8328-92fcad1edb37" Name="DeviceDataSheetFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/DeviceDataSheetFileName">
+               <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+            </ExternalInterface>
+            <ExternalInterface ID="23504996-9ca2-42d1-87de-e73a4e1c3e05" Name="DeviceDocFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/DeviceDocFileName">
+               <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+            </ExternalInterface>
+            <ExternalInterface ID="9f934d8b-1cf4-41a7-bfb9-c866abda99d5" Name="DeviceUserDefinedFile" RefBaseClassPath="VDMA66415InterfaceClassLib/DeviceUserDefinedFile">
+               <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+            </ExternalInterface>
+         </RoleClass>
+         <RoleClass Name="DeviceFunction" RefBaseClassPath="VDMA66415RoleClassLib/VDMA66415">
+            <Attribute Name="Identifier" AttributeDataType="xs:string">
+               <Description>Identifizierung der Gerätefunktion</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionSign" AttributeDataType="xs:string">
+               <Description>Referenzkennzeichen der Gerätefunktion, einheitlich/gemeinsam für alle Gewerke</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionSignM" AttributeDataType="xs:string">
+               <Description>Referenzkennzeichen der Gerätefunktion: speziell Mechanik (Bauteilkennzeichen)</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionSignBMK" AttributeDataType="xs:string">
+               <Description>Referenzkennzeichen der Gerätefunktion: speziell Elektrotechnik (Betriebsmittelkennzeichen)</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionSignFP" AttributeDataType="xs:string">
+               <Description>Referenzkennzeichen der Gerätefunktion: speziell Fluidtechnik (Bezeichnungsschlüssel)</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionSignPI" AttributeDataType="xs:string">
+               <Description>Referenzkennzeichen der Gerätefunktion: speziell Prozesstechnik (Mess- und Regelstellenkennzeichen)</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionText" AttributeDataType="xs:string">
+               <Description>Name der Gerätefunktion (Funktionstext)</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionTextShort" AttributeDataType="xs:string">
+               <Description>Name der Gerätefunktion (Funktionstext) in Kurzform</Description>
+            </Attribute>
+            <Attribute Name="TypeSensor" AttributeDataType="xs:boolean">
+               <Description>Funktionstyp Sensor, Erfassen</Description>
+               <Attribute Name="TypeSensorSignal" AttributeDataType="xs:boolean"/>
+               <Attribute Name="TypeSensorValue" AttributeDataType="xs:boolean"/>
+            </Attribute>
+            <Attribute Name="TypeSensorBinary" AttributeDataType="xs:boolean">
+               <Description>Binäres Sensor-Signal</Description>
+               <Attribute Name="TypeLogicControl" AttributeDataType="xs:boolean"/>
+               <Attribute Name="TypeLogicCommunication" AttributeDataType="xs:boolean"/>
+            </Attribute>
+            <Attribute Name="TypeSensorValue" AttributeDataType="xs:boolean">
+               <Description>Messwert</Description>
+               <Attribute Name="TypeActuatorSignal" AttributeDataType="xs:boolean"/>
+               <Attribute Name="TypeActuatorValue" AttributeDataType="xs:boolean"/>
+            </Attribute>
+            <Attribute Name="TypeLogic" AttributeDataType="xs:boolean">
+               <Description>Funktionstyp Logik, Auswerten</Description>
+            </Attribute>
+            <Attribute Name="TypeLogicControl" AttributeDataType="xs:boolean">
+               <Description>Steuerung</Description>
+            </Attribute>
+            <Attribute Name="TypeLogicCommunication" AttributeDataType="xs:boolean">
+               <Description>Kommunikation</Description>
+            </Attribute>
+            <Attribute Name="TypeActuator" AttributeDataType="xs:boolean">
+               <Description>Funktionstyp Aktor, Reagieren</Description>
+            </Attribute>
+            <Attribute Name="TypeActuatorBinary" AttributeDataType="xs:boolean">
+               <Description>Binäres Aktors-Signal</Description>
+            </Attribute>
+            <Attribute Name="TypeActuatorValue" AttributeDataType="xs:boolean">
+               <Description>Sollwert, Stellwert</Description>
+            </Attribute>
+            <Attribute Name="TypeConnection" AttributeDataType="xs:boolean">
+               <Description>Verbindung</Description>
+            </Attribute>
+            <Attribute Name="TypeAccessory" AttributeDataType="xs:boolean">
+               <Description>Zubehör</Description>
+            </Attribute>
+            <Attribute Name="RelatedMechanicalDrawing" AttributeDataType="xs:boolean">
+               <Description>Gerätefunktion relevant für Mechanik-CAD (Konstruktionszeichnung)</Description>
+            </Attribute>
+            <Attribute Name="RelatedElectricalDiagram" AttributeDataType="xs:boolean">
+               <Description>Gerätefunktion relevant für Elektro-CAD (Schaltplan)</Description>
+            </Attribute>
+            <Attribute Name="RelatedFluidPowerDiagram" AttributeDataType="xs:boolean">
+               <Description>Gerätefunktion relevant für Fluid-CAD (Fluidplan)</Description>
+            </Attribute>
+            <Attribute Name="RelatedPIDiagram" AttributeDataType="xs:boolean">
+               <Description>Gerätefunktion relevant für Prozess-CAD (R&amp;I-Fließschema)</Description>
+            </Attribute>
+            <Attribute Name="RelatedSoftware" AttributeDataType="xs:boolean">
+               <Description>Gerätefunktion relevant für Programmiersoftware</Description>
+            </Attribute>
+            <Attribute Name="RelatedSoftwareSafetyIO" AttributeDataType="xs:boolean">
+               <Description>Gerätefunktion relevant für sicherheitsgerichtete Programmiersoftware</Description>
+            </Attribute>
+            <Attribute Name="ConnectionSource" AttributeDataType="xs:string">
+               <Description>Anschlussquelle der Gerätefunktion</Description>
+               <Attribute Name="ConnectionSign" AttributeDataType="xs:string">
+                  <Description>Referenzkennzeichen der Anschlussquelle</Description>
+               </Attribute>
+            </Attribute>
+            <Attribute Name="ConnectionDestination" AttributeDataType="xs:string">
+               <Description>Anschlussziel der Gerätefunktion</Description>
+               <Attribute Name="ConnectionSign" AttributeDataType="xs:string">
+                  <Description>Referenzkennzeichen des Anschlusszieles</Description>
+               </Attribute>
+            </Attribute>
+            <Attribute Name="SafetyFunctionName" AttributeDataType="xs:string">
+               <Description>Sicherheitsfunktion, in der die Gerätefunktion verwendet wird</Description>
+            </Attribute>
+            <Attribute Name="SpanOfControlName" AttributeDataType="xs:string">
+               <Description>Name des Maschinenbereiches, in dem die Gerätefunktion eingebunden ist (Wirkungsbereich)</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionUserDefinedText" AttributeDataType="xs:string">
+               <Description>Informationen des Anwenders zur Gerätefunktion</Description>
+            </Attribute>
+            <Attribute Name="DeviceFunctionParameterUser" AttributeDataType="xs:string">
+               <Description>Anwendungsspezifischer Parameter der Gerätefunktion</Description>
+               <Attribute Name="ParameterBuilt" AttributeDataType="xs:string">
+                  <Description>Eindeutiger Name des Autors, der den Parameter einträgt (Engineeringwerkzeug oder Autorenkürzel)</Description>
+               </Attribute>
+               <Attribute Name="ParamterName" AttributeDataType="xs:string">
+                  <Description>Name des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterKey" AttributeDataType="xs:string">
+                  <Description>Schlüssel des Parameters (z.B. IRDI)</Description>
+               </Attribute>
+               <Attribute Name="ParameterValue" AttributeDataType="xs:string">
+                  <Description>Wert des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterDataType" AttributeDataType="xs:string">
+                  <Description>Datentyp des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterSIUnit" AttributeDataType="xs:string">
+                  <Description>SI Einheit des Parameters</Description>
+               </Attribute>
+               <Attribute Name="ParameterDescription" AttributeDataType="xs:string">
+                  <Description>Beschreibung des Parameters</Description>
+               </Attribute>
+            </Attribute>
+         </RoleClass>
+      </RoleClass>
+   </RoleClassLib>
    <RoleClassLib Name="IAF_ModelRoleClassLib">
       <Description>Model Role Class Library by IAF OvGU</Description>
       <Version>1.0.0</Version>
@@ -299,9 +706,361 @@
       <RoleClass Name="processing_tools" RefBaseClassPath="AutomationMLDMIRoleClassLib/DiscManufacturingEquipment/Tool"/>
       <RoleClass Name="tool_holder" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
    </RoleClassLib>
+   <SystemUnitClassLib Name="VDMASystemUnitClassLib">
+      <Version>0.9</Version>
+      <SystemUnitClass Name="VDMA66415BaseObject">
+         <Attribute Name="ToolID" AttributeDataType="xs:string">
+            <Description>Engineering-Werkzeug-interne Identifikation des Datenobjektes</Description>
+            <Attribute Name="ToolName" AttributeDataType="xs:string">
+               <Description>Eindeutiger Name des Engineering-Werkzeuges</Description>
+            </Attribute>
+            <Attribute Name="ToolSign" AttributeDataType="xs:string">
+               <Description>Eineindeutige Kennzeichnung der Instanz der Engineering-Software</Description>
+            </Attribute>
+            <Attribute Name="ToolIDInternal" AttributeDataType="xs:string">
+               <Description>Identifikation des Projektes im Werkzeuginternen Datenmodell</Description>
+            </Attribute>
+         </Attribute>
+         <Attribute Name="DataRevision" AttributeDataType="xs:string">
+            <Description>Änderungskennzeichen für das Datenobjekt</Description>
+            <Attribute Name="LastChange" AttributeDataType="xs:string">
+               <Description>Kennzeichnung der letzten Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Status" AttributeDataType="xs:string">
+               <Description>Status des Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Time" AttributeDataType="xs:dateTime">
+               <Description>Zeitpunkt der letzten Bearbeitung des Datenobjektes</Description>
+            </Attribute>
+            <Attribute Name="Author" AttributeDataType="xs:string">
+               <Description>Autorenkürzel des letzten Bearbeiters</Description>
+            </Attribute>
+         </Attribute>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415"/>
+      </SystemUnitClass>
+      <SystemUnitClass Name="File">
+         <Attribute Name="Version" AttributeDataType="xs:string">
+            <Description>Version der Dateiformat-Definition VDMA66415</Description>
+         </Attribute>
+         <Attribute Name="FileName" AttributeDataType="xs:string">
+            <Description>Name der Projekt-Datei</Description>
+         </Attribute>
+         <Attribute Name="FileVersion" AttributeDataType="xs:string">
+            <Description>Version der Projektdatei</Description>
+         </Attribute>
+         <Attribute Name="FileTime" AttributeDataType="xs:dateTime">
+            <Description>Zeitpunkt des Schreibens (Speicherns) der Projektdatei</Description>
+         </Attribute>
+         <Attribute Name="FileAuthor" AttributeDataType="xs:string">
+            <Description>Eindeutiges Autorenkürzel des Bearbeiters der Projektdatei</Description>
+         </Attribute>
+         <Attribute Name="FileInfo" AttributeDataType="xs:string">
+            <Description>Informationstext zur Projektdatei</Description>
+         </Attribute>
+         <Attribute Name="FilePriorTime" AttributeDataType="xs:dateTime">
+            <Description>Zeitpunkt des Schreibens (Speicherns) der Vorgängerprojektdatei, welche angereichert oder gelesen wurde</Description>
+         </Attribute>
+         <Attribute Name="FilePriorAuther" AttributeDataType="xs:string">
+            <Description>Eindeutiges Autorenkürzel des Bearbeiters der Vorgängerprojektdatei, welche angereichert oder gelesen wurde</Description>
+         </Attribute>
+         <Attribute Name="FilePriorInfo" AttributeDataType="xs:string">
+            <Description>Informationstext der Vorgängerprojektdatei, welche angereichert oder gelesen wurde</Description>
+         </Attribute>
+         <Attribute Name="UsedLanguages" AttributeDataType="xs:language">
+            <Description>Aufzählung aller in der Projektdatei verwendeten Sprachen</Description>
+            <DefaultValue>de, en</DefaultValue>
+         </Attribute>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/File"/>
+      </SystemUnitClass>
+      <SystemUnitClass Name="Project">
+         <Attribute Name="ProjectManufacturer" AttributeDataType="xs:string">
+            <Description>Projekthersteller ((Maschinenhersteller)</Description>
+         </Attribute>
+         <Attribute Name="ProjectName" AttributeDataType="xs:string">
+            <Description>Name des Projektes</Description>
+         </Attribute>
+         <Attribute Name="ProjectSign" AttributeDataType="xs:string">
+            <Description>Kennzeichen / Nummer des Projektes</Description>
+         </Attribute>
+         <Attribute Name="ProjectRevision" AttributeDataType="xs:string">
+            <Description>Revisionsnummer des Projektes</Description>
+         </Attribute>
+         <Attribute Name="ProjectInformation" AttributeDataType="xs:string">
+            <Description>Informationstext zum Projekt</Description>
+         </Attribute>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Project"/>
+      </SystemUnitClass>
+      <SystemUnitClass Name="SubProject" RefBaseClassPath="VDMASystemUnitClassLib/VDMA66415BaseObject">
+         <Attribute Name="SubProjectName" AttributeDataType="xs:string">
+            <Description>Name des Unterprojektes</Description>
+         </Attribute>
+         <Attribute Name="SubProjectSign" AttributeDataType="xs:string">
+            <Description>Kennzeichen / Nummer des Unterprojektes</Description>
+         </Attribute>
+         <Attribute Name="SubProjectRevision" AttributeDataType="xs:string">
+            <Description>Revisionsnummer des Unterprojektes</Description>
+         </Attribute>
+         <Attribute Name="SubProjectInformation" AttributeDataType="xs:string">
+            <Description>Informationstext zum Unterprojekt</Description>
+         </Attribute>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/SubProject"/>
+      </SystemUnitClass>
+      <SystemUnitClass Name="Unit" RefBaseClassPath="VDMASystemUnitClassLib/VDMA66415BaseObject">
+         <Attribute Name="Identifier" AttributeDataType="xs:string"/>
+         <Attribute Name="UnitSign" AttributeDataType="xs:string"/>
+         <Attribute Name="UnitName" AttributeDataType="xs:string"/>
+         <Attribute Name="UnitUserDefinedText" AttributeDataType="xs:string">
+            <Description>Information des Anwenders zur Einheit</Description>
+         </Attribute>
+         <Attribute Name="UnitParameterUser" AttributeDataType="xs:string">
+            <Description>Anwendungsspezifischer Parameter der Einheit</Description>
+            <Attribute Name="ParameterBuilt" AttributeDataType="xs:string">
+               <Description>Eindeutiger Name des Autors, der den Parameter einträgt (Engineeringwerkzeug oder Autorenkürzel)</Description>
+            </Attribute>
+            <Attribute Name="ParamterName" AttributeDataType="xs:string">
+               <Description>Name des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterKey" AttributeDataType="xs:string">
+               <Description>Schlüssel des Parameters (z.B. IRDI)</Description>
+            </Attribute>
+            <Attribute Name="ParameterValue" AttributeDataType="xs:string">
+               <Description>Wert des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterDataType" AttributeDataType="xs:string">
+               <Description>Datentyp des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterSIUnit" AttributeDataType="xs:string">
+               <Description>SI Einheit des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterDescription" AttributeDataType="xs:string">
+               <Description>Beschreibung des Parameters</Description>
+            </Attribute>
+         </Attribute>
+         <Attribute Name="UnitSequence" AttributeDataType="xs:string">
+            <Description>Ablaufbeschreibung, die der Einheit zugeordnet ist</Description>
+            <Attribute Name="SequenceName" AttributeDataType="xs:string">
+               <Description>Name der Sequenz</Description>
+            </Attribute>
+            <Attribute Name="SequenceStep" AttributeDataType="xs:string">
+               <Description>Schritt der Sequenz</Description>
+               <Attribute Name="StepName" AttributeDataType="xs:string">
+                  <Description>Name des Schrittes</Description>
+               </Attribute>
+               <Attribute Name="StepNext" AttributeDataType="xs:string">
+                  <Description>Namen aller nachfolgenden Schritte</Description>
+               </Attribute>
+               <Attribute Name="StepParameter" AttributeDataType="xs:string">
+                  <Description>Anwendungsspezifische Parameter des Schrittes</Description>
+               </Attribute>
+            </Attribute>
+         </Attribute>
+         <ExternalInterface ID="a53e82e2-ca40-4e03-8baf-ca33254070cf" Name="UnitDrawingFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/UnitDrawingFileName">
+            <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+         </ExternalInterface>
+         <ExternalInterface ID="d045f287-eeed-4c5e-b9a2-38847ad9d003" Name="UnitDocFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/UnitDocFileName">
+            <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+         </ExternalInterface>
+         <ExternalInterface ID="264717ea-f206-486b-b291-ab39b565df55" Name="UnitUserDefinedFile" RefBaseClassPath="VDMA66415InterfaceClassLib/UnitUserDefinedFile">
+            <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+         </ExternalInterface>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Unit"/>
+      </SystemUnitClass>
+      <SystemUnitClass Name="Device" RefBaseClassPath="VDMASystemUnitClassLib/VDMA66415BaseObject">
+         <Attribute Name="Identifier" AttributeDataType="xs:string">
+            <Description>Identifizierung des Gerätes</Description>
+         </Attribute>
+         <Attribute Name="IsSubDeviceOf" AttributeDataType="xs:string">
+            <Description>Zuordnung zu einem anderen (führenden) Gerät durch Eintrag des Device.Identifiers dieses Gerätes</Description>
+         </Attribute>
+         <Attribute Name="SubDeviceIndex" AttributeDataType="xs:string">
+            <Description>Position des Gerätes im Verhältnis zum führenden Gerät</Description>
+         </Attribute>
+         <Attribute Name="DeviceManufacturer" AttributeDataType="xs:string">
+            <Description>Hersteller des Gerätes</Description>
+         </Attribute>
+         <Attribute Name="DeviceName" AttributeDataType="xs:string">
+            <Description>Name des Gerätes</Description>
+         </Attribute>
+         <Attribute Name="DeviceOrderNumber" AttributeDataType="xs:string">
+            <Description>Bestellnummer des Gerätes</Description>
+         </Attribute>
+         <Attribute Name="MaterialNumber" AttributeDataType="xs:string">
+            <Description>Materialnummer des Gerätes im betriebswirtschaftlichen Planungssystem des Projektherstellers</Description>
+         </Attribute>
+         <Attribute Name="PartNumber" AttributeDataType="xs:string">
+            <Description>Artikelnummer des Gerätes, bezeichnet einen Gerätetyp mit gewissen Merkmalen im betriebswirtschaftlichen Planungssystem des Projektherstellers</Description>
+         </Attribute>
+         <Attribute Name="DeviceUserDefinedText" AttributeDataType="xs:string">
+            <Description>Information des Anwenders zum Gerät</Description>
+         </Attribute>
+         <Attribute Name="DeviceParameterUser" AttributeDataType="xs:string">
+            <Description>Anwendungsspezifische Parameter des Gerätes</Description>
+            <Attribute Name="ParameterBuilt" AttributeDataType="xs:string">
+               <Description>Eindeutiger Name des Autors, der den Parameter einträgt (Engineeringwerkzeug oder Autorenkürzel)</Description>
+            </Attribute>
+            <Attribute Name="ParamterName" AttributeDataType="xs:string">
+               <Description>Name des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterKey" AttributeDataType="xs:string">
+               <Description>Schlüssel des Parameters (z.B. IRDI)</Description>
+            </Attribute>
+            <Attribute Name="ParameterValue" AttributeDataType="xs:string">
+               <Description>Wert des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterDataType" AttributeDataType="xs:string">
+               <Description>Datentyp des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterSIUnit" AttributeDataType="xs:string">
+               <Description>SI Einheit des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterDescription" AttributeDataType="xs:string">
+               <Description>Beschreibung des Parameters</Description>
+            </Attribute>
+         </Attribute>
+         <ExternalInterface ID="d68ecb05-268b-417d-a3f6-77c0c8b1c072" Name="DeviceDataSheetFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/DeviceDataSheetFileName">
+            <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+         </ExternalInterface>
+         <ExternalInterface ID="e4974f4c-7371-46e5-8f89-1cb5f4b2e693" Name="DeviceDocFileName" RefBaseClassPath="VDMA66415InterfaceClassLib/DeviceDocFileName">
+            <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+         </ExternalInterface>
+         <ExternalInterface ID="5095cad4-e25f-4242-a7ae-064d852fd956" Name="DeviceUserDefinedFile" RefBaseClassPath="VDMA66415InterfaceClassLib/DeviceUserDefinedFile">
+            <Attribute Name="refURI" AttributeDataType="xs:anyURI"/>
+         </ExternalInterface>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
+      </SystemUnitClass>
+      <SystemUnitClass Name="DeviceFunction" RefBaseClassPath="VDMASystemUnitClassLib/VDMA66415BaseObject">
+         <Attribute Name="Identifier" AttributeDataType="xs:string">
+            <Description>Identifizierung der Gerätefunktion</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionSign" AttributeDataType="xs:string">
+            <Description>Referenzkennzeichen der Gerätefunktion, einheitlich/gemeinsam für alle Gewerke</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionSignM" AttributeDataType="xs:string">
+            <Description>Referenzkennzeichen der Gerätefunktion: speziell Mechanik (Bauteilkennzeichen)</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionSignBMK" AttributeDataType="xs:string">
+            <Description>Referenzkennzeichen der Gerätefunktion: speziell Elektrotechnik (Betriebsmittelkennzeichen)</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionSignFP" AttributeDataType="xs:string">
+            <Description>Referenzkennzeichen der Gerätefunktion: speziell Fluidtechnik (Bezeichnungsschlüssel)</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionSignPI" AttributeDataType="xs:string">
+            <Description>Referenzkennzeichen der Gerätefunktion: speziell Prozesstechnik (Mess- und Regelstellenkennzeichen)</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionText" AttributeDataType="xs:string">
+            <Description>Name der Gerätefunktion (Funktionstext)</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionTextShort" AttributeDataType="xs:string">
+            <Description>Name der Gerätefunktion (Funktionstext) in Kurzform</Description>
+         </Attribute>
+         <Attribute Name="TypeSensor" AttributeDataType="xs:boolean">
+            <Description>Funktionstyp Sensor, Erfassen</Description>
+            <Attribute Name="TypeSensorSignal" AttributeDataType="xs:boolean"/>
+            <Attribute Name="TypeSensorValue" AttributeDataType="xs:boolean"/>
+         </Attribute>
+         <Attribute Name="TypeSensorBinary" AttributeDataType="xs:boolean">
+            <Description>Binäres Sensor-Signal</Description>
+            <Attribute Name="TypeLogicControl" AttributeDataType="xs:boolean"/>
+            <Attribute Name="TypeLogicCommunication" AttributeDataType="xs:boolean"/>
+         </Attribute>
+         <Attribute Name="TypeSensorValue" AttributeDataType="xs:boolean">
+            <Description>Messwert</Description>
+            <Attribute Name="TypeActuatorSignal" AttributeDataType="xs:boolean"/>
+            <Attribute Name="TypeActuatorValue" AttributeDataType="xs:boolean"/>
+         </Attribute>
+         <Attribute Name="TypeLogic" AttributeDataType="xs:boolean">
+            <Description>Funktionstyp Logik, Auswerten</Description>
+         </Attribute>
+         <Attribute Name="TypeLogicControl" AttributeDataType="xs:boolean">
+            <Description>Steuerung</Description>
+         </Attribute>
+         <Attribute Name="TypeLogicCommunication" AttributeDataType="xs:boolean">
+            <Description>Kommunikation</Description>
+         </Attribute>
+         <Attribute Name="TypeActuator" AttributeDataType="xs:boolean">
+            <Description>Funktionstyp Aktor, Reagieren</Description>
+         </Attribute>
+         <Attribute Name="TypeActuatorBinary" AttributeDataType="xs:boolean">
+            <Description>Binäres Aktors-Signal</Description>
+         </Attribute>
+         <Attribute Name="TypeActuatorValue" AttributeDataType="xs:boolean">
+            <Description>Sollwert, Stellwert</Description>
+         </Attribute>
+         <Attribute Name="TypeConnection" AttributeDataType="xs:boolean">
+            <Description>Verbindung</Description>
+         </Attribute>
+         <Attribute Name="TypeAccessory" AttributeDataType="xs:boolean">
+            <Description>Zubehör</Description>
+         </Attribute>
+         <Attribute Name="RelatedMechanicalDrawing" AttributeDataType="xs:boolean">
+            <Description>Gerätefunktion relevant für Mechanik-CAD (Konstruktionszeichnung)</Description>
+         </Attribute>
+         <Attribute Name="RelatedElectricalDiagram" AttributeDataType="xs:boolean">
+            <Description>Gerätefunktion relevant für Elektro-CAD (Schaltplan)</Description>
+         </Attribute>
+         <Attribute Name="RelatedFluidPowerDiagram" AttributeDataType="xs:boolean">
+            <Description>Gerätefunktion relevant für Fluid-CAD (Fluidplan)</Description>
+         </Attribute>
+         <Attribute Name="RelatedPIDiagram" AttributeDataType="xs:boolean">
+            <Description>Gerätefunktion relevant für Prozess-CAD (R&amp;I-Fließschema)</Description>
+         </Attribute>
+         <Attribute Name="RelatedSoftware" AttributeDataType="xs:boolean">
+            <Description>Gerätefunktion relevant für Programmiersoftware</Description>
+         </Attribute>
+         <Attribute Name="RelatedSoftwareSafetyIO" AttributeDataType="xs:boolean">
+            <Description>Gerätefunktion relevant für sicherheitsgerichtete Programmiersoftware</Description>
+         </Attribute>
+         <Attribute Name="ConnectionSource" AttributeDataType="xs:string">
+            <Description>Anschlussquelle der Gerätefunktion</Description>
+            <Attribute Name="ConnectionSign" AttributeDataType="xs:string">
+               <Description>Referenzkennzeichen der Anschlussquelle</Description>
+            </Attribute>
+         </Attribute>
+         <Attribute Name="ConnectionDestination" AttributeDataType="xs:string">
+            <Description>Anschlussziel der Gerätefunktion</Description>
+            <Attribute Name="ConnectionSign" AttributeDataType="xs:string">
+               <Description>Referenzkennzeichen des Anschlusszieles</Description>
+            </Attribute>
+         </Attribute>
+         <Attribute Name="SafetyFunctionName" AttributeDataType="xs:string">
+            <Description>Sicherheitsfunktion, in der die Gerätefunktion verwendet wird</Description>
+         </Attribute>
+         <Attribute Name="SpanOfControlName" AttributeDataType="xs:string">
+            <Description>Name des Maschinenbereiches, in dem die Gerätefunktion eingebunden ist (Wirkungsbereich)</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionUserDefinedText" AttributeDataType="xs:string">
+            <Description>Informationen des Anwenders zur Gerätefunktion</Description>
+         </Attribute>
+         <Attribute Name="DeviceFunctionParameterUser" AttributeDataType="xs:string">
+            <Description>Anwendungsspezifischer Parameter der Gerätefunktion</Description>
+            <Attribute Name="ParameterBuilt" AttributeDataType="xs:string">
+               <Description>Eindeutiger Name des Autors, der den Parameter einträgt (Engineeringwerkzeug oder Autorenkürzel)</Description>
+            </Attribute>
+            <Attribute Name="ParamterName" AttributeDataType="xs:string">
+               <Description>Name des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterKey" AttributeDataType="xs:string">
+               <Description>Schlüssel des Parameters (z.B. IRDI)</Description>
+            </Attribute>
+            <Attribute Name="ParameterValue" AttributeDataType="xs:string">
+               <Description>Wert des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterDataType" AttributeDataType="xs:string">
+               <Description>Datentyp des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterSIUnit" AttributeDataType="xs:string">
+               <Description>SI Einheit des Parameters</Description>
+            </Attribute>
+            <Attribute Name="ParameterDescription" AttributeDataType="xs:string">
+               <Description>Beschreibung des Parameters</Description>
+            </Attribute>
+         </Attribute>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/DeviceFunction"/>
+      </SystemUnitClass>
+   </SystemUnitClassLib>
    <SystemUnitClassLib Name="IAF_ModelSystemUnitClassLib">
-      <Description>System Unit Class Library by IAF OvGU</Description>
-      <Version>1.0.0</Version>
+      <Description>System Unit Class Library by IAF OvGU with VDMA66415</Description>
+      <Version>1.1.0</Version>
       <SystemUnitClass Name="parts">
          <SystemUnitClass Name="motor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -349,6 +1108,7 @@
             <ExternalInterface ID="ac8727f2-e6c4-4156-a2b5-80e398dd4588" Name="screwing" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="9f4fb7bd-6b14-4a69-941a-5a4c25f8a142" Name="gearing" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/motor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="sensor">
             <Attribute Name="sensitivity" Unit="mT" AttributeDataType="xs:decimal">
@@ -365,6 +1125,7 @@
             <ExternalInterface ID="dfa5423d-45a7-4fe7-9db7-dce9d64edcaf" Name="screwing_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="c8e09bdf-7841-447d-aeef-0aed41fa51d4" Name="signal_power_connection_socket" RefBaseClassPath="IAF_ModelInterfaceClassLib/power_connection_socket"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="limit_switch" RefBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -396,6 +1157,7 @@
                   <Value>File:///geometry/limit_switch.dae#ID1</Value>
                </Attribute>
             </ExternalInterface>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="inductive_sensor" RefBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor">
             <Attribute Name="weight" Unit="g" AttributeDataType="xs:integer">
@@ -429,6 +1191,7 @@
                   <Value>File:///geometry/sensor_proximity.dae#ID1</Value>
                </Attribute>
             </ExternalInterface>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="line_conveyer">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -468,6 +1231,7 @@
             <ExternalInterface ID="d16eadf2-236f-4f56-81e2-35382c64d6ae" Name="storage_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/storage"/>
             <ExternalInterface ID="524088b5-f366-4da0-8458-d2bef5227cdd" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/line"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="frame">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -503,6 +1267,7 @@
             <ExternalInterface ID="8561ebdf-8a7e-40b4-97ac-e4af624de733" Name="screwing_sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="a9a60f46-31ea-4034-805d-f49c034aa173" Name="screwing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/frame"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="lower_frame_turntable">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -537,6 +1302,7 @@
             </ExternalInterface>
             <ExternalInterface ID="6970f1d5-16bc-4848-894f-798f91d5b52d" Name="screwing_motor_rim_drive" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/lower_frame_turntable"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="upper_frame_turntable">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -573,6 +1339,7 @@
             <ExternalInterface ID="3074cbac-4f91-4d3d-a06a-353c304daa2c" Name="screwing_sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="31715f01-a673-4bdd-813c-eb5b9e1447e2" Name="screwing_rotating_assembly" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/upper_frame_turntable"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="stator">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -603,6 +1370,7 @@
             </ExternalInterface>
             <ExternalInterface ID="88b02282-4f81-401b-acdd-ce9a4cfcc4ca" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/stator"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="processing_tool">
             <Attribute Name="tool life" Unit="h" AttributeDataType="xs:integer">
@@ -646,6 +1414,7 @@
             <ExternalInterface ID="6db0183e-4dce-4171-b8a4-f59432623db2" Name="clamping_tool_holder" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <ExternalInterface ID="b7c28e5b-fa41-4014-a41b-5345e8de084c" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/processing_tools"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="tool_holder">
             <Attribute Name="material" AttributeDataType="xs:string">
@@ -687,6 +1456,7 @@
             <ExternalInterface ID="2e4a8585-d7ab-4548-bc79-b1b85226cf98" Name="clamping_tool2" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <ExternalInterface ID="b78cf266-7fd0-4bd4-9b0b-eeba6a041dad" Name="clamping_tool3" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/tool_holder"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="rotating_assembly">
             <Attribute Name="payload" Unit="g" AttributeDataType="xs:integer">
@@ -721,6 +1491,7 @@
             <ExternalInterface ID="9d2d0383-6c7b-4873-9f48-b752630d0119" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <ExternalInterface ID="2fb69db5-4b84-4906-9883-52e3e7bc8bb6" Name="screwing_upper_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="tool_holder_bracket">
             <Attribute Name="stiffness" Unit="N/mm2" AttributeDataType="xs:integer">
@@ -761,6 +1532,7 @@
             <ExternalInterface ID="77c1dd4d-8899-43ec-96b0-cebf3208a5bc" Name="screwing_motor_tool" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="0f21b347-2a28-402d-83b9-19d2857ad5b9" Name="screwing_motor_height" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
          <SystemUnitClass Name="line_turntable">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -800,6 +1572,7 @@
             <ExternalInterface ID="c6ea8c17-08b7-48dd-b83a-649abee21dc3" Name="storage_upper_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/storage"/>
             <ExternalInterface ID="f9a91ddc-66a0-4426-b9a9-1d8c861f53fb" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/line"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </SystemUnitClass>
       </SystemUnitClass>
       <SystemUnitClass Name="conveyer">
@@ -837,6 +1610,7 @@
             <ExternalInterface ID="e8420e19-b0e1-41bc-bd11-24845da45e5c" Name="screwing_sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="d20b9e56-185b-474f-b31f-1ed5f22b61ba" Name="screwing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/frame"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="52dfaa75-066c-4bd9-a110-02ff74df2531" Name="line_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -876,6 +1650,7 @@
             <ExternalInterface ID="66c8fce3-fb02-44ef-9601-c88736404c93" Name="storage_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/storage"/>
             <ExternalInterface ID="959bf0ff-af54-4a95-99d4-314f643c7640" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/line"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="df015d7e-d605-4bdc-a970-b7fb40936d3f" Name="inductive_sensor_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
             <Attribute Name="port" AttributeDataType="xs:string">
@@ -924,6 +1699,7 @@
                </Attribute>
             </ExternalInterface>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" Name="motor_line_conveyer" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -971,7 +1747,9 @@
             <ExternalInterface ID="1b59ac9c-8f83-4548-ab25-de2e53220cba" Name="screwing_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="b325df21-5019-4277-a8e5-873067f9496b" Name="gearing_line" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/motor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Unit"/>
       </SystemUnitClass>
       <SystemUnitClass Name="turntable">
          <InternalElement ID="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" Name="inductive_sensor_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
@@ -1020,6 +1798,7 @@
                </Attribute>
             </ExternalInterface>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="24f5abc1-2986-4aef-9dc7-0e04aa865185" Name="line_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_turntable">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1059,6 +1838,7 @@
             <ExternalInterface ID="2a79fbca-30b0-4a21-bd10-bb47f7bed5aa" Name="storage_upper_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/storage"/>
             <ExternalInterface ID="0f017356-83f9-4af2-be09-62cc4e6a74c3" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/line"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="af3fc59a-2b70-4962-bc03-73c066058221" Name="rotation_assembly" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly">
             <Attribute Name="payload" Unit="g" AttributeDataType="xs:integer">
@@ -1093,6 +1873,7 @@
             <ExternalInterface ID="d606267e-aa98-4443-b7af-56c1e0c46555" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <ExternalInterface ID="7013620d-347d-4531-99bb-23a7bbe55367" Name="gearing_upper_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="9e4f96ac-144c-45f5-b5e4-15bca893b063" Name="upper_frame_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/upper_frame_turntable">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1129,6 +1910,7 @@
             <ExternalInterface ID="88a204d4-74a9-4dda-80da-a3b5263b01a6" Name="screwing_inductive_sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="bc7631ef-fc1c-4786-bfb2-792a6d5bda9c" Name="screwing_rotation_assembly" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/upper_frame_turntable"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="837a41b9-0fac-4180-99cc-505b04e68b53" Name="lower_frame_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/lower_frame_turntable">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1165,6 +1947,7 @@
             </ExternalInterface>
             <ExternalInterface ID="6f832484-794c-4ff4-966a-d4b3b98f8ec2" Name="screwing_motor_rim_driver" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/lower_frame_turntable"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="41745f1b-d987-4ad8-bedc-9c2f798589a8" Name="limit_switch_clockwise" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
             <Attribute Name="port" AttributeDataType="xs:string">
@@ -1211,6 +1994,7 @@
                </Attribute>
             </ExternalInterface>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="e9d19dbf-6059-4c15-a418-c2a2733f511d" Name="limit_switch_counterclockwise" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
             <Attribute Name="port" AttributeDataType="xs:string">
@@ -1257,6 +2041,7 @@
                </Attribute>
             </ExternalInterface>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="e8779661-f3c4-4148-ad49-26f172e20dcf" Name="motor_line_turntable" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1304,6 +2089,7 @@
             <ExternalInterface ID="c3fd906c-3fe4-47af-ba2b-bcd577dece80" Name="screwing_upper_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="9f01df79-37bc-4917-94f5-1f3cdd535656" Name="gearing_line" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/motor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="93691b87-bb07-4de1-bced-39c564e3e66a" Name="motor_rotation_assembly" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1351,7 +2137,9 @@
             <ExternalInterface ID="7075dbcb-4e2f-408e-a139-48ac0824da69" Name="screwing_lower_frame" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="1440de68-a7aa-4ff2-a1f1-5abd09b9660c" Name="gearing_rotation_assembly" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/motor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Unit"/>
       </SystemUnitClass>
       <SystemUnitClass Name="machine">
          <InternalElement ID="d12cd9d1-b788-410a-a7ee-70926837f72d" Name="tool_holder_bracket" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/tool_holder_bracket">
@@ -1395,6 +2183,7 @@
             <ExternalInterface ID="c86e13fd-8032-4c5f-9cbf-e0d61cfaa594" Name="screwing_motor_tool" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="fb377c3c-df08-4f9e-bbce-04825ccb2b53" Name="screwing_motor_height" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="4e9b88f8-b48f-43c9-8e07-cc334c1a8a1f" Name="tool_holder" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/tool_holder">
             <Attribute Name="material" AttributeDataType="xs:string">
@@ -1438,6 +2227,7 @@
             <ExternalInterface ID="604764ae-259e-49b5-8d6e-ef8e961269f4" Name="clamping_tool2" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <ExternalInterface ID="10198b12-855d-4eb0-9908-24deba9781c2" Name="clmaping_tool3" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/tool_holder"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="85e8b2c0-a423-4e21-a377-a14d3ff7bfd1" Name="processing_tool1" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/processing_tool">
             <Attribute Name="tool life" Unit="h" AttributeDataType="xs:integer">
@@ -1481,6 +2271,7 @@
             <ExternalInterface ID="26b4f57f-a210-4821-b821-b5224c54e548" Name="clamping_tool_holder" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <ExternalInterface ID="7c6b05e1-ca52-4ca5-b7aa-543b6cd69449" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/processing_tools"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="8ecb3a4c-5e83-482f-86ef-b189965f6539" Name="processing_tool2" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/processing_tool">
             <Attribute Name="tool life" Unit="h" AttributeDataType="xs:integer">
@@ -1524,6 +2315,7 @@
             <ExternalInterface ID="efbff032-b341-4123-8cea-aa7d16db229b" Name="clamping_tool_holder" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <ExternalInterface ID="7d77ae4e-477c-45c7-889c-3a9f0cf60a1b" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/processing_tools"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="85a48edd-c6c5-409b-85de-5d4e4aa801c9" Name="processing_tool3" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/processing_tool">
             <Attribute Name="tool life" Unit="h" AttributeDataType="xs:integer">
@@ -1567,6 +2359,7 @@
             <ExternalInterface ID="24057ed8-9c2d-4863-ba63-c097ac8663c6" Name="clamping_tool_holder" RefBaseClassPath="IAF_ModelInterfaceClassLib/clamping"/>
             <ExternalInterface ID="2a4ed003-a327-49e7-bef8-718ecc38b777" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/processing_tools"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="b589dd4c-d844-4bed-9a3f-4a6d654926c0" Name="stator_machine" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/stator">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1599,6 +2392,7 @@
             </ExternalInterface>
             <ExternalInterface ID="63e4dbe5-63cc-44be-8ed8-1eb9c6c779de" Name="gearing_motor" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/stator"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="5d85d9e5-2ad8-40b5-b809-7b55e413007d" Name="limit_switch_height_adjustment_above" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
             <Attribute Name="port" AttributeDataType="xs:string">
@@ -1644,6 +2438,7 @@
                </Attribute>
             </ExternalInterface>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="cbf6b46f-70fa-4737-8ac6-0024d3eab978" Name="limit_switch_height_adjustment_below" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
             <Attribute Name="port" AttributeDataType="xs:string">
@@ -1689,6 +2484,7 @@
                </Attribute>
             </ExternalInterface>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="e37e53e6-0203-40ad-9f2e-297fd4333a53" Name="limit_switch_tool_changing" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
             <Attribute Name="port" AttributeDataType="xs:string">
@@ -1734,6 +2530,7 @@
                </Attribute>
             </ExternalInterface>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/sensor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="e58b5760-0c98-4c4e-b5da-9aa9b0190fd9" Name="motor_height_adjustment" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1781,6 +2578,7 @@
             <ExternalInterface ID="d0a8517a-555b-4eeb-93fc-3f520094b298" Name="screwing_tool_holder_bracket" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="04af1162-f228-47a4-b1c8-594927dca8c1" Name="gearing_stator" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/motor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="56bb19df-5719-4f10-8e6d-343586aa964c" Name="motor_tool_changing" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1828,6 +2626,7 @@
             <ExternalInterface ID="4e17cd03-f034-4816-8261-4f3efc2e4be7" Name="screwing_tool_holder_bracket" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="b051abfc-53e2-40fb-ad6c-f430c86d21a9" Name="gearing_tool_holder" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/motor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
          <InternalElement ID="9a8f8eec-607e-409d-ab00-43823e3e8853" Name="motor_processing_tool" RefBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
             <Attribute Name="geometry" AttributeDataType="xs:string">
@@ -1875,7 +2674,9 @@
             <ExternalInterface ID="7453ab06-6c03-4903-aa48-f2109557a7de" Name="screwing_tool_holder_bracket" RefBaseClassPath="IAF_ModelInterfaceClassLib/screwing"/>
             <ExternalInterface ID="f1636109-8621-425d-af29-a52f34d6a0bd" Name="gearing" RefBaseClassPath="IAF_ModelInterfaceClassLib/gearing"/>
             <SupportedRoleClass RefRoleClassPath="IAF_ModelRoleClassLib/motor"/>
+            <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Device"/>
          </InternalElement>
+         <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Unit"/>
       </SystemUnitClass>
    </SystemUnitClassLib>
 </CAEXFile>
