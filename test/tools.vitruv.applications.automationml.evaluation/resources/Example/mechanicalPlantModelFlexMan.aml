@@ -9,7 +9,7 @@
          <WriterVendorURL>www.ovgu.de</WriterVendorURL>
          <WriterVersion>0.2.1a</WriterVersion>
          <WriterRelease>unspecified</WriterRelease>
-         <LastWritingDateTime>2015-09-29 13:31:50</LastWritingDateTime>
+         <LastWritingDateTime>2015-09-29 13:32:02</LastWritingDateTime>
          <WriterProjectTitle>unspecified</WriterProjectTitle>
          <WriterProjectID>unspecified</WriterProjectID>
       </WriterHeader>
@@ -1120,106 +1120,806 @@
                            <ExternalInterface ID="a4714287-dfe7-4888-9863-73d22a3e692f" Name="WriteRegisterBK2" RefBaseClassPath="ModbusTCPInterfaceClassLib/ModbusTCPMasterRequest"/>
                            <ExternalInterface ID="7e9299a6-1bd3-408e-a282-233d538ae31f" Name="ReadRegisterBK3" RefBaseClassPath="ModbusTCPInterfaceClassLib/ModbusTCPMasterRequest"/>
                            <ExternalInterface ID="42703db0-8d03-4f20-9243-1b9845e585f0" Name="WriteRegisterBK3" RefBaseClassPath="ModbusTCPInterfaceClassLib/ModbusTCPMasterRequest"/>
-                           <ExternalInterface ID="f87cbd8c-0b12-4525-a835-81ab6aa53b54" Name="Conv0Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="6e898d1a-b415-42a8-95bd-c76ba2a105c3" Name="Conv0MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="bd0db423-4402-4f4b-8b2c-35a9bababf98" Name="Conv0MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="4c192c18-54b8-4b37-afae-512c1324209b" Name="Conv1Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="35865515-3f3f-47bd-b7dd-13db885cfb36" Name="Conv1MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="62734e45-499e-4d06-8657-0ab1a64c4b6a" Name="Conv1MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="14e38fd2-a410-4b61-a6b9-5c65b92a1f13" Name="Conv2Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="f0414333-6282-4881-9133-3aca6457d5d9" Name="Conv2MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="c3121a33-2ca6-4eb6-ba0e-2964c9da1b93" Name="Conv2MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="ae8ffa05-1a66-414f-a190-08c0f9a3e63e" Name="Conv3Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="11640af4-9b6e-4173-be91-55986cbf316a" Name="Conv3MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="71729d08-0af3-420d-b8db-a59bb59de068" Name="Conv3MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="9ed19cd3-c811-4b02-9570-4f4e717ad26e" Name="Conv4Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="d72006bf-0834-401f-aab3-b68abf15894a" Name="Conv4MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="a8f15d21-5e80-4187-8887-18c11aad7b5c" Name="Conv4MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="8b02c274-4660-4303-9571-01376b79d264" Name="Conv5Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="33438300-d05d-40d9-aa06-e3be4e5a624a" Name="Conv5MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="9455b34e-4e2e-470c-8cf1-df86a4f18537" Name="Conv5MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="c8517a35-c6f2-48be-ad0a-02ec9782ad4c" Name="Conv6Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="2177d25f-643e-472e-a73d-e98fb02d1837" Name="Conv6MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="c616da0e-6553-4f06-92f5-e244ede260b7" Name="Conv6MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="4a4e2dbb-11b0-4ce1-963e-8a245b59c43a" Name="Conv7Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="69454ffe-ef47-414c-a0a8-6343758d9ddf" Name="Conv7MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="d22aaebb-1040-4ab1-b4ff-85d9f62fb34b" Name="Conv7MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="6bda47a1-01cd-47c3-ba6d-353a8c70ce1b" Name="Turn0Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="0cbfa50d-27d4-44e3-80ee-7385beeafc4c" Name="Turn0Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="6fb406cb-d351-4038-8f63-17cfe0e2c31f" Name="Turn0Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="b20131a6-fa08-486d-afc2-a018c101de8b" Name="Turn0MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="58754993-93ee-4ba5-ad70-a2d6ad575055" Name="Turn0MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="490ff6f2-23a3-4382-abe4-b7caa42b4e08" Name="Turn0MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="af8ca49d-c626-4a10-a4b7-e821bdcc91e5" Name="Turn0MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="50868397-f556-4583-8cad-3234011a9a41" Name="Turn1Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="2aa5e112-e968-4ebf-ab86-02675056235c" Name="Turn1Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="1cf62c5e-2862-4f03-adce-f530914ceda2" Name="Turn1Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="5556980c-5f9f-439f-8842-726c05343535" Name="Turn1MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="fb95012a-3711-4748-9f4a-bb458c5a6c1d" Name="Turn1MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="d3dfd5ad-b4ab-479e-bb8c-060dcba512ab" Name="Turn1MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="f043033d-a513-4d28-bb89-7c6a05cabe63" Name="Turn1MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="1a1c8d3f-95fc-4dc2-9ef3-cfa97fee97aa" Name="Turn2Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="15411d71-cbaf-47d9-a1b3-a1c2ea03e21f" Name="Turn2Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="61a22dc7-c892-4d60-9760-44dd93b0ec21" Name="Turn2Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="9d07e453-2a01-4a60-be1b-08a279ba831a" Name="Turn2MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="7f291892-fef6-436f-a4cc-2c5dae794051" Name="Turn2MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="cad3e6a2-c69f-47d5-8aba-9714d08d4713" Name="Turn2MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="20d1ff65-955a-45ed-8114-a772bf6d2846" Name="Turn2MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="a20bae41-e943-4f37-aeb1-6f678c659ac3" Name="Turn3Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="e4201273-169e-4869-abb3-6865a240d106" Name="Turn3Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="41fca1b4-6a6c-43ff-afc8-4a349326ddfa" Name="Turn3Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="cfe3e70d-1ebe-4991-8df9-199183bbb769" Name="Turn3MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="575b7182-dbd3-4924-bba2-1b7e5379fe71" Name="Turn3MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="cd090a7d-96e1-4c59-9b70-15eb784813b1" Name="Turn3MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="82b8daf8-96ca-41b2-aefb-2cf37f940d57" Name="Turn3MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="064d91dd-01bf-450c-8d82-8fe2035a09db" Name="Turn4Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="b0c476cd-7d69-4569-b3e1-0540f02fe828" Name="Turn4Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="a2ed0e40-03c2-4858-bd20-354fb634c851" Name="Turn4Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="4ddf3824-20e0-45e0-8ca6-ecb1986305d8" Name="Turn4MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="b99a024c-4f65-4c2e-b793-3b73db0135a3" Name="Turn4MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="7e0a0ade-447f-42dd-9ed1-844b3629fef5" Name="Turn4MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="026fd054-af73-48b5-8d32-1d067db9d9a4" Name="Turn4MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="43609c12-8ec9-4aa9-89b0-a313541a504d" Name="Turn5Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="893ac313-00cc-488b-9eba-b6037c9b183a" Name="Turn5Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="13624ba5-fc75-4717-9aa3-e6999fd9a027" Name="Turn5Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="f345d03d-97a5-4bbd-9422-4e548ffed2c7" Name="Turn5MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="a5b547f0-ab3d-4230-b6f8-8bd44538533f" Name="Turn5MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="ccccb39e-95ce-4a53-8009-a410b514d52a" Name="Turn5MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="405d0e8c-5b14-47bb-8e8b-f5b9aa67253f" Name="Turn5MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="d2c93ba4-fc27-4a01-bc05-61488b0eab30" Name="Turn6Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="20576483-b9a8-4004-a7ee-23655ca9e884" Name="Turn6Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="c346ed59-0ef9-4328-be76-1faa671cf4fd" Name="Turn6Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="ca36bbee-974d-478f-8160-95d3d9e248e2" Name="Turn6MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="ac7c8d1a-cb7e-4a08-bed6-9ef06b59b5c1" Name="Turn6MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="7e9aecbf-d102-4a47-9d88-ce3338b0aec5" Name="Turn6MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="485566c0-a23c-4f7f-8a42-2452478e756d" Name="Turn6MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="93b79943-b5cd-4266-ae09-c19cd63f937c" Name="Turn7Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="e5713e95-31c2-4925-8479-cb39747d1ec0" Name="Turn7Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="b32d864b-d63a-44e8-9f81-577712a2e695" Name="Turn7Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="2a624b94-1fba-4e8b-920b-c68711d4e6c3" Name="Turn7MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="361fd209-835b-4eea-8990-76a9327f068b" Name="Turn7MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="c5b103b7-5e6f-4cfd-a74d-b851d1fd807f" Name="Turn7MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="9786e048-f89f-463a-ae7e-9449a7c1962d" Name="Turn7MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="01bcc3be-8446-4f1a-b4ea-eca6f74b9d95" Name="Turn8Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="da59e5a3-ee7e-4832-b9b0-a9f057f7d340" Name="Turn8Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="a7cc6f4f-9da2-4eaf-b210-fd2f6bbea9f7" Name="Turn8Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="da5ddac4-b12a-475b-a473-f66477c16cb3" Name="Turn8MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="deca39d6-482e-4784-8c67-2a1c772c1253" Name="Turn8MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="b91b21b1-79b2-4cf5-a0ba-f60ebc8649e4" Name="Turn8MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="2e5b8fe9-7ad3-47dd-8556-71bb32964ff0" Name="Turn8MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="0fa1f264-54ad-469e-af03-ec620b4f54f3" Name="Turn9Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="ea2c2f67-8dfc-48f0-8415-e5417c6ababd" Name="Turn9Pos1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="d7e95e7e-78cc-4c58-8673-c744ef31c6e9" Name="Turn9Pos2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="65d978cb-af96-496a-bfdd-97182f0586c4" Name="Turn9MotorBandR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="d7181924-7e1c-4f76-ae30-35977c7e7d87" Name="Turn9MotorBandR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="f11ad14d-f3d1-49e8-9460-4605e841b4a3" Name="Turn9MotorDrehR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="bc3de749-48ba-47a8-a730-eed9bd047663" Name="Turn9MotorDrehR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="77ae585f-4a4a-4965-bf0f-0617f629f048" Name="Conv8Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="3f9010bf-e8dd-4889-bd83-deb4f8472db9" Name="Conv9Sensor" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="f94f8090-d5b0-4a68-82b1-0ec4863baa8e" Name="Conv8MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="8aa1072a-e82b-4df4-8726-37d245562740" Name="Conv8MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="bce249ed-e137-4e22-8e56-a8d00e4fb795" Name="Conv9MotorR1" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
-                           <ExternalInterface ID="f3ab1ff3-85ad-4041-b7a4-722989e261be" Name="Conv9MotorR2" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
+                           <ExternalInterface ID="f87cbd8c-0b12-4525-a835-81ab6aa53b54" Name="Conv0Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[2]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="6e898d1a-b415-42a8-95bd-c76ba2a105c3" Name="Conv0MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[5]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="bd0db423-4402-4f4b-8b2c-35a9bababf98" Name="Conv0MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[4]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="4c192c18-54b8-4b37-afae-512c1324209b" Name="Conv1Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[4]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="35865515-3f3f-47bd-b7dd-13db885cfb36" Name="Conv1MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[9]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="62734e45-499e-4d06-8657-0ab1a64c4b6a" Name="Conv1MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[8]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="14e38fd2-a410-4b61-a6b9-5c65b92a1f13" Name="Conv2Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[0]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="f0414333-6282-4881-9133-3aca6457d5d9" Name="Conv2MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[1]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="c3121a33-2ca6-4eb6-ba0e-2964c9da1b93" Name="Conv2MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[0]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="ae8ffa05-1a66-414f-a190-08c0f9a3e63e" Name="Conv3Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[1]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="11640af4-9b6e-4173-be91-55986cbf316a" Name="Conv3MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[3]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="71729d08-0af3-420d-b8db-a59bb59de068" Name="Conv3MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[2]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="9ed19cd3-c811-4b02-9570-4f4e717ad26e" Name="Conv4Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[2]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="d72006bf-0834-401f-aab3-b68abf15894a" Name="Conv4MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[5]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="a8f15d21-5e80-4187-8887-18c11aad7b5c" Name="Conv4MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[4]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="8b02c274-4660-4303-9571-01376b79d264" Name="Conv5Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[3]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="33438300-d05d-40d9-aa06-e3be4e5a624a" Name="Conv5MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[7]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="9455b34e-4e2e-470c-8cf1-df86a4f18537" Name="Conv5MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[6]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="c8517a35-c6f2-48be-ad0a-02ec9782ad4c" Name="Conv6Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[0]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="2177d25f-643e-472e-a73d-e98fb02d1837" Name="Conv6MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[1]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="c616da0e-6553-4f06-92f5-e244ede260b7" Name="Conv6MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[0]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="4a4e2dbb-11b0-4ce1-963e-8a245b59c43a" Name="Conv7Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[1]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="69454ffe-ef47-414c-a0a8-6343758d9ddf" Name="Conv7MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[3]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="d22aaebb-1040-4ab1-b4ff-85d9f62fb34b" Name="Conv7MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[2]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="77ae585f-4a4a-4965-bf0f-0617f629f048" Name="Conv8Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[5]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="f94f8090-d5b0-4a68-82b1-0ec4863baa8e" Name="Conv8MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[11]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="8aa1072a-e82b-4df4-8726-37d245562740" Name="Conv8MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[10]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="3f9010bf-e8dd-4889-bd83-deb4f8472db9" Name="Conv9Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[6]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="bce249ed-e137-4e22-8e56-a8d00e4fb795" Name="Conv9MotorR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[13]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="f3ab1ff3-85ad-4041-b7a4-722989e261be" Name="Conv9MotorR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[12]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="6bda47a1-01cd-47c3-ba6d-353a8c70ce1b" Name="Turn0Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[6]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="0cbfa50d-27d4-44e3-80ee-7385beeafc4c" Name="Turn0Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[14]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="6fb406cb-d351-4038-8f63-17cfe0e2c31f" Name="Turn0Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[13]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="b20131a6-fa08-486d-afc2-a018c101de8b" Name="Turn0MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[21]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="58754993-93ee-4ba5-ad70-a2d6ad575055" Name="Turn0MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[20]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="490ff6f2-23a3-4382-abe4-b7caa42b4e08" Name="Turn0MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[19]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="af8ca49d-c626-4a10-a4b7-e821bdcc91e5" Name="Turn0MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[18]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="50868397-f556-4583-8cad-3234011a9a41" Name="Turn1Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[7]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="2aa5e112-e968-4ebf-ab86-02675056235c" Name="Turn1Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[12]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="1cf62c5e-2862-4f03-adce-f530914ceda2" Name="Turn1Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[11]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="5556980c-5f9f-439f-8842-726c05343535" Name="Turn1MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[17]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="fb95012a-3711-4748-9f4a-bb458c5a6c1d" Name="Turn1MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[16]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="d3dfd5ad-b4ab-479e-bb8c-060dcba512ab" Name="Turn1MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[15]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="f043033d-a513-4d28-bb89-7c6a05cabe63" Name="Turn1MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[14]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="1a1c8d3f-95fc-4dc2-9ef3-cfa97fee97aa" Name="Turn2Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[8]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="15411d71-cbaf-47d9-a1b3-a1c2ea03e21f" Name="Turn2Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[14]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="61a22dc7-c892-4d60-9760-44dd93b0ec21" Name="Turn2Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[13]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="9d07e453-2a01-4a60-be1b-08a279ba831a" Name="Turn2MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[21]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="7f291892-fef6-436f-a4cc-2c5dae794051" Name="Turn2MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[20]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="cad3e6a2-c69f-47d5-8aba-9714d08d4713" Name="Turn2MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[19]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="20d1ff65-955a-45ed-8114-a772bf6d2846" Name="Turn2MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[18]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="a20bae41-e943-4f37-aeb1-6f678c659ac3" Name="Turn3Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[9]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="e4201273-169e-4869-abb3-6865a240d106" Name="Turn3Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[16]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="41fca1b4-6a6c-43ff-afc8-4a349326ddfa" Name="Turn3Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[15]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="cfe3e70d-1ebe-4991-8df9-199183bbb769" Name="Turn3MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[25]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="575b7182-dbd3-4924-bba2-1b7e5379fe71" Name="Turn3MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[24]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="cd090a7d-96e1-4c59-9b70-15eb784813b1" Name="Turn3MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[23]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="82b8daf8-96ca-41b2-aefb-2cf37f940d57" Name="Turn3MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[22]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="064d91dd-01bf-450c-8d82-8fe2035a09db" Name="Turn4Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[10]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="b0c476cd-7d69-4569-b3e1-0540f02fe828" Name="Turn4Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[18]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="a2ed0e40-03c2-4858-bd20-354fb634c851" Name="Turn4Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI3_MB[17]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="4ddf3824-20e0-45e0-8ca6-ecb1986305d8" Name="Turn4MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[29]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="b99a024c-4f65-4c2e-b793-3b73db0135a3" Name="Turn4MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[28]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="7e0a0ade-447f-42dd-9ed1-844b3629fef5" Name="Turn4MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[27]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="026fd054-af73-48b5-8d32-1d067db9d9a4" Name="Turn4MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO3_MB[26]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="43609c12-8ec9-4aa9-89b0-a313541a504d" Name="Turn5Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[3]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="893ac313-00cc-488b-9eba-b6037c9b183a" Name="Turn5Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[8]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="13624ba5-fc75-4717-9aa3-e6999fd9a027" Name="Turn5Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[7]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="f345d03d-97a5-4bbd-9422-4e548ffed2c7" Name="Turn5MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[9]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="a5b547f0-ab3d-4230-b6f8-8bd44538533f" Name="Turn5MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[8]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="ccccb39e-95ce-4a53-8009-a410b514d52a" Name="Turn5MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[7]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="405d0e8c-5b14-47bb-8e8b-f5b9aa67253f" Name="Turn5MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[6]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="d2c93ba4-fc27-4a01-bc05-61488b0eab30" Name="Turn6Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[4]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="20576483-b9a8-4004-a7ee-23655ca9e884" Name="Turn6Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[9]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="c346ed59-0ef9-4328-be76-1faa671cf4fd" Name="Turn6Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[10]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="ca36bbee-974d-478f-8160-95d3d9e248e2" Name="Turn6MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[13]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="ac7c8d1a-cb7e-4a08-bed6-9ef06b59b5c1" Name="Turn6MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[12]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="7e9aecbf-d102-4a47-9d88-ce3338b0aec5" Name="Turn6MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[11]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="485566c0-a23c-4f7f-8a42-2452478e756d" Name="Turn6MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[10]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="93b79943-b5cd-4266-ae09-c19cd63f937c" Name="Turn7Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[5]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="e5713e95-31c2-4925-8479-cb39747d1ec0" Name="Turn7Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[12]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="b32d864b-d63a-44e8-9f81-577712a2e695" Name="Turn7Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DI1_MB[11]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="2a624b94-1fba-4e8b-920b-c68711d4e6c3" Name="Turn7MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[17]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="361fd209-835b-4eea-8990-76a9327f068b" Name="Turn7MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[16]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="c5b103b7-5e6f-4cfd-a74d-b851d1fd807f" Name="Turn7MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[15]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="9786e048-f89f-463a-ae7e-9449a7c1962d" Name="Turn7MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>DO1_MB[14]</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="01bcc3be-8446-4f1a-b4ea-eca6f74b9d95" Name="Turn8Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="da59e5a3-ee7e-4832-b9b0-a9f057f7d340" Name="Turn8Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="a7cc6f4f-9da2-4eaf-b210-fd2f6bbea9f7" Name="Turn8Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="da5ddac4-b12a-475b-a473-f66477c16cb3" Name="Turn8MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="deca39d6-482e-4784-8c67-2a1c772c1253" Name="Turn8MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="b91b21b1-79b2-4cf5-a0ba-f60ebc8649e4" Name="Turn8MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="2e5b8fe9-7ad3-47dd-8556-71bb32964ff0" Name="Turn8MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="0fa1f264-54ad-469e-af03-ec620b4f54f3" Name="Turn9Sensor" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="ea2c2f67-8dfc-48f0-8415-e5417c6ababd" Name="Turn9Pos1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="d7e95e7e-78cc-4c58-8673-c744ef31c6e9" Name="Turn9Pos2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="65d978cb-af96-496a-bfdd-97182f0586c4" Name="Turn9MotorBandR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="d7181924-7e1c-4f76-ae30-35977c7e7d87" Name="Turn9MotorBandR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="f11ad14d-f3d1-49e8-9460-4605e841b4a3" Name="Turn9MotorDrehR1" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
+                           <ExternalInterface ID="bc3de749-48ba-47a8-a730-eed9bd047663" Name="Turn9MotorDrehR2" RefBaseClassPath="LC3_InterfaceClassLib/LC3VariableInterface">
+                               <Attribute Name="DataType" AttributeDataType="xs:string">
+                                   <Value>BOOL</Value>
+                                </Attribute>
+                                <Attribute Name="PlcAddress" AttributeDataType="xs:string">
+                                    <Value>%IX1.0.0</Value>
+                                </Attribute>
+                           </ExternalInterface>
                            <SupportedRoleClass RefRoleClassPath="CommunicationRoleClassLib/LogicalDevice"/>
                         </InternalElement>
                         <InternalElement ID="2fae91ea-6770-48a8-9e12-c2a48a974d63" Name="MyPINetworkCard" RefBaseSystemUnitPath="GeckoExampleSystemUnitClassLib_PhysicalCommunicationDevices/PINetworkCard">
@@ -4990,6 +5690,92 @@
                   <InternalLink Name="link_BK3Out29_to_DO4Pin5" RefPartnerSideA="51e4fd0b-d905-403a-8b44-58231b054810:BK3Out29" RefPartnerSideB="35fde6e9-54ba-420c-916c-394be035fe1e:DO4Pin5"/>
                   <InternalLink Name="link_BK3Out30_to_DO4Pin6" RefPartnerSideA="51e4fd0b-d905-403a-8b44-58231b054810:BK3Out30" RefPartnerSideB="35fde6e9-54ba-420c-916c-394be035fe1e:DO4Pin6"/>
                   <InternalLink Name="link_BK3Out31_to_DO4Pin7" RefPartnerSideA="51e4fd0b-d905-403a-8b44-58231b054810:BK3Out31" RefPartnerSideB="35fde6e9-54ba-420c-916c-394be035fe1e:DO4Pin7"/>
+                  <InternalLink Name="link_variable_0" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv0Sensor" RefPartnerSideB="8df5100c-b001-451e-9a30-98daf39238fb:SensorValue"/>
+                  <InternalLink Name="link_variable_1" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv0MotorR1" RefPartnerSideB="425d6dd3-aa8f-4957-8440-6cc9d540b01b:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_2" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv0MotorR2" RefPartnerSideB="425d6dd3-aa8f-4957-8440-6cc9d540b01b:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_3" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv1Sensor" RefPartnerSideB="a1fc61f9-43ca-4a2f-87d1-4c300036cf40:SensorValue"/>
+                  <InternalLink Name="link_variable_4" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv1MotorR1" RefPartnerSideB="5fc0f0e0-ce46-4171-98e6-2b7848b34036:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_5" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv1MotorR2" RefPartnerSideB="5fc0f0e0-ce46-4171-98e6-2b7848b34036:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_6" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv2Sensor" RefPartnerSideB="0cad3339-15fd-45c4-ae04-c9f34e4a888b:SensorValue"/>
+                  <InternalLink Name="link_variable_7" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv2MotorR1" RefPartnerSideB="8fce4c48-b1fb-4b9d-9e05-399e0a5c3da0:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_8" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv2MotorR2" RefPartnerSideB="8fce4c48-b1fb-4b9d-9e05-399e0a5c3da0:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_9" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv3Sensor" RefPartnerSideB="8a8a0db1-e11e-4094-b4f8-0763332f21d3:SensorValue"/>
+                  <InternalLink Name="link_variable_10" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv3MotorR1" RefPartnerSideB="ce63c5e1-6e8b-4717-ab1e-303f2fd83773:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_11" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv3MotorR2" RefPartnerSideB="ce63c5e1-6e8b-4717-ab1e-303f2fd83773:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_12" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv4Sensor" RefPartnerSideB="2172ad64-8759-41b7-88ad-e07b1e44df11:SensorValue"/>
+                  <InternalLink Name="link_variable_13" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv4MotorR1" RefPartnerSideB="5c74e048-a4e9-419d-b4cf-0ac47bf798a1:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_14" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv4MotorR2" RefPartnerSideB="5c74e048-a4e9-419d-b4cf-0ac47bf798a1:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_15" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv5Sensor" RefPartnerSideB="52596681-a0a1-4ca3-a341-64a9125ffd6e:SensorValue"/>
+                  <InternalLink Name="link_variable_16" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv5MotorR1" RefPartnerSideB="5a63cfdb-fa88-4b72-ac29-fe33f2d4b82a:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_17" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv5MotorR2" RefPartnerSideB="5a63cfdb-fa88-4b72-ac29-fe33f2d4b82a:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_18" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv6Sensor" RefPartnerSideB="37ddec97-f4c8-48bb-acd4-780755d0d0dd:SensorValue"/>
+                  <InternalLink Name="link_variable_19" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv6MotorR1" RefPartnerSideB="61218050-d8b3-4f31-b147-9140c831b872:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_20" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv6MotorR2" RefPartnerSideB="61218050-d8b3-4f31-b147-9140c831b872:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_21" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv7Sensor" RefPartnerSideB="cca80f89-617b-4f96-9a68-d8499e1dd7bc:SensorValue"/>
+                  <InternalLink Name="link_variable_22" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv7MotorR1" RefPartnerSideB="0ef00987-1af9-4d5f-9e83-2368f375fdf1:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_23" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv7MotorR2" RefPartnerSideB="0ef00987-1af9-4d5f-9e83-2368f375fdf1:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_24" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv8Sensor" RefPartnerSideB="f417edc2-46cd-42f3-aa0b-f2dbee43d213:SensorValue"/>
+                  <InternalLink Name="link_variable_25" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv8MotorR1" RefPartnerSideB="83e95c2e-853a-4dc9-b647-3b0b90bfb37c:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_26" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv8MotorR2" RefPartnerSideB="83e95c2e-853a-4dc9-b647-3b0b90bfb37c:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_27" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv9Sensor" RefPartnerSideB="7bf7ed6a-be85-4481-ad78-40636c214cfc:SensorValue"/>
+                  <InternalLink Name="link_variable_28" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv9MotorR1" RefPartnerSideB="9b1c0a36-e98b-4028-a3ea-96f7837353f4:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_29" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Conv9MotorR2" RefPartnerSideB="9b1c0a36-e98b-4028-a3ea-96f7837353f4:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_30" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn0Sensor" RefPartnerSideB="c47cade7-7753-4565-a7b5-7a2d9817b942:SensorValue"/>
+                  <InternalLink Name="link_variable_31" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn0Pos1" RefPartnerSideB="273ef00e-6584-479e-b20f-f455ad3fdcd3:SensorValue"/>
+                  <InternalLink Name="link_variable_32" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn0Pos2" RefPartnerSideB="6c25a51a-c7a5-4cae-a0d8-26e088f15b52:SensorValue"/>
+                  <InternalLink Name="link_variable_33" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn0MotorBandR1" RefPartnerSideB="51fb36a5-33f1-43fc-8c1b-87b38029431d:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_34" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn0MotorBandR2" RefPartnerSideB="51fb36a5-33f1-43fc-8c1b-87b38029431d:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_35" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn0MotorDrehR1" RefPartnerSideB="44b85193-1baa-407e-9658-87703b43cf43:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_36" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn0MotorDrehR2" RefPartnerSideB="44b85193-1baa-407e-9658-87703b43cf43:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_37" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn1Sensor" RefPartnerSideB="0f5ec890-886a-4b7b-a333-dbf720c25bff:SensorValue"/>
+                  <InternalLink Name="link_variable_38" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn1Pos1" RefPartnerSideB="e5990c3e-436f-4397-9565-df35074888ab:SensorValue"/>
+                  <InternalLink Name="link_variable_39" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn1Pos2" RefPartnerSideB="3b22d8e2-58e0-45ba-b972-9aa0c2f046ac:SensorValue"/>
+                  <InternalLink Name="link_variable_40" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn1MotorBandR1" RefPartnerSideB="5766df9b-4301-40b9-b976-011e1ba11fbd:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_41" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn1MotorBandR2" RefPartnerSideB="5766df9b-4301-40b9-b976-011e1ba11fbd:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_42" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn1MotorDrehR1" RefPartnerSideB="0190bcd3-3b1f-4609-b7cc-bb53dfca01e7:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_43" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn1MotorDrehR2" RefPartnerSideB="0190bcd3-3b1f-4609-b7cc-bb53dfca01e7:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_44" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn2Sensor" RefPartnerSideB="4d4e4555-1398-4d43-bb67-887c7f649545:SensorValue"/>
+                  <InternalLink Name="link_variable_45" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn2Pos1" RefPartnerSideB="98aad7f9-f77f-4043-974e-aa1e75835819:SensorValue"/>
+                  <InternalLink Name="link_variable_46" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn2Pos2" RefPartnerSideB="8ee0f829-2820-4528-ab8e-997ded3de9d3:SensorValue"/>
+                  <InternalLink Name="link_variable_47" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn2MotorBandR1" RefPartnerSideB="3cf06420-e80f-41d3-af5d-056ce3651360:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_48" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn2MotorBandR2" RefPartnerSideB="3cf06420-e80f-41d3-af5d-056ce3651360:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_49" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn2MotorDrehR1" RefPartnerSideB="6d3e3d76-7711-4241-9e68-2a8e51ab302c:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_50" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn2MotorDrehR2" RefPartnerSideB="6d3e3d76-7711-4241-9e68-2a8e51ab302c:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_51" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn3Sensor" RefPartnerSideB="3e0b2412-d5e5-4119-9436-c12e1e96187a:SensorValue"/>
+                  <InternalLink Name="link_variable_52" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn3Pos1" RefPartnerSideB="459b0503-f708-4884-b639-acf314a199d3:SensorValue"/>
+                  <InternalLink Name="link_variable_53" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn3Pos2" RefPartnerSideB="3a4b32e1-3415-4af5-8ac2-67ca5579db82:SensorValue"/>
+                  <InternalLink Name="link_variable_54" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn3MotorBandR1" RefPartnerSideB="e86f9a99-8dc0-406f-8ca8-48927fb58960:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_55" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn3MotorBandR2" RefPartnerSideB="e86f9a99-8dc0-406f-8ca8-48927fb58960:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_56" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn3MotorDrehR1" RefPartnerSideB="965c55a2-9ca6-4b1d-861e-573f0dd70131:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_57" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn3MotorDrehR2" RefPartnerSideB="965c55a2-9ca6-4b1d-861e-573f0dd70131:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_58" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn4Sensor" RefPartnerSideB="b36ca1b8-ac81-4970-af23-31e4cda916b1:SensorValue"/>
+                  <InternalLink Name="link_variable_59" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn4Pos1" RefPartnerSideB="f426152e-c65e-42d5-a534-d602e1da1476:SensorValue"/>
+                  <InternalLink Name="link_variable_60" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn4Pos2" RefPartnerSideB="d39522f2-9020-4af8-982b-4f32341f2a88:SensorValue"/>
+                  <InternalLink Name="link_variable_61" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn4MotorBandR1" RefPartnerSideB="0789724f-cc5a-4503-be4d-10fce4d78d6a:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_62" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn4MotorBandR2" RefPartnerSideB="0789724f-cc5a-4503-be4d-10fce4d78d6a:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_63" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn4MotorDrehR1" RefPartnerSideB="15317f33-543f-423f-afd6-edf64f35e49e:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_64" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn4MotorDrehR2" RefPartnerSideB="15317f33-543f-423f-afd6-edf64f35e49e:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_65" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn5Sensor" RefPartnerSideB="3d5fd113-f559-4d36-a7d3-ed7e92860c7f:SensorValue"/>
+                  <InternalLink Name="link_variable_66" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn5Pos1" RefPartnerSideB="1ec2a425-6869-4d0b-af27-412c430c7a4e:SensorValue"/>
+                  <InternalLink Name="link_variable_67" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn5Pos2" RefPartnerSideB="e8496666-60ec-4138-96cf-23438317401d:SensorValue"/>
+                  <InternalLink Name="link_variable_68" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn5MotorBandR1" RefPartnerSideB="f1de4392-a4ee-48f1-9596-18d5228f6377:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_69" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn5MotorBandR2" RefPartnerSideB="f1de4392-a4ee-48f1-9596-18d5228f6377:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_70" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn5MotorDrehR1" RefPartnerSideB="c26fda85-36df-432a-a0ad-4c3598a42c08:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_71" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn5MotorDrehR2" RefPartnerSideB="c26fda85-36df-432a-a0ad-4c3598a42c08:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_72" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn6Sensor" RefPartnerSideB="0e00b36c-4d52-475e-aac2-f19957343c16:SensorValue"/>
+                  <InternalLink Name="link_variable_73" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn6Pos1" RefPartnerSideB="a06a2532-9619-4a94-bda5-e5ca61309215:SensorValue"/>
+                  <InternalLink Name="link_variable_74" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn6Pos2" RefPartnerSideB="2199d61f-efb8-4cd0-8cf6-ee255f19a891:SensorValue"/>
+                  <InternalLink Name="link_variable_75" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn6MotorBandR1" RefPartnerSideB="0e33e6cd-90fa-4773-9b41-22495e57d1d6:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_76" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn6MotorBandR2" RefPartnerSideB="0e33e6cd-90fa-4773-9b41-22495e57d1d6:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_77" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn6MotorDrehR1" RefPartnerSideB="b04ecf27-9194-42af-b02d-7a85664ac228:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_78" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn6MotorDrehR2" RefPartnerSideB="b04ecf27-9194-42af-b02d-7a85664ac228:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_79" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn7Sensor" RefPartnerSideB="c4a7f952-aa7a-439f-818c-f6b03c6792de:SensorValue"/>
+                  <InternalLink Name="link_variable_80" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn7Pos1" RefPartnerSideB="0054fd16-6c5f-4923-9282-18e4ae7773ca:SensorValue"/>
+                  <InternalLink Name="link_variable_81" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn7Pos2" RefPartnerSideB="aec5871a-63a3-49ec-b069-3c27a841d783:SensorValue"/>
+                  <InternalLink Name="link_variable_82" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn7MotorBandR1" RefPartnerSideB="79adf458-9dee-4796-8ccc-30abdce38415:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_83" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn7MotorBandR2" RefPartnerSideB="79adf458-9dee-4796-8ccc-30abdce38415:triggerB_power_connection_socket"/>
+                  <InternalLink Name="link_variable_84" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn7MotorDrehR1" RefPartnerSideB="94ba7f01-bff8-4ab8-bbb1-b7db2b789adc:triggerA_power_connection_socket"/>
+                  <InternalLink Name="link_variable_85" RefPartnerSideA="1303daba-e417-4699-bc58-e312c092f7bd:Turn7MotorDrehR2" RefPartnerSideB="94ba7f01-bff8-4ab8-bbb1-b7db2b789adc:triggerB_power_connection_socket"/>
                   <RoleRequirements RefBaseRoleClassPath="AutomationMLExtendedRoleClassLib/ProductionLine"/>
                </InternalElement>
                <SupportedRoleClass RefRoleClassPath="VDMA66415RoleClassLib/VDMA66415/Project"/>
@@ -5109,6 +5895,11 @@
       <InterfaceClass Name="power_connection_socket" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface"/>
       <InterfaceClass Name="LogicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"/>
       <InterfaceClass Name="VariableInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface"/>
+   </InterfaceClassLib>
+   <InterfaceClassLib Name="LC3_InterfaceClassLib">
+      <Description>Model Interface Class Library for logi_cals at SPS IPC 2015 by IAF OvGU</Description>
+      <Version>0.0.9</Version>
+      <InterfaceClass Name="LC3VariableInterface" RefBaseClassPath="IAF_ModelInterfaceClassLib/VariableInterface"/>
    </InterfaceClassLib>
    <RoleClassLib Name="AutomationMLBaseRoleClassLib">
       <Description>Automation Markup Language base role class library</Description>
