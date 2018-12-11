@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<caex:CAEXFile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:caex="http://www.dke.de/CAEX/300" fileName="mechanicalPlantModelFlexMan.aml">
+  <instanceHierarchy name="IAFDemonstrationPlant">
+    <internalElement iD="3d7d5923-f2b7-448c-a4bb-4d2603fe25b1" name="Otto-von-Guericke University Magdeburg">
+      <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Building10">
+        <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Room445">
+          <systemUnitClass xsi:type="caex:InternalElement" iD="48b592dd-1900-400a-b0ee-e828c836b0de" name="FlexibleManufacturingSystem">
+            <systemUnitClass xsi:type="caex:InternalElement" name="turntable0">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="af3fc59a-2b70-4962-bc03-73c066058221" name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly">
+                <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+                <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="e8779661-f3c4-4148-ad49-26f172e20dcf" name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="140" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+              <internalElement iD="93691b87-bb07-4de1-bced-39c564e3e66a" name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer0">
+              <internalElement iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
+                <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+                <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+                <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer">
+                <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="Geometry" value="160x20x20" attributeDataType="xs:string"/>
+                <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="135acc50-01c9-462c-8cb9-4b210e8f8b30" name="conveyer2">
+              <internalElement iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
+                <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+                <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+                <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer">
+                <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="Geometry" value="160x20x20" attributeDataType="xs:string"/>
+                <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="6c538c91-04d8-40c7-9f04-a9d15f32edbf" name="turntable2">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="af3fc59a-2b70-4962-bc03-73c066058221" name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly">
+                <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+                <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="e8779661-f3c4-4148-ad49-26f172e20dcf" name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="140" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+              <internalElement iD="93691b87-bb07-4de1-bced-39c564e3e66a" name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="ce8deb7c-e26c-43c6-a3f4-4eb321f60f1f" name="conveyer1">
+              <internalElement iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
+                <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+                <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+                <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer">
+                <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="Geometry" value="160x20x20" attributeDataType="xs:string"/>
+                <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="9c4fca69-a3e8-418b-9cd1-49cfbf6ee25c" name="turntable1">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="af3fc59a-2b70-4962-bc03-73c066058221" name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly">
+                <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+                <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="e8779661-f3c4-4148-ad49-26f172e20dcf" name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="140" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+              <internalElement iD="93691b87-bb07-4de1-bced-39c564e3e66a" name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="954aa368-518d-4103-b819-dd7db2c6d01e" name="turntable3">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="af3fc59a-2b70-4962-bc03-73c066058221" name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly">
+                <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+                <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="e8779661-f3c4-4148-ad49-26f172e20dcf" name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="140" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+              <internalElement iD="93691b87-bb07-4de1-bced-39c564e3e66a" name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="ad258e93-f513-47ee-883a-2f4089f24597" name="conveyer3">
+              <internalElement iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
+                <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+                <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+                <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer">
+                <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="Geometry" value="160x20x20" attributeDataType="xs:string"/>
+                <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+              </internalElement>
+              <internalElement iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+                <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+                <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+              </internalElement>
+              <internalElement iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+                <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+                <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+                <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+                <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+              </internalElement>
+            </systemUnitClass>
+          </systemUnitClass>
+        </systemUnitClass>
+      </systemUnitClass>
+    </internalElement>
+  </instanceHierarchy>
+  <interfaceClassLib name="AutomationMLInterfaceClassLib">
+    <interfaceClass name="AutomationMLBaseInterface">
+      <interfaceClass name="Order" refBaseClassPath="AutomationMLBaseInterface">
+        <attribute name="Direction" attributeDataType="xs:string" refAttributeType=""/>
+      </interfaceClass>
+      <interfaceClass name="PortConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass name="InterlockingConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass iD="" name="PPRConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass name="ExternalDataConnector" refBaseClassPath="AutomationMLBaseInterface">
+        <attribute name="refURI" attributeDataType="xs:anyURI"/>
+        <interfaceClass name="COLLADAInterface" refBaseClassPath="ExternalDataConnector"/>
+        <interfaceClass name="PLCopenXMLInterface" refBaseClassPath="ExternalDataConnector"/>
+      </interfaceClass>
+      <interfaceClass name="Communication" refBaseClassPath="AutomationMLBaseInterface">
+        <interfaceClass name="SignalInterface" refBaseClassPath="Communication"/>
+      </interfaceClass>
+    </interfaceClass>
+  </interfaceClassLib>
+  <interfaceClassLib name="VDMA66415InterfaceClassLib">
+    <interfaceClass name="PLCTag" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface">
+      <attribute name="Identifier" attributeDataType="xs:string"/>
+      <attribute name="ToolID" attributeDataType="xs:string">
+        <attribute name="ToolName" attributeDataType="xs:string"/>
+        <attribute name="ToolSign" attributeDataType="xs:string"/>
+        <attribute name="ToolIDInternal" attributeDataType="xs:string"/>
+      </attribute>
+      <attribute name="DataRevision" attributeDataType="xs:string">
+        <attribute name="LastChange" attributeDataType="xs:string"/>
+        <attribute name="Status" attributeDataType="xs:string"/>
+        <attribute name="Time" attributeDataType="xs:string" refAttributeType=""/>
+        <attribute name="Author" attributeDataType="xs:string"/>
+      </attribute>
+      <attribute name="PLCManufacturer" attributeDataType="xs:string"/>
+      <attribute name="PLCName" attributeDataType="xs:string"/>
+      <attribute iD="" name="Operand" attributeDataType="xs:string"/>
+      <attribute name="Adress" attributeDataType="xs:string"/>
+      <attribute name="PLCNode" attributeDataType="xs:string"/>
+      <attribute iD="" name="TagName" attributeDataType="xs:string"/>
+      <attribute name="TagComment" attributeDataType="xs:string"/>
+    </interfaceClass>
+    <interfaceClass name="UnitDrawingFileName" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+    <interfaceClass name="UnitDocFileName" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+    <interfaceClass name="UnitUserDefinedFile" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+    <interfaceClass name="DeviceDataSheetFileName" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+    <interfaceClass name="DeviceDocFileName" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+    <interfaceClass name="DeviceUserDefinedFile" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector"/>
+  </interfaceClassLib>
+  <interfaceClassLib name="IAF_ModelInterfaceClassLib">
+    <interfaceClass name="Communication" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+      <interfaceClass name="SignalInterface" refBaseClassPath="IAF_ModelInterfaceClassLib/Communication"/>
+    </interfaceClass>
+    <interfaceClass name="power_connection_plug" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface"/>
+    <interfaceClass name="gearing" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="screwing" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="clamping" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="storage" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="power_connection_socket" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface"/>
+  </interfaceClassLib>
+  <systemUnitClassLib name="IAF_ModelSystemUnitClassLib">
+    <systemUnitClass name="parts">
+      <systemUnitClass name="motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </systemUnitClass>
+      <systemUnitClass name="sensor">
+        <attribute name="sensitivity" value="0.7" attributeDataType="xs:decimal" unit="mT"/>
+        <attribute name="circuit_time" value="1" attributeDataType="xs:integer" unit="ms"/>
+      </systemUnitClass>
+      <systemUnitClass name="inductive_sensor" refBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor">
+        <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+        <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+      </systemUnitClass>
+      <systemUnitClass name="line_conveyor">
+        <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="Geometry" value="160x20x20" attributeDataType="xs:string"/>
+      </systemUnitClass>
+      <systemUnitClass name="frame">
+        <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+        <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+        <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass name="rotating_assembly">
+        <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+        <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+      </systemUnitClass>
+    </systemUnitClass>
+    <systemUnitClass name="conveyer">
+      <systemUnitClass xsi:type="caex:InternalElement" iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
+        <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+        <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+        <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer">
+        <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="Geometry" value="160x20x20" attributeDataType="xs:string"/>
+        <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+        <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+        <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </systemUnitClass>
+    </systemUnitClass>
+    <systemUnitClass name="turntable">
+      <systemUnitClass xsi:type="caex:InternalElement" iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+        <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+        <attribute name="weight" value="54" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="af3fc59a-2b70-4962-bc03-73c066058221" name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly">
+        <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+        <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="e8779661-f3c4-4148-ad49-26f172e20dcf" name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="power" value="140" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="93691b87-bb07-4de1-bced-39c564e3e66a" name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </systemUnitClass>
+    </systemUnitClass>
+  </systemUnitClassLib>
+</caex:CAEXFile>

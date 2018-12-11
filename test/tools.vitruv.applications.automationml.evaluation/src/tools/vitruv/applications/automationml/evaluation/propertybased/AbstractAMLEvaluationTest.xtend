@@ -15,7 +15,7 @@ class AbstractAMLEvaluationTest extends AbstractAMLTest {
 	override protected setup() {
 		/*val docRootAggregator = preloadExistingAggregatorModel("resources/bsp_aml_empty.aml_aggregator")
 		createAndSynchronizeModel(AGGREGATOR_MODEL_NAME.projectAggregatorModelPath, docRootAggregator)*/
-		val docRootCAEX = preloadExistingCAEXModel("resources/bsp_caex_empty.caex")	
+		val docRootCAEX = preloadExistingCAEXModel("resources/empty_demo_example.caex")	
 		createAndSynchronizeModel(CAEX_MODEL_NAME.projectCAEXModelPath, docRootCAEX)
 		/*val docRootPLCopen = preloadExistingPLCopenModel("resources/bsp_plcopen_empty.tc60201")
 		createAndSynchronizeModel(PLCOPEN_MODEL_NAME.projectPLCopenModelPath, docRootPLCopen)*/
