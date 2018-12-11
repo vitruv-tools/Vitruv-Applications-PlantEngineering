@@ -34,7 +34,7 @@ reaction ChangeRoleClassInInternalElement {
 		if(roleClass === null) {
 			val userInput = userInteractor.confirmationDialogBuilder.message("Rolle existiert nicht. Soll eine erzeugt werden? Andernfalls wird die Änderung zurückgerollt").startInteraction
 			if(userInput) {
-				createRoleInTree(newValue, affectedEObject)
+				createRoleClassInTree(newValue, caexFile, affectedEObject)
 			} else {
 				//TODO Änderung wird zurückgerollt
 				// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
@@ -115,13 +115,31 @@ routine removeCorrespondenceBetweenClassAndInstance(caex::InternalElement intern
 
 // ***** Routine, um eine Klasse anzulegen bei Angabe eines toten Pfades
 
-routine createSystemUnitClassInTree(caex::InternalElement internalElement) {
+routine createRoleClassInTree(String path, caex::CAEXFile caexFile, caex::InternalElement internalElement) {
 	action {
-		val newSystemUnitClass = create caex::SystemUnitClass
 		execute {
-			//TODO Baum durchsuchen, ab wo der Pfad tot ist
+			val splitIndex = path.lastIndexOf("/")
+			val pathToContainer = path.substring(0, splitIndex)
+			val nameOfClass = path.substring(splitIndex + 1)
+			val container = CAEXStringResolver.resolveRolePath(pathToContainer, caexFile)
+			createRoleClass(nameOfClass, container, internalElement)
 		}
-		add correspondence between internalElement and newSystemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
+	}
+}
+
+routine createRoleClass(String name, caex::RoleClass container, caex::InternalElement internalElement) {
+	match {
+		val oldRoleClass = retrieve caex::RoleClass corresponding to internalElement tagged with AMLTags.CLONE_ROLE
+	}
+	action {
+		val newClass = create caex::RoleClass and initialize {
+			newClass.name = name
+		}
+		update container {
+			container.roleClass.add(newClass)
+		}
+		remove correspondence between oldRoleClass and internalElement tagged with AMLTags.CLONE_ROLE
+		add correspondence between newClass and internalElement tagged with AMLTags.CLONE_ROLE
 	}
 }
 
@@ -216,19 +234,5 @@ routine removeCorrespondenceBetweenInternalElementAndRoleClass(caex::InternalEle
 routine addCorrespondenceBetweenInternalElementAndRoleClass(caex::InternalElement elem, caex::RoleClass role) {
 	action {
 		add correspondence between elem and role tagged with AMLTags.CLONE_ROLE
-	}
-}
-
-// ***** Routine, um Rolle zu erzeugen
-routine createRoleInTree(String path, caex::InternalElement elem) {
-	action {
-		val newRole = create caex::RoleClass and initialize {
-			//TODO Rolle erzeugen
-		}
-		execute {
-			//TODO Rolle erzeugen
-			removeCorrespondenceBetweenInternalElementAndRoleClass(elem)
-			addCorrespondenceBetweenInternalElementAndRoleClass(elem, newRole)
-		}
 	}
 }

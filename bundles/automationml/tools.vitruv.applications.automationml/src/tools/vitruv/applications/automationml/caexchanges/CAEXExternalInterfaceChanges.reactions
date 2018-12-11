@@ -59,7 +59,7 @@ reaction ChangeExternalInterfaceType {
 				case ErrorCode.LAST_SEGMENT_NOT_FOUND: {
 					val userInput = userInteractor.confirmationDialogBuilder.message("Interface nicht vorhanden. Soll es erzeugt werden? Ansonsten wird die Änderung zurückgerollt").startInteraction
 					if(userInput) {
-						//TODO Interface erzeugen
+						createInterfaceClassInTree(newValue, caexFile, affectedEObject)
 					} else {
 						affectedEObject.refBaseClassPath = oldValue
 						return
@@ -350,5 +350,35 @@ routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface 
 				pathAttribute.value = path
 			}
 		}
+	}
+}
+
+// ***** Methode zum Einfügen eines externen Interfaces 
+
+routine createInterfaceClassInTree(String path, caex::CAEXFile caexFile, caex::ExternalInterface externalInterface) {
+	action {
+		execute {
+			val splitIndex = path.lastIndexOf("/")
+			val pathToContainer = path.substring(0, splitIndex)
+			val nameOfClass = path.substring(splitIndex + 1)
+			val container = CAEXStringResolver.resolveInterfacePath(pathToContainer, caexFile)
+			createInterfaceClass(nameOfClass, container, externalInterface)
+		}
+	}
+}
+
+routine createInterfaceClass(String name, caex::InterfaceClass container, caex::ExternalInterface externalInterface) {
+	match {
+		val oldInterfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with AMLTags.CLASS_INTERFACE
+	}
+	action {
+		val newClass = create caex::InterfaceClass and initialize {
+			newClass.name = name
+		}
+		update container {
+			container.interfaceClass.add(newClass)
+		}
+		remove correspondence between oldInterfaceClass and externalInterface tagged with AMLTags.CLASS_INTERFACE
+		add correspondence between newClass and externalInterface tagged with AMLTags.CLASS_INTERFACE
 	}
 }
