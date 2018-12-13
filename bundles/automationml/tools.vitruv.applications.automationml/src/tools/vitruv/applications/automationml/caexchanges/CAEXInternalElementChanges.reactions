@@ -8,6 +8,7 @@ import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.ExternalInterfaceType
 import tools.vitruv.applications.automationml.utils.stringreferences.caex.SystemUnitClassUtils
+import caex.caex30.caex.InternalElement
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -21,10 +22,15 @@ execute actions in CAEX
 // ***** Rollenangabe in Internem Element ändern
 
 reaction ChangeRoleClassInInternalElement {
-	after attribute replaced at caex::InternalElement[refBaseClassPath]
-	call {				
+	after attribute replaced at caex::RoleRequirements[refBaseRoleClassPath]
+	with {
+		affectedEObject.eContainer instanceof InternalElement
+	}
+	call {	
+		val container = affectedEObject.eContainer as InternalElement
+					
 		if(newValue.isNullOrEmpty) {
-			removeCorrespondenceBetweenInternalElementAndRoleClass(affectedEObject)
+			removeCorrespondenceBetweenInternalElementAndRoleClass(container)
 			return
 		}
 		
@@ -34,17 +40,17 @@ reaction ChangeRoleClassInInternalElement {
 		if(roleClass === null) {
 			val userInput = userInteractor.confirmationDialogBuilder.message("Rolle existiert nicht. Soll eine erzeugt werden? Andernfalls wird die Änderung zurückgerollt").startInteraction
 			if(userInput) {
-				createRoleClassInTree(newValue, caexFile, affectedEObject)
+				createRoleClassInTree(newValue, caexFile, container)
 			} else {
 				//TODO Änderung wird zurückgerollt
 				// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
-				affectedEObject.refBaseSystemUnitPath = oldValue
+				affectedEObject.refBaseRoleClassPath = oldValue
 				return
 			}
 		}
 		
-		removeCorrespondenceBetweenInternalElementAndRoleClass(affectedEObject)
-		addCorrespondenceBetweenInternalElementAndRoleClass(affectedEObject, roleClass)
+		removeCorrespondenceBetweenInternalElementAndRoleClass(container)
+		addCorrespondenceBetweenInternalElementAndRoleClass(container, roleClass)
 	}
 }
 

@@ -30,6 +30,8 @@ reaction PrototypChangedInClone {
 		val prototype = SystemUnitClassUtils.getSystemClassByPath(newValue, caexFile)
 		
 		if(prototype === null) {
+			//TODO Änderung zurückrollen
+			affectedEObject.refBaseSystemUnitPath = oldValue
 			return
 		}
 		

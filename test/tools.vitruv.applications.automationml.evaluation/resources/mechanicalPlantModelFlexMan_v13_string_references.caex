@@ -1,22 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <caex:CAEXFile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:caex="http://www.dke.de/CAEX/300" fileName="mechanicalPlantModelFlexMan.aml">
   <instanceHierarchy name="IAFDemonstrationPlant">
-    <internalElement iD="3d7d5923-f2b7-448c-a4bb-4d2603fe25b1" name="Otto-von-Guericke University Magdeburg">
-      <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Building10">
-        <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Room445">
-          <systemUnitClass xsi:type="caex:InternalElement" iD="48b592dd-1900-400a-b0ee-e828c836b0de" name="FlexibleManufacturingSystem">
-            <systemUnitClass xsi:type="caex:InternalElement" name="turntable0"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer0"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="135acc50-01c9-462c-8cb9-4b210e8f8b30" name="conveyer2"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="6c538c91-04d8-40c7-9f04-a9d15f32edbf" name="turntable2"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="ce8deb7c-e26c-43c6-a3f4-4eb321f60f1f" name="conveyer1"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="9c4fca69-a3e8-418b-9cd1-49cfbf6ee25c" name="turntable1"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="954aa368-518d-4103-b819-dd7db2c6d01e" name="turntable3"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="ad258e93-f513-47ee-883a-2f4089f24597" name="conveyer3"/>
-            <systemUnitClass xsi:type="caex:InternalElement" iD="bc992c0b-596b-49bb-b945-e98ba0ef98bb" name="controlcabinet"/>
-          </systemUnitClass>
-        </systemUnitClass>
-      </systemUnitClass>
+    <internalElement name="OvG University Magdeburg">
+      <internalElement name="Building10">
+        <internalElement iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Room445">
+          <internalElement name="FlexibleManufacturingSystem">
+            <internalElement name="turntable0">
+              <internalElement name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly"/>
+              <internalElement name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+              <internalElement name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="conveyer0">
+              <internalElement name="frame_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame"/>
+              <internalElement name="line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer"/>
+              <internalElement name="inductive_sensor_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="motor_line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="conveyer2">
+              <internalElement name="frame_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame"/>
+              <internalElement name="line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer"/>
+              <internalElement name="inductive_sensor_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="motor_line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="turntable2">
+              <internalElement name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly"/>
+              <internalElement name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+              <internalElement name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="conveyer1">
+              <internalElement name="frame_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame"/>
+              <internalElement name="line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer"/>
+              <internalElement name="inductive_sensor_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="motor_line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="turntable1">
+              <internalElement name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly"/>
+              <internalElement name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+              <internalElement name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="turntable3">
+              <internalElement name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly"/>
+              <internalElement name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+              <internalElement name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="conveyer3">
+              <internalElement name="frame_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame"/>
+              <internalElement name="line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer"/>
+              <internalElement name="inductive_sensor_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+              <internalElement name="motor_line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+            </internalElement>
+            <internalElement name="controlCabinet"/>
+          </internalElement>
+        </internalElement>
+      </internalElement>
     </internalElement>
   </instanceHierarchy>
   <interfaceClassLib name="AutomationMLInterfaceClassLib">
@@ -82,15 +122,15 @@
       <systemUnitClass name="motor"/>
       <systemUnitClass name="sensor"/>
       <systemUnitClass name="inductive_sensor" refBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor"/>
-      <systemUnitClass name="line_conveyor"/>
+      <systemUnitClass name="line_conveyer"/>
       <systemUnitClass name="frame"/>
       <systemUnitClass name="rotating_assembly"/>
     </systemUnitClass>
     <systemUnitClass name="conveyer">
-      <systemUnitClass xsi:type="caex:InternalElement" iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame"/>
-      <systemUnitClass xsi:type="caex:InternalElement" iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer"/>
-      <systemUnitClass xsi:type="caex:InternalElement" iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
-      <systemUnitClass xsi:type="caex:InternalElement" iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame"/>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer"/>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyer" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor"/>
     </systemUnitClass>
     <systemUnitClass name="turntable">
       <systemUnitClass xsi:type="caex:InternalElement" iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
