@@ -15,7 +15,7 @@ reactions: caexAttributeValueChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
-// Regel 10 bi 21
+// Regel 10 bis 21
 
 reaction ChangeAttributeInClone {
 	after attribute replaced at caex::Attribute[value]

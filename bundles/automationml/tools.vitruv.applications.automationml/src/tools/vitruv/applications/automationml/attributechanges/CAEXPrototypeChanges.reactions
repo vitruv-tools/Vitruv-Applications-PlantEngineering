@@ -3,6 +3,10 @@ import java.util.LinkedList
 import tools.vitruv.applications.automationml.utils.propertybasedtags.PrototypTags
 import caex.caex30.caex.SystemUnitClassLib
 import tools.vitruv.applications.automationml.utils.propertybasedtags.PropertyTags
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import caex.caex30.caex.InternalElement
+import tools.vitruv.applications.automationml.utils.propertybasedtags.CloneTags
+import caex.caex30.caex.SystemUnitClass
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -12,6 +16,28 @@ import "http://www.collada.org/2005/11/COLLADASchema" as collada
 reactions: caexAttributePrototypChanges
 in reaction to changes in CAEX
 execute actions in CAEX
+
+reaction PrototypeRemovedInLibrary {
+	after element caex::SystemUnitClass removed from caex::SystemUnitClassLib[systemUnitClass]
+	call {
+		removeClones(oldValue)
+		val prototypes = EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)
+		for(SystemUnitClass currPrototype: prototypes) {
+			removeClones(currPrototype)
+		}
+	}
+}
+
+reaction PrototypeRemovedInClass {
+	after element caex::SystemUnitClass removed from caex::SystemUnitClass[systemUnitClass]
+	call {
+		removeClones(oldValue)
+		val prototypes = EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)
+		for(SystemUnitClass currPrototype: prototypes) {
+			removeClones(currPrototype)
+		}
+	}
+}
 
 // ***** Regel 1
 
@@ -66,6 +92,7 @@ routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribut
 	match {
 		val alwaysTaggedLib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.ALWAYS
 		val neverTaggedLib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.NEVER
+		val clones = retrieve many caex::InternalElement corresponding to prototype tagged with AMLTags.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
@@ -93,10 +120,98 @@ routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribut
 					case 5:
 						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.RULE)
 				}
+				
+				for(InternalElement currClone : clones) {
+					askUserToCopyNewProperty(property, currClone)
+				}
 			}
 		}
 	}
 } 
+
+routine askUserToCopyNewProperty (caex::Attribute property, caex::InternalElement clone) {
+	match {
+		val prototype = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.DESCRIPTIVE
+	}
+	action {
+		execute {
+			if(prototype.isPresent) {
+				copyProperty(property, clone)
+			} else {
+				val userinput = userInteractor.confirmationDialogBuilder.message("Soll die Eigenschaft auf den Klon übertragen werden?").startInteraction
+				if(userinput) {
+					copyProperty(property, clone)
+				}
+			}
+		}
+	}
+}
+
+routine copyProperty (caex::Attribute property, caex::InternalElement clone) {
+	action {
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = property.name
+			newAttribute.value = property.value
+		}
+		update clone {
+			clone.^attribute.add(newAttribute)
+		}
+	}
+}
+
+// bla
+
+routine removeClones (caex::SystemUnitClass prototype) {
+	match {
+		val lib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.NEVER
+		val clones = retrieve many caex::InternalElement corresponding to prototype tagged with AMLTags.PROTOTYPE_CLONE
+	}
+	action {
+		execute {
+			if(!lib.isPresent) {
+				for(InternalElement currClone : clones) {
+					askUserToRemoveClone(currClone)
+				}
+			} else {
+				for(InternalElement currClone : clones) {
+					updateReference(currClone)
+				}
+			}
+		}
+	}
+}
+
+routine askUserToRemoveClone (caex::InternalElement clone) {
+	match {
+		val prototype = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.REAL
+	}
+	action {
+		execute {
+			if(!prototype.isPresent) {
+				val userinput = userInteractor.confirmationDialogBuilder.message("Soll der aktuelle Klon gelöscht werden?").startInteraction
+				if(userinput) {
+					removeClone(clone)
+				} else {
+					updateReference(clone)
+				}
+			}
+		}
+	}
+}
+
+routine removeClone(caex::InternalElement clone) {
+	action {
+		delete clone
+	}
+}
+
+routine updateReference(caex::InternalElement clone) {
+	action {
+		update clone {
+			clone.refBaseSystemUnitPath = ""
+		}
+	}
+}
 
 // ***** Allgemeine Methoden
 
