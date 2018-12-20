@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.domains.caex.CAEXDomainProvider
 import tools.vitruv.testutils.TestUserInteraction
 import tools.vitruv.testutils.VitruviusApplicationTest
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
 class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 
@@ -55,8 +56,11 @@ class AbstractCAEXIntraModelConsistencyTest extends VitruviusApplicationTest {
 	}
 	
 	protected def CAEXFile preloadExistingModel(String path) {
-		var targetModel = getModelResource(URI.createURI(path))
-		return targetModel.contents.get(0) as CAEXFile
+		val uri = URI.createURI(path)
+        val resourceSet = new ResourceSetImpl()
+        val resource = resourceSet.getResource(uri, true)
+        val targetModel = resource.getContents().get(0)
+		return targetModel as CAEXFile
 	}
 	
 	protected def TestUserInteraction getTestUserInteractor() {
