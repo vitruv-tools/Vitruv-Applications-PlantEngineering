@@ -1,0 +1,55 @@
+import caex.caex30.caex.CAEXObject
+import tools.vitruv.applications.caexintra.CAEXIntraConsistencyTools
+
+import "http://www.dke.de/CAEX/300" as CAEX
+
+reactions: iC_ReactToInternalElementChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+import routines iC_Utilities
+
+/** If a refBaseSystemunitPath is edited in InternalElement then remove old correspondences and create new */
+reaction CloneRefAdded {
+	after attribute replaced at CAEX::InternalElement[refBaseSystemUnitPath]
+	call {
+		removeCorrespondencesofSystemUnitClasses(affectedEObject)
+		newCorrespondenceCloneProto(affectedEObject,newValue)
+	}
+}
+
+reaction InternalElementChangeModeChanged {
+	after attribute replaced at CAEX::InternalElement[changeMode]
+	call {
+		
+	}
+}
+
+reaction InternalElementeChanged {
+	after attribute replaced at CAEX::InternalElement[refBaseClassPath]
+	call {}
+}
+
+
+routine newCorrespondenceCloneProto(CAEX::InternalElement ie, String sucStr) {
+	action {		
+		call{
+			if(sucStr === null || sucStr === "") return;
+			//Add correspondence
+			var suc = CAEXIntraConsistencyTools.findByPathFromRoot(ie,sucStr) as CAEXObject
+			if(suc !== null)
+				addCAEXCorrespondence(ie,suc);
+		}
+	}
+}
+
+routine removeCorrespondencesofSystemUnitClasses(CAEX::InternalElement affectedElement) {
+	match {
+		val corres = retrieve many CAEX::SystemUnitClass corresponding to affectedElement
+	}
+	action {
+		call {
+			corres.forEach[removeCAEXCorrespondence(affectedElement)]
+		}
+	}
+}

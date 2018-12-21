@@ -1,9 +1,0 @@
-import "http://org.automationml.caex" as CAEX
-
-reactions: caex_import
-in reaction to changes in CAEX
-execute actions in CAEX
-
-import iC_ReactToAttributeChanges using qualified names
-import iC_ReactToInternalElementChanges using qualified names
-import iC_ReactToSystemUnitClassChanges using qualified names
