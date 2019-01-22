@@ -67,7 +67,7 @@ routine addedPrototpyeForClone (caex::InternalElement clone, caex::SystemUnitCla
 					choices.add("real existing")
 					choices.add("abstract description")
 					choices.add("example object")
-					val userInput = userInteractor.singleSelectionDialogBuilder.message("Welchen Typ hat der Klon?").choices(choices).startInteraction
+					val userInput = userInteractor.singleSelectionDialogBuilder.message("Welchen Typ hat der Klon " + clone.name +"?").choices(choices).startInteraction
 					
 					if(userInput == 0) {
 						copyAllAttributesToClone(clone, prototype, true)	
@@ -228,7 +228,7 @@ routine copyBehaviourAttributeToRealClone (caex::InternalElement clone, caex::At
 			clone.^attribute.add(newAttribute)
 		}
 		execute {
-			val userInput = userInteractor.confirmationDialogBuilder.message("Ist aktuelles Verhalten wartbar?").startInteraction		
+			val userInput = userInteractor.confirmationDialogBuilder.message("Ist das aktuelle Verhalten (clone: " + clone.name + ", attribute: " + att.name + ") wartbar?").startInteraction		
 			if(userInput) {
 				createCorrespondenceForMaintainable(clone, newAttribute)
 			}

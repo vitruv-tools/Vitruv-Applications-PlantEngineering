@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<caex:CAEXFile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:caex="http://www.dke.de/CAEX/300" fileName="mechanicalPlantModelFlexMan.aml">
+  <instanceHierarchy name="IAFDemonstrationPlant">
+    <internalElement iD="3d7d5923-f2b7-448c-a4bb-4d2603fe25b1" name="Otto-von-Guericke University Magdeburg">
+      <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Building10">
+        <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Room445">
+          <systemUnitClass xsi:type="caex:InternalElement" iD="48b592dd-1900-400a-b0ee-e828c836b0de" name="FlexibleManufacturingSystem">
+            <internalElement name="turntable0"/>
+            <internalElement name="turntable7"/>
+            <internalElement name="turntable6"/>
+            <internalElement name="turntable5"/>
+            <internalElement iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer6"/>
+            <internalElement iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer8"/>
+            <internalElement iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer9"/>
+            <internalElement iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer5"/>
+            <internalElement iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer4"/>
+            <internalElement name="machine2"/>
+            <internalElement name="machine1"/>
+            <internalElement name="machine3"/>
+            <internalElement name="controlcabinet"/>
+            <internalElement name="controlcabinet2"/>
+            <systemUnitClass xsi:type="caex:InternalElement" name="turntable4"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer0"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="135acc50-01c9-462c-8cb9-4b210e8f8b30" name="conveyer2"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="6c538c91-04d8-40c7-9f04-a9d15f32edbf" name="turntable2"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="ce8deb7c-e26c-43c6-a3f4-4eb321f60f1f" name="conveyer1"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="9c4fca69-a3e8-418b-9cd1-49cfbf6ee25c" name="turntable1"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="954aa368-518d-4103-b819-dd7db2c6d01e" name="turntable3"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="ad258e93-f513-47ee-883a-2f4089f24597" name="conveyer3"/>
+          </systemUnitClass>
+        </systemUnitClass>
+      </systemUnitClass>
+    </internalElement>
+  </instanceHierarchy>
+  <interfaceClassLib name="AutomationMLInterfaceClassLib">
+    <interfaceClass name="AutomationMLBaseInterface">
+      <interfaceClass name="Order" refBaseClassPath="AutomationMLBaseInterface">
+        <attribute name="Direction" attributeDataType="xs:string" refAttributeType=""/>
+      </interfaceClass>
+      <interfaceClass name="PortConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass name="InterlockingConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass iD="" name="PPRConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass name="ExternalDataConnector" refBaseClassPath="AutomationMLBaseInterface">
+        <attribute name="refURI" attributeDataType="xs:anyURI"/>
+        <interfaceClass name="COLLADAInterface" refBaseClassPath="ExternalDataConnector"/>
+        <interfaceClass name="PLCopenXMLInterface" refBaseClassPath="ExternalDataConnector"/>
+      </interfaceClass>
+      <interfaceClass name="Communication" refBaseClassPath="AutomationMLBaseInterface">
+        <interfaceClass name="SignalInterface" refBaseClassPath="Communication"/>
+      </interfaceClass>
+    </interfaceClass>
+  </interfaceClassLib>
+  <interfaceClassLib name="IAF_ModelInterfaceClassLib">
+    <interfaceClass name="Communication" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+      <interfaceClass name="SignalInterface" refBaseClassPath="IAF_ModelInterfaceClassLib/Communication"/>
+    </interfaceClass>
+    <interfaceClass name="power_connection_plug" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface"/>
+    <interfaceClass name="gearing" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="screwing" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="clamping" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="storage" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="power_connection_socket" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface"/>
+  </interfaceClassLib>
+  <roleClassLib>
+    <roleClass name="motor" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+    <roleClass name="sensor" refBaseClassPath="AutomationMLCSRoleClassLib/ControlEquipment/Sensor"/>
+    <roleClass name="line" refBaseClassPath="AutomationMLExtendedRoleClassLib/Conveyor/BeltConveyor"/>
+    <roleClass name="frame" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+    <roleClass name="lower_frame_turntable" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+    <roleClass name="upper_frame_turntable" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+    <roleClass name="stator" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+    <roleClass name="processing_tools" refBaseClassPath="AutomationMLDMIRoleClassLib/DiscManufacturingEquipment/Tool"/>
+    <roleClass name="tool_holder" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+  </roleClassLib>
+  <roleClassLib name="AutomationMLBaseRoleClassLib">
+    <roleClass name="AutomationMLBaseRole">
+      <roleClass name="Structure" refBaseClassPath="AutomationMLBaseRole">
+        <roleClass name="ResourceStructure" refBaseClassPath="Structure"/>
+      </roleClass>
+      <roleClass name="Resource" refBaseClassPath="AutomationMLBaseRole"/>
+    </roleClass>
+  </roleClassLib>
+  <roleClassLib name="AutomationMLExtendedRoleClassLib">
+    <roleClass name="Conveyor" refBaseClassPath="AutomationMLDMIRoleClassLib/DiscManufacturingEquipment/Transport">
+      <roleClass name="BeltConveyor" refBaseClassPath="Conveyor"/>
+    </roleClass>
+    <roleClass name="Unit" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure/ResourceStructure"/>
+    <roleClass name="ControlCabinet" refBaseClassPath="AutomationMLCSRoleClassLib/ControlEquipment"/>
+  </roleClassLib>
+  <roleClassLib name="AutomationMLCSRoleClassLib">
+    <roleClass name="ControlEquipment" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Resource">
+      <roleClass name="Sensor" refBaseClassPath="ControlEquipment"/>
+    </roleClass>
+  </roleClassLib>
+  <roleClassLib name="AutomationMLDMIRoleClassLib">
+    <roleClass name="DiscManufacturingEquipment" refBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Resource">
+      <roleClass name="Transport" refBaseClassPath="DiscManufacturingEquipment"/>
+      <roleClass name="Tool" refBaseClassPath="DiscManufacturingEquipment"/>
+    </roleClass>
+  </roleClassLib>
+  <systemUnitClassLib name="IAF_ModelSystemUnitClassLib">
+    <systemUnitClass name="parts">
+      <systemUnitClass name="motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="connections" value="24" unit="V"/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="weight" value="140" unit="g"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </systemUnitClass>
+      <systemUnitClass name="sensor">
+        <attribute name="sensitivity" value="0.7" attributeDataType="xs:decimal" unit="mT"/>
+        <attribute name="circuit_time" value="1" attributeDataType="xs:integer" unit="ms"/>
+        <attribute name="port" value="30" unit="V"/>
+      </systemUnitClass>
+      <systemUnitClass name="limit_switch" refBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor">
+        <attribute name="geometry" value="30x5x20" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="weight" value="46" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass name="inductive_sensor" refBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor">
+        <attribute name="weight" value="54" unit="g"/>
+        <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+        <attribute name="geometry" value="15x10x10" unit="mm"/>
+        <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+      </systemUnitClass>
+      <systemUnitClass name="line_conveyor">
+        <attribute name="geometry" value="160x20x20" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="minimum bending radius" value="15" unit="mm"/>
+      </systemUnitClass>
+      <systemUnitClass name="frame">
+        <attribute name="geometry" value="120x90x70" unit="mm"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+        <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+        <attribute name="weight" value="500" unit="g"/>
+        <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass name="lower_frame_turntable">
+        <attribute name="geometry" value="90x70x30" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="stiffness" value="1300" unit="N/mm²"/>
+        <attribute name="weight" value="300" unit="g"/>
+        <attribute name="payload" value="5000" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass name="upper_frame_turntable">
+        <attribute name="geometry" value="120x90x38" unit=""/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="550"/>
+        <attribute name="payload" value="3000"/>
+        <attribute name="stiffness" value="1300"/>
+      </systemUnitClass>
+      <systemUnitClass name="stator">
+        <attribute name="geometry" unit="62x62x242"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" unit="1000"/>
+        <attribute name="stiffness" value="1300"/>
+      </systemUnitClass>
+      <systemUnitClass name="processing_tool">
+        <attribute name="tool life" value="50"/>
+        <attribute name="geometry" value="15x40"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="20"/>
+        <attribute name="tool type" value="drill"/>
+        <attribute name="durometer" value="D70"/>
+        <attribute name="rotational speed" value="1500"/>
+      </systemUnitClass>
+      <systemUnitClass name="tool_holder">
+        <attribute name="material" value="plastics"/>
+        <attribute name="geometry" value="50x4"/>
+        <attribute name="weight" value="40"/>
+        <attribute name="tool mount type" value="bolting" refAttributeType=""/>
+        <attribute iD="" name="tool count" value="3"/>
+        <attribute name="tool change time" value="5"/>
+      </systemUnitClass>
+      <systemUnitClass name="rotating_assembly">
+        <attribute name="payload" value="4500"/>
+        <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+        <attribute name="material" value="plastics"/>
+      </systemUnitClass>
+      <systemUnitClass iD="" name="tool_holder_bracket">
+        <attribute name="stiffness" value="1300"/>
+        <attribute name="payload" value="1000"/>
+        <attribute name="geometry" value="60x30x60"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="30"/>
+      </systemUnitClass>
+      <systemUnitClass name="line_turntable">
+        <attribute name="geometry" value="160x20x20"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="250"/>
+        <attribute name="payload" value="15"/>
+        <attribute name="minimum bending radius" value="15"/>
+      </systemUnitClass>
+    </systemUnitClass>
+    <systemUnitClass name="conveyer">
+      <systemUnitClass xsi:type="caex:InternalElement" iD="65cb8b7e-4ba4-4a34-a490-1bb4214e9770" name="frame_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/frame">
+        <attribute name="geometry" value="120x90x70" unit="mm"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string"/>
+        <attribute name="stiffness" value="1300" attributeDataType="xs:integer" unit="N/mm²"/>
+        <attribute name="weight" value="500" unit="g"/>
+        <attribute name="payload" value="5000" attributeDataType="xs:integer" unit="g"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="52dfaa75-066c-4bd9-a110-02ff74df2531" name="line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_conveyer">
+        <attribute name="geometry" value="160x20x20" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="250" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="payload" value="1000" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="minimum bending radius" value="15" unit="mm"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="df015d7e-d605-4bdc-a970-b7fb40936d3f" name="inductive_sensor_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+        <attribute name="weight" value="54" unit="g"/>
+        <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+        <attribute name="geometry" value="15x10x10" unit="mm"/>
+        <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+      </systemUnitClass>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="33bb6c06-7c39-42dc-8c6a-b1f3ad8d421f" name="motor_line_conveyor" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="connections" value="24" unit="V"/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="weight" value="140" unit="g"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </systemUnitClass>
+    </systemUnitClass>
+    <systemUnitClass name="turntable">
+      <internalElement name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+        <attribute name="weight" value="54" unit="g"/>
+        <attribute name="material" value="stainless steel" attributeDataType="xs:string"/>
+        <attribute name="geometry" value="15x10x10" unit="mm"/>
+        <attribute name="range" value="70" attributeDataType="xs:integer" unit="mm"/>
+      </internalElement>
+      <internalElement name="line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/line_turntable">
+        <attribute name="geometry" value="160x20x20"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="250"/>
+        <attribute name="payload" value="15"/>
+        <attribute name="minimum bending radius" value="15"/>
+      </internalElement>
+      <internalElement name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly">
+        <attribute name="payload" value="4500"/>
+        <attribute name="weight" value="100" attributeDataType="xs:integer" unit="g"/>
+        <attribute name="geometry" value="70x4" attributeDataType="xs:string" unit="mm"/>
+        <attribute name="material" value="plastics"/>
+      </internalElement>
+      <internalElement name="upper_frame_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/upper_frame_turntable">
+        <attribute name="geometry" value="120x90x38" unit=""/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="550"/>
+        <attribute name="payload" value="3000"/>
+        <attribute name="stiffness" value="1300"/>
+      </internalElement>
+      <internalElement name="lower_frame_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/lower_frame_turntable">
+        <attribute name="geometry" value="90x70x30" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="stiffness" value="1300" unit="N/mm²"/>
+        <attribute name="weight" value="300" unit="g"/>
+        <attribute name="payload" value="5000" unit="g"/>
+      </internalElement>
+      <internalElement name="limit_switch_clockwise" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
+        <attribute name="geometry" value="30x5x20" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="weight" value="46" unit="g"/>
+      </internalElement>
+      <internalElement name="limit_switch_counterclockwise" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
+        <attribute name="geometry" value="30x5x20" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="weight" value="46" unit="g"/>
+      </internalElement>
+      <internalElement name="motor_line_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="connections" value="24" unit="V"/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="weight" value="140" unit="g"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </internalElement>
+      <internalElement name="motor_rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="connections" value="24" unit="V"/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="weight" value="140" unit="g"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </internalElement>
+    </systemUnitClass>
+    <systemUnitClass name="machine">
+      <internalElement name="tool_holder_bracket" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/tool_holder_bracket">
+        <attribute name="stiffness" value="1300"/>
+        <attribute name="payload" value="1000"/>
+        <attribute name="geometry" value="60x30x60"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="30"/>
+      </internalElement>
+      <internalElement name="tool_holder" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/tool_holder">
+        <attribute name="material" value="plastics"/>
+        <attribute name="geometry" value="50x4"/>
+        <attribute name="weight" value="40"/>
+        <attribute name="tool mount type" value="bolting" refAttributeType=""/>
+        <attribute iD="" name="tool count" value="3"/>
+        <attribute name="tool change time" value="5"/>
+      </internalElement>
+      <internalElement name="processing_tool1" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/processing_tool">
+        <attribute name="tool life" value="50"/>
+        <attribute name="geometry" value="15x40"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="20"/>
+        <attribute name="tool type" value="drill"/>
+        <attribute name="durometer" value="D70"/>
+        <attribute name="rotational speed" value="1500"/>
+      </internalElement>
+      <internalElement name="processing_tool2" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/processing_tool">
+        <attribute name="tool life" value="50"/>
+        <attribute name="geometry" value="15x40"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="20"/>
+        <attribute name="tool type" value="drill"/>
+        <attribute name="durometer" value="D70"/>
+        <attribute name="rotational speed" value="1500"/>
+      </internalElement>
+      <internalElement name="processing_tool3" refBaseClassPath="" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/processing_tool">
+        <attribute name="tool life" value="50"/>
+        <attribute name="geometry" value="15x40"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" value="20"/>
+        <attribute name="tool type" value="drill"/>
+        <attribute name="durometer" value="D70"/>
+        <attribute name="rotational speed" value="1500"/>
+      </internalElement>
+      <internalElement name="stator_machine" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/stator">
+        <attribute name="geometry" unit="62x62x242"/>
+        <attribute name="material" value="plastics"/>
+        <attribute name="weight" unit="1000"/>
+        <attribute name="stiffness" value="1300"/>
+      </internalElement>
+      <internalElement name="limit_switch_height_adjustment_above" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
+        <attribute name="geometry" value="30x5x20" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="weight" value="46" unit="g"/>
+      </internalElement>
+      <internalElement name="limit_switch_height_adjustment_below" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
+        <attribute name="geometry" value="30x5x20" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="weight" value="46" unit="g"/>
+      </internalElement>
+      <internalElement name="limit_switch_tool_changing" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/limit_switch">
+        <attribute name="geometry" value="30x5x20" unit="mm"/>
+        <attribute name="material" value="plastics" unit=""/>
+        <attribute name="weight" value="46" unit="g"/>
+      </internalElement>
+      <internalElement name="motor_height_adjustment" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="connections" value="24" unit="V"/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="weight" value="140" unit="g"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </internalElement>
+      <internalElement name="motor_tool_changing" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="connections" value="24" unit="V"/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="weight" value="140" unit="g"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </internalElement>
+      <internalElement name="motor_processing_tool" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/motor">
+        <attribute name="geometry" value="30x9x14" attributeDataType="xs:string"/>
+        <attribute name="material" value="plastics" attributeDataType="xs:string" unit=""/>
+        <attribute name="connections" value="24" unit="V"/>
+        <attribute name="power" value="3" attributeDataType="xs:integer" unit="W"/>
+        <attribute name="weight" value="140" unit="g"/>
+        <attribute name="rotational_speed" value="340" attributeDataType="xs:integer" unit="rpm"/>
+      </internalElement>
+    </systemUnitClass>
+  </systemUnitClassLib>
+</caex:CAEXFile>

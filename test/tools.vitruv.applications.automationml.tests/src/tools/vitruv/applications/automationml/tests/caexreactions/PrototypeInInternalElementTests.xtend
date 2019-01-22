@@ -97,7 +97,7 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 		assertEquals(null, CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).refBaseSystemUnitPath)
 	}
 	
-	@Test
+	//@Test
 	def addPrototypeToInternalElementWithColladaCopy() {
 		createBasicModel(false)
 		
@@ -122,7 +122,7 @@ class PrototypeInInternalElementTests extends AbstractCAEXReactionsTest {
 		assertEquals("refUri", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).externalInterface.get(0).attribute.get(0).name)
 	}
 	
-	@Test
+	//@Test
 	def addPrototypeToInternalElementWithPLCopenCopy() {
 		createBasicModel(false)
 		

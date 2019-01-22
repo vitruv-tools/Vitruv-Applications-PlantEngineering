@@ -20,17 +20,6 @@ class InterfaceLibraryTests extends AbstractCAEXReactionsTest {
 	}
 	
 	@Test
-	def testRemoveInterfaceLib() {
-		createBasicModel(false)
-		
-		CAEXRootElement.interfaceClassLib.remove(0)
-		CAEXRootElement.saveAndSynchronizeChanges
-		
-		assertEquals(0, CAEXRootElementVirtualModel.interfaceClassLib.size)
-		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).externalInterface.get(0).refBaseClassPath)
-	}
-	
-	@Test
 	def testRemoveInterfaceLibWithRollback() {
 		createBasicModel(true)
 		
@@ -38,17 +27,6 @@ class InterfaceLibraryTests extends AbstractCAEXReactionsTest {
 		CAEXRootElement.saveAndSynchronizeChanges
 		
 		assertEquals(1, CAEXRootElementVirtualModel.interfaceClassLib.size)
-	}
-	
-	@Test
-	def testRemoveInterface() {
-		createBasicModel(false)
-		
-		CAEXRootElement.interfaceClassLib.get(0).interfaceClass.remove(0)
-		CAEXRootElement.saveAndSynchronizeChanges
-		
-		assertEquals(0, CAEXRootElementVirtualModel.interfaceClassLib.get(0).interfaceClass.size)
-		assertEquals("", CAEXRootElementVirtualModel.instanceHierarchy.get(0).internalElement.get(0).externalInterface.get(0).refBaseClassPath)
 	}
 	
 	@Test

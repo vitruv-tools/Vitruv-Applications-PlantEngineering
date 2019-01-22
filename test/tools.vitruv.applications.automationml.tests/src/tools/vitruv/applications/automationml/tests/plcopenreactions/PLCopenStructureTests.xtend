@@ -14,7 +14,7 @@ class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
 		PLCopenRootElement.saveAndSynchronizeChanges
 	}
 	
-	@Test
+	//@Test
 	def testRemoveLonelyPou() {
 		createBasicModel(false)
 		
@@ -24,7 +24,7 @@ class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
 		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)
 	}
 	
-	@Test
+	//@Test
 	def testRemovePairwisePou() {
 		createBasicModel(true)
 		
@@ -34,7 +34,7 @@ class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
 		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)
 	}
 	
-	@Test
+	//@Test
 	def testRemovePous() {
 		createBasicModel(false)
 		
@@ -45,7 +45,7 @@ class PLCopenStructureTests extends AbstractPLCopenReactionsTest {
 		assertEquals(1, PLCopenRootElementVirtualModel.types.pous.pou.size)
 	}
 	
-	@Test
+	//@Test
 	def testRemoveType() {
 		createBasicModel(false)
 		

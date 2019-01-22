@@ -78,7 +78,7 @@ reaction ChangeSystemClassInInternalElement {
 		}
 		
 		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
-		val shouldValuesCloned = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
+		val shouldValuesCloned = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement " + affectedEObject.name + " geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
 		if(shouldValuesCloned) {
 			copyPLCopenValuesFromPrototypeToClone(affectedEObject, systemUnitClass, caexFile)
 			copyColladaValuesFromPrototypeToClone(affectedEObject, systemUnitClass, caexFile)

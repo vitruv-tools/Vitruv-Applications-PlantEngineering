@@ -48,7 +48,7 @@ reaction PrototypInsertedInLibrary {
 		choices.add("always")
 		choices.add("never")
 		choices.add("depends on situation")
-		val userInput = userInteractor.singleSelectionDialogBuilder.message("Sollen Klone dieses Prototypen immer angepasst werden?").choices(choices).startInteraction
+		val userInput = userInteractor.singleSelectionDialogBuilder.message("Sollen Klone dieses Prototypen (" + newValue.name + ") immer angepasst werden?").choices(choices).startInteraction
 		
 		if (userInput == 0) {
 			addTagBetweenClassAndLib(newValue, affectedEObject, PrototypTags.ALWAYS)
@@ -67,7 +67,7 @@ reaction PrototypInsertedInClass {
 		choices.add("always")
 		choices.add("never")
 		choices.add("depends on situation")
-		val userInput = userInteractor.singleSelectionDialogBuilder.message("Sollen Klone dieses Prototypen immer angepasst werden?").choices(choices).startInteraction
+		val userInput = userInteractor.singleSelectionDialogBuilder.message("Sollen Klone dieses Prototypen (" + newValue.name + ") immer angepasst werden?").choices(choices).startInteraction
 		
 		if (userInput == 0) {
 			addTagBetweenClassAndLib(newValue, lib, PrototypTags.ALWAYS)
@@ -104,7 +104,7 @@ routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribut
 				choices.add("material")
 				choices.add("technical description")
 				choices.add("norm, law")
-				val userInput = userInteractor.singleSelectionDialogBuilder.message("Von welchem Typ ist diese Eigenschaft?").choices(choices).startInteraction
+				val userInput = userInteractor.singleSelectionDialogBuilder.message("Von welchem Typ ist diese Eigenschaft ( " + property.name + ")?").choices(choices).startInteraction
 				
 				switch(userInput) {
 					case 0:
@@ -138,7 +138,7 @@ routine askUserToCopyNewProperty (caex::Attribute property, caex::InternalElemen
 			if(prototype.isPresent) {
 				copyProperty(property, clone)
 			} else {
-				val userinput = userInteractor.confirmationDialogBuilder.message("Soll die Eigenschaft auf den Klon übertragen werden?").startInteraction
+				val userinput = userInteractor.confirmationDialogBuilder.message("Soll die Eigenschaft (" + property.name + ") auf den Klon (" + clone.name + ") übertragen werden?").startInteraction
 				if(userinput) {
 					copyProperty(property, clone)
 				}
@@ -188,7 +188,7 @@ routine askUserToRemoveClone (caex::InternalElement clone) {
 	action {
 		execute {
 			if(!prototype.isPresent) {
-				val userinput = userInteractor.confirmationDialogBuilder.message("Soll der aktuelle Klon gelöscht werden?").startInteraction
+				val userinput = userInteractor.confirmationDialogBuilder.message("Soll der aktuelle Klon (" + clone.name + ") gelöscht werden?").startInteraction
 				if(userinput) {
 					removeClone(clone)
 				} else {
