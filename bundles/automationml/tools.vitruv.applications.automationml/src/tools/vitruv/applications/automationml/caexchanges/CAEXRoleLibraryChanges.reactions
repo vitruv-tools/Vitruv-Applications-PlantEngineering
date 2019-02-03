@@ -1,9 +1,9 @@
 import org.eclipse.xtext.EcoreUtil2
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import tools.vitruv.applications.automationml.utils.aml.AMLBasicStrings
-import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
 import caex.caex30.caex.RoleClass
 import caex.caex30.caex.InternalElement
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.RoleClassUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -14,11 +14,16 @@ reactions: caexRoleLibraryChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
+//Sometimes in this reactions, a change will be rejected. This happens due to the fact, that standard interfaces, which came along with AML, are not allowed to change
+
+/**
+ * reaction to remove a role class library
+ */
 reaction RemoveRoleClassLibrary {
 	after element caex::RoleClassLib removed from caex::CAEXFile[roleClassLib]
 	call {
 		if(AMLBasicStrings.automationMLRoleClassLibName.equals(oldValue.name)) {
-			//TODO entspricht Zurückrollen der Änderung
+			//TODO reject change
 			affectedEObject.roleClassLib.add(oldValue)
 			return
 		}
@@ -30,12 +35,15 @@ reaction RemoveRoleClassLibrary {
 	}
 }
 
+/**
+ * reaction to remove a role class
+ */
 reaction RemoveRoleClass {
 	after element caex::RoleClass removed from caex::RoleClass[roleClass]
 	call {
 		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue.name)) 
 		{
-			//TODO Änderung zurückrollen
+			//TODO reject change
 			affectedEObject.roleClass.add(oldValue)
 			return
 		}
@@ -49,11 +57,14 @@ reaction RemoveRoleClass {
 	}
 }
 
+/**
+ * reaction to remove a role class
+ */
 reaction RemoveRoleClassFromLib {
 	after element caex::RoleClass removed from caex::RoleClassLib[roleClass]
 	call {
 		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue.name)) {
-			//TODO Änderung zurückrollen
+			//TODO reject change
 			affectedEObject.roleClass.add(oldValue)
 			return
 		}
@@ -67,32 +78,38 @@ reaction RemoveRoleClassFromLib {
 	}
 }
 
+/**
+ * reaction to change the name of a role class
+ */
 reaction ChangeRoleName {
 	after attribute replaced at caex::RoleClass[name]
 	call {		
 		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue)) 
 		{
-			//TODO Änderung zurückrollen
+			//TODO reject change
 			affectedEObject.name = oldValue
 			return
 		}
 		
-		val ownPath = CAEXStringResolver.getCompletePath(affectedEObject)
+		val ownPath = RoleClassUtils.getCompletePathOfRoleClass(affectedEObject)
 		changeRefBaseClassPathOfInternalElements(affectedEObject, ownPath)
 		val roleClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, RoleClass)
 		
 		for(RoleClass currClass : roleClasses) {
-			val currPath = CAEXStringResolver.getCompletePath(currClass)
+			val currPath = RoleClassUtils.getCompletePathOfRoleClass(currClass)
 			changeRefBaseClassPathOfInternalElements(currClass, currPath)
 		}
 	}
 }
 
+/**
+ * reaction to change the name of a role class library
+ */
 reaction ChangeRoleLibName {
 	after attribute replaced at caex::RoleClassLib[name]
 	call {		
 		if(AMLBasicStrings.automationMLRoleClassLibName.equals(oldValue)) {
-			//TODO Änderung zurückrollen
+			//TODO reject change
 			affectedEObject.name = oldValue
 			return
 		}
@@ -100,14 +117,15 @@ reaction ChangeRoleLibName {
 		val roleClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, RoleClass)
 		
 		for(RoleClass currClass : roleClasses) {
-			val currPath = CAEXStringResolver.getCompletePath(currClass)
+			val currPath = RoleClassUtils.getCompletePathOfRoleClass(currClass)
 			changeRefBaseClassPathOfInternalElements(currClass, currPath)
 		}
 	}
 }
 
-// *****
-
+/**
+ * routine to adapt the role description of an InternalElement, if the role was changed or removed
+ */
 routine changeRefBaseClassPathOfInternalElements(caex::RoleClass roleClass, String newPath) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to roleClass tagged with AMLTags.CLONE_ROLE

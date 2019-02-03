@@ -1,14 +1,15 @@
 import org.eclipse.xtext.EcoreUtil2
-import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
-import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
 import caex.caex30.caex.CAEXFile
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.ExternalInterfaceType
 import tools.vitruv.applications.automationml.utils.stringreferences.caex.SystemUnitClassUtils
 import caex.caex30.caex.InternalElement
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.RoleClassUtils
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.InterfaceClassUtils
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceTypeUtils
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceContainmentUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -19,7 +20,9 @@ reactions: caexInternalElementChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
-// ***** Rollenangabe in Internem Element ändern
+/**
+ * reaction to change the role description in an InternalElement
+ */
 
 reaction ChangeRoleClassInInternalElement {
 	after attribute replaced at caex::RoleRequirements[refBaseRoleClassPath]
@@ -35,15 +38,14 @@ reaction ChangeRoleClassInInternalElement {
 		}
 		
 		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
-		val roleClass = CAEXStringResolver.resolveRolePath(newValue, caexFile)
+		val roleClass = RoleClassUtils.getRoleClassByPath(newValue, caexFile)
 		
 		if(roleClass === null) {
-			val userInput = userInteractor.confirmationDialogBuilder.message("Rolle existiert nicht. Soll eine erzeugt werden? Andernfalls wird die Änderung zurückgerollt").startInteraction
-			if(userInput) {
+			val shouldRoleCreated = userInteractor.confirmationDialogBuilder.message("Role is not existing. Should a new one be created Otherwise the change will be rejected").startInteraction
+			if(shouldRoleCreated) {
 				createRoleClassInTree(newValue, caexFile, container)
 			} else {
-				//TODO Änderung wird zurückgerollt
-				// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
+				//TODO reject change
 				affectedEObject.refBaseRoleClassPath = oldValue
 				return
 			}
@@ -54,8 +56,9 @@ reaction ChangeRoleClassInInternalElement {
 	}
 }
 
-// ***** Klassenangabe in Internem Element ändern
-
+/**
+ * reaction for changing the class of an InternalElement 
+ */
 reaction ChangeSystemClassInInternalElement {
 	after attribute replaced at caex::InternalElement[refBaseSystemUnitPath]
 	call {
@@ -70,15 +73,14 @@ reaction ChangeSystemClassInInternalElement {
 		val systemUnitClass = SystemUnitClassUtils.getSystemClassByPath(newValue, caexFile)
 		
 		if(systemUnitClass === null) {
-			userInteractor.notificationDialogBuilder.message("Klasse existiert nicht. Änderung wird zurückgerollt").startInteraction
-			//TODO Änderung wird zurückgerollt
-			// Sprachstatement dazu nicht vorhanden, deswegen diese Notation
+			userInteractor.notificationDialogBuilder.message("Class is not existing. Change will be rejected").startInteraction
+			//TODO reject change
 			affectedEObject.refBaseSystemUnitPath = oldValue
 			return
 		}
 		
 		removeCorrespondenceBetweenClassAndInstance(affectedEObject)
-		val shouldValuesCloned = userInteractor.confirmationDialogBuilder.message("Sollen die Werte der Klasse in das InternalElement " + affectedEObject.name + " geklont werden? (Achtung: nur ExternalInterface wird geklont!)").startInteraction
+		val shouldValuesCloned = userInteractor.confirmationDialogBuilder.message("Should interfaces of this class " + affectedEObject.name + " should be copied?").startInteraction
 		if(shouldValuesCloned) {
 			copyPLCopenValuesFromPrototypeToClone(affectedEObject, systemUnitClass, caexFile)
 			copyColladaValuesFromPrototypeToClone(affectedEObject, systemUnitClass, caexFile)
@@ -87,8 +89,9 @@ reaction ChangeSystemClassInInternalElement {
 	}
 }
 
-// ***** ExternalInterface von Internem Element entfernen (hinzufügen nicht notwendig!)
-
+/**
+ * reaction to remove an ExternalInterface from an InternalElement
+ */
 reaction RemoveExternalInterfaceFromInternalElement {
 	after element removed from caex::InternalElement[externalInterface]
 	with {
@@ -98,18 +101,19 @@ reaction RemoveExternalInterfaceFromInternalElement {
 		logger.debug("Reaction RemoveExternalInterfaceFromInternalElement")
 				
 		val caexFile = EcoreUtil2.getContainerOfType(oldValue, CAEXFile)
-		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath ,caexFile)
+		val externalInterfaceType = InterfaceClassUtils.getInterfaceClassByPath(oldValue.refBaseClassPath ,caexFile)
 		
-		if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType, caexFile)) {
+		if(InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterfaceType, caexFile)) {
 			removeCorrespondenceBetweenInterfaceInInternalAndPLCopen(oldValue as ExternalInterface)
-		} else if (CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType, caexFile)) {
+		} else if (InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterfaceType, caexFile)) {
 			removeCorrespondenceBetweenInterfaceInInternalAndCollada(oldValue as ExternalInterface)
 		}
 	}
 }
 
-// ***** Routine, um Korrespondenz aufzulösen beim Entfernen einer Klassenangabe
-
+/**
+ * routine to remove the correspondence between an InternalElement and its class
+ */
 routine removeCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement) {
 	match {
 		val systemUnitClass = retrieve caex::SystemUnitClass corresponding to internalElement tagged with AMLTags.PROTOTYPE_CLONE
@@ -119,20 +123,24 @@ routine removeCorrespondenceBetweenClassAndInstance(caex::InternalElement intern
 	}
 }
 
-// ***** Routine, um eine Klasse anzulegen bei Angabe eines toten Pfades
-
+/*
+ * routine to create a new role class on the rigth position in the tree
+ */
 routine createRoleClassInTree(String path, caex::CAEXFile caexFile, caex::InternalElement internalElement) {
 	action {
 		execute {
 			val splitIndex = path.lastIndexOf("/")
 			val pathToContainer = path.substring(0, splitIndex)
 			val nameOfClass = path.substring(splitIndex + 1)
-			val container = CAEXStringResolver.resolveRolePath(pathToContainer, caexFile)
+			val container = RoleClassUtils.getRoleClassByPath(pathToContainer, caexFile)
 			createRoleClass(nameOfClass, container, internalElement)
 		}
 	}
 }
 
+/**
+ * routine to create a new role class
+ */
 routine createRoleClass(String name, caex::RoleClass container, caex::InternalElement internalElement) {
 	match {
 		val oldRoleClass = retrieve caex::RoleClass corresponding to internalElement tagged with AMLTags.CLONE_ROLE
@@ -149,18 +157,22 @@ routine createRoleClass(String name, caex::RoleClass container, caex::InternalEl
 	}
 }
 
-// ***** Routinen, um Klone beim Hinzufügen einer Klassenangabe abzuändern
-
+/**
+ * routine to add a correpondence between an InternalElement and its class
+ */
 routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass) {
 	action {
 		add correspondence between systemUnitClass and internalElement tagged with AMLTags.PROTOTYPE_CLONE
 	}
 }
 
+/**
+ * routine to copy an ExternalInterface for connecting to a plcopen file to an InternalElement
+ */
 routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root) {
 	match {
 		check {
-			SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN, root)
+			InterfaceContainmentUtils.checkSystemClassForExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN, root)
 		}
 	}
 	action {
@@ -170,7 +182,7 @@ routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElem
 			newAttribute.value = CAEXUtils.getUriAttributeInPLCopenInterface(systemUnitClass).value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
-			val systemClassInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN, root)
+			val systemClassInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(systemUnitClass, ExternalInterfaceType.PLCOPEN, root)
 			newInterface.name = systemClassInterface.name
 			newInterface.^attribute.add(newAttribute)
 			newInterface.refBaseClassPath = systemClassInterface.refBaseClassPath
@@ -181,21 +193,23 @@ routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElem
 	}
 }
 
+/**
+ * routine to copy an ExternalInterface for connecting to a collada file to an InternalElement
+ */
 routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root) {
 	match {
 		check {
-			SystemUnitClassForInterfaceChecker.checkForExternalInterface(systemUnitClass, ExternalInterfaceType.COLLADA, root)
+			InterfaceContainmentUtils.checkSystemClassForExternalInterface(systemUnitClass, ExternalInterfaceType.COLLADA, root)
 		}
 	}
 	action {
 		val newAttribute = create caex::Attribute and initialize {
 			newAttribute.name = "refUri"
 			newAttribute.attributeDataType = "xs:anyURI"
-			//TODO Utils refactoring
 			newAttribute.value = CAEXUtils.getUriAttributeInColladaInterface(systemUnitClass).value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
-			val systemClassInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(systemUnitClass, ExternalInterfaceType.COLLADA, root)
+			val systemClassInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(systemUnitClass, ExternalInterfaceType.COLLADA, root)
 			newInterface.name = systemClassInterface.name
 			newInterface.^attribute.add(newAttribute)
 			newInterface.refBaseClassPath = systemClassInterface.refBaseClassPath
@@ -206,8 +220,9 @@ routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElem
 	}
 }
 
-// ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung oder Geometriebeschreibung zu entfernen
-
+/**
+ * routine to remove the correpondence between an ExternalInterface and a plcopen file
+ */
 routine removeCorrespondenceBetweenInterfaceInInternalAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
 		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU
@@ -217,6 +232,9 @@ routine removeCorrespondenceBetweenInterfaceInInternalAndPLCopen (caex::External
 	}
 }
 
+/**
+ * routine to remove the correspondence between an ExternalInterface and a collada file
+ */
 routine removeCorrespondenceBetweenInterfaceInInternalAndCollada (caex::ExternalInterface externalInterface){
 	match {
 		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with AMLTags.INTERFACE_SCENE
@@ -226,8 +244,9 @@ routine removeCorrespondenceBetweenInterfaceInInternalAndCollada (caex::External
 	}
 }
 
-// ***** Routinen für Rollen und Korrespondenze
-
+/**
+ * routine to remove the correpondence between an InternalElement and its role description
+ */
 routine removeCorrespondenceBetweenInternalElementAndRoleClass(caex::InternalElement elem) {
 	match {
 		val roleClass = retrieve caex::RoleClass corresponding to elem tagged with AMLTags.CLONE_ROLE
@@ -237,6 +256,9 @@ routine removeCorrespondenceBetweenInternalElementAndRoleClass(caex::InternalEle
 	}
 }
 
+/**
+ * routine to add a correspondence between an InternalElement and its role description
+ */
 routine addCorrespondenceBetweenInternalElementAndRoleClass(caex::InternalElement elem, caex::RoleClass role) {
 	action {
 		add correspondence between elem and role tagged with AMLTags.CLONE_ROLE

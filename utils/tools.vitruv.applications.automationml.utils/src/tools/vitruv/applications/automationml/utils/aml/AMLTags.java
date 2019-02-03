@@ -1,7 +1,10 @@
 package tools.vitruv.applications.automationml.utils.aml;
 
+/**
+ * class with strings, which can be used as Tags for the Correspondence-Model 
+ * @author A.Lang
+ */
 public class AMLTags {
-	//public static final String TAG = "aTag";	// Dummy-Tag
 	public static final String INTERFACE_SCENE = "TagForExternalInterfaceAndScene";				// Verknüpfung CAEX zu Collada
 	public static final String INTERFACE_POU = "TagForExternalInterfaceAndPou";					// Verknüpfung CAEX zu PLCopen
 	public static final String CLASS_INTERFACE = "TagForExternalInterfaceAndInterfaceClass";

@@ -4,31 +4,31 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import caex.caex30.caex.CAEXFile;
-import caex.caex30.caex.SystemUnitClass;
-import caex.caex30.caex.SystemUnitClassLib;
+import caex.caex30.caex.RoleClass;
+import caex.caex30.caex.RoleClassLib;
 
 /**
- * class with some methods to search for a SystemUnitClass in a caex file
+ * class with some methods to search for a RoleClass in a caex file
  * @author A.Lang
  */
-public class SystemUnitClassUtils {
+public class RoleClassUtils {
 	/**
-	 * method to search for a SystemUnitClass in a caex files
+	 * method to search for a RoleClass in a caex files
 	 */
-	public static SystemUnitClass getSystemClassByPath(String path, CAEXFile caexFile) {
+	public static RoleClass getRoleClassByPath(String path, CAEXFile caexFile) {
 		if(path == null || path.isEmpty() || caexFile == null) {
 			return null;
 		}
 		
 		String[] partsOfPath = path.split("/");
-		EList<SystemUnitClassLib> classLibs = caexFile.getSystemUnitClassLib();
-		SystemUnitClass lastClass = null;
-		EList<SystemUnitClass> currClasses = null;
-		EList<SystemUnitClass> nextClasses = null;
+		EList<RoleClassLib> classLibs = caexFile.getRoleClassLib();
+		RoleClass lastClass = null;
+		EList<RoleClass> currClasses = null;
+		EList<RoleClass> nextClasses = null;
 		
 		for(int k = 0; k < classLibs.size(); k++) {
 			if(classLibs.get(k).getName().equals(partsOfPath[0])) {
-				currClasses = classLibs.get(k).getSystemUnitClass();
+				currClasses = classLibs.get(k).getRoleClass();
 				break;
 			}
 		}
@@ -39,7 +39,7 @@ public class SystemUnitClassUtils {
 		for(int i = 1; i < partsOfPath.length; i++) {
 			for(int j = 0; j < currClasses.size(); j++) {
 				if(currClasses.get(j).getName().equals(partsOfPath[i])) {
-					nextClasses = currClasses.get(j).getSystemUnitClass();
+					nextClasses = currClasses.get(j).getRoleClass();
 					lastClass = currClasses.get(j);
 					break;
 				}
@@ -56,22 +56,22 @@ public class SystemUnitClassUtils {
 	}
 	
 	/**
-	 * method to resolve the complete path of a SystemUnitClass, given by its path
+	 * method to resolve the complete path of a RoleClass, given by its path
 	 */
-	public static String getCompletePathOfSystemUnitClass(String path, CAEXFile root) {
-		SystemUnitClass systemClass = getSystemClassByPath(path, root);
-		return getCompletePathOfSystemUnitClass(systemClass);
+	public static String getCompletePathOfRoleClass(String path, CAEXFile root) {
+		RoleClass systemClass = getRoleClassByPath(path, root);
+		return getCompletePathOfRoleClass(systemClass);
 	}
 	
 	/**
-	 * method to resolve the complete path of a SystemUnitClass
+	 * method to resolve the complete path of a RoleClass
 	 */
-	public static String getCompletePathOfSystemUnitClass(SystemUnitClass systemClass) {
-		if(systemClass == null) {
+	public static String getCompletePathOfRoleClass(RoleClass roleClass) {
+		if(roleClass == null) {
 			return "";
 		}
 		
-		SystemUnitClass currClass = systemClass;
+		RoleClass currClass = roleClass;
 		EObject helpingObject;
 		String[] currStringParts = new String[100];		//Anzahl utopisch
 		int currPart = 0;
@@ -80,14 +80,14 @@ public class SystemUnitClassUtils {
 				currStringParts[currPart] = currClass.getName();
 				currPart ++;
 				helpingObject = currClass.eContainer();
-				if(helpingObject instanceof SystemUnitClass) {
-					currClass = (SystemUnitClass) helpingObject;
+				if(helpingObject instanceof RoleClass) {
+					currClass = (RoleClass) helpingObject;
 				} else {
 					break;
 				}
 			}
 
-		String finalPath = ((SystemUnitClassLib)helpingObject).getName();
+		String finalPath = ((RoleClassLib)helpingObject).getName();
 		for(int i = currPart - 1; i >= 0; i--) {
 			finalPath = finalPath + "/" + currStringParts[i];
 		}

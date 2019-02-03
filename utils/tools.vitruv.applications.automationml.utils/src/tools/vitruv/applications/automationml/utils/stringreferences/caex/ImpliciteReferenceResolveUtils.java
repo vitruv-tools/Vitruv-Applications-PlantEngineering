@@ -1,4 +1,4 @@
-package tools.vitruv.applications.automationml.utils.caexresolver;
+package tools.vitruv.applications.automationml.utils.stringreferences.caex;
 
 import java.util.LinkedList;
 
@@ -13,8 +13,15 @@ import caex.caex30.caex.RoleClassLib;
 import caex.caex30.caex.SystemUnitClass;
 import caex.caex30.caex.SystemUnitClassLib;
 
-public class InterfaceResolver {	
-	// löst einen Pfad auf, und liefert dan zugehörigen Fehlertyp zurück 
+/**
+ * class with some methods to check if an implicite reference in caex is existing
+ * @author A.Lang
+ */
+public class ImpliciteReferenceResolveUtils {	
+	/**
+	 * method to check, if an implicite reference in caex is existing
+	 * @return an code, which shows success or an error code
+	 */
 	public static ErrorCode checkIfPathIsExisting(String path, CAEXFile caexFile) {
 		if(path == null || path.isEmpty() || caexFile == null) {
 			return ErrorCode.EMPTY_STRING_OR_FILE;
@@ -210,6 +217,9 @@ public class InterfaceResolver {
 		return null;
 	}
 	
+	/**
+	 * enum for error codes, for concept to deal with implicite references
+	 */
 	public static enum ErrorCode {
 		EMPTY_STRING_OR_FILE,
 		BREAK_RULE,

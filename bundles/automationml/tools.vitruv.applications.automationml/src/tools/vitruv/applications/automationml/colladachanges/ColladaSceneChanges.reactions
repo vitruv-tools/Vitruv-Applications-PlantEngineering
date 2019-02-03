@@ -12,8 +12,9 @@ reactions: colladaSceneChanges
 in reaction to changes in Collada
 execute actions in Collada
 
-// ***** Scene bzw. Verweis löschen
-
+/**
+ * reaction for a replaced scene
+ */
 reaction ReplaceScene {
 	after element collada::SceneType replaced at collada::COLLADAType[scene]
 	with {
@@ -22,11 +23,14 @@ reaction ReplaceScene {
 	call {
 		logger.debug("ReplaceScene")
 		
-		//TODO entspricht Zurückrollen der Änderung
+		//TODO reject change
 		affectedEObject.scene = oldValue
 	}
 }
 
+/**
+ * reaction for a replaced instance of a visual scene definition
+ */
 reaction ReplaceInstance {
 	after element collada::InstanceWithExtra replaced at collada::SceneType[instanceVisualScene]
 	with {
@@ -35,13 +39,14 @@ reaction ReplaceInstance {
 	call {
 		logger.debug("ReplaceInstance")
 		
-		//TODO entspricht Zurückrollen der Änderung
+		//TODO reject change
 		affectedEObject.instanceVisualScene = oldValue
 	}
 }
 
-// ***** Verweis ändern
-
+/**
+ * reaction for changing the reference to a visual scene definition
+ */
 reaction ChangeVisualInstance {
 	after attribute replaced at collada::InstanceWithExtra[url]
 	call {
@@ -51,12 +56,12 @@ reaction ChangeVisualInstance {
 		val visualScene = ColladaStringUtils.getVisualSceneByID(newValue, root)
 				
 		if(visualScene === null) {
-			val shouldVisualSceneCreated = userInteractor.confirmationDialogBuilder.message("ID existiert nicht. Soll neue visuelle Szene angelegt werden? Alternativ würde die Änderung zurückgerollt werden.").startInteraction
+			val shouldVisualSceneCreated = userInteractor.confirmationDialogBuilder.message("ID is not existing. Should a new visual scene description be created? Otherwise the change would be rejected.").startInteraction
 			if(shouldVisualSceneCreated) {
 				removeCorrespondenceBetweenInstanceAndVisualScene(affectedEObject)
 				addVisualSceneInTree(root, affectedEObject, newValue)
 			} else {
-				//TODO entspricht Zurückrollen der Änderung
+				//TODO reject change
 				affectedEObject.url = oldValue
 			}
 		} else {
@@ -66,6 +71,9 @@ reaction ChangeVisualInstance {
 	}
 }
 
+/**
+ * routine to remove the correspondence between a visual scene definition and its instance
+ */
 routine removeCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithExtra instance) {
 	match {
 		val visualScene = retrieve collada::VisualSceneType corresponding to instance tagged with AMLTags.SCENE_VISUAL
@@ -75,12 +83,18 @@ routine removeCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithE
 	}
 }
 
+/**
+ * routine to add a correspondence between a visual scene definition and its instance
+ */
 routine addCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithExtra instance, collada::VisualSceneType visualScene) {
 	action {
 		add correspondence between instance and visualScene tagged with AMLTags.SCENE_VISUAL
 	}
 }
 
+/**
+ * routine to add a visual scene definition in the collada file, if an implicit reference in an instance is not existing 
+ */
 routine addVisualSceneInTree(collada::COLLADAType root, collada::InstanceWithExtra instance, String id) {
 	action {
 		val geometryInstance = create collada::InstanceGeometryType and initialize {

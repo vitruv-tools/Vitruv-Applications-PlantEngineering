@@ -7,7 +7,14 @@ import org.khronos.collada.LibraryGeometriesType;
 import org.khronos.collada.LibraryVisualScenesType;
 import org.khronos.collada.VisualSceneType;
 
+/**
+ * class with some methods to deal with implicite references in collada files
+ * @author A.Lang
+ */
 public class ColladaStringUtils {
+	/**
+	 * method to search for a geometry definition in a collada file
+	 */
 	public static GeometryType getGeometryByID(String id, COLLADAType root) {
 		if(id == null || id.isEmpty() || root == null) {
 			return null;
@@ -28,6 +35,12 @@ public class ColladaStringUtils {
 		return null;
 	}
 	
+	/**
+	 * method to search for a VisualScene definition in a collada file
+	 * @param id
+	 * @param root
+	 * @return
+	 */
 	public static VisualSceneType getVisualSceneByID(String id, COLLADAType root) {
 		if(id == null || id.isEmpty() || root == null) {
 			return null;

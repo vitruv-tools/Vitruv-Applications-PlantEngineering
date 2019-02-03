@@ -15,8 +15,9 @@ reactions: caexAttributeValueChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
-// Regel 10 bis 21
-
+/**
+ * reaction for changing the value of an attribute in a prototype
+ */
 reaction ChangeAttributeInClone {
 	after attribute replaced at caex::Attribute[value]
 	with {
@@ -29,8 +30,9 @@ reaction ChangeAttributeInClone {
 	}
 }
 
-// Methode für Regeln 10 bis 21
-
+/**
+ * routine to check, if a mark for the prototype exists
+ */
 routine checkAdaptationForAllClones(caex::SystemUnitClass prototype, caex::Attribute property, String oldValue) {
 	match {
 		val clones = retrieve many caex::InternalElement corresponding to prototype tagged with AMLTags.PROTOTYPE_CLONE
@@ -48,6 +50,9 @@ routine checkAdaptationForAllClones(caex::SystemUnitClass prototype, caex::Attri
 	}
 }
 
+/**
+ * routine to check, if a specific should be adapted to the change of the attribute in the prototype
+ */
 routine checkAdaptationForClone(caex::InternalElement clone, caex::Attribute property, String oldValue) {
 	match {
 		val taggedWithDescriptive = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.DESCRIPTIVE
@@ -79,56 +84,46 @@ routine checkAdaptationForClone(caex::InternalElement clone, caex::Attribute pro
 			}
 			val hasChangedValue = !cloneProperty.value.equals(oldValue)
 			
-			
-			// Regel 11
 			if(isDescriptive && !hasChangedValue) {
 				copyValueToClone(cloneProperty, property)
 				return
 			}
 			
-			// Regel 12
 			if(isRule) {
 				copyValueToClone(cloneProperty, property)
 				return
 			}
 			
-			// Regel 13
 			if(isSafty) {
 				askUser(clone.name, cloneProperty, property)
 				return
 			}
 			
-			// Regel 15
 			if(isAbstract && isComposition) {
 				askUser(clone.name, cloneProperty, property)
 				return
 			}
 			
-			// Regel 17
 			if(isAbstract && isMaterialOrTech) {
 				copyValueToClone(cloneProperty, property)
 				return
 			}
 			
-			// Regel 18
 			if(!isAbstract && isMaterialOrTech && !hasChangedValue) {
 				askUser(clone.name, cloneProperty, property)
 				return
 			}
 			
-			// Regel 19, 20, 21
 			if(isBehaviour && isReal) {
 				checkAdaptationForBehaviourProperty(cloneProperty, property, hasChangedValue)
 				return
 			}
 			
-			// Regel 22
 			if(isBehaviour && !isReal && !hasChangedValue) {
 				copyValueToClone(cloneProperty, property)
 				return
 			}
 			
-			// Regel 23
 			if(isBehaviour && !isReal && hasChangedValue) {
 				askUser(clone.name, cloneProperty, property)
 				return
@@ -137,6 +132,9 @@ routine checkAdaptationForClone(caex::InternalElement clone, caex::Attribute pro
 	}
 }
 
+/**
+ * routine to check, if a specific clone should be adapted to the change of an attribute in the prototype, which is marked with "behaviour"
+ */
 routine checkAdaptationForBehaviourProperty(caex::Attribute cloneProperty, caex::Attribute prototypeProperty, Boolean hasCloneChanged) {
 	match {
 		val clone = retrieve optional caex::InternalElement corresponding to cloneProperty tagged with PropertyTags.MAINTAINABLE
@@ -145,10 +143,8 @@ routine checkAdaptationForBehaviourProperty(caex::Attribute cloneProperty, caex:
 		execute {
 			if(clone.isPresent) {
 				if(hasCloneChanged) {
-					// Regel 21
 					askUser(clone.get.name, cloneProperty, prototypeProperty)
 				} else {
-					// Regel 20
 					copyValueToClone(cloneProperty, prototypeProperty)
 				}
 			}
@@ -156,17 +152,23 @@ routine checkAdaptationForBehaviourProperty(caex::Attribute cloneProperty, caex:
 	}
 }
 
+/**
+ * routine to ask the user, if a specific clone should be adapted to the change of an attribute in the prototype
+ */
 routine askUser(String cloneName, caex::Attribute cloneProperty, caex::Attribute prototypeProperty) {
 	action {
 		execute {
-			val userInput = userInteractor.confirmationDialogBuilder.message("Soll dieser Klone (" + cloneName  + ") an die Änderung des Prototypen angepasst werden?").startInteraction
-			if(userInput) {
+			val shouldCloneAdapted = userInteractor.confirmationDialogBuilder.message("Should this clone (" + cloneName  + ") be adapted to the change of its prototype?").startInteraction
+			if(shouldCloneAdapted) {
 				copyValueToClone(cloneProperty, prototypeProperty)
 			}
 		}
 	}
 }
 
+/**
+ * routine to copy the new value of an attribtue to a specific clone
+ */
 routine copyValueToClone(caex::Attribute cloneProperty, caex::Attribute prototypeProperty) {
 	action {
 		update cloneProperty {

@@ -14,8 +14,9 @@ reactions: aggregatorToPlcopen
 in reaction to changes in AML
 execute actions in AML
 
-// ***** Routine, um PLCopen Dateien zu erzeugen
-
+/**
+ * routine to create a new plcopen file with its basic structure
+ */
 routine createPLCopenFile(aml::PLCopenContainer container) {
 	action {
 		val pouType = create plcopen::PouType1
@@ -36,8 +37,9 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 	}
 }
 
-// ***** Routine, um PLCopen Dateien zu löschen
-
+/**
+ * routine to delete plcopen file and set references to deleted file to an empty string
+ */
 routine deletePLCopenFile(aml::PLCopenContainer container) {
 	match {
 		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN

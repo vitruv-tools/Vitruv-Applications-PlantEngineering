@@ -14,8 +14,9 @@ reactions: aggregatorToCollada
 in reaction to changes in AML
 execute actions in AML
 
-// ***** Routine, um Collada Dateien zu erzeugen
-
+/**
+ * routine to create a new collada file with its basic structure
+ */
 routine createColladaFile(aml::ColladaContainer container) {
 	action {
 		val visualSceneInstance = create collada::InstanceWithExtra
@@ -33,8 +34,9 @@ routine createColladaFile(aml::ColladaContainer container) {
 	}
 }
 
-// ***** Routine, um Collada Dateien zu löschen
-
+/**
+ * routine to delete collada file and set references to deleted file to an empty string
+ */
 routine deleteColladaFile(aml::ColladaContainer container) {
 	match {
 		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA

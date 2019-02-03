@@ -10,8 +10,9 @@ reactions: caexToPlcopen
 in reaction to changes in CAEX
 execute actions in CAEX
 
-// ***** Hilfsroutinen, um auf nicht vorhandene Pfade reagieren zu können
-
+/**
+ * routine to create a new plcopen container in the aml-aggregator model
+ */
 routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
 	action {
 		val newContainer = create aml::PLCopenContainer and initialize {
@@ -25,6 +26,9 @@ routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, am
 	}
 }
 
+/**
+ * routine to create a new plcopen file and a plcopen model with basic structure
+ */
 routine createNewPLCopenFile(aml::PLCopenContainer container) {
 	action {
 		val pouType = create plcopen::PouType1
@@ -45,8 +49,9 @@ routine createNewPLCopenFile(aml::PLCopenContainer container) {
 	}
 }
 
-// ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung zu setzen bzw. zu entfernen
-
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a plcopen model, beginning with the corresponding container in the aggregator model
+ */
 routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
 	match {
 		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN
@@ -59,12 +64,18 @@ routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface ext
 	}
 }
 
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a plcopen model
+ */
 routine addCorrespondenceBetweenInterfaceAndPou(caex::ExternalInterface externalInterface, plcopen::PouType1 pou) {
 	action {
 		add correspondence between externalInterface and pou tagged with AMLTags.INTERFACE_POU
 	}
 }
 
+/**
+ * routine to remove the correspondence between an ExternalInterface and the root element of a plcopen model
+ */
 routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
 		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU

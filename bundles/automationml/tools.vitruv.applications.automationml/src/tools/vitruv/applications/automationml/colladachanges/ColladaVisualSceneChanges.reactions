@@ -15,8 +15,9 @@ reactions: colladaVisualSceneChanges
 in reaction to changes in Collada
 execute actions in Collada
 
-// ***** Lib bzw. Beschreibung löschen
-
+/**
+ * reaction for a removed library of visual scenes
+ */
 reaction RemoveVisualSceneLibrary {
 	after element collada::LibraryVisualScenesType removed from collada::COLLADAType[libraryVisualScenes]
 	call {
@@ -33,6 +34,9 @@ reaction RemoveVisualSceneLibrary {
 	}
 }
 
+/**
+ * reaction for a removed visual scene definition
+ */
 reaction RemoveVisualSceneType {
 	after element collada::VisualSceneType removed from collada::LibraryVisualScenesType[visualScene]
 	call {
@@ -46,6 +50,9 @@ reaction RemoveVisualSceneType {
 	}
 }
 
+/**
+ * reaction for a removed node, which describes a visual scene definition
+ */
 reaction RemoveNodeFromVisualScene {
 	after element collada::NodeType1 removed from collada::VisualSceneType[node]
 	call {
@@ -57,6 +64,9 @@ reaction RemoveNodeFromVisualScene {
 	}
 }
 
+/**
+ * reaction for a removed geometry instance in a node of a visual scene definition
+ */
 reaction RemoveGeometryInstanceFromNode {
 	after element collada::InstanceGeometryType removed from collada::NodeType1[instanceGeometry]
 	call {
@@ -66,8 +76,9 @@ reaction RemoveGeometryInstanceFromNode {
 	}
 }
 
-// ***** ID ändern
-
+/**
+ * reaction for changing the id of a visual scene definition
+ */
 reaction ChangeVisualSceneID {
 	after attribute replaced at collada::VisualSceneType[id]
 	call {
@@ -77,8 +88,9 @@ reaction ChangeVisualSceneID {
 	}
 }
 
-// ***** Verweis ändern
-
+/**
+ * reaction for changing the reference of a geometry instance to a geometry definition
+ */
 reaction ChangeGeometryInstance {
 	after attribute replaced at collada::InstanceGeometryType[url]
 	call {
@@ -88,12 +100,12 @@ reaction ChangeGeometryInstance {
 		val geometry = ColladaStringUtils.getGeometryByID(newValue, root)
 		
 		if(geometry === null) {
-			val shouldGeometryCreated = userInteractor.confirmationDialogBuilder.message("ID existiert nicht. Soll neue Geometrie angelegt werden? Alternativ würde die Änderung zurückgerollt werden.").startInteraction
+			val shouldGeometryCreated = userInteractor.confirmationDialogBuilder.message("ID is not existing. Should a new geometry description be created? Otherwise the change would be rejected.").startInteraction
 			if(shouldGeometryCreated) {
 				removeCorrespondenceBetweenInstanceAndGeometry(affectedEObject)
 				addGeometryInTree(root, affectedEObject, newValue)
 			} else {
-				//TODO entspricht Zurückrollen der Änderung
+				//TODO reject change
 				affectedEObject.url = oldValue
 			}
 		} else {
@@ -103,8 +115,9 @@ reaction ChangeGeometryInstance {
 	}
 }
 
-// ***** Routines
-
+/**
+ * routine for changing the reference (url) to a visual scene definition in a visual scene instance
+ */
 routine changeIdInVisualSceneInstances(collada::VisualSceneType visualScene) {
 	match {
 		val instances = retrieve many collada::InstanceWithExtra corresponding to visualScene tagged with AMLTags.SCENE_VISUAL
@@ -118,6 +131,9 @@ routine changeIdInVisualSceneInstances(collada::VisualSceneType visualScene) {
 	}
 }
 
+/**
+ * routine for remove reference in a visual scene instance to its definition
+ */
 routine removeIdAndCorrespondenceForVisualSceneAndInstances(collada::VisualSceneType visualScene) {
 	match {
 		val instances = retrieve many collada::InstanceWithExtra corresponding to visualScene tagged with AMLTags.SCENE_VISUAL
@@ -132,12 +148,18 @@ routine removeIdAndCorrespondenceForVisualSceneAndInstances(collada::VisualScene
 	}
 }
 
+/**
+ * routine to remove the correspondence between a visual scene definition and its instance
+ */
 routine removeCorrespondenceBetweenVisualSceneAndInstance(collada::VisualSceneType visualScene, collada::InstanceWithExtra instance) {
 	action {
 		remove correspondence between visualScene and instance tagged with AMLTags.SCENE_VISUAL
 	}
 }
 
+/**
+ * routine to remove the correspondence between a geometry instance and its definition
+ */
 routine removeCorrespondenceBetweenInstanceAndGeometry(collada::InstanceGeometryType instance) {
 	match {
 		val geometry = retrieve collada::GeometryType corresponding to instance tagged with AMLTags.GEOMETRY_INSTANCE
@@ -147,12 +169,18 @@ routine removeCorrespondenceBetweenInstanceAndGeometry(collada::InstanceGeometry
 	}
 }
 
+/**
+ * routine to add a correspondence between a geoemtry instance and its definition
+ */
 routine addCorrespondenceBetweenInstanceAndGeometry(collada::InstanceGeometryType instance, collada::GeometryType geometry) {
 	action {
 		add correspondence between instance and geometry tagged with AMLTags.GEOMETRY_INSTANCE
 	}
 }
 
+/**
+ * routine to add a geometry definition in the collada file, if an implicit reference in an instance is not existing 
+ */
 routine addGeometryInTree(collada::COLLADAType root, collada::InstanceGeometryType instance, String id) {
 	action {
 		val geometry = create collada::GeometryType and initialize {

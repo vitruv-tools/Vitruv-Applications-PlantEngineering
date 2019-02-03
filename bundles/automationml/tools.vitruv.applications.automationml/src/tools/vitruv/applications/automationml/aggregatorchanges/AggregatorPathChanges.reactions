@@ -14,8 +14,9 @@ reactions: aggregatorPathChanges
 in reaction to changes in AML
 execute actions in AML
 
-// ***** Pfadattribut in den Containern geändert
-
+/**
+ * reaction for changing the path to a collada file
+ */
 reaction ChangePathForCollada {
 	after attribute replaced at aml::ColladaContainer[path]
 	call {
@@ -25,6 +26,9 @@ reaction ChangePathForCollada {
 	}
 }
 
+/**
+ * reaction for changing the path to a plcopen file
+ */
 reaction ChangePathForPlcopen {
 	after attribute replaced at aml::PLCopenContainer[path]
 	call {
@@ -34,8 +38,9 @@ reaction ChangePathForPlcopen {
 	}
 }
 
-// ***** Routinen, um Pfade in den Interfaces abzuändern
-
+/**
+ * routine to change the path to a collada file in ExternalInterfaces
+ */
 routine changePathInColladaInterfaces (aml::ColladaContainer container) {
 	match {
 		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA
@@ -51,6 +56,9 @@ routine changePathInColladaInterfaces (aml::ColladaContainer container) {
 	}
 }
 
+/**
+ * routine to change the path to a plcopen file in ExternalInterfaces
+ */
 routine changePathInPlcopenInterfaces (aml::PLCopenContainer container) {
 	match {
 		val projectType = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN

@@ -7,8 +7,9 @@ reactions: plcopenStructureChanges
 in reaction to changes in PLCOpen
 execute actions in PLCOpen
 
-// ***** Beschreibungcontainer löschen
-
+/**
+ * reaction for a removed pou definition
+ */
 reaction RemovePouType {
 	after element plcopen::PouType1 removed from plcopen::PousType[pou]
 	with {
@@ -17,12 +18,14 @@ reaction RemovePouType {
 	call {
 		logger.debug("RemovePouType")
 
-		//TODO Änderung zurückrollen
-		// kein Sprachstatement vorhanden, deswegen diese Formulierung
+		//TODO reject change
 		affectedEObject.pou.add(oldValue)
 	}
 }
 
+/**
+ * reaction for a removed set of pou definitions
+ */
 reaction ReplacePousType {
 	after element plcopen::PousType replaced at plcopen::TypesType[pous]
 	with {
@@ -31,11 +34,14 @@ reaction ReplacePousType {
 	call {
 		logger.debug("ReplacePousType")
 
-		//TODO entspricht einem Zurückrollen der Änderung
+		//TODO reject change
 		affectedEObject.pous = oldValue
 	}
 }
 
+/**
+ * reaction for a removed types definition
+ */
 reaction ReplaceTypesType {
 	after element plcopen::TypesType replaced at plcopen::ProjectType[types]
 	with {
@@ -44,7 +50,7 @@ reaction ReplaceTypesType {
 	call {
 		logger.debug("ReplaceTypesType")
 
-		//TODO entspricht einem Zurückrollen der Änderung
+		//TODO reject change
 		affectedEObject.types = oldValue
 	}
 }

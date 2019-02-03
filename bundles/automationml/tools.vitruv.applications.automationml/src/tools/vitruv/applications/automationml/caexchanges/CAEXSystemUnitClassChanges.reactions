@@ -1,15 +1,15 @@
 import org.eclipse.xtext.EcoreUtil2
-import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
-import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
 import caex.caex30.caex.ExternalInterface
 import caex.caex30.caex.CAEXFile
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
-import tools.vitruv.applications.automationml.utils.prototypeclone.CloneUtils
 import caex.caex30.caex.InternalElement
 import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
 import caex.caex30.caex.SystemUnitClass
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import tools.vitruv.applications.automationml.utils.stringreferences.caex.SystemUnitClassUtils
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.InterfaceClassUtils
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceTypeUtils
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceContainmentUtils
+import tools.vitruv.applications.automationml.utils.aml.PrototypeCloneUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -20,8 +20,9 @@ reactions: caexSystemUnitClassChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
-// ***** Klasse bzw. Klassenbib entfernen
-
+/**
+ * reaction for deletion of a system class
+ */
 reaction DeleteSystemUnitClass {
 	after element caex::SystemUnitClass deleted
 	with {
@@ -30,7 +31,7 @@ reaction DeleteSystemUnitClass {
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassFromClass")
 		
-		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die diese oder eine untergeordnete Klasse referenzieren, gelöscht werden?").startInteraction
+		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Should all internal elements, which are referencing this class, be deleted?").startInteraction
 		
 		if(shouldClonesDeleted) {
 			removeClones(affectedEObject)
@@ -48,12 +49,15 @@ reaction DeleteSystemUnitClass {
 	}
 }
 
+/**
+ * reaction for removing a system class library
+ */
 reaction RemoveSystemUnitClassLib {
 	after element removed from caex::CAEXFile[systemUnitClassLib]
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassLib")
 		
-		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Sollen alle internen Elemente, die Klassen dieser Bibliothek referenzieren, gelöscht werden?").startInteraction
+		val shouldClonesDeleted = userInteractor.confirmationDialogBuilder.message("Should all internal elements, which are referencing classes of this library, be deleted?").startInteraction
 		
 		if(shouldClonesDeleted) {
 			for(SystemUnitClass currClass : EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)) {
@@ -67,8 +71,9 @@ reaction RemoveSystemUnitClassLib {
 	}
 }
 
-// ***** Namensänderung einer Klasse bzw. Lib
-
+/**
+ * reaction for changing the name of a system class
+ */
 reaction ChangeSystemUnitClassName {
 	after attribute replaced at caex::SystemUnitClass[name] 
 	with {
@@ -88,6 +93,9 @@ reaction ChangeSystemUnitClassName {
 	}
 }
 
+/**
+ * reaction for changing the name of a system class library
+ */
 reaction ChangeSystemUnitClassLibName {
 	after attribute replaced at caex::SystemUnitClassLib[name]
 	call {
@@ -101,8 +109,9 @@ reaction ChangeSystemUnitClassLibName {
 	}
 }
 
-// ***** ExternalInterface in Klassendefinition hinzufügen, entfernen
-
+/*
+ * reaction for adding an ExternalInterface to a system class
+ */
 reaction AddExternalInterfaceToSystemClass {
 	after element caex::ExternalInterface inserted in caex::SystemUnitClass[externalInterface] 
 	with {
@@ -111,7 +120,7 @@ reaction AddExternalInterfaceToSystemClass {
 	call {
 		logger.debug("Reaction RemoveSystemUnitClassLib")
 		
-		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Soll in allen internen Elementen, die diese Klasse referenzieren, das Interface hinzugefügt werden?").startInteraction
+		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Should all internal elements, which are referencing this class, be adapted to the new interface?").startInteraction
 		if(shouldChangePropagated) {
 			val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
 			addExternalInterfaceToInternalElements(newValue, affectedEObject, root)
@@ -119,6 +128,9 @@ reaction AddExternalInterfaceToSystemClass {
 	} 
 }
 
+/**
+ * reaction for removing an ExternalInterface from a system class
+ */
 reaction RemoveExternalInterfaceFromSystemClass {
 	after element removed from caex::SystemUnitClass[externalInterface]
 	with {
@@ -128,23 +140,24 @@ reaction RemoveExternalInterfaceFromSystemClass {
 		logger.debug("Reaction RemoveExternalInterfaceFromSystemClass")
 				
 		val caexFile = EcoreUtil2.getContainerOfType(oldValue, CAEXFile)
-		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(oldValue.refBaseClassPath, caexFile)
+		val externalInterfaceType = InterfaceClassUtils.getInterfaceClassByPath(oldValue.refBaseClassPath, caexFile)
 		
-		if(CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType, caexFile)) {
+		if(InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterfaceType, caexFile)) {
 			removeCorrespondenceBetweenInterfaceInClassAndPLCopen(oldValue as ExternalInterface)
-		} else if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType, caexFile)) {
+		} else if(InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterfaceType, caexFile)) {
 			removeCorrespondenceBetweenInterfaceInClassAndCollada(oldValue as ExternalInterface)
 		}
 		
-		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen in allen internen Elementen, die diese Klasse referenzieren, Interfaces entfernt werden?").startInteraction
+		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Should all internal elements, which are referencing this class, be adapted to the deletion of the interface?").startInteraction
 		if(shouldChangePropagated) {
 			removeExternalInterfaceFromInternalElement(oldValue as ExternalInterface, affectedEObject, caexFile)
 		}
 	}
 }
 
-// ***** Routinen, um Klone beim Entfernen der Prototypen abzuändern bzw. zu löschen
-
+/**
+ * routine to change the value of the refBaseSystemUnitPath attribute of a InternalElement
+ */
 routine removePrototypeFromInternalElement (caex::SystemUnitClass systemUnitClass) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
@@ -159,12 +172,18 @@ routine removePrototypeFromInternalElement (caex::SystemUnitClass systemUnitClas
 	}
 }
 
+/**
+ * routine to remove the correspondence between an InternalElement and a system class
+ */
 routine removeCorrespondenceBetweenPrototypeAndClone(caex::SystemUnitClass systemUnitClass, caex::InternalElement internalElement) {
 	action {
 		remove correspondence between internalElement and systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	}
 }
 
+/**
+ * routine to remove InternalElements, which are referencing a system class
+ */
 routine removeClones(caex::SystemUnitClass systemUnitClass) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
@@ -178,22 +197,26 @@ routine removeClones(caex::SystemUnitClass systemUnitClass) {
 	}
 }
 
+/**
+ * routine to delete a InternalElement
+ */
 routine removeClone(caex::InternalElement internalElement) {
 	action {
 		delete internalElement
 	}
 }
 
-// ***** Routinen, um interne Elemente abzuändern, analog zur Änderung der Klasse
-
+/**
+ * routine to add an ExternalInterface to an InternalElement
+ */
 routine addExternalInterfaceToInternalElements(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
-			val filteredList = CloneUtils.filterChangedClones(internalElements, systemUnitClass)
-			if(CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterface, root) || CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterface, root)) {
+			val filteredList = PrototypeCloneUtils.checkClones(systemUnitClass, internalElements)
+			if(InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterface, root) || InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterface, root)) {
 				val uri = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri").value
 				for(InternalElement currInternalElement : filteredList) {
 					addExternalInterfaceWithUriToInternalElement(externalInterface, currInternalElement, uri)
@@ -207,6 +230,9 @@ routine addExternalInterfaceToInternalElements(caex::ExternalInterface externalI
 	}
 }
 
+/**
+ * routine to add an ExternalInterface, which is not used to connect to a collada or plcopen file, to an InternalElement
+ */
 routine addExternalInterfaceWithoutUriToInternalElement(caex::ExternalInterface externalInterface, caex::InternalElement internalElement) {
 	match {
 		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with AMLTags.CLASS_INTERFACE
@@ -223,6 +249,9 @@ routine addExternalInterfaceWithoutUriToInternalElement(caex::ExternalInterface 
 	}
 }
 
+/**
+ * routine to add an ExternalInterface, which is used to connect to a collada or plcopen file, to an InternalElement
+ */
 routine addExternalInterfaceWithUriToInternalElement(caex::ExternalInterface externalInterface, caex::InternalElement internalElement, String uri) {
 	match {
 		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with AMLTags.CLASS_INTERFACE
@@ -245,14 +274,17 @@ routine addExternalInterfaceWithUriToInternalElement(caex::ExternalInterface ext
 	}
 }
 
+/**
+ * routine to remove an ExternalInterface from an InternalElement
+ */
 routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root){
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	} action {
 		execute {
-			val filteredList = CloneUtils.filterChangedClones(internalElements, systemUnitClass)
+			val filteredList = PrototypeCloneUtils.checkClones(systemUnitClass, internalElements)
 			for(InternalElement currInternalElement : filteredList) {
-				val foundedInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(currInternalElement, externalInterface.name, root)
+				val foundedInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(currInternalElement, externalInterface.name, root)
 				if(foundedInterface !== null) {
 					currInternalElement.externalInterface.remove(foundedInterface)
 				}
@@ -261,8 +293,9 @@ routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface exter
 	}
 }
 
-// ***** Routinen, um Korrespondenzen zwischen Interface und Verhaltensbeschreibung bzw. Geometrie zu entfernen
-
+/**
+ * routine to remove the correspondence between an ExternalInterface and a behaviour description in plcopen
+ */
 routine removeCorrespondenceBetweenInterfaceInClassAndPLCopen (caex::ExternalInterface externalInterface){
 	match {
 		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU
@@ -272,6 +305,9 @@ routine removeCorrespondenceBetweenInterfaceInClassAndPLCopen (caex::ExternalInt
 	}
 }
 
+/**
+ * routine to remove the correspondence between an ExternalInterface and a scene description in collada
+ */
 routine removeCorrespondenceBetweenInterfaceInClassAndCollada (caex::ExternalInterface externalInterface){
 	match {
 		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with AMLTags.INTERFACE_SCENE
@@ -281,8 +317,9 @@ routine removeCorrespondenceBetweenInterfaceInClassAndCollada (caex::ExternalInt
 	}
 }
 
-// *****
-
+/**
+ * routine to adapt the refBaseSystemUnitPath attribute in an InternalElement
+ */
 routine changeClassPathInInternalElement(caex::SystemUnitClass systemUnitClass, String newPath) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE 

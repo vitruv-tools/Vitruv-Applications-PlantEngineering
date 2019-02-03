@@ -1,5 +1,9 @@
 package tools.vitruv.applications.automationml.utils.propertybasedtags;
 
+/**
+ * class with strings, which are used as marks for properties (attributes)
+ * @author A.Lang
+ */
 public class PropertyTags {
 	public static final String BEHAVIOUR = "TagForBehaviourProperty";
 	public static final String SAFTY = "TagForSaftyProperty";

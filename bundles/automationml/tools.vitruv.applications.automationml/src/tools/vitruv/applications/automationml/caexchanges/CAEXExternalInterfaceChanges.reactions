@@ -1,19 +1,19 @@
 import org.eclipse.xtext.EcoreUtil2
-import tools.vitruv.applications.automationml.utils.caexresolver.CAEXInheritanceResolver
-import tools.vitruv.applications.automationml.utils.caexresolver.CAEXStringResolver
 import caex.caex30.caex.CAEXFile
 import caex.caex30.caex.InternalElement
 import caex.caex30.caex.SystemUnitClass
 import caex.caex30.caex.ExternalInterface
-import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.SystemUnitClassForInterfaceChecker
 import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
-import tools.vitruv.applications.automationml.utils.prototypeclone.CloneUtils
 import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
 import edu.kit.sdq.aml_aggregator.AMLProject
 import tools.vitruv.applications.automationml.utils.aml.AMLTags
 import caex.caex30.caex.Attribute
-import tools.vitruv.applications.automationml.utils.caexresolver.InterfaceResolver
-import tools.vitruv.applications.automationml.utils.caexresolver.InterfaceResolver.ErrorCode
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.ImpliciteReferenceResolveUtils
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.ImpliciteReferenceResolveUtils.ErrorCode
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.InterfaceClassUtils
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceTypeUtils
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceContainmentUtils
+import tools.vitruv.applications.automationml.utils.aml.PrototypeCloneUtils
 
 import "http://www.plcopen.org/xml/tc6_0201" as plcopen
 import "http://www.dke.de/CAEX/300" as caex
@@ -27,8 +27,9 @@ execute actions in CAEX
 import caexToCollada
 import caexToPlcopen
 
-// ***** Interface Typ ändern
-
+/**
+ * reaction for changing the type of an ExternalInterface
+ */
 reaction ChangeExternalInterfaceType {
 	after attribute replaced at caex::ExternalInterface[refBaseClassPath]
 	call {
@@ -39,25 +40,25 @@ reaction ChangeExternalInterfaceType {
 		if(newValue.isNullOrEmpty) {
 			changeExternalInterfaceTypeToNull(affectedEObject, oldValue)
 		} else {
-			//TODO Änderungen werden zurückgerollt
-			val errorCode = InterfaceResolver.checkIfPathIsExisting(newValue, caexFile)
+			//TODO reject change
+			val errorCode = ImpliciteReferenceResolveUtils.checkIfPathIsExisting(newValue, caexFile)
 			switch(errorCode) {
 				case ErrorCode.EMPTY_STRING_OR_FILE: {
-					userInteractor.notificationDialogBuilder.message("Fehler in der Implementierung").startInteraction
+					userInteractor.notificationDialogBuilder.message("Error in Implementation").startInteraction
 					return
 				}
 				case ErrorCode.BREAK_RULE: {
-					userInteractor.notificationDialogBuilder.message("Interface nicht vorhanden. Änderung wird zurückgerollt").startInteraction
+					userInteractor.notificationDialogBuilder.message("Interface is not existing. Change will be rejected.").startInteraction
 					affectedEObject.refBaseClassPath = oldValue
 					return
 				}
 				case ErrorCode.SEGMENT_NOT_FOUND: {
-					userInteractor.notificationDialogBuilder.message("Interface nicht vorhanden. Änderung wird zurückgerollt").startInteraction
+					userInteractor.notificationDialogBuilder.message("Interface is not existing. Change will be rejected.").startInteraction
 					affectedEObject.refBaseClassPath = oldValue
 					return
 				}
 				case ErrorCode.LAST_SEGMENT_NOT_FOUND: {
-					val userInput = userInteractor.confirmationDialogBuilder.message("Interface nicht vorhanden. Soll es erzeugt werden? Ansonsten wird die Änderung zurückgerollt").startInteraction
+					val userInput = userInteractor.confirmationDialogBuilder.message("Interface is not existing. Should it be created? Otherwise the change will be rejected").startInteraction
 					if(userInput) {
 						createInterfaceClassInTree(newValue, caexFile, affectedEObject)
 					} else {
@@ -66,7 +67,7 @@ reaction ChangeExternalInterfaceType {
 					}
 				}
 				case ErrorCode.WRONG_TYPE: {
-					userInteractor.notificationDialogBuilder.message("Interface nicht vorhanden. Änderung wird zurückgerollt").startInteraction
+					userInteractor.notificationDialogBuilder.message("Interface is not existing. Change will be rejected.").startInteraction
 					affectedEObject.refBaseClassPath = oldValue
 					return
 				}
@@ -84,7 +85,7 @@ reaction ChangeExternalInterfaceType {
 		
 		val container = affectedEObject.eContainer
 		if(container instanceof SystemUnitClass && !(container instanceof InternalElement)) {
-			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Should all internal elements, which are referencing this class, be adapted?").startInteraction
 			if(shouldChangePropagated) {
 				changeExternalInterfaceTypeInInternalElement(container as SystemUnitClass, affectedEObject, oldValue, caexFile)
 			}
@@ -92,8 +93,9 @@ reaction ChangeExternalInterfaceType {
 	}
 }
 
-// ***** Pfadangabe in CAEX zu PLCopen/Collada Datei geändert
-
+/**
+ * reaction for changing the path to a collada or plcopen file
+ */
 reaction ChangeExternalInterfacePath {
 	after attribute replaced at caex::Attribute[value] 
 	with {
@@ -104,10 +106,10 @@ reaction ChangeExternalInterfacePath {
 				
 		val attributeParent = EcoreUtil2.getContainerOfType(affectedEObject, ExternalInterface)
 		val caexFile = EcoreUtil2.getContainerOfType(attributeParent, CAEXFile)
-		val externalInterfaceType = CAEXStringResolver.resolveInterfacePath(attributeParent.refBaseClassPath, caexFile)
+		val externalInterfaceType = InterfaceClassUtils.getInterfaceClassByPath(attributeParent.refBaseClassPath, caexFile)
 		val parentContainer = attributeParent.eContainer
-		val isPLCopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(externalInterfaceType, caexFile)
-		val isCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(externalInterfaceType, caexFile)
+		val isPLCopen = InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterfaceType, caexFile)
+		val isCollada = InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterfaceType, caexFile)
 				
 		if(newValue.isNullOrEmpty) {
 			if(isCollada) {
@@ -124,7 +126,7 @@ reaction ChangeExternalInterfacePath {
 		}
 		
 		if(parentContainer instanceof SystemUnitClass && !(parentContainer instanceof InternalElement)) {
-			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Sollen alle Internen Elemente, die diese Klasse referenzieren, analog abgeändert werden?").startInteraction
+			val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Should all internal elements, which are referencing this class, be adapted?").startInteraction
 			if(shouldChangePropagated) {
 				changePathForExternalInterfaceInInternalElement(attributeParent, parentContainer as SystemUnitClass, newValue, caexFile)
 			}
@@ -132,6 +134,9 @@ reaction ChangeExternalInterfacePath {
 	}
 }
 
+/**
+ * routine, if the type of an ExternalInterface was set to null
+ */
 routine changeExternalInterfaceTypeToNull(caex::ExternalInterface externalInterface, String oldValue) {
 	action {
 		execute {
@@ -144,16 +149,19 @@ routine changeExternalInterfaceTypeToNull(caex::ExternalInterface externalInterf
 	}
 }
 
+/**
+ * routine, if the type of an ExternalInterface was changed, but not to null
+ */
 routine changeExternalInterfaceTypeNotToNull(caex::CAEXFile caexFile, String oldValue, String newValue, caex::ExternalInterface externalInterface) {
 	action{
 		execute {
-			val oldInterfaceClass = CAEXStringResolver.resolveInterfacePath(oldValue, caexFile)
-			val isOldPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(oldInterfaceClass, caexFile)
-			val isOldCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(oldInterfaceClass, caexFile)
+			val oldInterfaceClass = InterfaceClassUtils.getInterfaceClassByPath(oldValue, caexFile)
+			val isOldPlcopen = InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(oldInterfaceClass, caexFile)
+			val isOldCollada = InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(oldInterfaceClass, caexFile)
 
-			val newInterfaceClass = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
-			val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(newInterfaceClass, caexFile)
-			val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(newInterfaceClass, caexFile)
+			val newInterfaceClass = InterfaceClassUtils.getInterfaceClassByPath(newValue, caexFile)
+			val isNewPlcopen = InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(newInterfaceClass, caexFile)
+			val isNewCollada = InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(newInterfaceClass, caexFile)
 			
 			if((isOldPlcopen && !isNewPlcopen) || (isOldCollada && !isNewCollada)) {
 				removePathAttributeFromExternalInterface(externalInterface)
@@ -169,13 +177,16 @@ routine changeExternalInterfaceTypeNotToNull(caex::CAEXFile caexFile, String old
 	}
 }
 
+/**
+ * routine, if an ExternalInterface is specified with a description of its type
+ */
 routine changeExternalInterfaceTypeFromNullToNotNull(caex::CAEXFile caexFile, String newValue, caex::ExternalInterface externalInterface) {
 	action {
 		execute {
-			val newInterfaceClass = CAEXStringResolver.resolveInterfacePath(newValue, caexFile)
+			val newInterfaceClass = InterfaceClassUtils.getInterfaceClassByPath(newValue, caexFile)
 			
-			val isNewPlcopen = CAEXInheritanceResolver.isInstanceOfPLCopenInterface(newInterfaceClass, caexFile)
-			val isNewCollada = CAEXInheritanceResolver.isInstanceOfColladaInterface(newInterfaceClass, caexFile)
+			val isNewPlcopen = InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(newInterfaceClass, caexFile)
+			val isNewCollada = InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(newInterfaceClass, caexFile)
 			
 			if(isNewPlcopen || isNewCollada) {
 				addPathAttributeToExternalInterface(externalInterface)
@@ -186,8 +197,9 @@ routine changeExternalInterfaceTypeFromNullToNotNull(caex::CAEXFile caexFile, St
 	}
 }
 
-// ***** Routine, für geänderten Interface-Typ
-
+/**
+ * routine to add a correpondence between an ExternalInterface and its corresponding InterfaceClass
+ */
 routine addCorrespondenceBetweenInterfaceAndItsClass (caex::ExternalInterface externalInterface, caex::InterfaceClass interfaceClass) {
 	action {
 		add correspondence between externalInterface and interfaceClass tagged with AMLTags.CLASS_INTERFACE
@@ -195,9 +207,9 @@ routine addCorrespondenceBetweenInterfaceAndItsClass (caex::ExternalInterface ex
 }
 
 
-// ***** Routine, um mit Pfadänderungen umzugehen
-
-//Boolean false: plcopen
+/**
+ * routine to change correspondences, if the path to a collada or plcopen file was changed
+ */
 routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalInterface, caex::CAEXFile caexFile, String newPath, String oldPath, Boolean isCollada ) {
 	match {
 		val caexContainer = retrieve aml::CAEXContainer corresponding to caexFile tagged with AMLTags.AML_CAEX
@@ -220,7 +232,7 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 				}
 			}
 			
-			val shouldFileCreated = userInteractor.confirmationDialogBuilder.message("Der angegebene Pfad existiert nicht. Soll ein neues Dokument angelegt werden? Alternativ würde die Änderung zurückgerollt werden.").startInteraction
+			val shouldFileCreated = userInteractor.confirmationDialogBuilder.message("Interface is not existing. Should it be created? Otherwise the change will be rejected.").startInteraction
 			if(shouldFileCreated) {
 				if(isCollada) {
 					createNewColladaContainer(externalInterface, caexContainer.eContainer as AMLProject, newPath)
@@ -228,7 +240,7 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 					createNewPLCopenContainer(externalInterface, caexContainer.eContainer as AMLProject, newPath)
 				}
 			} else {
-				//TODO Änderung zurückrollen
+				//TODO reject change
 				val att = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri")
 				att.value = oldPath
 			}
@@ -236,8 +248,9 @@ routine changeCorrespondencesDueToPathChanges (caex::ExternalInterface externalI
 	}
 }
 
-// ***** Routinen, um ein Pfadattribut einem ExternalInterface hinzuzufügen bzw. zu entfernen
-
+/**
+ * routine, to add an attribute to an ExternalInterface, to save the path to a collada or plcopen file
+ */
 routine addPathAttributeToExternalInterface(caex::ExternalInterface externalInterface){
 	action {
 		val newAttribute = create caex::Attribute and initialize {
@@ -251,6 +264,9 @@ routine addPathAttributeToExternalInterface(caex::ExternalInterface externalInte
 	}
 }
 
+/**
+ * routine to remove an attribute with name "refUri" from an ExternalInterface
+ */
 routine removePathAttributeFromExternalInterface(caex::ExternalInterface externalInterface){
 	action {
 		execute {
@@ -262,23 +278,24 @@ routine removePathAttributeFromExternalInterface(caex::ExternalInterface externa
 	}
 }
 
-// ***** Routinen, um interne Elemente abzuändern, analog zur Änderung der Klasse
-
+/**
+ * routine to adapt InternalElements to changes in their corresponding SystemUnitClass
+ */
 routine changeExternalInterfaceTypeInInternalElement(caex::SystemUnitClass systemUnitClass, caex::ExternalInterface newExternalInterface, String oldExternalInterfaceType, caex::CAEXFile rootElement) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
-			val filteredInternalElements = CloneUtils.filterChangedClones(internalElements, systemUnitClass)
+			val filteredInternalElements = PrototypeCloneUtils.checkClones(systemUnitClass, internalElements)
 			for(InternalElement currInternalElement : filteredInternalElements) {
 				if(!oldExternalInterfaceType.isNullOrEmpty) {
-					val interfaceInInternalElement = SystemUnitClassForInterfaceChecker.getExternalInterface(currInternalElement, oldExternalInterfaceType, rootElement)
+					val interfaceInInternalElement = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(currInternalElement, oldExternalInterfaceType, rootElement)
 					removeCorrespondenceBetweenInterfaceAndItsClass(interfaceInInternalElement)
 					removePathAttributeFromExternalInterface(interfaceInInternalElement)
 					interfaceInInternalElement.refBaseClassPath = newExternalInterface.refBaseClassPath
 					createAttributesForExternalInterfaceInInternalElement(interfaceInInternalElement, newExternalInterface)
-					addCorrespondenceBetweenInterfaceAndItsClass(interfaceInInternalElement, CAEXStringResolver.resolveInterfacePath(newExternalInterface.refBaseClassPath, rootElement))
+					addCorrespondenceBetweenInterfaceAndItsClass(interfaceInInternalElement, InterfaceClassUtils.getInterfaceClassByPath(newExternalInterface.refBaseClassPath, rootElement))
 				} else {
 					createExternalInterface(currInternalElement, newExternalInterface)
 				}
@@ -287,6 +304,9 @@ routine changeExternalInterfaceTypeInInternalElement(caex::SystemUnitClass syste
 	}
 }
 
+/**
+ * routine to create an ExternalInterface in an InternalElement
+ */
 routine createExternalInterface(caex::InternalElement container, caex::ExternalInterface interfaceInSystemUnitClass) {
 	match {
 		val interfaceClass = retrieve caex::InterfaceClass corresponding to interfaceInSystemUnitClass tagged with AMLTags.CLASS_INTERFACE
@@ -306,6 +326,9 @@ routine createExternalInterface(caex::InternalElement container, caex::ExternalI
 	}
 }
 
+/**
+ * routine to create attributes for ExternalInterfaces
+ */
 routine createAttributesForExternalInterfaceInInternalElement(caex::ExternalInterface interfaceInInternalElement, caex::ExternalInterface interfaceInSystemUnitClass) {
 	action {
 		execute {
@@ -316,6 +339,9 @@ routine createAttributesForExternalInterfaceInInternalElement(caex::ExternalInte
 	}
 }
 
+/**
+ * routine to create an attribute
+ */
 routine createAttribute(caex::ExternalInterface container, String name, String value) {
 	action {
 		val newAttribute = create caex::Attribute and initialize {
@@ -328,6 +354,9 @@ routine createAttribute(caex::ExternalInterface container, String name, String v
 	}
 }
 
+/**
+ * routine to remove the correspondence between an ExternalInterface and its InterfaceClass
+ */
 routine removeCorrespondenceBetweenInterfaceAndItsClass(caex::ExternalInterface externalInterface) {
 	match {
 		val interfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with AMLTags.CLASS_INTERFACE
@@ -337,15 +366,18 @@ routine removeCorrespondenceBetweenInterfaceAndItsClass(caex::ExternalInterface 
 	}
 }
 
+/**
+ * routine to change the path to a collada or plcopen file in an InternalElement
+ */
 routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, String path, caex::CAEXFile root) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
-			val filteredInternalElements = CloneUtils.filterChangedClones(internalElements, systemUnitClass)
+			val filteredInternalElements = PrototypeCloneUtils.checkClones(systemUnitClass, internalElements)
 			for(InternalElement currInternalElement : filteredInternalElements) {
-				val foundedInterface = SystemUnitClassForInterfaceChecker.getExternalInterface(currInternalElement, externalInterface.name, root)
+				val foundedInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(currInternalElement, externalInterface.name, root)
 				val pathAttribute = CAEXUtils.getAttributeInExternalInterface(foundedInterface, "refUri")
 				pathAttribute.value = path
 			}
@@ -353,20 +385,24 @@ routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface 
 	}
 }
 
-// ***** Methode zum Einfügen eines externen Interfaces 
-
+/**
+ * routine to create a new InterfaceClass on the rigth position in the model tree
+ */
 routine createInterfaceClassInTree(String path, caex::CAEXFile caexFile, caex::ExternalInterface externalInterface) {
 	action {
 		execute {
 			val splitIndex = path.lastIndexOf("/")
 			val pathToContainer = path.substring(0, splitIndex)
 			val nameOfClass = path.substring(splitIndex + 1)
-			val container = CAEXStringResolver.resolveInterfacePath(pathToContainer, caexFile)
+			val container = InterfaceClassUtils.getInterfaceClassByPath(pathToContainer, caexFile)
 			createInterfaceClass(nameOfClass, container, externalInterface)
 		}
 	}
 }
 
+/**
+ * routine to create a new InterfaceClass
+ */
 routine createInterfaceClass(String name, caex::InterfaceClass container, caex::ExternalInterface externalInterface) {
 	match {
 		val oldInterfaceClass = retrieve caex::InterfaceClass corresponding to externalInterface tagged with AMLTags.CLASS_INTERFACE

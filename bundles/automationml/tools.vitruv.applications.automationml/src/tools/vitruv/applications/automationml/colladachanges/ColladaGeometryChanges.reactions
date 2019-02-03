@@ -11,8 +11,9 @@ reactions: colladaGeometryChanges
 in reaction to changes in Collada
 execute actions in Collada
 
-// ***** Bib bzw. Geo löschen
-
+/**
+ * reaction for a removed geometry library
+ */
 reaction RemoveGeometriesLibrary {
 	after element collada::LibraryGeometriesType removed from collada::COLLADAType[libraryGeometries]
 	call {
@@ -24,6 +25,9 @@ reaction RemoveGeometriesLibrary {
 	}
 }
 
+/**
+ * reaction for a removed geometry definition
+ */
 reaction RemoveGeometry {
 	after element collada::GeometryType removed from collada::LibraryGeometriesType[geometry]
 	call {
@@ -33,8 +37,9 @@ reaction RemoveGeometry {
 	}
 }
 
-// ***** ID der Geo ändern
-
+/**
+ * reaction for changing the id of a geometry definition
+ */
 reaction ChangeGeometryID {
 	after attribute replaced at collada::GeometryType[id]
 	call {
@@ -44,8 +49,9 @@ reaction ChangeGeometryID {
 	}
 }
 
-// ***** Routines for changing ID or remove geometry description
-
+/**
+ * routine to change to change the reference (url) to a geometry definition in a geometry instance
+ */
 routine changeIdInGeometrieInstances(collada::GeometryType geometry) {
 	match {
 		val instances = retrieve many collada::InstanceGeometryType corresponding to geometry tagged with AMLTags.GEOMETRY_INSTANCE
@@ -59,6 +65,9 @@ routine changeIdInGeometrieInstances(collada::GeometryType geometry) {
 	}
 }
 
+/**
+ * routine to adapt correspondence model and geometry instances due to deletion of a geometry description
+ */
 routine removeIdAndCorrespondenceForGeometryAndInstances(collada::GeometryType geometry) {
 	match {
 		val instances = retrieve many collada::InstanceGeometryType corresponding to geometry tagged with AMLTags.GEOMETRY_INSTANCE
@@ -73,6 +82,9 @@ routine removeIdAndCorrespondenceForGeometryAndInstances(collada::GeometryType g
 	}
 }
 
+/**
+ * routine to remove the correspondence between a geometry instance and its definition
+ */
 routine removeCorrespondenceBetweenGeoemtryAndInstance(collada::GeometryType geometry, collada::InstanceGeometryType instance) {
 	action {
 		remove correspondence between geometry and instance tagged with AMLTags.GEOMETRY_INSTANCE

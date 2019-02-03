@@ -1,5 +1,9 @@
 package tools.vitruv.applications.automationml.utils.aml;
 
+/**
+ * class with static strings, which are the names of standard libraries and classes of AML
+ * @author A.Lang
+ */
 public class AMLBasicStrings {
 	private static final String automationMLInterfaceBaseLibName = "AutomationMLInterfaceClassLib";
 	private static final String automationMLBaseInterfaceName = "AutomationMLBaseInterface";

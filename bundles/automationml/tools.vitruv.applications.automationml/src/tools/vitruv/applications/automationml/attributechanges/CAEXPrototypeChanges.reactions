@@ -17,6 +17,9 @@ reactions: caexAttributePrototypChanges
 in reaction to changes in CAEX
 execute actions in CAEX
 
+/**
+ * reaction for removing a prototype
+ */
 reaction PrototypeRemovedInLibrary {
 	after element caex::SystemUnitClass removed from caex::SystemUnitClassLib[systemUnitClass]
 	call {
@@ -28,6 +31,9 @@ reaction PrototypeRemovedInLibrary {
 	}
 }
 
+/**
+ * reaction for removing a prototype
+ */
 reaction PrototypeRemovedInClass {
 	after element caex::SystemUnitClass removed from caex::SystemUnitClass[systemUnitClass]
 	call {
@@ -39,8 +45,9 @@ reaction PrototypeRemovedInClass {
 	}
 }
 
-// ***** Regel 1
-
+/**
+ * reaction for adding a prototype
+ */
 reaction PrototypInsertedInLibrary {
 	after element caex::SystemUnitClass inserted in caex::SystemUnitClassLib[systemUnitClass]
 	call {
@@ -48,16 +55,19 @@ reaction PrototypInsertedInLibrary {
 		choices.add("always")
 		choices.add("never")
 		choices.add("depends on situation")
-		val userInput = userInteractor.singleSelectionDialogBuilder.message("Sollen Klone dieses Prototypen (" + newValue.name + ") immer angepasst werden?").choices(choices).startInteraction
+		val prototypeType = userInteractor.singleSelectionDialogBuilder.message("Should clones of this prototype (" + newValue.name + ") should always be adapted to changes?").choices(choices).startInteraction
 		
-		if (userInput == 0) {
+		if (prototypeType == 0) {
 			addTagBetweenClassAndLib(newValue, affectedEObject, PrototypTags.ALWAYS)
-		} else if (userInput == 1) {
+		} else if (prototypeType == 1) {
 			addTagBetweenClassAndLib(newValue, affectedEObject, PrototypTags.NEVER)
 		}
 	}
 }
 
+/**
+ * reaction for adding a prototype
+ */
 reaction PrototypInsertedInClass {
 	after element caex::SystemUnitClass inserted in caex::SystemUnitClass[systemUnitClass]
 	call {
@@ -67,18 +77,19 @@ reaction PrototypInsertedInClass {
 		choices.add("always")
 		choices.add("never")
 		choices.add("depends on situation")
-		val userInput = userInteractor.singleSelectionDialogBuilder.message("Sollen Klone dieses Prototypen (" + newValue.name + ") immer angepasst werden?").choices(choices).startInteraction
+		val prototypeType = userInteractor.singleSelectionDialogBuilder.message("Should clones of this prototype (" + newValue.name + ") should always be adapted to changes?").choices(choices).startInteraction
 		
-		if (userInput == 0) {
+		if (prototypeType == 0) {
 			addTagBetweenClassAndLib(newValue, lib, PrototypTags.ALWAYS)
-		} else if (userInput == 1) {
+		} else if (prototypeType == 1) {
 			addTagBetweenClassAndLib(newValue, lib, PrototypTags.NEVER)
 		}
 	}
 }
 
-// ***** Regel 2
-
+/**
+ * reaction for adding an attribute to a prototype
+ */
 reaction AttributeInsertedInClass {
 	after element caex::Attribute inserted in caex::SystemUnitClass[^attribute]
 	call {
@@ -86,8 +97,9 @@ reaction AttributeInsertedInClass {
 	}
 }
 
-// ***** Methode zu Regel 2
-
+/**
+ * routine to create marks for new attributes
+ */
 routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribute property) {
 	match {
 		val alwaysTaggedLib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.ALWAYS
@@ -104,9 +116,9 @@ routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribut
 				choices.add("material")
 				choices.add("technical description")
 				choices.add("norm, law")
-				val userInput = userInteractor.singleSelectionDialogBuilder.message("Von welchem Typ ist diese Eigenschaft ( " + property.name + ")?").choices(choices).startInteraction
+				val attributeType = userInteractor.singleSelectionDialogBuilder.message("Which type has this attribute ( " + property.name + ")?").choices(choices).startInteraction
 				
-				switch(userInput) {
+				switch(attributeType) {
 					case 0:
 						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.BEHAVIOUR)
 					case 1:
@@ -129,6 +141,9 @@ routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribut
 	}
 } 
 
+/**
+ * routine to ask the user, if a new attribute should be copied to existing clones
+ */
 routine askUserToCopyNewProperty (caex::Attribute property, caex::InternalElement clone) {
 	match {
 		val prototype = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.DESCRIPTIVE
@@ -138,8 +153,8 @@ routine askUserToCopyNewProperty (caex::Attribute property, caex::InternalElemen
 			if(prototype.isPresent) {
 				copyProperty(property, clone)
 			} else {
-				val userinput = userInteractor.confirmationDialogBuilder.message("Soll die Eigenschaft (" + property.name + ") auf den Klon (" + clone.name + ") übertragen werden?").startInteraction
-				if(userinput) {
+				val shouldAttributeCopied = userInteractor.confirmationDialogBuilder.message("Should this attribute (" + property.name + ") be copied to this clone (" + clone.name + ")?").startInteraction
+				if(shouldAttributeCopied) {
 					copyProperty(property, clone)
 				}
 			}
@@ -147,6 +162,9 @@ routine askUserToCopyNewProperty (caex::Attribute property, caex::InternalElemen
 	}
 }
 
+/**
+ * routine to copy an attribute to a clone
+ */
 routine copyProperty (caex::Attribute property, caex::InternalElement clone) {
 	action {
 		val newAttribute = create caex::Attribute and initialize {
@@ -159,8 +177,9 @@ routine copyProperty (caex::Attribute property, caex::InternalElement clone) {
 	}
 }
 
-// bla
-
+/**
+ * routine to decide, if the clones of a prototype should be removed
+ */
 routine removeClones (caex::SystemUnitClass prototype) {
 	match {
 		val lib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.NEVER
@@ -181,6 +200,9 @@ routine removeClones (caex::SystemUnitClass prototype) {
 	}
 }
 
+/**
+ * routine to ask the user, if clones should be removed
+ */
 routine askUserToRemoveClone (caex::InternalElement clone) {
 	match {
 		val prototype = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.REAL
@@ -188,8 +210,8 @@ routine askUserToRemoveClone (caex::InternalElement clone) {
 	action {
 		execute {
 			if(!prototype.isPresent) {
-				val userinput = userInteractor.confirmationDialogBuilder.message("Soll der aktuelle Klon (" + clone.name + ") gelöscht werden?").startInteraction
-				if(userinput) {
+				val shouldCloneDeleted = userInteractor.confirmationDialogBuilder.message("Should this clone be deleted (" + clone.name + ")?").startInteraction
+				if(shouldCloneDeleted) {
 					removeClone(clone)
 				} else {
 					updateReference(clone)
@@ -199,12 +221,18 @@ routine askUserToRemoveClone (caex::InternalElement clone) {
 	}
 }
 
+/**
+ * routine to remove a clone
+ */
 routine removeClone(caex::InternalElement clone) {
 	action {
 		delete clone
 	}
 }
 
+/**
+ * routine to update to reference of a clone to its prototype, if the prototype was removed
+ */
 routine updateReference(caex::InternalElement clone) {
 	action {
 		update clone {
@@ -213,14 +241,18 @@ routine updateReference(caex::InternalElement clone) {
 	}
 }
 
-// ***** Allgemeine Methoden
-
+/**
+ * routine to add the mark of a prototype
+ */
 routine addTagBetweenClassAndLib (caex::SystemUnitClass prototype, caex::SystemUnitClassLib lib, String tag) {
 	action {
 		add correspondence between prototype and lib tagged with tag
 	}
 }
 
+/**
+ * routine to add the mark of an attribute
+ */
 routine addTagBetweenAttributeAndClass (caex::Attribute property, caex::SystemUnitClass prototype, String tag) {
 	action {
 		add correspondence between prototype and property tagged with tag

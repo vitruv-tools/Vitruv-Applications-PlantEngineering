@@ -10,8 +10,9 @@ reactions: caexToCollada
 in reaction to changes in CAEX
 execute actions in CAEX
 
-// ***** Hilfsroutinen, um auf nicht vorhandene Pfade reagieren zu können
-
+/**
+ * routine to create a new collada container in the aml-aggregator model
+ */
 routine createNewColladaContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
 	action {
 		val newContainer = create aml::ColladaContainer and initialize {
@@ -25,6 +26,9 @@ routine createNewColladaContainer (caex::ExternalInterface externalInterface, am
 	}
 }
 
+/**
+ * routine to create a new collada file and a collada model with basic structure
+ */
 routine createNewColladaFile(aml::ColladaContainer container) {
 	action {
 		val visualSceneInstance = create collada::InstanceWithExtra
@@ -42,8 +46,9 @@ routine createNewColladaFile(aml::ColladaContainer container) {
 	}
 }
 
-// ***** Routinen, um Korrespondenzen zwischen Interface und Geometriebeschreibung zu setzen bzw. zu entfernen
-
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a collada model, beginning with the corresponding container in the aggregator model
+ */
 routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
 	match {
 		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA
@@ -56,12 +61,18 @@ routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface ext
 	}
 }
 
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a collada model
+ */
 routine addCorrespondenceBetweenInterfaceAndScene(caex::ExternalInterface externalInterface, collada::SceneType scene) {
 	action {
 		add correspondence between externalInterface and scene tagged with AMLTags.INTERFACE_SCENE
 	}
 }
 
+/**
+ * routine to remove the correspondence between an ExternalInterface and the root element of a collada model
+ */
 routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
 	match {
 		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with AMLTags.INTERFACE_SCENE
