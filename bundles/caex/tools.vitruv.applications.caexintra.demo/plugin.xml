@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.handlers">
+      <handler class="tools.vitruv.applications.caexintra.demo.CAEXProjectGenerationHandler" commandId="tools.vitruv.applications.caexintra.caex.demo.CAEXProjectGeneration" />
+   </extension>
+   
+   <extension point="org.eclipse.ui.commands">
+      <command description="Creates a project for CAEX and a Vitruv VSUM that keeps the models consistent" id="tools.vitruv.applications.caexintra.demo.CAEXProjectGeneration" name="Create CAEX Vitruv Demo" />
+   </extension>
+   
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command commandId="tools.vitruv.applications.caexintra.demo.CAEXProjectGeneration" label="Create CAEX Vitruv Demo" style="push">
+            <visibleWhen checkEnabled="false">
+               <iterate>
+                  <adapt type="org.eclipse.core.resources.IProject">
+                     <test property="org.eclipse.core.resources.open" value="open" />
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu">
+         <command commandId="tools.vitruv.applications.caexintra.demo.CAEXProjectGeneration" label="Create CAEX Vitruv Demo" style="push">
+            <visibleWhen checkEnabled="false">
+               <iterate>
+                  <adapt type="org.eclipse.core.resources.IProject">
+                     <test property="org.eclipse.core.resources.open" value="open" />
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+</plugin>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/tools.vitruv.applications.caexintra.feature_0.2.0.qualifier.jar" id="tools.vitruv.applications.caexintra.feature" version="0.2.0.qualifier">
+      <category name="Vitruv Applications for PlantEngineering"/>
+   </feature>
+   <feature id="tools.vitruv.applications.caexintra.feature.source" version="0.2.0.qualifier">
+      <category name="Vitruv Applications for PlantEngineering"/>
+   </feature>
+   
+   <category-def name="Vitruv Applications for PlantEngineering" label="Vitruv Applications for PlantEngineering">
+      <description>
+         Applications for Vitruv and PlantEngineering
+      </description>
+   </category-def>
+   
+   <repository-reference location="http://https://kit-sdq.github.io/updatesite/nightly/" enabled="true" />
+   <repository-reference location="http://https://vitruv-tools.github.io/updatesite/nightly/framework/" enabled="true" />
+   <repository-reference location="http://https://vitruv-tools.github.io/updatesite/nightly/domains/" enabled="true" />
+</site>
