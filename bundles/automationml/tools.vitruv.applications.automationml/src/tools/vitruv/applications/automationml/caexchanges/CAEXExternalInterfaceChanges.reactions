@@ -259,7 +259,7 @@ routine addPathAttributeToExternalInterface(caex::ExternalInterface externalInte
 			newAttribute.value = ""
 		}
 		update externalInterface {
-			externalInterface.^attribute.add(newAttribute)
+			externalInterface.^attribute += newAttribute
 		}
 	}
 }
@@ -272,7 +272,7 @@ routine removePathAttributeFromExternalInterface(caex::ExternalInterface externa
 		execute {
 			val pathAttribute = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri")
 			if(pathAttribute !== null){
-				externalInterface.^attribute.remove(pathAttribute)
+				externalInterface.^attribute -= pathAttribute
 			}
 		}
 	}
@@ -320,7 +320,7 @@ routine createExternalInterface(caex::InternalElement container, caex::ExternalI
 			createAttributesForExternalInterfaceInInternalElement(newExternalInterface, interfaceInSystemUnitClass)
 		}
 		update container {
-			container.externalInterface.add(newExternalInterface)
+			container.externalInterface += newExternalInterface
 		}
 		add correspondence between interfaceClass and newExternalInterface tagged with AMLTags.CLASS_INTERFACE
 	}
@@ -349,7 +349,7 @@ routine createAttribute(caex::ExternalInterface container, String name, String v
 			newAttribute.value = value
 		}
 		update container {
-			container.^attribute.add(newAttribute)
+			container.^attribute += newAttribute
 		}
 	}
 }
@@ -369,7 +369,7 @@ routine removeCorrespondenceBetweenInterfaceAndItsClass(caex::ExternalInterface 
 /**
  * routine to change the path to a collada or plcopen file in an InternalElement
  */
-routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, String path, caex::CAEXFile root) {
+routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, String path, caex::CAEXFile rootElement) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	}
@@ -377,7 +377,7 @@ routine changePathForExternalInterfaceInInternalElement(caex::ExternalInterface 
 		execute {
 			val filteredInternalElements = PrototypeCloneUtils.checkClones(systemUnitClass, internalElements)
 			for(InternalElement currInternalElement : filteredInternalElements) {
-				val foundedInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(currInternalElement, externalInterface.name, root)
+				val foundedInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(currInternalElement, externalInterface.name, rootElement)
 				val pathAttribute = CAEXUtils.getAttributeInExternalInterface(foundedInterface, "refUri")
 				pathAttribute.value = path
 			}
@@ -412,7 +412,7 @@ routine createInterfaceClass(String name, caex::InterfaceClass container, caex::
 			newClass.name = name
 		}
 		update container {
-			container.interfaceClass.add(newClass)
+			container.interfaceClass += newClass
 		}
 		remove correspondence between oldInterfaceClass and externalInterface tagged with AMLTags.CLASS_INTERFACE
 		add correspondence between newClass and externalInterface tagged with AMLTags.CLASS_INTERFACE

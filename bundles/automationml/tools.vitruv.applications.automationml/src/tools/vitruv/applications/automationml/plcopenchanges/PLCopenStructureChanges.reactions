@@ -19,7 +19,7 @@ reaction RemovePouType {
 		logger.debug("RemovePouType")
 
 		//TODO reject change
-		affectedEObject.pou.add(oldValue)
+		affectedEObject.pou += oldValue
 	}
 }
 

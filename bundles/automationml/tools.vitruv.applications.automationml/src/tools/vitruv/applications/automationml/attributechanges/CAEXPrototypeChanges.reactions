@@ -52,9 +52,9 @@ reaction PrototypInsertedInLibrary {
 	after element caex::SystemUnitClass inserted in caex::SystemUnitClassLib[systemUnitClass]
 	call {
 		val choices = new LinkedList<String>
-		choices.add("always")
-		choices.add("never")
-		choices.add("depends on situation")
+		choices += "always"
+		choices += "never"
+		choices += "depends on situation"
 		val prototypeType = userInteractor.singleSelectionDialogBuilder.message("Should clones of this prototype (" + newValue.name + ") should always be adapted to changes?").choices(choices).startInteraction
 		
 		if (prototypeType == 0) {
@@ -74,9 +74,9 @@ reaction PrototypInsertedInClass {
 		val lib = EcoreUtil2.getContainerOfType(newValue, SystemUnitClassLib)
 		
 		val choices = new LinkedList<String>
-		choices.add("always")
-		choices.add("never")
-		choices.add("depends on situation")
+		choices += "always"
+		choices += "never"
+		choices += "depends on situation"
 		val prototypeType = userInteractor.singleSelectionDialogBuilder.message("Should clones of this prototype (" + newValue.name + ") should always be adapted to changes?").choices(choices).startInteraction
 		
 		if (prototypeType == 0) {
@@ -110,12 +110,12 @@ routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribut
 		execute {
 			if(!alwaysTaggedLib.isPresent && !neverTaggedLib.isPresent) {
 				val choices = new LinkedList<String>
-				choices.add("bahaviour, software security")
-				choices.add("safty")
-				choices.add("composition, geometrie, position")
-				choices.add("material")
-				choices.add("technical description")
-				choices.add("norm, law")
+				choices += "bahaviour, software security"
+				choices += "safty"
+				choices += "composition, geometrie, position"
+				choices += "material"
+				choices += "technical description"
+				choices += "norm, law"
 				val attributeType = userInteractor.singleSelectionDialogBuilder.message("Which type has this attribute ( " + property.name + ")?").choices(choices).startInteraction
 				
 				switch(attributeType) {
@@ -172,7 +172,7 @@ routine copyProperty (caex::Attribute property, caex::InternalElement clone) {
 			newAttribute.value = property.value
 		}
 		update clone {
-			clone.^attribute.add(newAttribute)
+			clone.^attribute += newAttribute
 		}
 	}
 }

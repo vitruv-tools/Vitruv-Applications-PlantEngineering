@@ -21,7 +21,7 @@ routine createPLCopenFile(aml::PLCopenContainer container) {
 	action {
 		val pouType = create plcopen::PouType1
 		val pousType = create plcopen::PousType and initialize {
-			pousType.pou.add(pouType)
+			pousType.pou += pouType
 		}
 		val typesType = create plcopen::TypesType and initialize {
 			typesType.pous = pousType

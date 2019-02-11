@@ -24,7 +24,7 @@ reaction RemoveRoleClassLibrary {
 	call {
 		if(AMLBasicStrings.automationMLRoleClassLibName.equals(oldValue.name)) {
 			//TODO reject change
-			affectedEObject.roleClassLib.add(oldValue)
+			affectedEObject.roleClassLib += oldValue
 			return
 		}
 		
@@ -44,7 +44,7 @@ reaction RemoveRoleClass {
 		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue.name)) 
 		{
 			//TODO reject change
-			affectedEObject.roleClass.add(oldValue)
+			affectedEObject.roleClass += oldValue
 			return
 		}
 				
@@ -65,7 +65,7 @@ reaction RemoveRoleClassFromLib {
 	call {
 		if(AMLBasicStrings.automationMLBaseRoleName.equals(oldValue.name)) {
 			//TODO reject change
-			affectedEObject.roleClass.add(oldValue)
+			affectedEObject.roleClass += oldValue
 			return
 		}
 		

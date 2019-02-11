@@ -150,7 +150,7 @@ routine createRoleClass(String name, caex::RoleClass container, caex::InternalEl
 			newClass.name = name
 		}
 		update container {
-			container.roleClass.add(newClass)
+			container.roleClass += newClass
 		}
 		remove correspondence between oldRoleClass and internalElement tagged with AMLTags.CLONE_ROLE
 		add correspondence between newClass and internalElement tagged with AMLTags.CLONE_ROLE
@@ -169,10 +169,10 @@ routine addCorrespondenceBetweenClassAndInstance(caex::InternalElement internalE
 /**
  * routine to copy an ExternalInterface for connecting to a plcopen file to an InternalElement
  */
-routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root) {
+routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass, caex::CAEXFile rootElement) {
 	match {
 		check {
-			InterfaceContainmentUtils.checkSystemClassForExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN, root)
+			InterfaceContainmentUtils.checkSystemClassForExternalInterface(systemUnitClass, ExternalInterfaceType.PLCOPEN, rootElement)
 		}
 	}
 	action {
@@ -182,13 +182,13 @@ routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElem
 			newAttribute.value = CAEXUtils.getUriAttributeInPLCopenInterface(systemUnitClass).value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
-			val systemClassInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(systemUnitClass, ExternalInterfaceType.PLCOPEN, root)
+			val systemClassInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(systemUnitClass, ExternalInterfaceType.PLCOPEN, rootElement)
 			newInterface.name = systemClassInterface.name
-			newInterface.^attribute.add(newAttribute)
+			newInterface.^attribute += newAttribute
 			newInterface.refBaseClassPath = systemClassInterface.refBaseClassPath
 		}
 		update internalElement {
-			internalElement.externalInterface.add(newInterface)
+			internalElement.externalInterface += newInterface
 		}
 	}
 }
@@ -196,10 +196,10 @@ routine copyPLCopenValuesFromPrototypeToClone(caex::InternalElement internalElem
 /**
  * routine to copy an ExternalInterface for connecting to a collada file to an InternalElement
  */
-routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root) {
+routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElement, caex::SystemUnitClass systemUnitClass, caex::CAEXFile rootElement) {
 	match {
 		check {
-			InterfaceContainmentUtils.checkSystemClassForExternalInterface(systemUnitClass, ExternalInterfaceType.COLLADA, root)
+			InterfaceContainmentUtils.checkSystemClassForExternalInterface(systemUnitClass, ExternalInterfaceType.COLLADA, rootElement)
 		}
 	}
 	action {
@@ -209,13 +209,13 @@ routine copyColladaValuesFromPrototypeToClone(caex::InternalElement internalElem
 			newAttribute.value = CAEXUtils.getUriAttributeInColladaInterface(systemUnitClass).value
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
-			val systemClassInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(systemUnitClass, ExternalInterfaceType.COLLADA, root)
+			val systemClassInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(systemUnitClass, ExternalInterfaceType.COLLADA, rootElement)
 			newInterface.name = systemClassInterface.name
-			newInterface.^attribute.add(newAttribute)
+			newInterface.^attribute += newAttribute
 			newInterface.refBaseClassPath = systemClassInterface.refBaseClassPath
 		}
 		update internalElement {
-			internalElement.externalInterface.add(newInterface)
+			internalElement.externalInterface += newInterface
 		}
 	}
 }

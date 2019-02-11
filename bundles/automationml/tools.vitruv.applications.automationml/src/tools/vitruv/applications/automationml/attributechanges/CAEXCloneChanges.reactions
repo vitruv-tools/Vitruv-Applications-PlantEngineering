@@ -66,9 +66,9 @@ routine addedPrototpyeForClone (caex::InternalElement clone, caex::SystemUnitCla
 					addTagToCloneAndPrototype(clone, prototype, CloneTags.DESCRIPTIVE)
 				} else {
 					val choices = new LinkedList<String>
-					choices.add("real existing")
-					choices.add("abstract description")
-					choices.add("example object")
+					choices += "real existing"
+					choices += "abstract description"
+					choices += "example object"
 					val cloneType = userInteractor.singleSelectionDialogBuilder.message("From which type is the clone " + clone.name +"?").choices(choices).startInteraction
 					
 					if(cloneType == 0) {
@@ -118,7 +118,7 @@ routine removeCopiedAttributesFromClone (caex::InternalElement clone, caex::Syst
 				val actualAttribute = CAEXUtils.getAttributeInClone(currAtt.name, clone)
 				if(actualAttribute !== null) {
 					if(!PrototypeCloneUtils.checkTwoAttributesForDiffs(actualAttribute, currAtt)) {
-						clone.^attribute.remove(actualAttribute)
+						clone.^attribute -= actualAttribute
 					}
 				}				
 			}
@@ -135,7 +135,7 @@ routine removeSomeCopiedAttributesFromClone (caex::InternalElement clone, caex::
 			for(Attribute currAtt : newPrototype.^attribute) {
 				val actualAttribute = CAEXUtils.getAttributeInClone(currAtt.name, clone)
 				if(actualAttribute !== null) {
-					clone.^attribute.remove(actualAttribute)
+					clone.^attribute -= actualAttribute
 				}
 			}
 		}
@@ -217,7 +217,7 @@ routine copyAttributeToClone (caex::InternalElement clone, caex::Attribute att) 
 			newAttribute.value = att.value
 		}
 		update clone {
-			clone.^attribute.add(newAttribute)
+			clone.^attribute += newAttribute
 		}
 	}
 }
@@ -251,7 +251,7 @@ routine copyBehaviourAttributeToRealClone (caex::InternalElement clone, caex::At
 			newAttribute.value = att.value
 		}
 		update clone {
-			clone.^attribute.add(newAttribute)
+			clone.^attribute += newAttribute
 		}
 		execute {
 			val userInput = userInteractor.confirmationDialogBuilder.message("Is this behaviour description (clone: " + clone.name + ", attribute: " + att.name + ") maintainable?").startInteraction		

@@ -22,7 +22,7 @@ reaction RemoveAMLProject {
 		logger.debug("Reaction RemoveAMLProject")
 		
 		//TODO reject change
-		oldValue.eResource.contents.add(oldValue)
+		oldValue.eResource.contents += oldValue
 	}
 }
 

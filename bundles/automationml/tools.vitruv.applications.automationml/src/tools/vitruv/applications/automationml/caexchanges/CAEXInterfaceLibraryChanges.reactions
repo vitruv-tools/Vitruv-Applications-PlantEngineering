@@ -27,7 +27,7 @@ reaction RemoveInterfaceClassLibrary {
 		
 		if(AMLBasicStrings.automationMLInterfaceBaseLibName.equals(oldValue.name)) {
 			//TODO reject change
-			affectedEObject.interfaceClassLib.add(oldValue)
+			affectedEObject.interfaceClassLib += oldValue
 			return
 		}
 		
@@ -52,7 +52,7 @@ reaction RemoveInterfaceClass {
 		) 
 		{
 			//TODO reject change
-			affectedEObject.interfaceClass.add(oldValue)
+			affectedEObject.interfaceClass += oldValue
 			return
 		}
 				
@@ -75,7 +75,7 @@ reaction RemoveInterfaceClassFromLib {
 		
 		if(AMLBasicStrings.automationMLBaseInterfaceName.equals(oldValue.name)) {
 			//TODO reject change
-			affectedEObject.interfaceClass.add(oldValue)
+			affectedEObject.interfaceClass += oldValue
 			return
 		}
 		
@@ -190,10 +190,10 @@ routine removeCorrespondenceToPLCopen(caex::ExternalInterface externalInterface)
 /**
  * routine to add an path attribute to an ExternalInterface, if this connects a caex file to a collada or plcopen file
  */
-routine addUri(caex::ExternalInterface externalInterface, caex::CAEXFile root) {
+routine addUri(caex::ExternalInterface externalInterface, caex::CAEXFile rootElement) {
 	match {
 		check {
-			InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterface, root) || InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterface, root)
+			InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterface, rootElement) || InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterface, rootElement)
 		}
 	}
 	action {
@@ -203,7 +203,7 @@ routine addUri(caex::ExternalInterface externalInterface, caex::CAEXFile root) {
 			newAttribute.value = ""
 		}
 		update externalInterface {
-			externalInterface.^attribute.add(newAttribute)
+			externalInterface.^attribute += newAttribute
 		}
 	}
 }

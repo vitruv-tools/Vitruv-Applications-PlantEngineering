@@ -52,14 +52,14 @@ reaction ChangeVisualInstance {
 	call {
 		logger.debug("ChangeVisualInstance")
 		
-		val root = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
-		val visualScene = ColladaStringUtils.getVisualSceneByID(newValue, root)
+		val rootElement = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
+		val visualScene = ColladaStringUtils.getVisualSceneByID(newValue, rootElement)
 				
 		if(visualScene === null) {
 			val shouldVisualSceneCreated = userInteractor.confirmationDialogBuilder.message("ID is not existing. Should a new visual scene description be created? Otherwise the change would be rejected.").startInteraction
 			if(shouldVisualSceneCreated) {
 				removeCorrespondenceBetweenInstanceAndVisualScene(affectedEObject)
-				addVisualSceneInTree(root, affectedEObject, newValue)
+				addVisualSceneInTree(rootElement, affectedEObject, newValue)
 			} else {
 				//TODO reject change
 				affectedEObject.url = oldValue
@@ -95,23 +95,23 @@ routine addCorrespondenceBetweenInstanceAndVisualScene(collada::InstanceWithExtr
 /**
  * routine to add a visual scene definition in the collada file, if an implicit reference in an instance is not existing 
  */
-routine addVisualSceneInTree(collada::COLLADAType root, collada::InstanceWithExtra instance, String id) {
+routine addVisualSceneInTree(collada::COLLADAType rootElement, collada::InstanceWithExtra instance, String id) {
 	action {
 		val geometryInstance = create collada::InstanceGeometryType and initialize {
 			geometryInstance.url = ""
 		}
 		val node = create collada::NodeType1 and initialize {
-			node.instanceGeometry.add(geometryInstance)
+			node.instanceGeometry += geometryInstance
 		}
 		val visualScene = create collada::VisualSceneType and initialize {
 			visualScene.id = id
-			visualScene.node.add(node)
+			visualScene.node += node
 		}
 		val visualSceneLib = create collada::LibraryVisualScenesType and initialize {
-			visualSceneLib.visualScene.add(visualScene)
+			visualSceneLib.visualScene += visualScene
 		}
-		update root {
-			root.libraryVisualScenes.add(visualSceneLib)
+		update rootElement {
+			rootElement.libraryVisualScenes += visualSceneLib
 		}
 		add correspondence between instance and visualScene
 	}

@@ -96,14 +96,14 @@ reaction ChangeGeometryInstance {
 	call {
 		logger.debug("ChangeGeometryInstance")
 		
-		val root = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
-		val geometry = ColladaStringUtils.getGeometryByID(newValue, root)
+		val rootElement = EcoreUtil2.getContainerOfType(affectedEObject, COLLADAType)
+		val geometry = ColladaStringUtils.getGeometryByID(newValue, rootElement)
 		
 		if(geometry === null) {
 			val shouldGeometryCreated = userInteractor.confirmationDialogBuilder.message("ID is not existing. Should a new geometry description be created? Otherwise the change would be rejected.").startInteraction
 			if(shouldGeometryCreated) {
 				removeCorrespondenceBetweenInstanceAndGeometry(affectedEObject)
-				addGeometryInTree(root, affectedEObject, newValue)
+				addGeometryInTree(rootElement, affectedEObject, newValue)
 			} else {
 				//TODO reject change
 				affectedEObject.url = oldValue
@@ -181,16 +181,16 @@ routine addCorrespondenceBetweenInstanceAndGeometry(collada::InstanceGeometryTyp
 /**
  * routine to add a geometry definition in the collada file, if an implicit reference in an instance is not existing 
  */
-routine addGeometryInTree(collada::COLLADAType root, collada::InstanceGeometryType instance, String id) {
+routine addGeometryInTree(collada::COLLADAType rootElement, collada::InstanceGeometryType instance, String id) {
 	action {
 		val geometry = create collada::GeometryType and initialize {
 			geometry.id = id
 		}
 		val geometryLib = create collada::LibraryGeometriesType and initialize {
-			geometryLib.geometry.add(geometry)
+			geometryLib.geometry += geometry
 		}
-		update root {
-			root.libraryGeometries.add(geometryLib)
+		update rootElement {
+			rootElement.libraryGeometries += geometryLib
 		}
 		add correspondence between instance and geometry
 	}

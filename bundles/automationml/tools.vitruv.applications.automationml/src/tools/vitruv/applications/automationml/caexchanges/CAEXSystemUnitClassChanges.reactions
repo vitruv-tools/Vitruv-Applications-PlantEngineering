@@ -122,8 +122,8 @@ reaction AddExternalInterfaceToSystemClass {
 		
 		val shouldChangePropagated = userInteractor.confirmationDialogBuilder.message("Should all internal elements, which are referencing this class, be adapted to the new interface?").startInteraction
 		if(shouldChangePropagated) {
-			val root = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
-			addExternalInterfaceToInternalElements(newValue, affectedEObject, root)
+			val rootElement = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+			addExternalInterfaceToInternalElements(newValue, affectedEObject, rootElement)
 		}		
 	} 
 }
@@ -209,14 +209,14 @@ routine removeClone(caex::InternalElement internalElement) {
 /**
  * routine to add an ExternalInterface to an InternalElement
  */
-routine addExternalInterfaceToInternalElements(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root) {
+routine addExternalInterfaceToInternalElements(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, caex::CAEXFile rootElement) {
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	}
 	action {
 		execute {
 			val filteredList = PrototypeCloneUtils.checkClones(systemUnitClass, internalElements)
-			if(InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterface, root) || InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterface, root)) {
+			if(InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterface, rootElement) || InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterface, rootElement)) {
 				val uri = CAEXUtils.getAttributeInExternalInterface(externalInterface, "refUri").value
 				for(InternalElement currInternalElement : filteredList) {
 					addExternalInterfaceWithUriToInternalElement(externalInterface, currInternalElement, uri)
@@ -243,7 +243,7 @@ routine addExternalInterfaceWithoutUriToInternalElement(caex::ExternalInterface 
 			newInterface.refBaseClassPath = externalInterface.refBaseClassPath
 		}
 		update internalElement {
-			internalElement.externalInterface.add(newInterface)
+			internalElement.externalInterface += newInterface
 		}
 		add correspondence between newInterface and interfaceClass
 	}
@@ -264,11 +264,11 @@ routine addExternalInterfaceWithUriToInternalElement(caex::ExternalInterface ext
 		}
 		val newInterface = create caex::ExternalInterface and initialize {
 			newInterface.name = externalInterface.name
-			newInterface.^attribute.add(newAttribute)
+			newInterface.^attribute += newAttribute
 			newInterface.refBaseClassPath = externalInterface.refBaseClassPath
 		}
 		update internalElement {
-			internalElement.externalInterface.add(newInterface)
+			internalElement.externalInterface += newInterface
 		}
 		add correspondence between newInterface and interfaceClass
 	}
@@ -277,16 +277,16 @@ routine addExternalInterfaceWithUriToInternalElement(caex::ExternalInterface ext
 /**
  * routine to remove an ExternalInterface from an InternalElement
  */
-routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, caex::CAEXFile root){
+routine removeExternalInterfaceFromInternalElement(caex::ExternalInterface externalInterface, caex::SystemUnitClass systemUnitClass, caex::CAEXFile rootElement){
 	match {
 		val internalElements = retrieve many caex::InternalElement corresponding to systemUnitClass tagged with AMLTags.PROTOTYPE_CLONE
 	} action {
 		execute {
 			val filteredList = PrototypeCloneUtils.checkClones(systemUnitClass, internalElements)
 			for(InternalElement currInternalElement : filteredList) {
-				val foundedInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(currInternalElement, externalInterface.name, root)
+				val foundedInterface = InterfaceContainmentUtils.getExternalInterfaceFromSystemClass(currInternalElement, externalInterface.name, rootElement)
 				if(foundedInterface !== null) {
-					currInternalElement.externalInterface.remove(foundedInterface)
+					currInternalElement.externalInterface -= foundedInterface
 				}
 			}
 		}
