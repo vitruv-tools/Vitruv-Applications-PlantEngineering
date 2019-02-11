@@ -1,0 +1,209 @@
+import org.eclipse.xtext.EcoreUtil2
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AMLBasicStrings
+import caex.caex30.caex.InterfaceClass
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.InterfaceClassUtils
+import tools.vitruv.applications.automationml.utils.externalInterfaceUtils.InterfaceTypeUtils
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexInterfaceLibraryChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+//Sometimes in this reactions, a change will be rejected. This happens due to the fact, that standard interfaces, which came along with AML, are not allowed to change
+
+/**
+ * reaction for removing an interface library
+ */
+reaction RemoveInterfaceClassLibrary {
+	after element caex::InterfaceClassLib removed from caex::CAEXFile[interfaceClassLib]
+	call {
+		logger.debug("RemoveInterfaceClassLibrary")		
+		
+		if(AMLBasicStrings.automationMLInterfaceBaseLibName.equals(oldValue.name)) {
+			//TODO reject change
+			affectedEObject.interfaceClassLib += oldValue
+			return
+		}
+		
+		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
+		for(InterfaceClass currClass : listOfInterfaceClasses) {
+			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+		}
+	}
+}
+
+/**
+ * reaction for removing an interface
+ */
+reaction RemoveInterfaceClass {
+	after element caex::InterfaceClass removed from caex::InterfaceClass[interfaceClass]
+	call {
+		logger.debug("RemoveInterfaceClass")
+		
+		if(AMLBasicStrings.automationMLExternalBaseInterfaceName.equals(oldValue.name)
+			|| AMLBasicStrings.externalColladaBaseInterfaceName.equals(oldValue.name)
+			|| AMLBasicStrings.externalPLCopenBaseInterfaceName.equals(oldValue.name)
+		) 
+		{
+			//TODO reject change
+			affectedEObject.interfaceClass += oldValue
+			return
+		}
+				
+		changeRefBaseClassPathOfExternalInterfaces(oldValue, "")
+		
+		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
+		for(InterfaceClass currClass : listOfInterfaceClasses) {
+			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+		}
+	}
+}
+
+/**
+ * reaction for removing an interface
+ */
+reaction RemoveInterfaceClassFromLib {
+	after element caex::InterfaceClass removed from caex::InterfaceClassLib[interfaceClass]
+	call {
+		logger.debug("RemoveInterfaceClassFromLib")
+		
+		if(AMLBasicStrings.automationMLBaseInterfaceName.equals(oldValue.name)) {
+			//TODO reject change
+			affectedEObject.interfaceClass += oldValue
+			return
+		}
+		
+		changeRefBaseClassPathOfExternalInterfaces(oldValue, "")
+		
+		val listOfInterfaceClasses = EcoreUtil2.getAllContentsOfType(oldValue, InterfaceClass)
+		for(InterfaceClass currClass : listOfInterfaceClasses) {
+			changeRefBaseClassPathOfExternalInterfaces(currClass, "")
+		}
+	}
+}
+
+/**
+ * reaction for changing the name of an interface
+ */
+reaction ChangeInterfaceName {
+	after attribute replaced at caex::InterfaceClass[name]
+	call {
+		logger.debug("ChangeInterfaceName")
+		
+		if(AMLBasicStrings.automationMLBaseInterfaceName.equals(oldValue)
+			|| AMLBasicStrings.automationMLExternalBaseInterfaceName.equals(oldValue)
+			|| AMLBasicStrings.externalColladaBaseInterfaceName.equals(oldValue)
+			|| AMLBasicStrings.externalPLCopenBaseInterfaceName.equals(oldValue)
+		) 
+		{
+			//TODO reject change
+			affectedEObject.name = oldValue
+			return
+		}
+		
+		val ownPath = InterfaceClassUtils.getCompletePathOfInterfaceClass(affectedEObject)
+		changeRefBaseClassPathOfExternalInterfaces(affectedEObject, ownPath)
+		val interfaceClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, InterfaceClass)
+		
+		for(InterfaceClass currClass : interfaceClasses) {
+			val currPath = InterfaceClassUtils.getCompletePathOfInterfaceClass(currClass)
+			changeRefBaseClassPathOfExternalInterfaces(currClass, currPath)
+		}
+	}
+}
+
+/**
+ * reaction for changing the name of an interface library
+ */
+reaction ChangeInterfaceLibName {
+	after attribute replaced at caex::InterfaceClassLib[name]
+	call {
+		logger.debug("ChangeInterfaceLibName")
+		
+		if(AMLBasicStrings.automationMLInterfaceBaseLibName.equals(oldValue)) {
+			//TODO reject change
+			affectedEObject.name = oldValue
+			return
+		}
+		
+		val interfaceClasses = EcoreUtil2.getAllContentsOfType(affectedEObject, InterfaceClass)
+		
+		for(InterfaceClass currClass : interfaceClasses) {
+			val currPath = InterfaceClassUtils.getCompletePathOfInterfaceClass(currClass)
+			changeRefBaseClassPathOfExternalInterfaces(currClass, currPath)
+		}
+	}
+}
+
+/**
+ * routine to adapt ExternalInterfaces, if their interface class was changed or removed
+ */
+routine changeRefBaseClassPathOfExternalInterfaces(caex::InterfaceClass interfaceClass, String newPath) {
+	match {
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to interfaceClass tagged with AMLTags.CLASS_INTERFACE
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				currInterface.refBaseClassPath = newPath
+			}
+			if(newPath.isNullOrEmpty) {
+				for(ExternalInterface currInterface : externalInterfaces) {
+					removeCorrespondenceToCollada(currInterface)
+					removeCorrespondenceToPLCopen(currInterface)
+				}
+			}
+		}
+	}
+}
+
+/**
+ * routine to remove a correspondence between an ExternalInterface and a collada file
+ */
+routine removeCorrespondenceToCollada(caex::ExternalInterface externalInterface) {
+	match{
+		val scene = retrieve collada::SceneType corresponding to externalInterface tagged with AMLTags.INTERFACE_SCENE
+	}
+	action {
+		remove correspondence between scene and externalInterface tagged with AMLTags.INTERFACE_SCENE
+	}
+}
+
+/**
+ * routine to remove a correspondence between an ExternalInterface and a plcopen file
+ */
+routine removeCorrespondenceToPLCopen(caex::ExternalInterface externalInterface) {
+	match{
+		val pou = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU
+	}
+	action {
+		remove correspondence between pou and externalInterface tagged with AMLTags.INTERFACE_POU
+	}
+}
+
+/**
+ * routine to add an path attribute to an ExternalInterface, if this connects a caex file to a collada or plcopen file
+ */
+routine addUri(caex::ExternalInterface externalInterface, caex::CAEXFile rootElement) {
+	match {
+		check {
+			InterfaceTypeUtils.isInterfaceInstanceOfPLCopenInterface(externalInterface, rootElement) || InterfaceTypeUtils.isInterfaceInstanceOfColladaInterface(externalInterface, rootElement)
+		}
+	}
+	action {
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = "refUri"
+			newAttribute.attributeDataType = "xs:anyURI"
+			newAttribute.value = ""
+		}
+		update externalInterface {
+			externalInterface.^attribute += newAttribute
+		}
+	}
+}

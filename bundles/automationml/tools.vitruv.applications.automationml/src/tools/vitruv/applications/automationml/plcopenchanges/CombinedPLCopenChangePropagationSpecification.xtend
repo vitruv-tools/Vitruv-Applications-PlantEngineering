@@ -1,0 +1,7 @@
+package tools.vitruv.applications.automationml.plcopenchanges
+
+import mir.reactions.combinedPLCopenChanges.CombinedPLCopenChangesChangePropagationSpecification
+
+class CombinedPLCopenChangePropagationSpecification extends CombinedPLCopenChangesChangePropagationSpecification {
+	
+}

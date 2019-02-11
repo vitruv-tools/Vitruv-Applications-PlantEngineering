@@ -1,0 +1,92 @@
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import org.khronos.collada.InstanceGeometryType
+import org.khronos.collada.GeometryType
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: colladaGeometryChanges
+in reaction to changes in Collada
+execute actions in Collada
+
+/**
+ * reaction for a removed geometry library
+ */
+reaction RemoveGeometriesLibrary {
+	after element collada::LibraryGeometriesType removed from collada::COLLADAType[libraryGeometries]
+	call {
+		logger.debug("RemoveGeometriesLibrary")
+		
+		for(GeometryType currGeo : oldValue.geometry) {
+			removeIdAndCorrespondenceForGeometryAndInstances(currGeo)
+		}
+	}
+}
+
+/**
+ * reaction for a removed geometry definition
+ */
+reaction RemoveGeometry {
+	after element collada::GeometryType removed from collada::LibraryGeometriesType[geometry]
+	call {
+		logger.debug("RemoveGeometry")
+		
+		removeIdAndCorrespondenceForGeometryAndInstances(oldValue)
+	}
+}
+
+/**
+ * reaction for changing the id of a geometry definition
+ */
+reaction ChangeGeometryID {
+	after attribute replaced at collada::GeometryType[id]
+	call {
+		logger.debug("ChangeGeometryID")
+		
+		changeIdInGeometrieInstances(affectedEObject)
+	}
+}
+
+/**
+ * routine to change to change the reference (url) to a geometry definition in a geometry instance
+ */
+routine changeIdInGeometrieInstances(collada::GeometryType geometry) {
+	match {
+		val instances = retrieve many collada::InstanceGeometryType corresponding to geometry tagged with AMLTags.GEOMETRY_INSTANCE
+	}
+	action {
+		execute {
+			for(InstanceGeometryType currInstance : instances) {
+				currInstance.url = geometry.id
+			}
+		}
+	}
+}
+
+/**
+ * routine to adapt correspondence model and geometry instances due to deletion of a geometry description
+ */
+routine removeIdAndCorrespondenceForGeometryAndInstances(collada::GeometryType geometry) {
+	match {
+		val instances = retrieve many collada::InstanceGeometryType corresponding to geometry tagged with AMLTags.GEOMETRY_INSTANCE
+	}
+	action {
+		execute {
+			for(InstanceGeometryType currInstance : instances) {
+				currInstance.url = ""
+				removeCorrespondenceBetweenGeoemtryAndInstance(geometry, currInstance)
+			}
+		}
+	}
+}
+
+/**
+ * routine to remove the correspondence between a geometry instance and its definition
+ */
+routine removeCorrespondenceBetweenGeoemtryAndInstance(collada::GeometryType geometry, collada::InstanceGeometryType instance) {
+	action {
+		remove correspondence between geometry and instance tagged with AMLTags.GEOMETRY_INSTANCE
+	}
+}

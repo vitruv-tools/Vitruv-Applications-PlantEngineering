@@ -1,0 +1,56 @@
+import org.eclipse.xtext.EcoreUtil2
+import org.plcopen.xml.tc60201.PouType1
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: aggregatorToPlcopen
+in reaction to changes in AML
+execute actions in AML
+
+/**
+ * routine to create a new plcopen file with its basic structure
+ */
+routine createPLCopenFile(aml::PLCopenContainer container) {
+	action {
+		val pouType = create plcopen::PouType1
+		val pousType = create plcopen::PousType and initialize {
+			pousType.pou += pouType
+		}
+		val typesType = create plcopen::TypesType and initialize {
+			typesType.pous = pousType
+		}
+		val projectType = create plcopen::ProjectType and initialize {
+			projectType.types = typesType
+		}
+		add correspondence between projectType and container tagged with AMLTags.AML_PLCOPEN
+		execute { 
+			val plcNumber = AggregatorUtils.newNumberOfPLCopenFiles
+			persistProjectRelative(container, projectType, "../../../../../Desktop/resources-gen/plc" + plcNumber + ".tc60201")
+		}
+	}
+}
+
+/**
+ * routine to delete plcopen file and set references to deleted file to an empty string
+ */
+routine deletePLCopenFile(aml::PLCopenContainer container) {
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(plcProject, PouType1).get(0) tagged with AMLTags.INTERFACE_POU
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri").value = ""
+			}
+		}
+		delete plcProject
+	}
+}

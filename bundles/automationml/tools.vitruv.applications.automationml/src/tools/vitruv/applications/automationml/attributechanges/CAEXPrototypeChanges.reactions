@@ -1,0 +1,260 @@
+import org.eclipse.xtext.EcoreUtil2
+import java.util.LinkedList
+import tools.vitruv.applications.automationml.utils.propertybasedtags.PrototypTags
+import caex.caex30.caex.SystemUnitClassLib
+import tools.vitruv.applications.automationml.utils.propertybasedtags.PropertyTags
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import caex.caex30.caex.InternalElement
+import tools.vitruv.applications.automationml.utils.propertybasedtags.CloneTags
+import caex.caex30.caex.SystemUnitClass
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexAttributePrototypChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+/**
+ * reaction for removing a prototype
+ */
+reaction PrototypeRemovedInLibrary {
+	after element caex::SystemUnitClass removed from caex::SystemUnitClassLib[systemUnitClass]
+	call {
+		removeClones(oldValue)
+		val prototypes = EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)
+		for(SystemUnitClass currPrototype: prototypes) {
+			removeClones(currPrototype)
+		}
+	}
+}
+
+/**
+ * reaction for removing a prototype
+ */
+reaction PrototypeRemovedInClass {
+	after element caex::SystemUnitClass removed from caex::SystemUnitClass[systemUnitClass]
+	call {
+		removeClones(oldValue)
+		val prototypes = EcoreUtil2.getAllContentsOfType(oldValue, SystemUnitClass)
+		for(SystemUnitClass currPrototype: prototypes) {
+			removeClones(currPrototype)
+		}
+	}
+}
+
+/**
+ * reaction for adding a prototype
+ */
+reaction PrototypInsertedInLibrary {
+	after element caex::SystemUnitClass inserted in caex::SystemUnitClassLib[systemUnitClass]
+	call {
+		val choices = new LinkedList<String>
+		choices += "always"
+		choices += "never"
+		choices += "depends on situation"
+		val prototypeType = userInteractor.singleSelectionDialogBuilder.message("Should clones of this prototype (" + newValue.name + ") should always be adapted to changes?").choices(choices).startInteraction
+		
+		if (prototypeType == 0) {
+			addTagBetweenClassAndLib(newValue, affectedEObject, PrototypTags.ALWAYS)
+		} else if (prototypeType == 1) {
+			addTagBetweenClassAndLib(newValue, affectedEObject, PrototypTags.NEVER)
+		}
+	}
+}
+
+/**
+ * reaction for adding a prototype
+ */
+reaction PrototypInsertedInClass {
+	after element caex::SystemUnitClass inserted in caex::SystemUnitClass[systemUnitClass]
+	call {
+		val lib = EcoreUtil2.getContainerOfType(newValue, SystemUnitClassLib)
+		
+		val choices = new LinkedList<String>
+		choices += "always"
+		choices += "never"
+		choices += "depends on situation"
+		val prototypeType = userInteractor.singleSelectionDialogBuilder.message("Should clones of this prototype (" + newValue.name + ") should always be adapted to changes?").choices(choices).startInteraction
+		
+		if (prototypeType == 0) {
+			addTagBetweenClassAndLib(newValue, lib, PrototypTags.ALWAYS)
+		} else if (prototypeType == 1) {
+			addTagBetweenClassAndLib(newValue, lib, PrototypTags.NEVER)
+		}
+	}
+}
+
+/**
+ * reaction for adding an attribute to a prototype
+ */
+reaction AttributeInsertedInClass {
+	after element caex::Attribute inserted in caex::SystemUnitClass[^attribute]
+	call {
+		createTagsForProperties(affectedEObject, newValue)
+	}
+}
+
+/**
+ * routine to create marks for new attributes
+ */
+routine createTagsForProperties (caex::SystemUnitClass prototype, caex::Attribute property) {
+	match {
+		val alwaysTaggedLib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.ALWAYS
+		val neverTaggedLib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.NEVER
+		val clones = retrieve many caex::InternalElement corresponding to prototype tagged with AMLTags.PROTOTYPE_CLONE
+	}
+	action {
+		execute {
+			if(!alwaysTaggedLib.isPresent && !neverTaggedLib.isPresent) {
+				val choices = new LinkedList<String>
+				choices += "bahaviour, software security"
+				choices += "safty"
+				choices += "composition, geometrie, position"
+				choices += "material"
+				choices += "technical description"
+				choices += "norm, law"
+				val attributeType = userInteractor.singleSelectionDialogBuilder.message("Which type has this attribute ( " + property.name + ")?").choices(choices).startInteraction
+				
+				switch(attributeType) {
+					case 0:
+						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.BEHAVIOUR)
+					case 1:
+						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.SAFTY)
+					case 2:
+						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.COMPOSITION)
+					case 3:
+						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.MATERIAL)
+					case 4:
+						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.TECHNOLOGY)
+					case 5:
+						addTagBetweenAttributeAndClass(property, prototype, PropertyTags.RULE)
+				}
+				
+				for(InternalElement currClone : clones) {
+					askUserToCopyNewProperty(property, currClone)
+				}
+			}
+		}
+	}
+} 
+
+/**
+ * routine to ask the user, if a new attribute should be copied to existing clones
+ */
+routine askUserToCopyNewProperty (caex::Attribute property, caex::InternalElement clone) {
+	match {
+		val prototype = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.DESCRIPTIVE
+	}
+	action {
+		execute {
+			if(prototype.isPresent) {
+				copyProperty(property, clone)
+			} else {
+				val shouldAttributeCopied = userInteractor.confirmationDialogBuilder.message("Should this attribute (" + property.name + ") be copied to this clone (" + clone.name + ")?").startInteraction
+				if(shouldAttributeCopied) {
+					copyProperty(property, clone)
+				}
+			}
+		}
+	}
+}
+
+/**
+ * routine to copy an attribute to a clone
+ */
+routine copyProperty (caex::Attribute property, caex::InternalElement clone) {
+	action {
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = property.name
+			newAttribute.value = property.value
+		}
+		update clone {
+			clone.^attribute += newAttribute
+		}
+	}
+}
+
+/**
+ * routine to decide, if the clones of a prototype should be removed
+ */
+routine removeClones (caex::SystemUnitClass prototype) {
+	match {
+		val lib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.NEVER
+		val clones = retrieve many caex::InternalElement corresponding to prototype tagged with AMLTags.PROTOTYPE_CLONE
+	}
+	action {
+		execute {
+			if(!lib.isPresent) {
+				for(InternalElement currClone : clones) {
+					askUserToRemoveClone(currClone)
+				}
+			} else {
+				for(InternalElement currClone : clones) {
+					updateReference(currClone)
+				}
+			}
+		}
+	}
+}
+
+/**
+ * routine to ask the user, if clones should be removed
+ */
+routine askUserToRemoveClone (caex::InternalElement clone) {
+	match {
+		val prototype = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.REAL
+	}
+	action {
+		execute {
+			if(!prototype.isPresent) {
+				val shouldCloneDeleted = userInteractor.confirmationDialogBuilder.message("Should this clone be deleted (" + clone.name + ")?").startInteraction
+				if(shouldCloneDeleted) {
+					removeClone(clone)
+				} else {
+					updateReference(clone)
+				}
+			}
+		}
+	}
+}
+
+/**
+ * routine to remove a clone
+ */
+routine removeClone(caex::InternalElement clone) {
+	action {
+		delete clone
+	}
+}
+
+/**
+ * routine to update to reference of a clone to its prototype, if the prototype was removed
+ */
+routine updateReference(caex::InternalElement clone) {
+	action {
+		update clone {
+			clone.refBaseSystemUnitPath = ""
+		}
+	}
+}
+
+/**
+ * routine to add the mark of a prototype
+ */
+routine addTagBetweenClassAndLib (caex::SystemUnitClass prototype, caex::SystemUnitClassLib lib, String tag) {
+	action {
+		add correspondence between prototype and lib tagged with tag
+	}
+}
+
+/**
+ * routine to add the mark of an attribute
+ */
+routine addTagBetweenAttributeAndClass (caex::Attribute property, caex::SystemUnitClass prototype, String tag) {
+	action {
+		add correspondence between prototype and property tagged with tag
+	}
+}

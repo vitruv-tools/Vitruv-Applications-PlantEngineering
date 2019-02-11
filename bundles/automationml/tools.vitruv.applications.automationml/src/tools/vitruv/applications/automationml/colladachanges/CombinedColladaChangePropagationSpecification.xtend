@@ -1,0 +1,7 @@
+package tools.vitruv.applications.automationml.colladachanges
+
+import mir.reactions.combinedColladaChanges.CombinedColladaChangesChangePropagationSpecification
+
+class CombinedColladaChangePropagationSpecification extends CombinedColladaChangesChangePropagationSpecification {
+	
+}

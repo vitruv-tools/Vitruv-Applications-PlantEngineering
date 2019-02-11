@@ -1,0 +1,86 @@
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexToPlcopen
+in reaction to changes in CAEX
+execute actions in CAEX
+
+/**
+ * routine to create a new plcopen container in the aml-aggregator model
+ */
+routine createNewPLCopenContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
+	action {
+		val newContainer = create aml::PLCopenContainer and initialize {
+			newContainer.path = path
+		}
+		execute {
+			createNewPLCopenFile(newContainer)
+			removeCorrespondenceBetweenInterfaceAndPLCopen(externalInterface)
+			addCorrespondenceBetweenInterfaceAndPLCopen(externalInterface, newContainer)
+		}
+	}
+}
+
+/**
+ * routine to create a new plcopen file and a plcopen model with basic structure
+ */
+routine createNewPLCopenFile(aml::PLCopenContainer container) {
+	action {
+		val pouType = create plcopen::PouType1
+		val pousType = create plcopen::PousType and initialize {
+			pousType.pou += pouType
+		}
+		val typesType = create plcopen::TypesType and initialize {
+			typesType.pous = pousType
+		}
+		val projectType = create plcopen::ProjectType and initialize {
+			projectType.types = typesType
+		}
+		add correspondence between projectType and container tagged with AMLTags.AML_PLCOPEN
+		execute { 
+			val plcNumber = AggregatorUtils.newNumberOfPLCopenFiles
+			persistProjectRelative(container, projectType, "../../../../../Desktop/resources-gen/plc" + plcNumber + ".tc60201")
+		}
+	}
+}
+
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a plcopen model, beginning with the corresponding container in the aggregator model
+ */
+routine addCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface, aml::PLCopenContainer container) {
+	match {
+		val plcProject = retrieve plcopen::ProjectType corresponding to container tagged with AMLTags.AML_PLCOPEN
+	}
+	action {
+		execute {
+			val pouType = plcProject.types.pous.pou.get(0)
+			addCorrespondenceBetweenInterfaceAndPou(externalInterface, pouType)
+		}
+	}
+}
+
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a plcopen model
+ */
+routine addCorrespondenceBetweenInterfaceAndPou(caex::ExternalInterface externalInterface, plcopen::PouType1 pou) {
+	action {
+		add correspondence between externalInterface and pou tagged with AMLTags.INTERFACE_POU
+	}
+}
+
+/**
+ * routine to remove the correspondence between an ExternalInterface and the root element of a plcopen model
+ */
+routine removeCorrespondenceBetweenInterfaceAndPLCopen (caex::ExternalInterface externalInterface){
+	match {
+		val plcPouType = retrieve plcopen::PouType1 corresponding to externalInterface tagged with AMLTags.INTERFACE_POU
+	}
+	action {
+		remove correspondence between externalInterface and plcPouType tagged with AMLTags.INTERFACE_POU
+	}
+}

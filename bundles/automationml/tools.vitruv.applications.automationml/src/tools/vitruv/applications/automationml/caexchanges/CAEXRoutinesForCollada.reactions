@@ -1,0 +1,83 @@
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexToCollada
+in reaction to changes in CAEX
+execute actions in CAEX
+
+/**
+ * routine to create a new collada container in the aml-aggregator model
+ */
+routine createNewColladaContainer (caex::ExternalInterface externalInterface, aml::AMLProject container, String path) {
+	action {
+		val newContainer = create aml::ColladaContainer and initialize {
+			newContainer.path = path
+		}
+		execute {
+			createNewColladaFile(newContainer)
+			removeCorrespondenceBetweenInterfaceAndCollada(externalInterface)
+			addCorrespondenceBetweenInterfaceAndCollada(externalInterface, newContainer)
+		}
+	}
+}
+
+/**
+ * routine to create a new collada file and a collada model with basic structure
+ */
+routine createNewColladaFile(aml::ColladaContainer container) {
+	action {
+		val visualSceneInstance = create collada::InstanceWithExtra
+		val scene = create collada::SceneType and initialize {
+			scene.instanceVisualScene = visualSceneInstance
+		}
+		val colladaType = create collada::COLLADAType and initialize {
+			colladaType.scene = scene
+		}
+		add correspondence between colladaType and container tagged with AMLTags.AML_COLLADA
+		execute {
+			val colladaNumber = AggregatorUtils.newNumberOfColladaFiles
+			persistProjectRelative(container, colladaType, "../../../../../Desktop/resources-gen/collada" + colladaNumber + ".dae")
+		}
+	}
+}
+
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a collada model, beginning with the corresponding container in the aggregator model
+ */
+routine addCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface, aml::ColladaContainer container) {
+	match {
+		val colladaProject = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA
+	}
+	action {
+		execute {
+			val sceneTypes = colladaProject.scene 
+			addCorrespondenceBetweenInterfaceAndScene(externalInterface, sceneTypes)
+		}
+	}
+}
+
+/**
+ * routine to create a correspondence between an ExternalInterface and the root element of a collada model
+ */
+routine addCorrespondenceBetweenInterfaceAndScene(caex::ExternalInterface externalInterface, collada::SceneType scene) {
+	action {
+		add correspondence between externalInterface and scene tagged with AMLTags.INTERFACE_SCENE
+	}
+}
+
+/**
+ * routine to remove the correspondence between an ExternalInterface and the root element of a collada model
+ */
+routine removeCorrespondenceBetweenInterfaceAndCollada (caex::ExternalInterface externalInterface){
+	match {
+		val colladaScene = retrieve collada::SceneType corresponding to externalInterface tagged with AMLTags.INTERFACE_SCENE
+	}
+	action {
+		remove correspondence between externalInterface and colladaScene tagged with AMLTags.INTERFACE_SCENE
+	}
+}

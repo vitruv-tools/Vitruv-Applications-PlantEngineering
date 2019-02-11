@@ -1,0 +1,56 @@
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: plcopenStructureChanges
+in reaction to changes in PLCOpen
+execute actions in PLCOpen
+
+/**
+ * reaction for a removed pou definition
+ */
+reaction RemovePouType {
+	after element plcopen::PouType1 removed from plcopen::PousType[pou]
+	with {
+		affectedEObject.pou.size == 0
+	}
+	call {
+		logger.debug("RemovePouType")
+
+		//TODO reject change
+		affectedEObject.pou += oldValue
+	}
+}
+
+/**
+ * reaction for a removed set of pou definitions
+ */
+reaction ReplacePousType {
+	after element plcopen::PousType replaced at plcopen::TypesType[pous]
+	with {
+		oldValue !== null
+	}
+	call {
+		logger.debug("ReplacePousType")
+
+		//TODO reject change
+		affectedEObject.pous = oldValue
+	}
+}
+
+/**
+ * reaction for a removed types definition
+ */
+reaction ReplaceTypesType {
+	after element plcopen::TypesType replaced at plcopen::ProjectType[types]
+	with {
+		oldValue !== null
+	}
+	call {
+		logger.debug("ReplaceTypesType")
+
+		//TODO reject change
+		affectedEObject.types = oldValue
+	}
+}

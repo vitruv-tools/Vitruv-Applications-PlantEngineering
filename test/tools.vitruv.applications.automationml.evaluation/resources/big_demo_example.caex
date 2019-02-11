@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<caex:CAEXFile xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:caex="http://www.dke.de/CAEX/300" fileName="mechanicalPlantModelFlexMan.aml">
+  <instanceHierarchy name="IAFDemonstrationPlant">
+    <internalElement iD="3d7d5923-f2b7-448c-a4bb-4d2603fe25b1" name="Otto-von-Guericke University Magdeburg">
+      <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Building10">
+        <systemUnitClass xsi:type="caex:InternalElement" iD="f5e21e8f-fb2a-4429-9044-c77593efb8fc" name="Room445">
+          <systemUnitClass xsi:type="caex:InternalElement" iD="48b592dd-1900-400a-b0ee-e828c836b0de" name="FlexibleManufacturingSystem">
+            <systemUnitClass xsi:type="caex:InternalElement" name="turntable0">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="steel"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="d98349a4-9ba9-4a4b-ae8b-1fa652734454" name="conveyer0"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="135acc50-01c9-462c-8cb9-4b210e8f8b30" name="conveyer2"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="6c538c91-04d8-40c7-9f04-a9d15f32edbf" name="turntable2">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="steel"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="ce8deb7c-e26c-43c6-a3f4-4eb321f60f1f" name="conveyer1"/>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="9c4fca69-a3e8-418b-9cd1-49cfbf6ee25c" name="turntable1">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="steel"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="954aa368-518d-4103-b819-dd7db2c6d01e" name="turntable3">
+              <internalElement iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor">
+                <attribute name="material" value="steel"/>
+              </internalElement>
+            </systemUnitClass>
+            <systemUnitClass xsi:type="caex:InternalElement" iD="ad258e93-f513-47ee-883a-2f4089f24597" name="conveyer3"/>
+          </systemUnitClass>
+        </systemUnitClass>
+      </systemUnitClass>
+    </internalElement>
+  </instanceHierarchy>
+  <interfaceClassLib name="AutomationMLInterfaceClassLib">
+    <interfaceClass name="AutomationMLBaseInterface">
+      <interfaceClass name="Order" refBaseClassPath="AutomationMLBaseInterface">
+        <attribute name="Direction" attributeDataType="xs:string" refAttributeType=""/>
+      </interfaceClass>
+      <interfaceClass name="PortConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass name="InterlockingConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass iD="" name="PPRConnector" refBaseClassPath="AutomationMLBaseInterface"/>
+      <interfaceClass name="ExternalDataConnector" refBaseClassPath="AutomationMLBaseInterface">
+        <attribute name="refURI" attributeDataType="xs:anyURI"/>
+        <interfaceClass name="COLLADAInterface" refBaseClassPath="ExternalDataConnector"/>
+        <interfaceClass name="PLCopenXMLInterface" refBaseClassPath="ExternalDataConnector"/>
+      </interfaceClass>
+      <interfaceClass name="Communication" refBaseClassPath="AutomationMLBaseInterface">
+        <interfaceClass name="SignalInterface" refBaseClassPath="Communication"/>
+      </interfaceClass>
+    </interfaceClass>
+  </interfaceClassLib>
+  <interfaceClassLib name="IAF_ModelInterfaceClassLib">
+    <interfaceClass name="Communication" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+      <interfaceClass name="SignalInterface" refBaseClassPath="IAF_ModelInterfaceClassLib/Communication"/>
+    </interfaceClass>
+    <interfaceClass name="power_connection_plug" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface"/>
+    <interfaceClass name="gearing" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="screwing" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="clamping" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="storage" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface"/>
+    <interfaceClass name="power_connection_socket" refBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication/SignalInterface"/>
+  </interfaceClassLib>
+  <systemUnitClassLib name="IAF_ModelSystemUnitClassLib">
+    <systemUnitClass name="parts">
+      <systemUnitClass iD="13" name="sensor"/>
+      <systemUnitClass name="inductive_sensor" refBaseClassPath="IAF_ModelSystemUnitClassLib/parts/sensor">
+        <attribute name="material" value="steel"/>
+      </systemUnitClass>
+      <systemUnitClass name="line_conveyor"/>
+      <systemUnitClass name="frame"/>
+      <systemUnitClass name="rotating_assembly"/>
+    </systemUnitClass>
+    <systemUnitClass name="turntable">
+      <systemUnitClass xsi:type="caex:InternalElement" iD="2c7aeeb6-b496-461f-a6e4-88f2a4144f11" name="inductive_sensor_turntable" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/inductive_sensor"/>
+      <systemUnitClass xsi:type="caex:InternalElement" iD="af3fc59a-2b70-4962-bc03-73c066058221" name="rotation_assembly" refBaseSystemUnitPath="IAF_ModelSystemUnitClassLib/parts/rotating_assembly"/>
+    </systemUnitClass>
+  </systemUnitClassLib>
+</caex:CAEXFile>

@@ -1,0 +1,353 @@
+import org.eclipse.xtext.EcoreUtil2
+import java.util.LinkedList
+import tools.vitruv.applications.automationml.utils.propertybasedtags.PrototypTags
+import tools.vitruv.applications.automationml.utils.propertybasedtags.PropertyTags
+import tools.vitruv.applications.automationml.utils.stringreferences.caex.SystemUnitClassUtils
+import caex.caex30.caex.CAEXFile
+import caex.caex30.caex.InstanceHierarchy
+import tools.vitruv.applications.automationml.utils.propertybasedtags.CloneTags
+import caex.caex30.caex.Attribute
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
+import caex.caex30.caex.InternalElement
+import tools.vitruv.applications.automationml.utils.aml.PrototypeCloneUtils
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: caexAttributeCloneChanges
+in reaction to changes in CAEX
+execute actions in CAEX
+
+/**
+ * reaction for changing or adding the mapping between clone and prototype
+ */
+reaction PrototypChangedInClone {
+	after attribute replaced at caex::InternalElement[refBaseSystemUnitPath]
+	call {
+		val caexFile = EcoreUtil2.getContainerOfType(affectedEObject, CAEXFile)
+		val prototype = SystemUnitClassUtils.getSystemClassByPath(newValue, caexFile)
+		
+		if(prototype === null) {
+			//TODO reject change
+			affectedEObject.refBaseSystemUnitPath = oldValue
+			return
+		}
+		
+		if(oldValue === null) {
+			addedPrototpyeForClone(affectedEObject, prototype)
+		} else {
+			changedPrototypeForClone(affectedEObject, prototype)
+			removeCorrespondenceToOldPrototype(affectedEObject)
+		}
+		
+		addCorrespondenceToNewPrototype(affectedEObject, prototype)
+	}
+}
+
+/**
+ * routine for adding the first time a prototype to a clone
+ */
+routine addedPrototpyeForClone (caex::InternalElement clone, caex::SystemUnitClass prototype) {
+	match {
+		val alwaysTaggedLib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.ALWAYS
+		val neverTaggedLib = retrieve optional caex::SystemUnitClassLib corresponding to prototype tagged with PrototypTags.NEVER
+	}
+	action {
+		execute {
+			if(neverTaggedLib.isPresent) {
+				copyAllAttributesToClone(clone, prototype, false)
+			} else if(!alwaysTaggedLib.isPresent) {
+				val instanceHierarchy = EcoreUtil2.getContainerOfType(clone, InstanceHierarchy)
+				if(instanceHierarchy === null) {
+					copyAllAttributesToClone(clone, prototype, false)
+					addTagToCloneAndPrototype(clone, prototype, CloneTags.DESCRIPTIVE)
+				} else {
+					val choices = new LinkedList<String>
+					choices += "real existing"
+					choices += "abstract description"
+					choices += "example object"
+					val cloneType = userInteractor.singleSelectionDialogBuilder.message("From which type is the clone " + clone.name +"?").choices(choices).startInteraction
+					
+					if(cloneType == 0) {
+						copyAllAttributesToClone(clone, prototype, true)	
+						addTagToCloneAndPrototype(clone, prototype, CloneTags.REAL)
+					} else if(cloneType == 1) {
+						copyAllAttributesToClone(clone, prototype, false)	
+						addTagToCloneAndPrototype(clone, prototype, CloneTags.ABSTRACT)	
+					} else if(cloneType == 2) {
+						copyAllAttributesToClone(clone, prototype, false)	
+						addTagToCloneAndPrototype(clone, prototype, CloneTags.EXAMPLARY)
+					}
+				}
+			}
+		}
+	}
+} 
+
+/**
+ * routine for changing the mapping between a clone and a prototype
+ */
+routine changedPrototypeForClone (caex::InternalElement clone, caex::SystemUnitClass newPrototype) {
+	match {
+		val oldPrototype = retrieve caex::SystemUnitClass corresponding to clone tagged with AMLTags.PROTOTYPE_CLONE
+		val prototype = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.DESCRIPTIVE
+	}
+	action {
+		execute {
+			if (prototype.isPresent) {
+				removeCopiedAttributesFromClone(clone, oldPrototype)
+			} else {
+				removeSomeCopiedAttributesFromClone(clone, newPrototype)
+			}
+			
+			retrieveTagForNewCorrespondence(clone, newPrototype)
+		}
+	}
+}
+
+/**
+ * routine to remove all not changed attributes from a clone, which are copied from a prototype
+ */
+routine removeCopiedAttributesFromClone (caex::InternalElement clone, caex::SystemUnitClass oldPrototype) {
+	action {
+		execute {
+			for(Attribute currAtt : oldPrototype.^attribute) {
+				val actualAttribute = CAEXUtils.getAttributeInClone(currAtt.name, clone)
+				if(actualAttribute !== null) {
+					if(!PrototypeCloneUtils.checkTwoAttributesForDiffs(actualAttribute, currAtt)) {
+						clone.^attribute -= actualAttribute
+					}
+				}				
+			}
+		}
+	}
+}
+
+/**
+ * routine to remove some attributes from a clone, which are copied from a prototype
+ */
+routine removeSomeCopiedAttributesFromClone (caex::InternalElement clone, caex::SystemUnitClass newPrototype) {
+	action {
+		execute {
+			for(Attribute currAtt : newPrototype.^attribute) {
+				val actualAttribute = CAEXUtils.getAttributeInClone(currAtt.name, clone)
+				if(actualAttribute !== null) {
+					clone.^attribute -= actualAttribute
+				}
+			}
+		}
+	}
+}
+
+/**
+ * routine to decide, if attributes from a prototype should be copied to a clone
+ */
+routine retrieveTagForNewCorrespondence (caex::InternalElement clone, caex::SystemUnitClass newPrototyp) {
+	match {
+		val classTaggedWithDescriptive = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.DESCRIPTIVE
+		val classTaggedWithReal = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.REAL
+		val classTaggedWithAbstract = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.ABSTRACT
+		val classTaggedWithExamplary = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.EXAMPLARY
+	}
+	action {
+		execute {
+			if(classTaggedWithDescriptive.isPresent) {
+				addTagToCloneAndPrototype(clone, newPrototyp, CloneTags.DESCRIPTIVE)
+				copyAllAttributesToClone(clone, newPrototyp, false)
+				return
+			}
+			if(classTaggedWithReal.isPresent) {
+				addTagToCloneAndPrototype(clone, newPrototyp, CloneTags.REAL)
+				copyAllAttributesToClone(clone, newPrototyp, true)
+				return
+			}
+			if(classTaggedWithAbstract.isPresent) {
+				addTagToCloneAndPrototype(clone, newPrototyp, CloneTags.ABSTRACT)
+				copyAllAttributesToClone(clone, newPrototyp, false)
+				return
+			}
+			if(classTaggedWithExamplary.isPresent) {
+				addTagToCloneAndPrototype(clone, newPrototyp, CloneTags.EXAMPLARY)
+				copyAllAttributesToClone(clone, newPrototyp, false)
+				return
+			}
+		}
+	}
+}
+
+/**
+ * routine to add a correspondence between a prototype and a clone
+ */
+routine addTagToCloneAndPrototype (caex::InternalElement clone, caex::SystemUnitClass prototype, String tag) {
+	action {
+		add correspondence between clone and prototype tagged with tag
+	}
+}
+
+/**
+ * routine to copy all attributes from a prototype to a clone
+ */
+routine copyAllAttributesToClone (caex::InternalElement clone, caex::SystemUnitClass prototype, Boolean isRealClone) {
+	action {
+		execute {
+			if(isRealClone) {
+				for(Attribute currAtt : prototype.^attribute) {
+					copyAttributeToRealClone(clone, currAtt)
+				}
+			} else {
+				for(Attribute currAtt : prototype.^attribute) {
+					copyAttributeToClone(clone, currAtt)
+				}
+			}
+		}
+	}
+}
+
+/**
+ * routine to copy an attribute to a clone
+ */
+routine copyAttributeToClone (caex::InternalElement clone, caex::Attribute att) {
+	action {
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = att.name
+			newAttribute.attributeDataType = att.attributeDataType
+			newAttribute.value = att.value
+		}
+		update clone {
+			clone.^attribute += newAttribute
+		}
+	}
+}
+
+/**
+ * routine to copy an attribute to a clone, which is marked with "real"
+ */
+routine copyAttributeToRealClone (caex::InternalElement clone, caex::Attribute att) {
+	match {
+		val prototype = retrieve optional caex::SystemUnitClass corresponding to att tagged with PropertyTags.BEHAVIOUR
+	}
+	action {
+		execute {
+			if(!prototype.isPresent) {
+				copyAttributeToClone(clone, att)
+			} else {
+				copyBehaviourAttributeToRealClone(clone, att)
+			}
+		}
+	}
+}
+
+/**
+ * routine to copy an attribute, which is marked with "behaviour", to a clone, which is marked with "real"
+ */
+routine copyBehaviourAttributeToRealClone (caex::InternalElement clone, caex::Attribute att) {
+	action {
+		val newAttribute = create caex::Attribute and initialize {
+			newAttribute.name = att.name
+			newAttribute.attributeDataType = att.attributeDataType
+			newAttribute.value = att.value
+		}
+		update clone {
+			clone.^attribute += newAttribute
+		}
+		execute {
+			val userInput = userInteractor.confirmationDialogBuilder.message("Is this behaviour description (clone: " + clone.name + ", attribute: " + att.name + ") maintainable?").startInteraction		
+			if(userInput) {
+				createCorrespondenceForMaintainable(clone, newAttribute)
+			}
+		}
+	}
+}
+
+/**
+ * routine to create a correspondence between a clone and an attribute, which is marked with "maintainable"
+ */
+routine createCorrespondenceForMaintainable(caex::InternalElement clone, caex::Attribute newAttribute) {
+	action {
+		add correspondence between clone and newAttribute tagged with PropertyTags.MAINTAINABLE
+	}
+}
+
+
+
+/**
+ * reaction for changing the value of an attribute in a clone
+ */
+reaction ChangeAttributeInClone {
+	after attribute replaced at caex::Attribute[value]
+	with {
+		affectedEObject.eContainer instanceof InternalElement
+	}
+	call {
+		val clone = affectedEObject.eContainer as InternalElement
+		reactToAttributeChange(clone, affectedEObject, oldValue)
+	}
+}
+
+/**
+ * routine to react to the change of the value of an attribtue in a clone
+ */
+routine reactToAttributeChange (caex::InternalElement clone, caex::Attribute changedAtt, String oldValue) {
+	match {
+		val prototype = retrieve caex::SystemUnitClass corresponding to clone tagged with AMLTags.PROTOTYPE_CLONE
+		val prototypeWithExemplary = retrieve optional caex::SystemUnitClass corresponding to clone tagged with CloneTags.EXAMPLARY
+	}
+	action {
+		execute {
+			if(prototypeWithExemplary.isPresent) {
+				checkChangedProperty(changedAtt, oldValue, prototype, true)
+			} else {
+				checkChangedProperty(changedAtt, oldValue, prototype, false)
+			}
+		}
+	}
+}
+
+/**
+ * routine to react to the change of the value of an attribute in a clone, depending on the mark of the clone
+ */
+routine checkChangedProperty (caex::Attribute changedAtt, String oldValue, caex::SystemUnitClass prototype, Boolean isExemplary) {
+	match {
+		val propertyRuleTagged = retrieve optional caex::Attribute corresponding to prototype tagged with PropertyTags.RULE
+	}
+	action {
+		execute {
+			if(propertyRuleTagged.isPresent) {
+				//TODO reject change
+				changedAtt.value = oldValue
+				return
+			}
+			
+			if(isExemplary) {
+				val attInPrototype = CAEXUtils.getAttributeInPrototype(changedAtt.name, prototype)
+				if(attInPrototype !== null) {
+					attInPrototype.value = changedAtt.value
+				}
+			}
+		}
+	}
+}
+
+/**
+ * routine to remove the correspondence between an clone and its prototype
+ */
+routine removeCorrespondenceToOldPrototype(caex::InternalElement clone) {
+	match {
+		val prototype = retrieve caex::SystemUnitClass corresponding to clone tagged with AMLTags.PROTOTYPE_CLONE
+	}
+	action {
+		remove correspondence between clone and prototype tagged with AMLTags.PROTOTYPE_CLONE
+	}
+}
+
+/**
+ * routine to add a correspondence between an clone and its prototype
+ */
+routine addCorrespondenceToNewPrototype(caex::InternalElement clone, caex::SystemUnitClass prototype) {
+	action {
+		add correspondence between clone and prototype tagged with AMLTags.PROTOTYPE_CLONE
+	}
+}

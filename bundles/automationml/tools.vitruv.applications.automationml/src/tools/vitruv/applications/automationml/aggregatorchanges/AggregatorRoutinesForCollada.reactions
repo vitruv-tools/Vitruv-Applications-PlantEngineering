@@ -1,0 +1,53 @@
+import org.eclipse.xtext.EcoreUtil2
+import caex.caex30.caex.ExternalInterface
+import tools.vitruv.applications.automationml.utils.aml.CAEXUtils
+import org.khronos.collada.SceneType
+import tools.vitruv.applications.automationml.utils.aml.AMLTags
+import tools.vitruv.applications.automationml.utils.aml.AggregatorUtils
+
+import "http://www.plcopen.org/xml/tc6_0201" as plcopen
+import "http://www.dke.de/CAEX/300" as caex
+import "http://edu.kit.ipd.sdq.aml" as aml
+import "http://www.collada.org/2005/11/COLLADASchema" as collada
+
+reactions: aggregatorToCollada
+in reaction to changes in AML
+execute actions in AML
+
+/**
+ * routine to create a new collada file with its basic structure
+ */
+routine createColladaFile(aml::ColladaContainer container) {
+	action {
+		val visualSceneInstance = create collada::InstanceWithExtra
+		val scene = create collada::SceneType and initialize {
+			scene.instanceVisualScene = visualSceneInstance
+		}
+		val colladaType = create collada::COLLADAType and initialize {
+			colladaType.scene = scene
+		}
+		add correspondence between colladaType and container tagged with AMLTags.AML_COLLADA
+		execute {
+			val colladaNumber = AggregatorUtils.newNumberOfColladaFiles
+			persistProjectRelative(container, colladaType, "../../../../../Desktop/resources-gen/collada" + colladaNumber + ".dae")
+		}
+	}
+}
+
+/**
+ * routine to delete collada file and set references to deleted file to an empty string
+ */
+routine deleteColladaFile(aml::ColladaContainer container) {
+	match {
+		val colladaType = retrieve collada::COLLADAType corresponding to container tagged with AMLTags.AML_COLLADA
+		val externalInterfaces = retrieve many caex::ExternalInterface corresponding to EcoreUtil2.getAllContentsOfType(colladaType, SceneType).get(0) tagged with AMLTags.INTERFACE_SCENE
+	}
+	action {
+		execute {
+			for(ExternalInterface currInterface : externalInterfaces) {
+				CAEXUtils.getAttributeInExternalInterface(currInterface, "refUri").value = ""
+			}
+		}
+		delete colladaType
+	}
+}
