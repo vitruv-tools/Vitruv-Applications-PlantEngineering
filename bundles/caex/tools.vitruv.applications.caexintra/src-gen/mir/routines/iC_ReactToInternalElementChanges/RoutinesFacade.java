@@ -54,9 +54,4 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     mir.routines.iC_Utilities.RoutinesFacade _routinesFacade = this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().append(ReactionsImportPath.fromPathString("iC_Utilities")));
     return _routinesFacade.updateFeature(obj, feature, newValue);
   }
-  
-  public boolean setFeatureValue(final EObject e, final EStructuralFeature f, final Object o) {
-    mir.routines.iC_Utilities.RoutinesFacade _routinesFacade = this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().append(ReactionsImportPath.fromPathString("iC_Utilities")));
-    return _routinesFacade.setFeatureValue(e, f, o);
-  }
 }
